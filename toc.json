@@ -1,0 +1,13 @@
+{
+	"introduction" : [
+		"index",
+		"installation",
+		"integration"
+	],
+	"usage": [
+		"index",
+		"cards",
+		"charges",
+		"subscriptions"
+	]
+}
