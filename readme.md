@@ -1,6 +1,6 @@
 # Stripe
 
-.
+A comprehensive billing package for stripe.
 
 The package requires PHP 5.4+ and follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP.
 
@@ -12,7 +12,37 @@ Package history and capabilities.
 
 #### xx-May-14 - v1.0.0
 
-.
+- Can apply a coupon to the user.
+- Can swap the default user credit card.
+- Can list all the attached credit cards.
+- Can attach new credit cards.
+- Can update existing credit cards.
+- Can delete existing credit cards.
+- Can make an existing credit card the default credit card.
+- Can check if the user has any active credit cards.
+- Can list all the charges the user has made.
+- Can create a new charge.
+- Can create a new charge to be captured later.
+- Can create a new charge with a new credit card.
+- Can refund charges.
+- Can list all the subscriptions the user has.
+- Can create a new subscription.
+- Can create a new subscription with a trial period.
+- Can create a new subscription and apply a coupon to the subscription.
+- Can cancel an active subscription.
+- Can cancel an active subscription at the end of the period.
+- Can resume a canceled subscription.
+- Can resume a canceled subscription and remove its trial period.
+- Can resume a canceled subscription and change its trial period end date.
+- Can apply a coupon to an existing subscription.
+- Can remove a coupon from an existing subscription.
+- Can apply a trial period on an existing subscription.
+- Can remove a trial period from an existing subscription.
+- Can check if the subscription is on its trial period.
+- Can check if the subscription is canceled.
+- Can check if the subscription has expired.
+- Can check if the subscription is on the grace period.
+- Can check if the user has any active subscriptions.
 
 ## Requirements
 
