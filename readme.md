@@ -6,6 +6,8 @@ The package requires PHP 5.4+ and follows the FIG standard PSR-4 to ensure a hig
 
 Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well, rock on.
 
+The package was inspired by the Laravel Cashier by Taylor Otwell.
+
 ## Package Story
 
 Package history and capabilities.
