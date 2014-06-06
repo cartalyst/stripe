@@ -33,7 +33,7 @@ class MigrationCartalystStripeCreateTables extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('user_id');
-			$table->string('stripe_id');
+			$table->string('stripe_id')->unique();
 			$table->integer('last_four');
 			$table->integer('exp_month');
 			$table->integer('exp_year');
@@ -45,9 +45,9 @@ class MigrationCartalystStripeCreateTables extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('user_id');
-			$table->string('stripe_id');
+			$table->string('stripe_id')->unique();
 			$table->string('description');
-			$table->integer('amount', 20);
+			$table->float('amount');
 			$table->boolean('captured')->default(0);
 			$table->boolean('refunded')->default(0);
 			$table->timestamps();
@@ -57,7 +57,7 @@ class MigrationCartalystStripeCreateTables extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('payment_id');
-			$table->integer('amount', 20);
+			$table->float('amount');
 			$table->timestamps();
 		});
 
@@ -65,7 +65,7 @@ class MigrationCartalystStripeCreateTables extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('user_id');
-			$table->string('stripe_id');
+			$table->string('stripe_id')->unique();
 			$table->string('plan', 25)->nullable();
 			$table->boolean('active')->default(0);
 			$table->timestamps();
@@ -77,7 +77,7 @@ class MigrationCartalystStripeCreateTables extends Migration {
 
 		Schema::table('users', function(Blueprint $table)
 		{
-			$table->string('stripe_id')->nullable();
+			$table->string('stripe_id')->nullable()->unique();
 		});
 	}
 
@@ -88,11 +88,21 @@ class MigrationCartalystStripeCreateTables extends Migration {
 	 */
 	public function down()
 	{
+		$tables = [
+			'cards',
+			'payments',
+			'refunds',
+			'subscriptions',
+		];
+
+		foreach ($tables as $table)
+		{
+			Schema::drop($table);
+		}
+
 		Schema::table('users', function(Blueprint $table)
 		{
-			$table->dropColumn(
-				'stripe_id', 'last_four'
-			);
+			$table->dropColumn('stripe_id');
 		});
 	}
 
