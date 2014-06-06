@@ -66,17 +66,6 @@ trait BillableTrait {
 	}
 
 	/**
-	 * Returns a new Stripe Charge gateway.
-	 *
-	 * @param  mixed  $charge
-	 * @return \Cartalyst\Stripe\Charge\ChargeGateway
-	 */
-	public function charge($charge = null)
-	{
-		return new ChargeGateway($this, $charge);
-	}
-
-	/**
 	 * {@inheritDoc}
 	 */
 	public function updateDefaultCard($token)
@@ -87,6 +76,17 @@ trait BillableTrait {
 
 		$this->last_four = $customer->cards->retrieve($customer->default_card)->last4;
 		$this->save();
+	}
+
+	/**
+	 * Returns a new Stripe Charge gateway.
+	 *
+	 * @param  mixed  $charge
+	 * @return \Cartalyst\Stripe\Charge\ChargeGateway
+	 */
+	public function charge($charge = null)
+	{
+		return new ChargeGateway($this, $charge);
 	}
 
 	/**
