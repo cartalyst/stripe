@@ -34,6 +34,8 @@ class IlluminateCharge extends Model {
 		'amount',
 		'captured',
 		'refunded',
+		'created_at',
+		'updated_at',
 		'description',
 	];
 

@@ -176,4 +176,42 @@ class CardGateway extends StripeGateway {
 		$this->updateLocalStripeData($this->getStripeCustomer($customer->id));
 	}
 
+	/**
+	 * Syncronizes the Stripe cards data with the local data.
+	 *
+	 * @return void
+	 */
+	public function syncWithStripe()
+	{
+		$entity = $this->billable;
+
+		$customer = $this->getStripeCustomer();
+
+		$defaultCard = $customer->default_card;
+
+		foreach ($customer->cards->data as $card)
+		{
+			$stripeId = $card->id;
+
+			$_card = $entity->cards()->where('stripe_id', $stripeId)->first();
+
+			$data = [
+				'stripe_id' => $stripeId,
+				'last_our'  => $card->last4,
+				'exp_month' => $card->exp_month,
+				'exp_year'  => $card->exp_year,
+				'default'   => $defaultCard === $stripeId ? true : false,
+			];
+
+			if ( ! $_card)
+			{
+				$entity->cards()->create($data);
+			}
+			else
+			{
+				$_card->update($data);
+			}
+		}
+	}
+
 }

@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Stripe\Card\CardGateway;
 use Cartalyst\Stripe\Charge\ChargeGateway;
 use Cartalyst\Stripe\Subscription\SubscriptionGateway;
 use Illuminate\Support\Facades\Config;
@@ -182,6 +183,20 @@ trait BillableTrait {
 	public static function setStripeKey($key)
 	{
 		static::$stripeKey = $key;
+	}
+
+	/**
+	 * Syncronizes the Stripe data with the local data.
+	 *
+	 * @return void
+	 */
+	public function syncWithStripe()
+	{
+		$this->card()->syncWithStripe();
+
+		$this->charge()->syncWithStripe();
+
+		$this->subscription()->syncWithStripe();
 	}
 
 	/**

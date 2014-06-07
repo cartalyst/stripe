@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use Carbon\Carbon;
 use Cartalyst\Stripe\BillableInterface;
 use Cartalyst\Stripe\StripeGateway;
 use Stripe_Charge;
@@ -222,6 +223,49 @@ class ChargeGateway extends StripeGateway {
 		$this->token = $token;
 
 		return $this;
+	}
+
+	/**
+	 * Syncronizes the Stripe charges data with the local data.
+	 *
+	 * @return void
+	 */
+	public function syncWithStripe()
+	{
+		$entity = $this->billable;
+
+		$customer = $this->getStripeCustomer();
+
+		$charges = Stripe_Charge::all([
+			'customer' => $customer->id
+		]);
+
+		foreach ($charges->data as $charge)
+		{
+			$stripeId = $charge->id;
+
+			$_charge = $entity->charges()->where('stripe_id', $stripeId)->first();
+
+			$data = [
+				'stripe_id'   => $stripeId,
+				'description' => $charge->description,
+				'amount'      => $charge->amount,
+				'captured'    => $charge->captured,
+				'refunded'    => $charge->refunded,
+				'created_at'  => Carbon::createFromTimestamp($charge->created),
+			];
+
+			if ( ! $_charge)
+			{
+				$entity->charges()->create($data);
+			}
+			else
+			{
+				$_charge->update($data);
+			}
+
+			# will need to save the charge refunds as well
+		}
 	}
 
 	/**
