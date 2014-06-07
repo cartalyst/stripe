@@ -88,4 +88,16 @@ $user
     ->refund($amount);
 ```
 
+### Sync data from Stripe
+
+Often you might have the need to sync the data from Stripe with your database, we have an easy way to achieve this.
+
+```php
+$user = User::find(1);
+
+$user
+	->charge()
+	->syncWithStripe();
+```
+
 > **Note:** You can pass a charge id `integer` or a `Cartalyst\Stripe\Charge\IlluminateCharge` object through the `charge()` method.
