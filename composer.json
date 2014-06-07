@@ -1,7 +1,6 @@
 {
 	"name": "cartalyst/stripe",
-	"description": "A comprehensive billing package for stripe.
-",
+	"description": "A comprehensive billing package for stripe.",
 	"keywords": [
 		"php",
 		"cartalyst",
