@@ -133,6 +133,23 @@ class StripeGateway {
 	}
 
 	/**
+	 * Returns a Carbon object if the provided timestamp
+	 * is valid and returns null otherwise.
+	 *
+	 * @param  int  $timestamp
+	 * @return \Carbon\Carbon
+	 */
+	protected function nullableTimestamp($timestamp)
+	{
+		if ( ! $timestamp)
+		{
+			return null;
+		}
+
+		return Carbon::createFromTimestamp($timestamp);
+	}
+
+	/**
 	 * Get the Stripe API key for the instance.
 	 *
 	 * @return string

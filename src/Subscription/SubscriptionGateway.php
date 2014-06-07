@@ -142,7 +142,7 @@ class SubscriptionGateway extends StripeGateway {
 			'active'        => 1,
 			'ends_at'       => Carbon::createFromTimeStamp($subscription->current_period_end),
 			'stripe_id'     => $subscription->id,
-			'trial_ends_at' => $subscription->trial_end ? Carbon::createFromTimeStamp($subscription->trial_end) : null,
+			'trial_ends_at' => $this->nullableTimestamp($subscription->trial_end),
 		]);
 
 		$this->updateLocalStripeData($this->getStripeCustomer($customer->id));
@@ -259,15 +259,11 @@ class SubscriptionGateway extends StripeGateway {
 			'plan' => $subscription->plan->id,
 		]);
 
-		$endsAt = Carbon::createFromTimeStamp($subscription->current_period_end);
-
-		$trialEndsAt = $subscription->trial_end ? Carbon::createFromTimeStamp($subscription->trial_end) : null;
-
 		$this->updateLocalSubscriptionData([
 			'active'        => 1,
-			'ends_at'       => $endsAt,
+			'ends_at'       => Carbon::createFromTimeStamp($subscription->current_period_end),
 			'ended_at'      => null,
-			'trial_ends_at' => $trialEndsAt,
+			'trial_ends_at' => $this->nullableTimestamp($subscription->trial_end),
 			'canceled_at'   => null,
 		]);
 	}
@@ -414,6 +410,65 @@ class SubscriptionGateway extends StripeGateway {
 		$this->skipTrial = true;
 
 		return $this;
+	}
+
+	/**
+	 * Syncronizes the Stripe subscriptions data with the local data.
+	 *
+	 * @return void
+	 */
+	public function syncWithStripe()
+	{
+		$entity = $this->billable;
+
+		$customer = $this->getStripeCustomer();
+
+		$stripeSubscriptions = [];
+
+		foreach ($customer->subscriptions->data as $subscription)
+		{
+			$stripeSubscriptions[$subscription->id] = $subscription;
+		}
+
+		// Loop through the current entity subscriptions, this is
+		// to make sure that expired subscriptions are in sync.
+		foreach ($entity->subscriptions as $subscription)
+		{
+			if ( ! array_get($stripeSubscriptions, $subscription->stripe_id) && ! $subscription->expired())
+			{
+				$subscription->update([
+					'active'   => 0,
+					'ended_at' => Carbon::now(),
+				]);
+			}
+		}
+
+		// Loop through the Stripe subscriptions
+		foreach ($stripeSubscriptions as $subscription)
+		{
+			$stripeId = $subscription->id;
+
+			$_subscription = $entity->subscriptions()->where('stripe_id', $stripeId)->first();
+
+			$data = [
+				'active'        => 1,
+				'stripe_id'     => $stripeId,
+				'plan'          => $subscription->plan->id,
+				'created_at'    => Carbon::createFromTimestamp($subscription->current_period_start),
+				'ends_at'       => Carbon::createFromTimestamp($subscription->current_period_end),
+				'canceled_at'   => $this->nullableTimestamp($subscription->canceled_at),
+				'trial_ends_at' => $this->nullableTimestamp($subscription->trial_end),
+			];
+
+			if ( ! $_subscription)
+			{
+				$entity->subscriptions()->create($data);
+			}
+			else
+			{
+				$_subscription->update($data);
+			}
+		}
 	}
 
 	/**

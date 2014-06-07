@@ -35,6 +35,8 @@ class IlluminateSubscription extends Model {
 		'active',
 		'ends_at',
 		'ended_at',
+		'created_at',
+		'updated_at',
 		'canceled_at',
 		'trial_ends_at',
 	];
@@ -110,7 +112,7 @@ class IlluminateSubscription extends Model {
 	 */
 	public function expired()
 	{
-		return ($this->active === 0 && $this->ended_at && ! $this->canceled_at);
+		return ($this->active === false && $this->ended_at && ! $this->canceled_at);
 	}
 
 }
