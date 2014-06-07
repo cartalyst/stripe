@@ -57,6 +57,7 @@ class MigrationCartalystStripeCreateTables extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('payment_id');
+			$table->string('transaction_id');
 			$table->float('amount');
 			$table->timestamps();
 		});

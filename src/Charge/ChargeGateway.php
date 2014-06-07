@@ -171,7 +171,8 @@ class ChargeGateway extends StripeGateway {
 			->charge
 			->refunds()
 			->create([
-				'amount' => $preparedAmount,
+				'transaction_id' => $refund->balance_transaction,
+				'amount'         => $preparedAmount,
 			]);
 	}
 
@@ -257,14 +258,34 @@ class ChargeGateway extends StripeGateway {
 
 			if ( ! $_charge)
 			{
-				$entity->charges()->create($data);
+				$_charge = $entity->charges()->create($data);
 			}
 			else
 			{
 				$_charge->update($data);
 			}
 
-			# will need to save the charge refunds as well
+			foreach ($charge->refunds as $refund)
+			{
+				$transactionId = $refund->balance_transaction;
+
+				$_refund = $entity->refunds()->where('transaction_id', $transactionId)->first();
+
+				$data = [
+					'transaction_id' => $transactionId,
+					'amount'         => $refund->amount,
+					'created_at'     => Carbon::createFromTimestamp($refund->created),
+				];
+
+				if ( ! $_refund)
+				{
+					$_charge->refunds()->create($data);
+				}
+				else
+				{
+					$_refund->update($data);
+				}
+			}
 		}
 	}
 
