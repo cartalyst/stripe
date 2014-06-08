@@ -46,10 +46,7 @@ trait BillableTrait {
 	protected static $stripeKey;
 
 	/**
-	 * Returns a new Stripe Card gateway.
-	 *
-	 * @param  mixed  $card
-	 * @return \Cartalyst\Stripe\Card\CardGateway
+	 * {@inheritDoc}
 	 */
 	public function card($card = null)
 	{
@@ -57,9 +54,7 @@ trait BillableTrait {
 	}
 
 	/**
-	 * Returns all the cards attached to this user.
-	 *
-	 * @return \Cartalyst\Stripe\Card\IlluminateCard
+	 * {@inheritDoc}
 	 */
 	public function cards()
 	{
@@ -80,10 +75,7 @@ trait BillableTrait {
 	}
 
 	/**
-	 * Returns a new Stripe Charge gateway.
-	 *
-	 * @param  mixed  $charge
-	 * @return \Cartalyst\Stripe\Charge\ChargeGateway
+	 * {@inheritDoc}
 	 */
 	public function charge($charge = null)
 	{
@@ -91,9 +83,7 @@ trait BillableTrait {
 	}
 
 	/**
-	 * Returns all the charges that this user has made.
-	 *
-	 * @return \Cartalyst\Stripe\Charge\IlluminateCharge
+	 * {@inheritDoc}
 	 */
 	public function charges()
 	{
@@ -101,10 +91,7 @@ trait BillableTrait {
 	}
 
 	/**
-	 * Returns a new Stripe Subscription gateway.
-	 *
-	 * @param  mixed  $subscription
-	 * @return \Cartalyst\Stripe\Subscription\SubscriptionGateway
+	 * {@inheritDoc}
 	 */
 	public function subscription($subscription = null)
 	{
@@ -112,9 +99,7 @@ trait BillableTrait {
 	}
 
 	/**
-	 * Returns all the subscriptions that this user has.
-	 *
-	 * @return \Cartalyst\Stripe\Subscription\IlluminateSubscription
+	 * {@inheritDoc}
 	 */
 	public function subscriptions()
 	{
@@ -122,9 +107,7 @@ trait BillableTrait {
 	}
 
 	/**
-	 * Checks if the user currently has any active subscriptions.
-	 *
-	 * @return bool
+	 * {@inheritDoc}
 	 */
 	public function isSubscribed()
 	{
@@ -132,9 +115,7 @@ trait BillableTrait {
 	}
 
 	/**
-	 * Checks if the user has any active card.
-	 *
-	 * @return bool
+	 * {@inheritDoc}
 	 */
 	public function hasActiveCard()
 	{
@@ -186,9 +167,7 @@ trait BillableTrait {
 	}
 
 	/**
-	 * Syncronizes the Stripe data with the local data.
-	 *
-	 * @return void
+	 * {@inheritDoc}
 	 */
 	public function syncWithStripe()
 	{
