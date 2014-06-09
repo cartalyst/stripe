@@ -73,6 +73,13 @@ class SubscriptionGateway extends StripeGateway {
 	protected $subscription;
 
 	/**
+	 * The token for the new credit card.
+	 *
+	 * @var string
+	 */
+	protected $token;
+
+	/**
 	 * Create a new Stripe gateway instance.
 	 *
 	 * @param  \Cartalyst\Stripe\BillableInterface  $billable
@@ -110,15 +117,21 @@ class SubscriptionGateway extends StripeGateway {
 	/**
 	 * Subscribe to the plan for the first time.
 	 *
-	 * @param  string  $token
 	 * @param  array  $attributes
 	 * @return void
 	 */
-	public function create($token, $attributes = [])
+	public function create($attributes = [])
 	{
+		$token = $this->token;
+
 		if ($id = $this->billable->getStripeId())
 		{
 			$customer = $this->updateStripeCustomer($id, array_get($attributes, 'customer', []));
+
+			if ($token)
+			{
+				$this->billable->card()->makeDefault()->create($token);
+			}
 		}
 		else
 		{
@@ -190,6 +203,19 @@ class SubscriptionGateway extends StripeGateway {
 		}
 
 		$this->updateLocalSubscriptionData($data);
+	}
+
+	/**
+	 * Sets the token.
+	 *
+	 * @param  string  $token
+	 * @return \Cartalyst\Stripe\Charge\ChargeGateway
+	 */
+	public function setToken($token)
+	{
+		$this->token = $token;
+
+		return $this;
 	}
 
 	/**
