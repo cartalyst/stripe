@@ -48,6 +48,7 @@ class MigrationCartalystStripeCreateTables extends Migration {
 			$table->string('stripe_id')->unique();
 			$table->string('description')->nullable();
 			$table->float('amount');
+			$table->boolean('paid')->default(0);
 			$table->boolean('captured')->default(0);
 			$table->boolean('refunded')->default(0);
 			$table->timestamps();

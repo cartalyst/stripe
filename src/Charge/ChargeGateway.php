@@ -128,6 +128,7 @@ class ChargeGateway extends StripeGateway {
 		$this->billable->charges()->create([
 			'stripe_id'   => $charge->id,
 			'amount'      => $preparedAmount,
+			'paid'        => $charge->paid,
 			'captured'    => $charge->captured,
 			'refunded'    => $charge->refunded,
 			'description' => array_get($attributes, 'description', null),
@@ -251,6 +252,7 @@ class ChargeGateway extends StripeGateway {
 				'stripe_id'   => $stripeId,
 				'description' => $charge->description,
 				'amount'      => $charge->amount,
+				'paid'        => $charge->paid,
 				'captured'    => $charge->captured,
 				'refunded'    => $charge->refunded,
 				'created_at'  => Carbon::createFromTimestamp($charge->created),
