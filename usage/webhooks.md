@@ -17,7 +17,7 @@ class WebhookController extends Cartalyst\Stripe\WebhookController {
 Now you need to register a `post` route that points to your controller:
 
 ```php
-Route::post('webhook/stripe', 'WebhookController@handlePayload');
+Route::post('webhook/stripe', 'WebhookController@handleWebhook');
 ```
 
 ## Handling events
