@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use Carbon\Carbon;
 use Stripe;
 use Stripe_Customer;
 
