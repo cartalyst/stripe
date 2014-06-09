@@ -20,7 +20,8 @@ $user = User::find(1);
 $user
 	->subscription()
 	->onPlan('monthly')
-	->create($token);
+	->setToken($token)
+	->create();
 ```
 
 Subscribing a user to a plan and apply a coupon to this new subscription
@@ -36,7 +37,8 @@ $user
 	->subscription()
 	->onPlan('monthly')
 	->withCoupon($coupon)
-	->create($token);
+	->setToken($token)
+	->create();
 ```
 
 Create a trial subscription
@@ -50,7 +52,8 @@ $user
 	->subscription()
 	->onPlan('monthly')
 	->trialFor(Carbon::now()->addDays(14))
-	->create($token);
+	->setToken($token)
+	->create();
 ```
 
 ### Cancelling subscriptions
