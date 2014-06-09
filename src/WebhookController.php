@@ -1,4 +1,4 @@
-<?php Cartalyst\Stripe;
+<?php namespace Cartalyst\Stripe;
 /**
  * Part of the Stripe package.
  *
@@ -18,8 +18,10 @@
  */
 
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Str;
+use Symfony\Component\HttpFoundation\Response;
 
 class WebhookController extends Controller {
 
@@ -42,11 +44,38 @@ class WebhookController extends Controller {
 		// Check if the method exists
 		if (method_exists($this, $method))
 		{
-			return $this->{$method}($payload);
+			return $this->{$method}($payload['data']['object']);
 		}
 
 		// Return a positive message for Stripe anyways
 		return "Method [{$type}] doesn't exist.";
+	}
+
+	/**
+	 * Returns an HTTP Response.
+	 *
+	 * @param  string  $message
+	 * @param  int  $status
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
+	public function sendResponse($message, $status = 200)
+	{
+		return new Response($message, $status);
+	}
+
+	/**
+	 * Returns the billable entity instance by Stripe ID.
+	 *
+	 * @param  string  $stripeId
+	 * @return \Cartalyst\Stripe\BillableInterface
+	 */
+	protected function getBillable($stripeId)
+	{
+		$model = Config::get('service.stripe.model');
+
+		$class = '\\'.ltrim($model, '\\');
+
+		return (new $class)->where('stripe_id', $stripeId)->first();
 	}
 
 	/**
