@@ -67,7 +67,7 @@ class WebhookController extends Cartalyst\Stripe\WebhookController {
 	{
 		$entity = $this->getBillable($payload['customer']);
 
-		if ( ! $charge = $entiy->charges()->where('stripe_id', $chargeId)->first())
+		if ( ! $charge = $entity->charges()->where('stripe_id', $chargeId)->first())
 		{
 			$charge = $entity
 				->charges()
