@@ -36,7 +36,6 @@ class IlluminateSubscription extends Model {
 		'ends_at',
 		'ended_at',
 		'created_at',
-		'updated_at',
 		'canceled_at',
 		'trial_ends_at',
 	];
