@@ -137,15 +137,11 @@ class SubscriptionGateway extends StripeGateway {
 
 		$subscription = $customer->subscriptions->create($attributes);
 
-		$this->billable->subscriptions()->create([
-			'plan'          => $this->plan,
-			'active'        => 1,
-			'ends_at'       => Carbon::createFromTimeStamp($subscription->current_period_end),
-			'stripe_id'     => $subscription->id,
-			'trial_ends_at' => $this->nullableTimestamp($subscription->trial_end),
-		]);
-
 		$this->updateLocalStripeData($this->getStripeCustomer($customer->id));
+
+		$this->billable->charge()->syncWithStripe();
+
+		$this->syncWithStripe();
 	}
 
 	/**
