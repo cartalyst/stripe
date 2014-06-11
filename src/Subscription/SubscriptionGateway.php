@@ -439,6 +439,63 @@ class SubscriptionGateway extends StripeGateway {
 	}
 
 	/**
+	 * Maintain the days left of the current trial (if applicable).
+	 *
+	 * @return \Cartalyst\Stripe\Subscription\SubscriptionGateway
+	 */
+	public function maintainTrial()
+	{
+		if ($trialEnd = $this->getSubscriptionTrialEnd())
+		{
+			$this->calculateRemainingTrialDays($trialEnd);
+		}
+		else
+		{
+			$this->skipTrial();
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Get the trial end date for the customer's subscription.
+	 *
+	 * @param  object  $customer
+	 * @return \Carbon\Carbon|null
+	 */
+	public function getSubscriptionTrialEnd()
+	{
+		if (isset($this->subscription) && isset($this->subscription->trial_ends_at))
+		{
+			return $this->subscription->trial_ends_at;
+		}
+	}
+
+	/**
+	 * Swap the billable entity to a new plan.
+	 *
+	 * @param  int|null  $quantity
+	 * @return void
+	 */
+	public function swap()
+	{
+		if ( ! $this->trialEnd && ! $this->skipTrial)
+		{
+			$this->maintainTrial();
+		}
+
+		$this->update([
+			'plan'      => $this->plan,
+			'trial_end' => $this->getTrialEndDate(),
+		]);
+
+		$this->updateLocalSubscriptionData([
+			'plan'          => $this->plan,
+			'trial_ends_at' => $this->trialEnd,
+		]);
+	}
+
+	/**
 	 * Syncronizes the Stripe subscriptions data with the local data.
 	 *
 	 * @return void
@@ -510,6 +567,22 @@ class SubscriptionGateway extends StripeGateway {
 	}
 
 	/**
+	 * Calculate the remaining trial days based on the current trial end.
+	 *
+	 * @param  \Carbon\Carbon  $trialEnd
+	 * @return void
+	 */
+	protected function calculateRemainingTrialDays($trialEnd)
+	{
+		// If there is still trial left on the current plan, we'll maintain that amount of
+		// time on the new plan. If there is no time left on the trial we will force it
+		// to skip any trials on this new plan, as this is the most expected actions.
+		$diff = Carbon::now()->diffInHours($trialEnd);
+
+		return $diff > 0 ? $this->trialFor(Carbon::now()->addHours($diff)) : $this->skipTrial();
+	}
+
+	/**
 	 * Updates the local subscription data.
 	 *
 	 * @param  array  $attributes
@@ -519,111 +592,5 @@ class SubscriptionGateway extends StripeGateway {
 	{
 		$this->subscription->fill($attributes)->save();
 	}
-
-
-
-
-	/**
-	 * Maintain the days left of the current trial (if applicable).
-	 *
-	 * @return \Cartalyst\Stripe\Subscription\SubscriptionGateway
-	 */
-	// public function maintainTrial()
-	// {
-	// 	if ($this->billable->readyForBilling())
-	// 	{
-	// 		if ( ! is_null($trialEnd = $this->getTrialEndForCustomer($this->getStripeCustomer())))
-	// 		{
-	// 			$this->calculateRemainingTrialDays($trialEnd);
-	// 		}
-	// 		else
-	// 		{
-	// 			$this->skipTrial();
-	// 		}
-	// 	}
-
-	// 	return $this;
-	// }
-
-	/**
-	 * Get the trial end date for the customer's subscription.
-	 *
-	 * @param  object  $customer
-	 * @return \Carbon\Carbon|null
-	 */
-	// public function getTrialEndForCustomer($customer)
-	// {
-	// 	if (isset($customer->subscription) && isset($customer->subscription->trial_end))
-	// 	{
-	// 		return Carbon::createFromTimestamp($customer->subscription->trial_end);
-	// 	}
-	// }
-
-	/**
-	 * Calculate the remaining trial days based on the current trial end.
-	 *
-	 * @param  \Carbon\Carbon  $trialEnd
-	 * @return void
-	 */
-	// protected function calculateRemainingTrialDays($trialEnd)
-	// {
-	// 	// If there is still trial left on the current plan, we'll maintain that amount of
-	// 	// time on the new plan. If there is no time left on the trial we will force it
-	// 	// to skip any trials on this new plan, as this is the most expected actions.
-	// 	$diff = Carbon::now()->diffInHours($trialEnd);
-
-	// 	return $diff > 0 ? $this->trialFor(Carbon::now()->addHours($diff)) : $this->skipTrial();
-	// }
-
-	/**
-	 * Get the subscription end timestamp for the customer.
-	 *
-	 * @param  object  $customer
-	 * @return int
-	 */
-	// protected function getSubscriptionEndTimestamp($customer)
-	// {
-	// 	if ( ! is_null($customer->subscription->trial_end) && $customer->subscription->trial_end > time())
-	// 	{
-	// 		return $customer->subscription->trial_end;
-	// 	}
-	// 	else
-	// 	{
-	// 		return $customer->subscription->current_period_end;
-	// 	}
-	// }
-
-	/**
-	 * Swap the billable entity to a new plan.
-	 *
-	 * @param  int|null  $quantity
-	 * @return void
-	 */
-	# this needs to be refactored as we support multiple subscriptions
-	// public function swap($quantity = null)
-	// {
-	// 	$customer = $this->getStripeCustomer();
-
-	// 	// If no specific trial end date has been set, the default behavior should be
-	// 	// to maintain the current trial state, whether that is "active" or to run
-	// 	// the swap out with the exact number of days left on this current plan.
-	// 	if (is_null($this->trialEnd))
-	// 	{
-	// 		$this->maintainTrial();
-	// 	}
-
-	// 	// Again, if no explicit quantity was set, the default behaviors should be to
-	// 	// maintain the current quantity onto the new plan. This is a sensible one
-	// 	// that should be the expected behavior for most developers with Stripe.
-	// 	if (isset($customer->subscription) && is_null($quantity))
-	// 	{
-	// 		$this->quantity(
-	// 			$customer->subscription->quantity
-	// 		);
-	// 	}
-
-	// 	return $this->create(null, null, $customer);
-	// }
-
 
 }
