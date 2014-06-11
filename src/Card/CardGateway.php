@@ -111,7 +111,7 @@ class CardGateway extends StripeGateway {
 
 		$this->updateLocalStripeData($this->getStripeCustomer($customer->id));
 
-		return $card;
+		//return $card;
 	}
 
 	/**
