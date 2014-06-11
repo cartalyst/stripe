@@ -328,9 +328,7 @@ class SubscriptionGateway extends StripeGateway {
 	 */
 	public function increment($count = 1)
 	{
-		$this->update([
-			'quantity' => $this->get()->quantity + $count
-		]);
+		$this->updateQuantity($this->get()->quantity + $count);
 	}
 
 	/**
@@ -341,9 +339,18 @@ class SubscriptionGateway extends StripeGateway {
 	 */
 	public function decrement($count = 1)
 	{
-		$this->update([
-			'quantity' => $this->get()->quantity - $count
-		]);
+		$this->updateQuantity($this->get()->quantity - $count);
+	}
+
+	/**
+	 * Updates the subscription quantity.
+	 *
+	 * @param  int  $quantity
+	 * @return void
+	 */
+	public function updateQuantity($quantity)
+	{
+		$this->update(compact('quantity'));
 	}
 
 	/**
