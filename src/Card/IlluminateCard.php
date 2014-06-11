@@ -31,10 +31,11 @@ class IlluminateCard extends Model {
 	 * {@inheritDoc}
 	 */
 	protected $fillable = [
-		'last_4',
 		'default',
 		'exp_year',
 		'exp_month',
+		'last_four',
+		'stripe_id',
 	];
 
 }
