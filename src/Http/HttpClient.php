@@ -2,35 +2,29 @@
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Event\BeforeEvent;
 
 class HttpClient extends Client {
 
+	/**
+	 * Default Client options.
+	 *
+	 * @var array
+	 */
 	protected $options = [
-		'base_url'   => 'https://api.stripe.com/',
-		'version'    => 'v1',
+		'base_url'   => [
+			'https://api.stripe.com/{version}/', [
+				'version' => 'v1',
+			],
+		],
 		'user_agent' => 'cartalyst-stripe-api (Cartalyst.com)',
 	];
 
-	public function __construct(array $options = [], ClientInterface $client = null)
+	public function __construct(array $options = [])
 	{
-		$url = $this->options['base_url'];
+		$options = array_merge($this->options, $options);
 
-		$version = $this->options['version'];
-
-		$baseUrl = "{$url}/{$version}";
-
-		//$stripeKey = \Config::get('services.stripe.secret');
-
-		$config = [
-			'base_url' => "{$baseUrl}/",
-			// 'defaults' => [
-			// 	'auth' =>  [
-			// 		$stripeKey, null,
-			// 	],
-			// ],
-		];
-
-		parent::__construct($config);
+		parent::__construct($options);
 	}
 
 }

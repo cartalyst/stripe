@@ -1,21 +1,35 @@
 <?php namespace Cartalyst\Stripe\Api;
 
-use Cartalyst\Stripe\Client;
+use Cartalyst\Stripe\Stripe;
 
 abstract class AbstractApi {
 
 	/**
 	 *
 	 *
-	 * @var  \Cartalyst\Stripe\Client
+	 * @var \Cartalyst\Stripe\Stripe
 	 */
 	protected $client;
 
+	/**
+	 *
+	 *
+	 * @var \Cartalyst\Stripe\Http\HttpClient
+	 */
+	protected $httpClient;
+
+	/**
+	 *
+	 *
+	 * @var arry
+	 */
 	protected $attributes = [];
 
-	public function __construct(Client $client)
+	public function __construct(Stripe $client)
 	{
 		$this->client = $client;
+
+		$this->httpClient = $this->client->getHttpClient();
 	}
 
 	/**
@@ -28,23 +42,11 @@ abstract class AbstractApi {
 	 */
 	protected function get($url, array $arguments = [], array $headers = [])
 	{
-		$arguments = $this->prepareArguments($arguments);
-
 		$response = $this->client->getHttpClient()->get($url, $arguments, $headers);
 
 		$this->attributes = $response->json();
 	}
 
-	protected function prepareArguments($arguments)
-	{
-		$stripeKey = \Config::get('services.stripe.secret');
-
-		return array_merge($arguments, [
-			'auth' => [
-				$stripeKey, null,
-			],
-		]);
-	}
 
 	public function __get($key)
 	{

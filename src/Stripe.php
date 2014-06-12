@@ -2,7 +2,7 @@
 
 use Cartalyst\Stripe\Http\HttpClient;
 
-class Client {
+class Stripe {
 
 	/**
 	 * The Http Client.
@@ -14,10 +14,9 @@ class Client {
 	/**
 	 * Constructor.
 	 *
-	 * @param  \Cartalyst\Stripe\Http\HttpClient  $httpClient
 	 * @return void
 	 */
-	public function __construct(HttpClient $httpClient = null)
+	public function __construct(HttpClient $httpClient)
 	{
 		$this->httpClient = $httpClient;
 	}

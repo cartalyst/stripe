@@ -18,8 +18,6 @@ class Customers extends AbstractApi {
 
 	public function delete()
 	{
-		var_dump($this->id);
-
 		return true;
 	}
 
