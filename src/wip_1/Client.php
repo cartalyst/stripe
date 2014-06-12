@@ -1,15 +1,15 @@
 <?php namespace Cartalyst\Stripe;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as GuzzleClient;
 
-class StripeClient extends Client {
+class Client extends GuzzleClient {
 
 	/**
 	 * Constructor.
 	 *
 	 * @param  string  $stripeKey
 	 * @param  string  $url
-	 * @param  string  $url
+	 * @param  string  $version
 	 * @return void
 	 */
 	public function __construct($stripeKey, $url = 'https://api.stripe.com', $version = 'v1')
