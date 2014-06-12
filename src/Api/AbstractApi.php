@@ -5,26 +5,32 @@ use Cartalyst\Stripe\Stripe;
 abstract class AbstractApi {
 
 	/**
-	 *
+	 * The Stripe client.
 	 *
 	 * @var \Cartalyst\Stripe\Stripe
 	 */
 	protected $client;
 
 	/**
-	 *
+	 * The Http Client.
 	 *
 	 * @var \Cartalyst\Stripe\Http\HttpClient
 	 */
 	protected $httpClient;
 
 	/**
-	 *
+	 * The request response.
 	 *
 	 * @var arry
 	 */
 	protected $attributes = [];
 
+	/**
+	 * Constructor.
+	 *
+	 * @param  \Cartalyst\Stripe\Stripe  $client
+	 * @return void
+	 */
 	public function __construct(Stripe $client)
 	{
 		$this->client = $client;
@@ -50,7 +56,7 @@ abstract class AbstractApi {
 
 	public function __get($key)
 	{
-		return array_get($this->attributes, $key, 'fooxxx');
+		return array_get($this->attributes, $key, null);
 	}
 
 }

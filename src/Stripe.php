@@ -14,6 +14,7 @@ class Stripe {
 	/**
 	 * Constructor.
 	 *
+	 * @param  \Cartalyst\Stripe\Http\HttpClient  $httpClient
 	 * @return void
 	 */
 	public function __construct(HttpClient $httpClient)

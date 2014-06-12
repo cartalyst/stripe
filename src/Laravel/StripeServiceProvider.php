@@ -1,7 +1,7 @@
 <?php namespace Cartalyst\Stripe\Laravel;
 
-use Cartalyst\Stripe\Client;
 use Cartalyst\Stripe\Stripe;
+use Cartalyst\Stripe\Http\HttpClient;
 use Illuminate\Support\ServiceProvider;
 
 class StripeServiceProvider extends ServiceProvider {
@@ -33,7 +33,15 @@ class StripeServiceProvider extends ServiceProvider {
 		{
 			$stripeKey = $app['config']->get('services.stripe.secret');
 
-			return new Client($stripeKey);
+			$options = [
+				'defaults' => [
+					'auth' => [
+						$stripeKey, null,
+					],
+				],
+			];
+
+			return new HttpClient($options);
 		});
 
 		$this->app['stripe'] = $this->app->share(function($app)
