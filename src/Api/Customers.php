@@ -27,16 +27,18 @@ class Customers extends AbstractApi {
 	 */
 	public function all(array $arguments = [])
 	{
-		$instance = new static($this->client);
-		$instance->_get('customers', $arguments);
-		return $instance;
+		return $this->handleRequest('GET', 'customers', $arguments);
 	}
 
+	/**
+	 * Creates a new Stripe customer.
+	 *
+	 * @param  array  $arguments
+	 * @return \Cartalyst\Stripe\Api\Customers
+	 */
 	public function create(array $arguments = [])
 	{
-		$instance = new static($this->client);
-		$instance->_post('customers', $arguments);
-		return $instance;
+		return $this->handleRequest('POST', 'customers', $arguments);
 	}
 
 	/**
@@ -48,9 +50,7 @@ class Customers extends AbstractApi {
 	 */
 	public function find($id, array $arguments = [])
 	{
-		$instance = new static($this->client);
-		$instance->_get("customers/{$id}", $arguments);
-		return $instance;
+		return $this->handleRequest('GET', "customers/{$id}", $arguments);
 	}
 
 	/**
@@ -61,9 +61,7 @@ class Customers extends AbstractApi {
 	 */
 	public function update(array $arguments = [])
 	{
-		$instance = new static($this->client);
-		$instance->_post("customers/{$this->id}", $arguments);
-		return $instance;
+		return $this->handleRequest('POST', "customers/{$this->id}", $arguments);
 	}
 
 	/**
@@ -73,7 +71,7 @@ class Customers extends AbstractApi {
 	 */
 	public function delete()
 	{
-		$this->_delete("customers/{$this->id}");
+		$this->handleRequest('DELETE', "customers/{$this->id}");
 
 		return true;
 	}

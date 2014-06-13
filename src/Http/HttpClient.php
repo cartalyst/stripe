@@ -18,8 +18,6 @@
  */
 
 use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Event\BeforeEvent;
 
 class HttpClient extends Client {
 

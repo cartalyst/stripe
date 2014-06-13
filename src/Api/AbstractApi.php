@@ -56,6 +56,23 @@ abstract class AbstractApi {
 	}
 
 	/**
+	 * Handles the request.
+	 *
+	 * @param  string  $method
+	 * @param  string  $url
+	 * @param  array  $arguments
+	 * @return mixed
+	 */
+	protected function handleRequest($method, $url, array $arguments = [])
+	{
+		$method = "_{$method}";
+
+		$instance = new static($this->client);
+		$instance->{$method}($url, $arguments);
+		return $instance;
+	}
+
+	/**
 	 * Sends a GET request.
 	 *
 	 * @param  string  $url
