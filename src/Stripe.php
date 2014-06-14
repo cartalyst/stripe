@@ -35,15 +35,24 @@ class Stripe {
 	 *
 	 * @var string
 	 */
-	protected $version = '2014-05-19';
+	protected $version;
+
+	/**
+	 * The manifests path.
+	 *
+	 * @var string
+	 */
+	protected $manifestPath;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param  string  $stripeKey
+	 * @param  string  $version
+	 * @param  string  $manifestPath
 	 * @return void
 	 */
-	public function __construct($stripeKey)
+	public function __construct($stripeKey, $version = null, $manifestPath = null)
 	{
 		$options = [
 			'user_agent' => 'cartalyst-stripe-api (Cartalyst.com)',
@@ -55,10 +64,14 @@ class Stripe {
 		];
 
 		$this->client = new Client($options);
+
+		$this->setVersion($version ?: '2014-05-19');
+
+		$this->setManifestPath($manifestPath ?: __DIR__.'/Manifests');
 	}
 
 	/**
-	 * Returns the Stripe version being used.
+	 * Returns the version that's being used.
 	 *
 	 * @return string
 	 */
@@ -68,7 +81,7 @@ class Stripe {
 	}
 
 	/**
-	 * Sets the Stripe version to be used.
+	 * Sets the version to be used.
 	 *
 	 * @param  string  $version
 	 * @return void
@@ -78,9 +91,25 @@ class Stripe {
 		$this->version = $version;
 	}
 
+	/**
+	 * Returns the manifests path.
+	 *
+	 * @return string
+	 */
 	public function getManifestPath()
 	{
-		return __DIR__.'/Manifests';
+		return $this->manifestPath;
+	}
+
+	/**
+	 * Sets the manifests path.
+	 *
+	 * @param  string  $manifestPath
+	 * @return void
+	 */
+	public function setManifestPath($manifestPath)
+	{
+		$this->manifestPath = $manifestPath;
 	}
 
 	/**
@@ -93,7 +122,7 @@ class Stripe {
 	 */
 	public function __call($method, array $arguments = [])
 	{
-		// Check if the manifest file for this request exists.
+		// Check if the manifest file for this request exists
 		if ($this->manifestExists($method))
 		{
 			return $this->getClient('customers');
@@ -123,27 +152,47 @@ class Stripe {
 	 */
 	protected function getManifest($method)
 	{
-		$manifestPath = $this->getManifestPath();
-
-		$versionedPath = "{$manifestPath}/{$this->version}";
+		$versionedPath = $this->getVersionedManifestPath();
 
 		$errors = require_once "{$versionedPath}/Errors.php";
 
 		return array_merge(require_once "{$versionedPath}/Manifest.php", [
-			'operations' => require_once $this->manifestMethodFilePath($method),
+			'operations' => require_once $this->getRequestManifest($method),
 		]);
 	}
 
-	protected function manifestMethodFilePath($method)
+	/**
+	 * Returns the versioned manifests path.
+	 *
+	 * @return string
+	 */
+	protected function getVersionedManifestPath()
+	{
+		return "{$this->getManifestPath()}/{$this->getVersion()}";
+	}
+
+	/**
+	 * Returns the request manifest file path.
+	 *
+	 * @param  string  $method
+	 * @return string
+	 */
+	protected function getRequestManifest($method)
 	{
 		$method = ucwords($method);
 
-		return "{$this->getManifestPath()}/{$this->getVersion()}/{$method}.php";
+		return "{$this->getVersionedManifestPath()}/{$method}.php";
 	}
 
+	/**
+	 * Checks if the manifest file exists.
+	 *
+	 * @param  string  $method.
+	 * @return bool
+	 */
 	protected function manifestExists($method)
 	{
-		return file_exists($this->manifestMethodFilePath($method));
+		return file_exists($this->getRequestManifest($method));
 	}
 
 }

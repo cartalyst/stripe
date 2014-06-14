@@ -42,7 +42,9 @@ class StripeServiceProvider extends ServiceProvider {
 		{
 			$stripeKey = $app['config']->get('services.stripe.secret');
 
-			return new Stripe($stripeKey);
+			$version = $app['config']->get('services.stripe.version');
+
+			return new Stripe($stripeKey, $version);
 		});
 	}
 
