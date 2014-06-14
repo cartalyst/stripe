@@ -18,17 +18,23 @@
  */
 
 return [
+
 	'name'        => 'Stripe',
 	'apiVersion'  => '2014-05-19',
 	'baseUrl'     => 'https://api.stripe.com',
 	'description' => 'Stripe is a payment system',
 	'operations'  => [],
-	'models' => [
+	'models'      => [
+
 		'Response' => [
+
 			'type' => 'object',
 			'additionalProperties' => [
 				'location' => 'json'
 			],
+
 		],
+
 	],
+
 ];
