@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use InvalidArgumentException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Command\Guzzle\Description;
 use GuzzleHttp\Command\Guzzle\GuzzleClient;
@@ -24,7 +25,7 @@ use GuzzleHttp\Command\Guzzle\GuzzleClient;
 class Stripe {
 
 	/**
-	 * The Guzzle Client.
+	 * The Guzzle client.
 	 *
 	 * @var \GuzzleHttp\Client
 	 */
@@ -54,16 +55,18 @@ class Stripe {
 	 */
 	public function __construct($stripeKey, $version = null, $manifestPath = null)
 	{
-		$options = [
-			'user_agent' => 'cartalyst-stripe-api (Cartalyst.com)',
-			'defaults' => [
-				'auth' => [
-					$stripeKey, null,
-				],
-			],
-		];
+		// Initialize the client
+		$this->client = new Client;
 
-		$this->client = new Client($options);
+		// Set authentication
+		$this->client->setDefaultOption('auth', [
+			$stripeKey, null,
+		]);
+
+		// Set headers
+		$this->client->setDefaultOption('headers', [
+			'User-Agent' => 'cartalyst-stripe-api (Cartalyst.com)',
+		]);
 
 		$this->setVersion($version ?: '2014-05-19');
 
@@ -122,22 +125,21 @@ class Stripe {
 	 */
 	public function __call($method, array $arguments = [])
 	{
-		// Check if the manifest file for this request exists
 		if ($this->manifestExists($method))
 		{
-			return $this->getClient($method);
+			return $this->handleRequest($method);
 		}
 
-		throw new \InvalidArgumentException("Undefined method [{$method}] called.");
+		throw new InvalidArgumentException("Undefined method [{$method}] called.");
 	}
 
 	/**
-	 * Returns the Guzzle Client.
+	 * Handles the current request.
 	 *
 	 * @param  string  $method
 	 * @return \GuzzleHttp\Command\Guzzle\GuzzleClient
 	 */
-	protected function getClient($method)
+	protected function handleRequest($method)
 	{
 		$manifest = $this->getManifest($method);
 
@@ -152,11 +154,9 @@ class Stripe {
 	 */
 	protected function getManifest($method)
 	{
-		$versionedPath = $this->getVersionedManifestPath();
+		$manifest = require_once "{$this->getVersionedManifestPath()}/Manifest.php";
 
-		$errors = require_once "{$versionedPath}/Errors.php";
-
-		return array_merge(require_once "{$versionedPath}/Manifest.php", [
+		return array_merge($manifest, [
 			'operations' => require_once $this->getRequestManifest($method),
 		]);
 	}
@@ -172,7 +172,7 @@ class Stripe {
 	}
 
 	/**
-	 * Returns the request manifest file path.
+	 * Returns the current request manifest file path.
 	 *
 	 * @param  string  $method
 	 * @return string
@@ -185,9 +185,9 @@ class Stripe {
 	}
 
 	/**
-	 * Checks if the manifest file exists.
+	 * Checks if the manifest file for the current request exists.
 	 *
-	 * @param  string  $method.
+	 * @param  string  $method
 	 * @return bool
 	 */
 	protected function manifestExists($method)
