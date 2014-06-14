@@ -17,47 +17,70 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Stripe\Http\HttpClient;
+use GuzzleHttp\Client;
+use GuzzleHttp\Command\Guzzle\Description;
+use GuzzleHttp\Command\Guzzle\GuzzleClient;
 
 class Stripe {
 
 	/**
-	 * The Http Client.
+	 * The Guzzle Client.
 	 *
-	 * @var \Cartalyst\Stripe\Http\HttpClient
+	 * @var \GuzzleHttp\Client
 	 */
-	protected $httpClient;
+	protected $client;
+
+	/**
+	 * The Stripe API version.
+	 *
+	 * @var string
+	 */
+	protected $version = '2014-05-19';
 
 	/**
 	 * Constructor.
 	 *
-	 * @param  \Cartalyst\Stripe\Http\HttpClient  $httpClient
+	 * @param  string  $stripeKey
 	 * @return void
 	 */
-	public function __construct(HttpClient $httpClient)
+	public function __construct($stripeKey)
 	{
-		$this->httpClient = $httpClient;
+		$options = [
+			'user_agent' => 'cartalyst-stripe-api (Cartalyst.com)',
+			'defaults' => [
+				'auth' => [
+					$stripeKey, null,
+				],
+			],
+		];
+
+		$this->client = new Client($options);
 	}
 
 	/**
-	 * Returns the Http Client.
+	 * Returns the Stripe version being used.
 	 *
-	 * @return \Cartalyst\Stripe\Http\HttpClient
+	 * @return string
 	 */
-	public function getHttpClient()
+	public function getVersion()
 	{
-		return $this->httpClient;
+		return $this->version;
 	}
 
 	/**
-	 * Sets the Http Client.
+	 * Sets the Stripe version to be used.
 	 *
-	 * @param  \Cartalyst\Stripe\Http\HttpClient  $httpClient
+	 * @param  string  $version
 	 * @return void
 	 */
-	public function setHttpClient(HttpClient $httpClient)
+	public function setVersion($version)
 	{
-		$this->httpClient = $httpClient;
+		$this->version = $version;
+	}
+
+	public function getManifestPath()
+	{
+		return __DIR__.'/Manifests';
 	}
 
 	/**
@@ -68,16 +91,59 @@ class Stripe {
 	 * @return mixed
 	 * @throws \InvalidArgumentException
 	 */
-	public function __call($method, $arguments)
+	public function __call($method, array $arguments = [])
 	{
-		$class = '\\Cartalyst\\Stripe\\Api\\'.ucwords($method);
-
-		if (class_exists($class))
+		// Check if the manifest file for this request exists.
+		if ($this->manifestExists($method))
 		{
-			return new $class($this);
+			return $this->getClient('customers');
 		}
 
 		throw new \InvalidArgumentException("Undefined method [{$method}] called.");
+	}
+
+	/**
+	 * Returns the Guzzle Client.
+	 *
+	 * @param  string  $method
+	 * @return \GuzzleHttp\Command\Guzzle\GuzzleClient
+	 */
+	protected function getClient($method)
+	{
+		$manifest = $this->getManifest($method);
+
+		return new GuzzleClient($this->client, new Description($manifest));
+	}
+
+	/**
+	 * Returns the appropriate manifest for the current request.
+	 *
+	 * @param  string  $method
+	 * @return array
+	 */
+	protected function getManifest($method)
+	{
+		$manifestPath = $this->getManifestPath();
+
+		$versionedPath = "{$manifestPath}/{$this->version}";
+
+		$errors = require_once "{$versionedPath}/Errors.php";
+
+		return array_merge(require_once "{$versionedPath}/Manifest.php", [
+			'operations' => require_once $this->manifestMethodFilePath($method),
+		]);
+	}
+
+	protected function manifestMethodFilePath($method)
+	{
+		$method = ucwords($method);
+
+		return "{$this->getManifestPath()}/{$this->getVersion()}/{$method}.php";
+	}
+
+	protected function manifestExists($method)
+	{
+		return file_exists($this->manifestMethodFilePath($method));
 	}
 
 }
