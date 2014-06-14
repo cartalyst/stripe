@@ -19,6 +19,63 @@
 
 return [
 
+	'all' => [
+
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/customers',
+		'summary'        => 'Retrieves all the existing customers.',
+		'errorResponses' => $errors,
+		'responseClass'  => 'Response',
+		'parameters'     => [
+
+			'limit' => [
+				'description' => 'Limit of how many customers are retrieved.',
+				'location'    => 'query',
+				'type'        => 'integer',
+				'min'         => 1,
+				'max'         => 100,
+				'required'    => false,
+			],
+
+			'starting_after' => [
+				'description' => 'A cursor to be used in the pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'ending_before' => [
+				'description' => 'A cursor to be used in the pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'created' => [
+				'description' => 'A filter based on the "created" field. Can be an exact UTC timestamp, or an hash.',
+				'location'    => 'query',
+				'type'        => ['string', 'array'],
+				'required'    => false,
+			],
+
+			'expand' => [
+				'description' => 'Allows to expand some properties.',
+				'location'    => 'query',
+				'type'        => 'array',
+				'required'    => false,
+			],
+
+			'include' => [
+				'description' => 'Allows to include some additional properties.',
+				'location'    => 'query',
+				'type'        => 'array',
+				'required'    => false,
+			],
+
+		],
+
+	],
+
 	'find' => [
 
 		'httpMethod'     => 'GET',
@@ -36,64 +93,7 @@ return [
 			],
 
 			'expand' => [
-				'description' => 'Allow to expand some properties',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
-
-		],
-
-	],
-
-	'all' => [
-
-		'httpMethod'     => 'GET',
-		'uri'            => '/v1/customers',
-		'summary'        => 'Retrieves all the existing customers.',
-		'errorResponses' => $errors,
-		'responseClass'  => 'Response',
-		'parameters'     => [
-
-			'limit' => [
-				'description' => 'Limit on how many customers are retrieved',
-				'location'    => 'query',
-				'type'        => 'integer',
-				'min'         => 1,
-				'max'         => 100,
-				'required'    => false,
-			],
-
-			'starting_after' => [
-				'description' => 'A cursor for use in the pagination',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'ending_before' => [
-				'description' => 'A cursor for use in the pagination',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'created' => [
-				'description' => 'A filter based on the "created" field. Can be an exact UTC timestamp, or a hash',
-				'location'    => 'query',
-				'type'        => ['string', 'array'],
-				'required'    => false,
-			],
-
-			'expand' => [
-				'description' => 'Allow to expand some properties',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
-
-			'include' => [
-				'description' => 'Allow to include some additional properties',
+				'description' => 'Allows to expand some properties.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -113,70 +113,70 @@ return [
 		'parameters'     => [
 
 			'account_balance' => [
-				'description' => 'An integer amount in cents that is the starting account balance for your customer',
+				'description' => 'An integer amount in cents that is the starting account balance for your customer.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => false,
 			],
 
 			'card' => [
-				'description' => 'Unique card identifier (can either be an ID or a hash)',
+				'description' => 'Unique card identifier (can either be an ID or a hash).',
 				'location'    => 'query',
 				'type'        => ['string', 'array'],
 				'required'    => false,
 			],
 
 			'coupon' => [
-				'description' => 'Optional coupon identifier that applies a discount on all recurring charges',
+				'description' => 'Coupon identifier that applies a discount on all recurring charges. (optional)',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'plan' => [
-				'description' => 'Optional plan for the customer',
+				'description' => 'Optional plan for the customer.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'quantity' => [
-				'description' => 'Quantity you\'d like to apply to the subscription you\'re creating',
+				'description' => 'Quantity you\'d like to apply to the subscription you\'re creating.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'trial_end' => [
-				'description' => 'UTC integer timestamp representing the end of the trial period the customer will get before being charged for the first time',
+				'description' => 'UTC integer timestamp representing the end of the trial period the customer will get before being charged for the first time.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => false,
 			],
 
 			'description' => [
-				'description' => 'Optional description for the customer',
+				'description' => 'Customer description. (optional)',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'email' => [
-				'description' => 'Optional customer\'s email address',
+				'description' => 'Customer email address. (optional)',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'metadata' => [
-				'description' => 'Optional metadata',
+				'description' => 'Metadata. (optional)',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
 			],
 
 			'expand' => [
-				'description' => 'Allow to expand some properties',
+				'description' => 'Allows to expand some properties',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -203,7 +203,7 @@ return [
 			],
 
 			'expand' => [
-				'description' => 'Allow to expand some properties',
+				'description' => 'Allows to expand some properties',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -230,56 +230,56 @@ return [
 			],
 
 			'account_balance' => [
-				'description' => 'An integer amount in cents that is the starting account balance for your customer',
+				'description' => 'An integer amount in cents that is the starting account balance for your customer.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => false,
 			],
 
 			'card' => [
-				'description' => 'Unique card identifier (can either be an ID or a hash)',
+				'description' => 'Unique card identifier (can either be an ID or a hash).',
 				'location'    => 'query',
 				'type'        => ['string', 'array'],
 				'required'    => false,
 			],
 
 			'default_card' => [
-				'description' => 'Default card identifier',
+				'description' => 'Default card identifier.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'coupon' => [
-				'description' => 'Optional coupon identifier that applies a discount on all recurring charges',
+				'description' => 'Coupon identifier that applies a discount on all recurring charges. (optional)',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'description' => [
-				'description' => 'Optional description for the customer',
+				'description' => 'Customer description. (optional)',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'email' => [
-				'description' => 'Optional customer\'s email address',
+				'description' => 'Customer email address. (optional)',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'metadata' => [
-				'description' => 'Optional metadata',
+				'description' => 'Metadata. (optional)',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
 			],
 
 			'expand' => [
-				'description' => 'Allow to expand some properties',
+				'description' => 'Allows to expand some properties.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
