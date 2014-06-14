@@ -32,6 +32,13 @@ class Stripe {
 	protected $client;
 
 	/**
+	 * The Stripe API key.
+	 *
+	 * @var string
+	 */
+	protected $stripeKey;
+
+	/**
 	 * The Stripe API version.
 	 *
 	 * @var string
@@ -58,19 +65,42 @@ class Stripe {
 		// Initialize the client
 		$this->client = new Client;
 
-		// Set authentication
-		$this->client->setDefaultOption('auth', [
-			$stripeKey, null,
-		]);
+		// Set the Stripe API key for authentication
+		$this->setStripeKey($stripeKey);
 
 		// Set headers
-		$this->client->setDefaultOption('headers', [
+		$this->setHeaders([
 			'User-Agent' => 'cartalyst-stripe-api (Cartalyst.com)',
 		]);
 
 		$this->setVersion($version ?: '2014-05-19');
 
 		$this->setManifestPath($manifestPath ?: __DIR__.'/Manifests');
+	}
+
+	/**
+	 * Returns the Stripe API key.
+	 *
+	 * @return string
+	 */
+	public function getStripeKey()
+	{
+		return $this->stripeKey;
+	}
+
+	/**
+	 * Sets the Stripe API key.
+	 *
+	 * @param  string  $stripeKey
+	 * @return void
+	 */
+	public function setStripeKey($stripeKey)
+	{
+		$this->stripeKey = $stripeKey;
+
+		$this->client->setDefaultOption('auth', [
+			$stripeKey, null,
+		]);
 	}
 
 	/**
@@ -113,6 +143,27 @@ class Stripe {
 	public function setManifestPath($manifestPath)
 	{
 		$this->manifestPath = $manifestPath;
+	}
+
+	/**
+	 * Returns the Guzzle client headers.
+	 *
+	 * @return array
+	 */
+	public function getHeaders()
+	{
+		return $this->client->getDefaultOption('headers');
+	}
+
+	/**
+	 * Sets the Guzzle client headers.
+	 *
+	 * @param  array  $headers
+	 * @return void
+	 */
+	public function setHeaders(array $headers = [])
+	{
+		$this->client->setDefaultOption('headers', $headers);
 	}
 
 	/**
