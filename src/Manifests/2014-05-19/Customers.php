@@ -21,15 +21,14 @@ return [
 
 	'all' => [
 
-		'httpMethod'     => 'GET',
-		'uri'            => '/v1/customers',
-		'summary'        => 'Retrieves all the existing customers.',
-		'errorResponses' => $errors,
-		'responseClass'  => 'Response',
-		'parameters'     => [
+		'httpMethod'    => 'GET',
+		'uri'           => '/v1/customers',
+		'summary'       => 'Retrieves all the existing customers.',
+		'responseModel' => 'Response',
+		'parameters'    => [
 
 			'limit' => [
-				'description' => 'Limit of how many customers are retrieved.',
+				'description' => 'Limits of how many customers are retrieved.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'min'         => 1,
@@ -78,12 +77,11 @@ return [
 
 	'find' => [
 
-		'httpMethod'     => 'GET',
-		'uri'            => '/v1/customers/{id}',
-		'summary'        => 'Retrieves an existing customer.',
-		'errorResponses' => $errors,
-		'responseClass'  => 'Response',
-		'parameters'     => [
+		'httpMethod'    => 'GET',
+		'uri'           => '/v1/customers/{id}',
+		'summary'       => 'Retrieves an existing customer.',
+		'responseModel' => 'Response',
+		'parameters'    => [
 
 			'id' => [
 				'description' => 'Customer unique identifier.',
@@ -105,12 +103,11 @@ return [
 
 	'create' => [
 
-		'httpMethod'     => 'POST',
-		'uri'            => '/v1/customers',
-		'summary'        => 'Creates a new customer.',
-		'errorResponses' => $errors,
-		'responseClass'  => 'Response',
-		'parameters'     => [
+		'httpMethod'    => 'POST',
+		'uri'           => '/v1/customers',
+		'summary'       => 'Creates a new customer.',
+		'responseModel' => 'Response',
+		'parameters'    => [
 
 			'account_balance' => [
 				'description' => 'An integer amount in cents that is the starting account balance for your customer.',
@@ -134,7 +131,7 @@ return [
 			],
 
 			'plan' => [
-				'description' => 'Optional plan for the customer.',
+				'description' => 'Plan for the customer. (optional)',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
@@ -188,12 +185,11 @@ return [
 
 	'delete' => [
 
-		'httpMethod'     => 'DELETE',
-		'uri'            => '/v1/customers/{id}',
-		'summary'        => 'Deletes an existing customer.',
-		'errorResponses' => $errors,
-		'responseClass'  => 'Response',
-		'parameters'     => [
+		'httpMethod'    => 'DELETE',
+		'uri'           => '/v1/customers/{id}',
+		'summary'       => 'Deletes an existing customer.',
+		'responseModel' => 'Response',
+		'parameters'    => [
 
 			'id' => [
 				'description' => 'Customer unique identifier.',
@@ -215,12 +211,11 @@ return [
 
 	'update' => [
 
-		'httpMethod'     => 'POST',
-		'uri'            => '/v1/customers/{id}',
-		'summary'        => 'Updates an existing customer.',
-		'errorResponses' => $errors,
-		'responseClass'  => 'Response',
-		'parameters'     => [
+		'httpMethod'    => 'POST',
+		'uri'           => '/v1/customers/{id}',
+		'summary'       => 'Updates an existing customer.',
+		'responseModel' => 'Response',
+		'parameters'    => [
 
 			'id' => [
 				'description' => 'Customer unique identifier.',
