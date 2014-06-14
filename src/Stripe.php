@@ -62,13 +62,13 @@ class Stripe {
 	 */
 	public function __construct($stripeKey, $version = null, $manifestPath = null)
 	{
-		// Initialize the client
+		// Initialize the Guzzle client
 		$this->client = new Client;
 
 		// Set the Stripe API key for authentication
 		$this->setStripeKey($stripeKey);
 
-		// Set headers
+		// Set the client user agent
 		$this->setHeaders([
 			'User-Agent' => 'cartalyst-stripe-api (Cartalyst.com)',
 		]);
