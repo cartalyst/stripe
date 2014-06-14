@@ -125,7 +125,7 @@ class Stripe {
 		// Check if the manifest file for this request exists
 		if ($this->manifestExists($method))
 		{
-			return $this->getClient('customers');
+			return $this->getClient($method);
 		}
 
 		throw new \InvalidArgumentException("Undefined method [{$method}] called.");
