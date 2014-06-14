@@ -44,7 +44,9 @@ class StripeServiceProvider extends ServiceProvider {
 
 			$version = $app['config']->get('services.stripe.version');
 
-			return new Stripe($stripeKey, $version);
+			$manifestPath = $app['config']->get('services.stripe.manifestPath');
+
+			return new Stripe($stripeKey, $version, $manifestPath);
 		});
 	}
 
