@@ -53,6 +53,20 @@ class Stripe {
 	protected $manifestPath;
 
 	/**
+	 * Holds the main manifest data.
+	 *
+	 * @var array
+	 */
+	protected $manifest;
+
+	/**
+	 * Cached manifests data.
+	 *
+	 * @var array
+	 */
+	protected $manifests = [];
+
+	/**
 	 * Constructor.
 	 *
 	 * @param  string  $stripeKey
@@ -192,9 +206,29 @@ class Stripe {
 	 */
 	protected function handleRequest($method)
 	{
-		$manifest = $this->getManifest($method);
+		$manifest = $this->getManifestPayload($method);
 
 		return new GuzzleClient($this->client, new Description($manifest));
+	}
+
+	/**
+	 * Returns the full versioned manifests path.
+	 *
+	 * @return string
+	 */
+	protected function getFullManifestPath()
+	{
+		return "{$this->getManifestPath()}/{$this->getVersion()}";
+	}
+
+	protected function getManifest()
+	{
+		if ( ! $this->manifest)
+		{
+			$this->manifest = require_once "{$this->getFullManifestPath()}/Manifest.php";
+		}
+
+		return $this->manifest;
 	}
 
 	/**
@@ -203,24 +237,13 @@ class Stripe {
 	 * @param  string  $method
 	 * @return array
 	 */
-	protected function getManifest($method)
+	protected function getManifestPayload($method)
 	{
-		$manifest = require_once "{$this->getVersionedManifestPath()}/Manifest.php";
-
-		return array_merge($manifest, [
-			'operations' => require_once $this->getRequestManifest($method),
+		return array_merge($this->getManifest(), [
+			'operations' => $this->getRequestManifestPayload($method),
 		]);
 	}
 
-	/**
-	 * Returns the versioned manifests path.
-	 *
-	 * @return string
-	 */
-	protected function getVersionedManifestPath()
-	{
-		return "{$this->getManifestPath()}/{$this->getVersion()}";
-	}
 
 	/**
 	 * Returns the current request manifest file path.
@@ -228,11 +251,23 @@ class Stripe {
 	 * @param  string  $method
 	 * @return string
 	 */
-	protected function getRequestManifest($method)
+	protected function getRequestManifestPath($method)
 	{
 		$method = ucwords($method);
 
-		return "{$this->getVersionedManifestPath()}/{$method}.php";
+		return "{$this->getFullManifestPath()}/{$method}.php";
+	}
+
+	protected function getRequestManifestPayload($method)
+	{
+		if ( ! $manifest = array_get($this->manifests, $method))
+		{
+			$manifest = require $this->getRequestManifestPath($method);
+
+			array_set($this->manifests, $method, $manifest);
+		}
+
+		return $manifest;
 	}
 
 	/**
@@ -243,7 +278,7 @@ class Stripe {
 	 */
 	protected function manifestExists($method)
 	{
-		return file_exists($this->getRequestManifest($method));
+		return file_exists($this->getRequestManifestPath($method));
 	}
 
 }
