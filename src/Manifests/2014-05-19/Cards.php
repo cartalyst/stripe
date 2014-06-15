@@ -127,7 +127,7 @@ return [
 				'description' => 'Unique card identifier.',
 				'location'    => 'query',
 				'type'        => ['string', 'array'],
-				'required'    => false,
+				'required'    => true,
 			],
 
 			'expand' => [
