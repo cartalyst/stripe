@@ -21,10 +21,11 @@ return [
 
 	'all' => [
 
-		'httpMethod' => 'GET',
-		'uri'        => '/v1/coupons/{id}',
-		'summary'    => 'Returns all the existing coupons.',
-		'parameters' => [
+		'httpMethod'    => 'GET',
+		'uri'           => '/v1/coupons',
+		'summary'       => 'Returns all the existing coupons.',
+		'responseModel' => 'Response',
+		'parameters'    => [
 
 			'limit' => [
 				'description' => 'Limit of how many coupons are retrieved.',
@@ -69,10 +70,11 @@ return [
 
 	'find' => [
 
-		'httpMethod' => 'GET',
-		'uri'        => '/v1/coupons/{id}',
-		'summary'    => 'Returns an existing coupon.',
-		'parameters' => [
+		'httpMethod'    => 'GET',
+		'uri'           => '/v1/coupons/{id}',
+		'summary'       => 'Returns an existing coupon.',
+		'responseModel' => 'Response',
+		'parameters'    => [
 
 			'id' => [
 				'description' => 'Coupon unique identifier.',
@@ -94,13 +96,14 @@ return [
 
 	'create' => [
 
-		'httpMethod' => 'POST',
-		'uri'        => '/v1/coupons',
-		'summary'    => 'Creates a new coupon.',
-		'parameters' => [
+		'httpMethod'    => 'POST',
+		'uri'           => '/v1/coupons',
+		'summary'       => 'Creates a new coupon.',
+		'responseModel' => 'Response',
+		'parameters'    => [
 
 			'id' => [
-				'description' => 'Unique string to identify the coupon (you can specify none and it will be auto-generated).',
+				'description' => 'Unique string to identify the coupon (if none specified, it will be auto-generated).',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
@@ -111,7 +114,7 @@ return [
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => true,
-				'enum'        => ['forever', 'once', 'repeating')
+				'enum'        => ['forever', 'once', 'repeating'],
 			],
 
 			'amount_off' => [
@@ -169,10 +172,11 @@ return [
 
 	'delete' => [
 
-		'httpMethod' => 'DELETE',
-		'uri'        => '/v1/coupons/{id}',
-		'summary'    => 'Deletes an existing coupon.',
-		'parameters' => [
+		'httpMethod'    => 'DELETE',
+		'uri'           => '/v1/coupons/{id}',
+		'summary'       => 'Deletes an existing coupon.',
+		'responseModel' => 'Response',
+		'parameters'    => [
 
 			'id' => [
 				'description' => 'Coupon unique identifier.',
