@@ -65,14 +65,14 @@ return [
 			],
 
 			'expand' => [
-				'description' => 'Allow to expand properties.',
+				'description' => 'Allows to expand properties.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
 			],
 
 			'include' => [
-				'description' => 'Allow to include additional properties.',
+				'description' => 'Allows to include additional properties.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -98,7 +98,7 @@ return [
 			],
 
 			'expand' => [
-				'description' => 'Allow to expand properties.',
+				'description' => 'Allows to expand properties.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -187,7 +187,7 @@ return [
 			],
 
 			'expand' => [
-				'description' => 'Allow to expand properties.',
+				'description' => 'Allows to expand properties.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -227,7 +227,7 @@ return [
 			],
 
 			'expand' => [
-				'description' => 'Allow to expand properties.',
+				'description' => 'Allows to expand properties.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -274,7 +274,7 @@ return [
 			],
 
 			'expand' => [
-				'description' => 'Allow to expand properties.',
+				'description' => 'Allows to expand properties.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -314,7 +314,7 @@ return [
 			],
 
 			'expand' => [
-				'description' => 'Allow to expand properties.',
+				'description' => 'Allows to expand properties.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
