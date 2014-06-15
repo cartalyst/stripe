@@ -84,7 +84,7 @@ class Stripe {
 
 		// Set the client user agent
 		$this->setHeaders([
-			'User-Agent' => 'cartalyst-stripe-api (Cartalyst.com)',
+			'User-Agent' => 'cartalyst-stripe-php (Cartalyst.com)',
 		]);
 
 		$this->setVersion($version ?: '2014-05-19');
