@@ -18,7 +18,6 @@
  */
 
 use Cartalyst\Stripe\Stripe;
-use Cartalyst\Stripe\Http\HttpClient;
 use Illuminate\Support\ServiceProvider;
 
 class StripeServiceProvider extends ServiceProvider {
