@@ -91,7 +91,7 @@ return [
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Unique identifier of the event',
+				'description' => 'Event unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,

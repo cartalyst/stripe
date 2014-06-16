@@ -49,7 +49,7 @@ return [
 			],
 
 			'expand' => [
-				'description' => 'Allows to expand some properties.',
+				'description' => 'Allows to expand properties.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -75,7 +75,7 @@ return [
 			],
 
 			'expand' => [
-				'description' => 'Allows to expand some properties.',
+				'description' => 'Allows to expand properties.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
