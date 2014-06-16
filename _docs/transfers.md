@@ -36,7 +36,7 @@ $transfer = Stripe::transfers()->cancel([
 ```php
 $transfers = Stripe::transfers()->all()->toArray();
 
-foreach ($transfer as $transfer)
+foreach ($transfers['data'] as $transfer)
 {
 	var_dump($transfer['id']);
 }
