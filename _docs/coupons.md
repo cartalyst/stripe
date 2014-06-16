@@ -3,31 +3,40 @@
 ### Create a new coupon
 
 ```php
-$response = Stripe::coupons()->create([
+$coupon = Stripe::coupons()->create([
 	'id'          => '50-PERCENT-OFF',
 	'duration'    => 'forever',
 	'percent_off' => 50,
-]);
+])->toArray();
+
+echo $coupon['id'];
 ```
 
 ### Delete a coupon
 
 ```php
-$response = Stripe::coupons()->delete([
+$coupon = Stripe::coupons()->delete([
 	'id' => '50-PERCENT-OFF',
-]);
+])->toArray();
 ```
 
 ### Retrieve all the coupons
 
 ```php
-$response = Stripe::coupons()->all();
+$coupons = Stripe::coupons()->all()->toArray();
+
+foreach ($coupons['data'] as $coupon)
+{
+	var_dump($coupon['id']);
+}
 ```
 
 ### Retrieve a coupon
 
 ```php
-$response = Stripe::coupons()->find([
+$coupon = Stripe::coupons()->find([
 	'id' => '50-PERCENT-OFF',
-]);
+])->toArray();
+
+echo $coupon['id'];
 ```

@@ -3,5 +3,7 @@
 Retrieve information about your Stripe account.
 
 ```php
-$response = Stripe::account()->details();
+$account = Stripe::account()->details()->toArray();
+
+echo $account['email'];
 ```

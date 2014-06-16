@@ -3,11 +3,9 @@
 ### Create a new customer
 
 ```php
-$response = Stripe::customers()->create([
+$customer = Stripe::customers()->create([
 	'email' => 'testing@example.com',
-]);
-
-$customer = $response->toArray();
+])->toArray();
 
 echo $customer['id'];
 ```
@@ -15,27 +13,35 @@ echo $customer['id'];
 ### Delete a customer
 
 ```php
-$response = Stripe::customers()->delete([
+$customer = Stripe::customers()->delete([
 	'id' => 'cus_4EBxvk6aBPexFO',
-]);
+])->toArray();
 ```
 
 ### Update a customer
 
 ```php
-$response = Stripe::customers()->update([
-	'id' => 'cus_4EBumIjyaKooft',
+$customer = Stripe::customers()->update([
+	'id'    => 'cus_4EBumIjyaKooft',
 	'email' => 'testing@example.com',
-]);
-
+])->toArray();
 ```
 
 ### Retrieve all customers
 
-$response = Stripe::customers()->all();
+```php
+$customers = Stripe::customers()->all()->toArray();
+
+foreach ($customers['id'] as $customer)
+{
+	var_dump($customer['id']);
+}
+```
 
 ### Retrieve a customer
 
-$response = Stripe::customers()->find([
+```php
+$customer = Stripe::customers()->find([
 	'id' => 'cus_4EBumIjyaKooft',
-]);
+])->toArray();
+```

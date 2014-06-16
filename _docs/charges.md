@@ -3,13 +3,11 @@
 ### Create a new charge
 
 ```php
-$response = Stripe::charges()->update([
+$charge = Stripe::charges()->update([
 	'customer' => 'cus_4EBumIjyaKooft',
 	'currency' => 'USD',
 	'amount'   => 5049,
-]);
-
-$charge = $response->toArray();
+])->toArray();
 
 echo $charge['id']
 ```
@@ -17,42 +15,56 @@ echo $charge['id']
 ### Update a charge
 
 ```php
-$response = Stripe::charges()->update([
+$charge = Stripe::charges()->update([
 	'id'          => 'ch_4ECWMVQp5SJKEx',
 	'description' => 'Paymento to foo bar',
-]);
+])->toArray();
 ```
 
 ### Capture a charge
 
-...
+```php
+$charge = Stripe::charges()->capture([
+	'id' => 'ch_4ECWMVQp5SJKEx',
+])->toArray();
+```
 
 ### Refund a charge
 
 ```php
-$response = Stripe::charges()->refund([
+$charge = Stripe::charges()->refund([
 	'id' => 'ch_4ECWMVQp5SJKEx',
-]);
+])->toArray();
 ```
 
 ### Retrieve all charges
 
 ```php
-$response = Stripe::charges()->all();
+$charges = Stripe::charges()->all()->toArray();
+
+foreach ($charges['data'] as $charge)
+{
+	var_dump($charge['id']);
+}
 ```
 
 Retrieve all charges for a specific customer
 
 ```php
-$response = Stripe::charges()->all([
+$charges = Stripe::charges()->all([
 	'customer' => 'cus_4EBumIjyaKooft',
-]);
+])->toArray();
+
+foreach ($charges['data'] as $charge)
+{
+	var_dump($charge['id']);
+}
 ```
 
 ### Retrieve an existing charge
 
 ```php
-$response = Stripe::charges()->find([
+$charge = Stripe::charges()->find([
 	'id' => 'ch_4ECWMVQp5SJKEx',
-]);
+])->toArray();
 ```
