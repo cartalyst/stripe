@@ -63,3 +63,12 @@ $subscription = Stripe::subscriptions()->find([
 
 echo $subscription['id'];
 ```
+
+### Delete a subscription discount
+
+```php
+$customer = Stripe::subscriptions()->deleteDiscount([
+	'customer' => 'cus_4EBumIjyaKooft',
+	'id'       => 'sub_4ETjGeEPC5ai9J',
+])->findArray();
+```

@@ -45,3 +45,11 @@ $customer = Stripe::customers()->find([
 	'id' => 'cus_4EBumIjyaKooft',
 ])->toArray();
 ```
+
+### Delete a customer discount
+
+```php
+$customer = Stripe::customers()->deleteDiscount([
+	'id' => 'cus_4EBumIjyaKooft',
+])->findArray();
+```

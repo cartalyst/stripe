@@ -284,4 +284,23 @@ return [
 
 	],
 
+	'deleteDiscount' =>	[
+
+		'httpMethod'    => 'DELETE',
+		'uri'           => '/v1/customers/{id}/discount',
+		'summary'       => 'Deletes an existing customer.',
+		'responseModel' => 'Response',
+		'parameters'    => [
+
+			'id' => [
+				'description' => 'Customer unique identifier.',
+				'location'    => 'uri',
+				'type'        => 'string',
+				'required'    => true,
+			],
+
+		],
+
+	],
+
 ];

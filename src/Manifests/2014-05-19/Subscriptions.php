@@ -21,11 +21,11 @@ return [
 
 	'all' => [
 
-		'httpMethod'     => 'GET',
-		'uri'            => '/v1/customers/{customer}/subscriptions',
-		'summary'        => 'Returns all the subscriptions of an existing customer.',
-		'responseModel'  => 'Response',
-		'parameters'     => [
+		'httpMethod'    => 'GET',
+		'uri'           => '/v1/customers/{customer}/subscriptions',
+		'summary'       => 'Returns all the subscriptions of an existing customer.',
+		'responseModel' => 'Response',
+		'parameters'    => [
 
 			'customer' => [
 				'description' => 'Customer unique identifier.',
@@ -77,11 +77,11 @@ return [
 
 	'find' => [
 
-		'httpMethod'     => 'GET',
-		'uri'            => '/v1/customers/{customer}/subscriptions/{id}',
-		'summary'        => 'Returns a subscription from an existing customer.',
-		'responseModel'  => 'Response',
-		'parameters'     => [
+		'httpMethod'    => 'GET',
+		'uri'           => '/v1/customers/{customer}/subscriptions/{id}',
+		'summary'       => 'Returns a subscription from an existing customer.',
+		'responseModel' => 'Response',
+		'parameters'    => [
 
 			'id' => [
 				'description' => 'Subscription unique identifier.',
@@ -110,11 +110,11 @@ return [
 
 	'create' => [
 
-		'httpMethod'     => 'POST',
-		'uri'            => '/v1/customers/{customer}/subscriptions',
-		'summary'        => 'Creates a new subscription on an existing customer.',
-		'responseModel'  => 'Response',
-		'parameters'     => [
+		'httpMethod'    => 'POST',
+		'uri'           => '/v1/customers/{customer}/subscriptions',
+		'summary'       => 'Creates a new subscription on an existing customer.',
+		'responseModel' => 'Response',
+		'parameters'    => [
 
 			'customer' => [
 				'description' => 'Customer unique identifier.',
@@ -185,11 +185,11 @@ return [
 
 	'cancel' => [
 
-		'httpMethod'     => 'DELETE',
-		'uri'            => '/v1/customers/{customer}/subscriptions/{id}',
-		'summary'        => 'Deletes an existing customer subscription.',
-		'responseModel'  => 'Response',
-		'parameters'     => [
+		'httpMethod'    => 'DELETE',
+		'uri'           => '/v1/customers/{customer}/subscriptions/{id}',
+		'summary'       => 'Deletes an existing customer subscription.',
+		'responseModel' => 'Response',
+		'parameters'    => [
 
 			'id' => [
 				'description' => 'Subscription unique identifier.',
@@ -225,11 +225,11 @@ return [
 
 	'update' => [
 
-		'httpMethod'     => 'POST',
-		'uri'            => '/v1/customers/{customer}/subscriptions/{id}',
-		'summary'        => 'Updates an existing customer subscription.',
-		'responseModel'  => 'Response',
-		'parameters'     => [
+		'httpMethod'    => 'POST',
+		'uri'           => '/v1/customers/{customer}/subscriptions/{id}',
+		'summary'       => 'Updates an existing customer subscription.',
+		'responseModel' => 'Response',
+		'parameters'    => [
 
 			'id' => [
 				'description' => 'Subscription unique identifier.',
@@ -306,6 +306,32 @@ return [
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
+			],
+
+		],
+
+	],
+
+	'deleteDiscount' =>	[
+
+		'httpMethod'    => 'DELETE',
+		'uri'           => '/v1/customers/{customer}/subscriptions/{id}/discount',
+		'summary'       => 'Deletes an existing customer.',
+		'responseModel' => 'Response',
+		'parameters'    => [
+
+			'id' => [
+				'description' => 'Subscription unique identifier.',
+				'location'    => 'uri',
+				'type'        => 'string',
+				'required'    => true,
+			],
+
+			'customer' => [
+				'description' => 'Customer unique identifier.',
+				'location'    => 'uri',
+				'type'        => 'string',
+				'required'    => true,
 			],
 
 		],
