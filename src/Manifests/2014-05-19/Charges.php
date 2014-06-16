@@ -147,7 +147,7 @@ return [
 			'capture' => [
 				'description' => 'Whether or not to immediately capture the charge.',
 				'location'    => 'query',
-				'type'        => 'boolean',
+				'type'        => 'string', #'boolean', <- Guzzle converts to 1/0
 				'required'    => false,
 			],
 
@@ -309,7 +309,7 @@ return [
 			'refund_application_fee' => [
 				'description' => 'Indicate whether the application fee should be refunded when refunding this charge.',
 				'location'    => 'query',
-				'type'        => 'boolean',
+				'type'        => 'string', #'boolean', <- Guzzle converts to 1/0
 				'required'    => false,
 			],
 
