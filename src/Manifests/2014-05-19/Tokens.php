@@ -1,4 +1,4 @@
- <?php
+<?php
 /**
  * Part of the Stripe package.
  *
@@ -21,11 +21,11 @@ return [
 
 	'create' => [
 
-		'httpMethod'     => 'POST',
-		'uri'            => '/v1/tokens',
-		'summary'        => 'Creates a new token.',
-		'responseModel'  => 'Response',
-		'parameters'     => [
+		'httpMethod'    => 'POST',
+		'uri'           => '/v1/tokens',
+		'summary'       => 'Creates a new token.',
+		'responseModel' => 'Response',
+		'parameters'    => [
 
 			'bank_account' => [
 				'description' => 'A bank account to attach to the recipient.',
@@ -61,11 +61,11 @@ return [
 
 	'find' => [
 
-		'httpMethod'     => 'GET',
-		'uri'            => '/v1/tokens/{id}',
-		'summary'        => 'Returns details about an existing token.',
-		'responseModel'  => 'Response',
-		'parameters'     => [
+		'httpMethod'    => 'GET',
+		'uri'           => '/v1/tokens/{id}',
+		'summary'       => 'Returns details about an existing token.',
+		'responseModel' => 'Response',
+		'parameters'    => [
 
 			'id' => [
 				'description' => 'Token unique identifier.',
