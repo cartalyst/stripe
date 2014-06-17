@@ -221,6 +221,11 @@ class Stripe {
 		return "{$this->getManifestPath()}/{$this->getVersion()}";
 	}
 
+	/**
+	 * Returns the main manifest data.
+	 *
+	 * @return array
+	 */
 	protected function getManifest()
 	{
 		if ( ! $this->manifest)
@@ -244,7 +249,6 @@ class Stripe {
 		]);
 	}
 
-
 	/**
 	 * Returns the current request manifest file path.
 	 *
@@ -258,6 +262,12 @@ class Stripe {
 		return "{$this->getFullManifestPath()}/{$method}.php";
 	}
 
+	/**
+	 * Returns the current request manifest payload.
+	 *
+	 * @param  string  $method
+	 * @return array
+	 */
 	protected function getRequestManifestPayload($method)
 	{
 		if ( ! $manifest = array_get($this->manifests, $method))
