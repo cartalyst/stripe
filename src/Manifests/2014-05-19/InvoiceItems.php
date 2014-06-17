@@ -22,13 +22,13 @@ return [
 	'all' => [
 
 		'httpMethod'    => 'GET',
-		'uri'           => '/v1/invoices',
-		'summary'       => 'Returns all the existing invoices.',
+		'uri'           => '/v1/invoiceitems',
+		'summary'       => 'Returns all the existing invoice items.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'limit' => [
-				'description' => 'Limit of how many invoices are retrieved.',
+				'description' => 'Limit of how many invoice items are retrieved.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'min'         => 1,
@@ -53,7 +53,6 @@ return [
 			'date' => [
 				'description' => 'A filter based on the "date" field. Can be an exact UTC timestamp, or a hash',
 				'location'    => 'query',
-				'type'        => ['string', 'array'],
 				'required'    => false,
 			],
 
@@ -85,13 +84,13 @@ return [
 	'find' => [
 
 		'httpMethod'    => 'GET',
-		'uri'           => '/v1/invoices/{id}',
-		'summary'       => 'Returns an existing invoice.',
+		'uri'           => '/v1/invoiceitems/{id}',
+		'summary'       => 'Returns an existing invoice item.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Invoice unique identifier.',
+				'description' => 'Invoice item unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -108,33 +107,88 @@ return [
 
 	],
 
+
 	'create' => [
 
 		'httpMethod'    => 'POST',
-		'uri'           => '/v1/invoices',
-		'summary'       => 'Creates a new invoice.',
+		'uri'           => '/v1/invoiceitems',
+		'summary'       => 'Creates a new invoice item.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'customer' => [
-				'description' => 'Unique string to identify the plan',
+				'description' => 'ID of the customer who will be billed when this invoice item is billed',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
-			'subscription' => [
-				'description' => 'Identifier of the subscription to invoice',
+			'amount' => [
+				'description' => 'Amount (in cents)',
+				'location'    => 'query',
+				'type'        => 'integer',
+				'required'    => true,
+			],
+
+			'currency' => [
+				'description' => '3-letter ISO code for currency',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => true,
+			],
+
+			'invoice' => [
+				'description' => 'Identifier of an existing invoice to add this invoice item to',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
-			'application_fee' => [
-				'description' => 'A fee in cents that will be applied to the invoice and transferred to the application owner\'s Stripe account',
+			'subscription' => [
+				'description' => 'Identifier of a subscription to add this invoice item to',
 				'location'    => 'query',
-				'type'        => 'integer',
+				'type'        => 'string',
 				'required'    => false,
+			],
+
+			'description' => [
+				'description' => 'Description. (optional)',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'metadata' => [
+				'description' => 'Metadata. (optional)',
+				'location'    => 'query',
+				'type'        => 'array',
+				'required'    => false,
+			],
+
+			'expand' => [
+				'description' => 'Allows to expand properties.',
+				'location'    => 'query',
+				'type'        => 'array',
+				'required'    => false,
+			],
+
+		],
+
+	],
+
+	'delete' => [
+
+		'httpMethod'    => 'DELETE',
+		'uri'           => '/v1/invoiceitems/{id}',
+		'summary'       => 'Deletes an existing invoice item.',
+		'responseModel' => 'Response',
+		'parameters'    => [
+
+			'id' => [
+				'description' => 'Invoice item unique identifier.',
+				'location'    => 'uri',
+				'type'        => 'string',
+				'required'    => true,
 			],
 
 			'expand' => [
@@ -151,144 +205,29 @@ return [
 	'update' => [
 
 		'httpMethod'    => 'POST',
-		'uri'           => '/v1/invoices/{id}',
-		'summary'       => 'Updates an existing invoice.',
+		'uri'           => '/v1/invoiceitems/{id}',
+		'summary'       => 'Updates an existing invoice item.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Invoice unique identifier.',
+				'description' => 'Invoice item unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
-			'application_fee' => [
-				'description' => 'A fee in cents that will be applied to the invoice and transferred to the application owner\'s Stripe account',
+			'description' => [
+				'description' => 'Description. (optional)',
 				'location'    => 'query',
-				'type'        => 'integer',
+				'type'        => 'string',
 				'required'    => false,
 			],
 
-			'closed' => [
-				'description' => 'Boolean representing whether an invoice is closed or not',
-				'location'    => 'query',
-				'type'        => 'string', #'boolean', <- Guzzle converts to 1/0
-				'required'    => false,
-			],
-
-			'expand' => [
-				'description' => 'Allows to expand properties.',
+			'metadata' => [
+				'description' => 'Metadata. (optional)',
 				'location'    => 'query',
 				'type'        => 'array',
-				'required'    => false,
-			],
-
-		],
-
-	],
-
-	'pay' => [
-
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/invoices/{id}/pay',
-		'summary'       => 'Pays an existing invoice.',
-		'responseModel' => 'Response',
-		'parameters'    => [
-
-			'id' => [
-				'description' => 'Invoice unique identifier.',
-				'location'    => 'uri',
-				'type'        => 'string',
-				'required'    => true,
-			],
-
-			'expand' => [
-				'description' => 'Allows to expand properties.',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
-
-		],
-
-	],
-
-	'invoiceLineItems' => [
-
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/invoices/{id}/lines',
-		'summary'       => 'Returns an existing invoice line items.',
-		'responseModel' => 'Response',
-		'parameters'    => [
-
-			'id' => [
-				'description' => 'Invoice unique identifier.',
-				'location'    => 'uri',
-				'type'        => 'string',
-				'required'    => true,
-			],
-
-			'count' => [
-				'description' => 'Limit on how many invoice line items are retrieved',
-				'location'    => 'query',
-				'type'        => 'integer',
-				'min'         => 1,
-				'max'         => 100,
-				'required'    => false,
-			],
-
-			'offset' => [
-				'description' => 'Offset into the list of returned items',
-				'location'    => 'query',
-				'type'        => 'integer',
-				'required'    => false,
-			],
-
-			'customer' => [
-				'description' => 'Only return invoice line items for a specific customer',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'subscription' => [
-				'description' => 'In the case of upcoming invoices, the subscription is optional. Otherwise it is ignored',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'expand' => [
-				'description' => 'Allows to expand properties.',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
-
-		],
-
-	],
-
-	'upcomingInvoice' => [
-
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/invoices/upcoming',
-		'summary'       => 'Get upcoming invoices',
-		'responseModel' => 'Response',
-		'parameters'    => [
-
-			'customer' => [
-				'description' => 'Only return upcoming invoices for a specific customer',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => true,
-			],
-
-			'subscription' => [
-				'description' => 'The identifier of the subscription for which you\'d like to retrieve the upcoming invoice',
-				'location'    => 'query',
-				'type'        => 'string',
 				'required'    => false,
 			],
 
