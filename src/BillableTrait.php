@@ -113,6 +113,17 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
+	public function updateDefaultCard($token)
+	{
+		return $this->getStripeClient()->customers()->update([
+			'id'   => $this->getStripeId(),
+			'card' => $token,
+		])->toArray();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function getStripeId()
 	{
 		return $this->stripe_id;

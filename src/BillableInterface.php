@@ -20,9 +20,9 @@
 interface BillableInterface {
 
 	/**
-	 * Returns all the cards attached to this user.
+	 * Returns all the cards attached to this entity.
 	 *
-	 * @return \Cartalyst\Stripe\Card\IlluminateCard
+	 * @return \Cartalyst\Stripe\Models\IlluminateCard
 	 */
 	public function cards();
 
@@ -30,22 +30,14 @@ interface BillableInterface {
 	 * Returns a new Stripe Card gateway.
 	 *
 	 * @param  mixed  $card
-	 * @return \Cartalyst\Stripe\Card\CardGateway
+	 * @return \Cartalyst\Stripe\CardGateway
 	 */
 	public function card($card = null);
 
 	/**
-	 * Update the default credit card attached to the entity.
+	 * Returns all the charges that this entity has made.
 	 *
-	 * @param  string  $token
-	 * @return void
-	 */
-	//public function updateDefaultCard($token);
-
-	/**
-	 * Returns all the charges that this user has made.
-	 *
-	 * @return \Cartalyst\Stripe\Charge\IlluminateCharge
+	 * @return \Cartalyst\Stripe\Models\IlluminateCharge
 	 */
 	public function charges();
 
@@ -53,14 +45,14 @@ interface BillableInterface {
 	 * Returns a new Stripe Charge gateway.
 	 *
 	 * @param  mixed  $charge
-	 * @return \Cartalyst\Stripe\Charge\ChargeGateway
+	 * @return \Cartalyst\Stripe\ChargeGateway
 	 */
 	public function charge($charge = null);
 
 	/**
-	 * Returns all the subscriptions that this user has.
+	 * Returns all the subscriptions that this entity has.
 	 *
-	 * @return \Cartalyst\Stripe\Subscription\IlluminateSubscription
+	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
 	public function subscriptions();
 
@@ -68,19 +60,19 @@ interface BillableInterface {
 	 * Returns a new Stripe Subscription gateway.
 	 *
 	 * @param  mixed  $subscription
-	 * @return \Cartalyst\Stripe\Subscription\SubscriptionGateway
+	 * @return \Cartalyst\Stripe\SubscriptionGateway
 	 */
 	public function subscription($subscription = null);
 
 	/**
-	 * Checks if the user currently has any active subscriptions.
+	 * Checks if the entity currently has any active subscriptions.
 	 *
 	 * @return bool
 	 */
 	public function isSubscribed();
 
 	/**
-	 * Checks if the user has any active card.
+	 * Checks if the entity has any active card.
 	 *
 	 * @return bool
 	 */
@@ -93,6 +85,14 @@ interface BillableInterface {
 	 * @return array
 	 */
 	public function applyCoupon($coupon);
+
+	/**
+	 * Update the default credit card attached to the entity.
+	 *
+	 * @param  string  $token
+	 * @return void
+	 */
+	public function updateDefaultCard($token);
 
 	/**
 	 * Returns the Stripe ID for the entity.
