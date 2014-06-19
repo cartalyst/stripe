@@ -17,7 +17,6 @@
  * @link       http://cartalyst.com
  */
 
-use Carbon\Carbon;
 use Cartalyst\Stripe\BillableInterface;
 use Cartalyst\Stripe\Models\IlluminateCard;
 
@@ -29,6 +28,14 @@ class CardGateway extends StripeGateway {
 	 * @var \Cartalyst\Stripe\Models\IlluminateCard
 	 */
 	protected $card;
+
+	/**
+	 * Flag for wether the credit card should be
+	 * made the default credit card.
+	 *
+	 * @var bool
+	 */
+	protected $default = false;
 
 	/**
 	 * Constructor.
@@ -53,18 +60,6 @@ class CardGateway extends StripeGateway {
 	}
 
 	/**
-	 * Returns the current Stripe card.
-	 *
-	 * @return array
-	 */
-	public function find()
-	{
-		$payload = $this->getPayload();
-
-		return $this->client->cards()->find($payload)->toArray();
-	}
-
-	/**
 	 * Creates a new credit card on the entity.
 	 *
 	 * @param  string  $token
@@ -83,23 +78,25 @@ class CardGateway extends StripeGateway {
 			array_get($attributes, 'customer', [])
 		);
 
+		// Get the entity stripe id
+		$stripeId = $entity->stripe_id;
+
 		// Prepare the card data
 		$attributes = array_merge($attributes, [
 			'card'     => $token,
-			'customer' => $entity->stripe_id,
+			'customer' => $stripeId,
 		]);
 
 		// Create the card on Stripe
 		$card = $this->client->cards()->create($attributes)->toArray();
 
-		// Should we make this card the default one?
-		if ($this->default)
-		{
-			$this->client->customers()->update([
-				'id'           => $entity->stripe_id,
-				'default_card' => $card['id'],
-			])->toArray();
-		}
+		//
+		$customer = $this->client->customers()->find([
+			'id' => $stripeId,
+		])->toArray();
+
+		//
+		$isDefault = ($this->default || $customer['default_card'] === $card['id']);
 
 		// Attach the created card to the billable entity
 		$entity->cards()->create([
@@ -107,15 +104,24 @@ class CardGateway extends StripeGateway {
 			'last_four' => $card['last4'],
 			'exp_month' => $card['exp_month'],
 			'exp_year'  => $card['exp_year'],
-			'default'   => $this->default,
+			'default'   => $isDefault,
 		]);
 
-		$entity->cards()
-			->where('default', true)
-			->where('stripe_id', '!=', $card['id'])
-			->update([
-				'default' => false,
-			]);
+		// Should we make this card the default one?
+		if ($isDefault)
+		{
+			$this->client->customers()->update([
+				'id'           => $stripeId,
+				'default_card' => $card['id'],
+			])->toArray();
+
+			$entity->cards()
+				->where('default', true)
+				->where('stripe_id', '!=', $card['id'])
+				->update([
+					'default' => false,
+				]);
+		}
 
 		return $card;
 	}
@@ -140,17 +146,36 @@ class CardGateway extends StripeGateway {
 	 */
 	public function delete()
 	{
+		$entity = $this->billable;
+
 		$payload = $this->getPayload();
 
 		$card = $this->client->cards()->delete($payload)->toArray();
 
 		$this->card->delete();
 
+		$customer = $this->client->customers()->find([
+			'id' => $entity->stripe_id,
+		])->toArray();
+
+		$entity->cards()
+			->where('stripe_id', $customer['default_card'])
+			->update([
+				'default' => true,
+			]);
+
+		$entity->cards()
+			->where('default', true)
+			->where('stripe_id', '!=', $customer['default_card'])
+			->update([
+				'default' => false,
+			]);
+
 		return $card;
 	}
 
 	/**
-	 *
+	 * Make this credit card the default one after creation.
 	 *
 	 * @return \Cartalyst\Stripe\CardGateway
 	 */
@@ -168,18 +193,20 @@ class CardGateway extends StripeGateway {
 	 */
 	public function setDefault()
 	{
+		$entity = $this->billable;
+
 		$this->client->customers()->update([
 			'id'           => $entity->stripe_id,
-			'default_card' => $this->card->id,
+			'default_card' => $this->card->stripe_id,
 		])->toArray();
 
 		$this->card->update([
 			'default' => true,
 		]);
 
-		$this->billable->cards()
+		$entity->cards()
 			->where('default', true)
-			->where('stripe_id', '!=', $this->card->id)
+			->where('stripe_id', '!=', $this->card->stripe_id)
 			->update([
 				'default' => false,
 			]);
