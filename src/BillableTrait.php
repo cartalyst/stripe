@@ -86,19 +86,48 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
+	public function isSubscribed()
+	{
+		return (bool) $this->subscriptions()->whereActive(1)->count();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function hasActiveCard()
+	{
+		return (bool) $this->cards->count();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function applyCoupon($coupon)
+	{
+		return $this->getStripeClient()->customers()->update([
+			'id'     => $this->getStripeId(),
+			'coupon' => $coupon,
+		])->toArray();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function getStripeId()
 	{
 		return $this->stripe_id;
 	}
 
 	/**
-	 * Returns the Stripe gateway instance.
-	 *
-	 * @return \Cartalyst\Stripe\StripeGateway
+	 * {@inheritDoc}
 	 */
-	protected function gateway()
+	public function syncWithStripe()
 	{
-		return $this->gateway ?: new StripeGateway($this);
+		$this->card()->syncWithStripe();
+
+		$this->charge()->syncWithStripe();
+
+		$this->subscription()->syncWithStripe();
 	}
 
 	/**
@@ -109,6 +138,16 @@ trait BillableTrait {
 	public function getStripeClient()
 	{
 		return $this->stripeClient ?: App::make('stripe');
+	}
+
+	/**
+	 * Returns the Stripe gateway instance.
+	 *
+	 * @return \Cartalyst\Stripe\StripeGateway
+	 */
+	protected function gateway()
+	{
+		return $this->gateway ?: new StripeGateway($this);
 	}
 
 }

@@ -20,19 +20,19 @@
 interface BillableInterface {
 
 	/**
+	 * Returns all the cards attached to this user.
+	 *
+	 * @return \Cartalyst\Stripe\Card\IlluminateCard
+	 */
+	public function cards();
+
+	/**
 	 * Returns a new Stripe Card gateway.
 	 *
 	 * @param  mixed  $card
 	 * @return \Cartalyst\Stripe\Card\CardGateway
 	 */
 	public function card($card = null);
-
-	/**
-	 * Returns all the cards attached to this user.
-	 *
-	 * @return \Cartalyst\Stripe\Card\IlluminateCard
-	 */
-	public function cards();
 
 	/**
 	 * Update the default credit card attached to the entity.
@@ -43,6 +43,13 @@ interface BillableInterface {
 	//public function updateDefaultCard($token);
 
 	/**
+	 * Returns all the charges that this user has made.
+	 *
+	 * @return \Cartalyst\Stripe\Charge\IlluminateCharge
+	 */
+	public function charges();
+
+	/**
 	 * Returns a new Stripe Charge gateway.
 	 *
 	 * @param  mixed  $charge
@@ -51,11 +58,11 @@ interface BillableInterface {
 	public function charge($charge = null);
 
 	/**
-	 * Returns all the charges that this user has made.
+	 * Returns all the subscriptions that this user has.
 	 *
-	 * @return \Cartalyst\Stripe\Charge\IlluminateCharge
+	 * @return \Cartalyst\Stripe\Subscription\IlluminateSubscription
 	 */
-	public function charges();
+	public function subscriptions();
 
 	/**
 	 * Returns a new Stripe Subscription gateway.
@@ -66,33 +73,26 @@ interface BillableInterface {
 	public function subscription($subscription = null);
 
 	/**
-	 * Returns all the subscriptions that this user has.
-	 *
-	 * @return \Cartalyst\Stripe\Subscription\IlluminateSubscription
-	 */
-	public function subscriptions();
-
-	/**
 	 * Checks if the user currently has any active subscriptions.
 	 *
 	 * @return bool
 	 */
-	//public function isSubscribed();
+	public function isSubscribed();
 
 	/**
 	 * Checks if the user has any active card.
 	 *
 	 * @return bool
 	 */
-	//public function hasActiveCard();
+	public function hasActiveCard();
 
 	/**
 	 * Apply a coupon to the billable entity.
 	 *
 	 * @param  string  $coupon
-	 * @return void
+	 * @return array
 	 */
-	//public function applyCoupon($coupon);
+	public function applyCoupon($coupon);
 
 	/**
 	 * Returns the Stripe ID for the entity.
@@ -102,17 +102,10 @@ interface BillableInterface {
 	public function getStripeId();
 
 	/**
-	 * Returns the Stripe customer object.
-	 *
-	 * @return \Stripe_Customer
-	 */
-	//public function getStripeCustomer();
-
-	/**
 	 * Syncronizes the Stripe data with the local data.
 	 *
 	 * @return void
 	 */
-	//public function syncWithStripe();
+	public function syncWithStripe();
 
 }
