@@ -90,7 +90,7 @@ interface BillableInterface {
 	 * Update the default credit card attached to the entity.
 	 *
 	 * @param  string  $token
-	 * @return void
+	 * @return array
 	 */
 	public function updateDefaultCard($token);
 
