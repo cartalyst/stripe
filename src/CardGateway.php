@@ -133,14 +133,19 @@ class CardGateway extends StripeGateway {
 	 */
 	public function delete()
 	{
+		// Get the entity object
 		$entity = $this->billable;
 
+		// Get the request payload
 		$payload = $this->getPayload();
 
+		// Delete the card on Stripe
 		$card = $this->client->cards()->delete($payload)->toArray();
 
+		// Delete the card locally
 		$this->card->delete();
 
+		// Get the Stripe customer
 		$customer = $this->client->customers()->find([
 			'id' => $entity->stripe_id,
 		])->toArray();

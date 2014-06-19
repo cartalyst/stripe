@@ -97,4 +97,15 @@ abstract class StripeGateway {
 		return $this->client ?: $this->billable->getStripeClient();
 	}
 
+	/**
+	 * Converts the amount from "dollars" to cents.
+	 *
+	 * @param  int  $amount
+	 * @return int
+	 */
+	protected function convertToCents($amount)
+	{
+		return (int) ($amount * 100);
+	}
+
 }

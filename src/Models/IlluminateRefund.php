@@ -27,6 +27,15 @@ class IlluminateRefund extends Model {
 	public $table = 'refunds';
 
 	/**
+	 * {@inheritDoc}
+	 */
+	protected $fillable = [
+		'amount',
+		'payment_id',
+		'transaction_id',
+	];
+
+	/**
 	 * Returns the charge associated to this refund.
 	 *
 	 * @return \Carbon\Stripe\Charge\IlluminateCharge
@@ -34,17 +43,6 @@ class IlluminateRefund extends Model {
 	public function charge()
 	{
 		return $this->belongsTo('Cartalyst\Stripe\Charge\IlluminateCharge');
-	}
-
-	/**
-	 * Get mutator for the "amount" attribute.
-	 *
-	 * @param  int  $amount
-	 * @return float
-	 */
-	public function getAmountAttribute($amount)
-	{
-		return number_format($amount / 100, 2);
 	}
 
 }

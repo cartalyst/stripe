@@ -34,6 +34,7 @@ class IlluminateCharge extends Model {
 		'amount',
 		'captured',
 		'refunded',
+		'stripe_id',
 		'created_at',
 		'description',
 	];
@@ -51,22 +52,11 @@ class IlluminateCharge extends Model {
 	/**
 	 * Returns all the refunds associated to this charge.
 	 *
-	 * @return \Cartalyst\Stripe\Charge\IlluminateRefund
+	 * @return \Cartalyst\Stripe\Models\IlluminateRefund
 	 */
 	public function refunds()
 	{
-		return $this->hasMany('Cartalyst\Stripe\Charge\IlluminateRefund', 'payment_id');
-	}
-
-	/**
-	 * Get mutator for the "amount" attribute.
-	 *
-	 * @param  int  $amount
-	 * @return float
-	 */
-	public function getAmountAttribute($amount)
-	{
-		return number_format($amount / 100, 2);
+		return $this->hasMany('Cartalyst\Stripe\Models\IlluminateRefund', 'payment_id');
 	}
 
 	/**
@@ -76,9 +66,7 @@ class IlluminateCharge extends Model {
 	 */
 	public function getAmountRefundedAttribute()
 	{
-		$amount = $this->refunds()->sum('amount');
-
-		return number_format($amount / 100, 2);
+		return $this->refunds()->sum('amount');
 	}
 
 }
