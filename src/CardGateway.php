@@ -81,21 +81,18 @@ class CardGateway extends StripeGateway {
 		// Get the entity stripe id
 		$stripeId = $entity->stripe_id;
 
-		// Prepare the card data
-		$attributes = array_merge($attributes, [
+		// Create the card on Stripe
+		$card = $this->client->cards()->create(array_merge($attributes, [
 			'card'     => $token,
 			'customer' => $stripeId,
-		]);
+		]))->toArray();
 
-		// Create the card on Stripe
-		$card = $this->client->cards()->create($attributes)->toArray();
-
-		//
+		// Get the Stripe customer
 		$customer = $this->client->customers()->find([
 			'id' => $stripeId,
 		])->toArray();
 
-		//
+		// Is this the default credit card?
 		$isDefault = ($this->default || $customer['default_card'] === $card['id']);
 
 		// Attach the created card to the billable entity
@@ -110,17 +107,7 @@ class CardGateway extends StripeGateway {
 		// Should we make this card the default one?
 		if ($isDefault)
 		{
-			$this->client->customers()->update([
-				'id'           => $stripeId,
-				'default_card' => $card['id'],
-			])->toArray();
-
-			$entity->cards()
-				->where('default', true)
-				->where('stripe_id', '!=', $card['id'])
-				->update([
-					'default' => false,
-				]);
+			$this->updateDefaultLocalCard($card['id']);
 		}
 
 		return $card;
@@ -158,18 +145,7 @@ class CardGateway extends StripeGateway {
 			'id' => $entity->stripe_id,
 		])->toArray();
 
-		$entity->cards()
-			->where('stripe_id', $customer['default_card'])
-			->update([
-				'default' => true,
-			]);
-
-		$entity->cards()
-			->where('default', true)
-			->where('stripe_id', '!=', $customer['default_card'])
-			->update([
-				'default' => false,
-			]);
+		$this->updateDefaultLocalCard($customer['default_card']);
 
 		return $card;
 	}
@@ -193,23 +169,12 @@ class CardGateway extends StripeGateway {
 	 */
 	public function setDefault()
 	{
-		$entity = $this->billable;
-
 		$this->client->customers()->update([
-			'id'           => $entity->stripe_id,
+			'id'           => $this->billable->stripe_id,
 			'default_card' => $this->card->stripe_id,
 		])->toArray();
 
-		$this->card->update([
-			'default' => true,
-		]);
-
-		$entity->cards()
-			->where('default', true)
-			->where('stripe_id', '!=', $this->card->stripe_id)
-			->update([
-				'default' => false,
-			]);
+		$this->updateDefaultLocalCard($this->card->stripe_id);
 	}
 
 	/**
@@ -224,6 +189,25 @@ class CardGateway extends StripeGateway {
 			'id'       => $this->card->stripe_id,
 			'customer' => $this->billable->stripe_id,
 		]);
+	}
+
+	/**
+	 * Updates the default card that is stored locally.
+	 *
+	 * @param  int  $id
+	 * @return void
+	 */
+	protected function updateDefaultLocalCard($id)
+	{
+		$entity = $this->billable;
+
+		$entity->cards()
+			->where('default', true)
+			->update(['default' => false]);
+
+		$entity->cards()
+			->where('stripe_id', $id)
+			->update(['default' => true]);
 	}
 
 }
