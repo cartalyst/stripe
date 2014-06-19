@@ -17,7 +17,6 @@
  * @link       http://cartalyst.com
  */
 
-use Carbon\Carbon;
 use Cartalyst\Stripe\BillableInterface;
 use Cartalyst\Stripe\Models\IlluminateCharge;
 
@@ -30,8 +29,18 @@ class ChargeGateway extends StripeGateway {
 	 */
 	protected $charge;
 
+	/**
+	 * Flag to wether capture the charge or not.
+	 *
+	 * @var bool
+	 */
 	protected $capture = true;
 
+	/**
+	 * Indicates the charge currency.
+	 *
+	 * @var stirng
+	 */
 	protected $currency = 'usd';
 
 	/**
@@ -97,7 +106,7 @@ class ChargeGateway extends StripeGateway {
 			$card = $card['id'];
 		}
 
-		// Prepare the charge data
+		// Prepares the payload
 		$attributes = array_merge($attributes, [
 			'customer' => $entity->stripe_id,
 			'capture'  => $this->capture ? 'true' : 'false',
@@ -143,18 +152,24 @@ class ChargeGateway extends StripeGateway {
 	 */
 	public function refund($amount = null)
 	{
+		// Prepares the payload
 		$payload = $this->getPayload(array_filter([
 			'amount' => $this->convertToCents($amount),
 		]));
 
+		// Refunds the charge on Stripe
 		$charge = $this->client->charges()->refund($payload)->toArray();
 
+		// Store the refunded flag
 		$refunded = $charge['refunded'];
 
+		// Update the local charge entry
 		$this->charge->update([
+			'paid'     => $charge['paid'],
 			'refunded' => $refunded,
 		]);
 
+		// Was the charge successfully refunded?
 		if ($refunded)
 		{
 			$this

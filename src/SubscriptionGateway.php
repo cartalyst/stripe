@@ -141,7 +141,7 @@ class SubscriptionGateway extends StripeGateway {
 			);
 		}
 
-		// Prepare the subscription data
+		// Prepares the payload
 		$attributes = array_merge($attributes, [
 			'customer'  => $entity->stripe_id,
 			'plan'      => $this->plan,

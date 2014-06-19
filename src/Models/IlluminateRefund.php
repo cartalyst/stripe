@@ -38,11 +38,11 @@ class IlluminateRefund extends Model {
 	/**
 	 * Returns the charge associated to this refund.
 	 *
-	 * @return \Carbon\Stripe\Charge\IlluminateCharge
+	 * @return \Carbon\Stripe\Models\IlluminateCharge
 	 */
 	public function charge()
 	{
-		return $this->belongsTo('Cartalyst\Stripe\Charge\IlluminateCharge');
+		return $this->belongsTo('Cartalyst\Stripe\Models\IlluminateCharge', 'payment_id');
 	}
 
 }

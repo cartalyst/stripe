@@ -31,6 +31,7 @@ class IlluminateCharge extends Model {
 	 * {@inheritDoc}
 	 */
 	protected $fillable = [
+		'paid',
 		'amount',
 		'captured',
 		'refunded',
