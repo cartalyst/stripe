@@ -1,0 +1,202 @@
+<?php namespace Cartalyst\Stripe;
+/**
+ * Part of the Stripe package.
+ *
+ * NOTICE OF LICENSE
+ *
+ * Licensed under the Cartalyst PSL License.
+ *
+ * This source file is subject to the Cartalyst PSL License that is
+ * bundled with this package in the license.txt file.
+ *
+ * @package    Stripe
+ * @version    1.0.0
+ * @author     Cartalyst LLC
+ * @license    Cartalyst PSL
+ * @copyright  (c) 2011-2014, Cartalyst LLC
+ * @link       http://cartalyst.com
+ */
+
+use Carbon\Carbon;
+use Cartalyst\Stripe\BillableInterface;
+use Cartalyst\Stripe\Models\IlluminateCard;
+
+class CardGateway extends StripeGateway {
+
+	/**
+	 * The card object.
+	 *
+	 * @var \Cartalyst\Stripe\Models\IlluminateCard
+	 */
+	protected $card;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param  \Cartalyst\Stripe\BillableInterface  $billable
+	 * @param  mixed  $card
+	 * @return void
+	 */
+	public function __construct(BillableInterface $billable, $card = null)
+	{
+		parent::__construct($billable);
+
+		if (is_numeric($card))
+		{
+			$card = $this->billable->cards->find($card);
+		}
+
+		if ($card instanceof IlluminateCard)
+		{
+			$this->card = $card;
+		}
+	}
+
+	/**
+	 * Returns the current Stripe card.
+	 *
+	 * @return array
+	 */
+	public function find()
+	{
+		$payload = $this->getPayload();
+
+		return $this->client->cards()->find($payload)->toArray();
+	}
+
+	/**
+	 * Creates a new credit card on the entity.
+	 *
+	 * @param  string  $token
+	 * @param  array  $attributes
+	 * @return array
+	 */
+	public function create($token, array $attributes = [])
+	{
+		// Get the entity object
+		$entity = $this->billable;
+
+		// Find or Create the Stripe customer that
+		// will belong to this billable entity.
+		$customer = $this->findOrCreate(
+			$entity->stripe_id,
+			array_get($attributes, 'customer', [])
+		);
+
+		// Prepare the card data
+		$attributes = array_merge($attributes, [
+			'card'     => $token,
+			'customer' => $entity->stripe_id,
+		]);
+
+		// Create the card on Stripe
+		$card = $this->client->cards()->create($attributes)->toArray();
+
+		// Should we make this card the default one?
+		if ($this->default)
+		{
+			$this->client->customers()->update([
+				'id'           => $entity->stripe_id,
+				'default_card' => $card['id'],
+			])->toArray();
+		}
+
+		// Attach the created card to the billable entity
+		$entity->cards()->create([
+			'stripe_id' => $card['id'],
+			'last_four' => $card['last4'],
+			'exp_month' => $card['exp_month'],
+			'exp_year'  => $card['exp_year'],
+			'default'   => $this->default,
+		]);
+
+		$entity->cards()
+			->where('default', true)
+			->where('stripe_id', '!=', $card['id'])
+			->update([
+				'default' => false,
+			]);
+
+		return $card;
+	}
+
+	/**
+	 * Updates the card.
+	 *
+	 * @param  array  $attributes
+	 * @return array
+	 */
+	public function update(array $attributes = [])
+	{
+		$payload = $this->getPayload($attributes);
+
+		return $this->client->cards()->update($payload)->toArray();
+	}
+
+	/**
+	 * Deletes the card.
+	 *
+	 * @return array
+	 */
+	public function delete()
+	{
+		$payload = $this->getPayload();
+
+		$card = $this->client->cards()->delete($payload)->toArray();
+
+		$this->card->delete();
+
+		return $card;
+	}
+
+	/**
+	 *
+	 *
+	 * @return \Cartalyst\Stripe\CardGateway
+	 */
+	public function makeDefault()
+	{
+		$this->default = true;
+
+		return $this;
+	}
+
+	/**
+	 * Sets the credit card as the default one.
+	 *
+	 * @return void
+	 */
+	public function setDefault()
+	{
+		$this->client->customers()->update([
+			'id'           => $entity->stripe_id,
+			'default_card' => $this->card->id,
+		])->toArray();
+
+		$this->card->update([
+			'default' => true,
+		]);
+
+		$this->billable->cards()
+			->where('default', true)
+			->where('stripe_id', '!=', $this->card->id)
+			->update([
+				'default' => false,
+			]);
+	}
+
+	/**
+	 * Returns the request payload.
+	 *
+	 * @param  array  $attributes
+	 * @return array
+	 */
+	protected function getPayload(array $attributes = [])
+	{
+		return array_merge($attributes, [
+			'id'       => $this->card->stripe_id,
+			'customer' => $this->billable->stripe_id,
+		]);
+	}
+
+}

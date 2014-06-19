@@ -33,7 +33,7 @@ $response = Stripe::cards()->create([
 ### Update a card
 
 ```php
-$card = Stripe::cards()->find([
+$card = Stripe::cards()->update([
 	'id'            => 'card_4EBj4AslJlNXPs',
 	'customer'      => 'cus_4DArhxP7RAFBaB',
 	'name'          => 'John Doe',

@@ -68,7 +68,7 @@ class SubscriptionGateway extends StripeGateway {
 	/**
 	 * The subscription object.
 	 *
-	 * @var \Cartalyst\Stripe\IlluminateSubscription
+	 * @var \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
 	protected $subscription;
 
@@ -99,6 +99,18 @@ class SubscriptionGateway extends StripeGateway {
 		{
 			$this->subscription = $subscription;
 		}
+	}
+
+	/**
+	 * Returns the current Stripe subscription.
+	 *
+	 * @return array
+	 */
+	public function find()
+	{
+		$payload = $this->getPayload();
+
+		return $this->client->subscriptions()->find($payload)->toArray();
 	}
 
 	/**
@@ -139,7 +151,7 @@ class SubscriptionGateway extends StripeGateway {
 			'trial_end' => $this->getTrialEndDate(),
 		]);
 
-		// Create the Stripe subscription
+		// Create the subscription on Stripe
 		$subscription = $this->client->subscriptions()->create($attributes)->toArray();
 
 		// Attach the created subscription to the billable entity
@@ -160,7 +172,7 @@ class SubscriptionGateway extends StripeGateway {
 	 */
 	public function update(array $attributes = [])
 	{
-		$payload = $this->getSubscriptionPayload($attributes);
+		$payload = $this->getPayload($attributes);
 
 		return $this->client->subscriptions()->update($payload)->toArray();
 	}
@@ -188,7 +200,7 @@ class SubscriptionGateway extends StripeGateway {
 
 		$this->updateLocalSubscriptionData($data);
 
-		$payload = $this->getSubscriptionPayload([
+		$payload = $this->getPayload([
 			'at_period_end' => $atPeriodEnd ? 'true' : 'false',
 		]);
 
@@ -200,6 +212,7 @@ class SubscriptionGateway extends StripeGateway {
 	 *
 	 * @return array
 	 */
+	# need to keep the subscription trial if it's active
 	public function resume()
 	{
 		$subscription = $this->update([
@@ -217,7 +230,6 @@ class SubscriptionGateway extends StripeGateway {
 		return $subscription;
 	}
 
-
 	/**
 	 * Cancels the subscription at the end of the period.
 	 *
@@ -228,9 +240,12 @@ class SubscriptionGateway extends StripeGateway {
 		return $this->cancel(true);
 	}
 
-
-
-
+	/**
+	 * Sets the token for the new card.
+	 *
+	 * @param  string  $token
+	 * @return \Cartalyst\Stripe\SubscriptionGateway
+	 */
 	public function setToken($token)
 	{
 		$this->token = $token;
@@ -238,6 +253,12 @@ class SubscriptionGateway extends StripeGateway {
 		return $this;
 	}
 
+	/**
+	 * The subscription plan name.
+	 *
+	 * @param  string  $plan
+	 * @return \Cartalyst\Stripe\SubscriptionGateway
+	 */
 	public function onPlan($plan)
 	{
 		$this->plan = $plan;
@@ -245,6 +266,12 @@ class SubscriptionGateway extends StripeGateway {
 		return $this;
 	}
 
+	/**
+	 * The discount that'll be applied to the subscription.
+	 *
+	 * @param  string  $coupon
+	 * @return \Cartalyst\Stripe\SubscriptionGateway
+	 */
 	public function withCoupon($coupon)
 	{
 		$this->coupon = $coupon;
@@ -252,6 +279,35 @@ class SubscriptionGateway extends StripeGateway {
 		return $this;
 	}
 
+	/**
+	 * Applies a discount to the subscription.
+	 *
+	 * @param  string  $coupon
+	 * @return array
+	 */
+	public function applyCoupon($coupon)
+	{
+		return $this->update(compact('coupon'));
+	}
+
+	/**
+	 * Removes the discount from the subscription.
+	 *
+	 * @return array
+	 */
+	public function removeCoupon()
+	{
+		$payload = $this->getPayload();
+
+		return $this->client->subscriptions()->deleteDiscount($payload)->toArray();
+	}
+
+	/**
+	 * The quantity that'll be applied to the subscription.
+	 *
+	 * @param  int  $quantity
+	 * @return \Cartalyst\Stripe\SubscriptionGateway
+	 */
 	public function quantity($quantity)
 	{
 		$this->quantity = $quantity;
@@ -259,6 +315,48 @@ class SubscriptionGateway extends StripeGateway {
 		return $this;
 	}
 
+	/**
+	 * Increments the subscription quantity.
+	 *
+	 * @param  int  $amount
+	 * @return \Cartalyst\Stripe\SubscriptionGateway
+	 */
+	public function increment($amount = 1)
+	{
+		$quantity = $this->find()['quantity'];
+
+		return $this->updateQuantity($quantity + $amount);
+	}
+
+	/**
+	 * Decrements the subscription quantity.
+	 *
+	 * @param  int  $amount
+	 * @return \Cartalyst\Stripe\SubscriptionGateway
+	 */
+	public function decrement($amount = 1)
+	{
+		$quantity = $this->find()['quantity'];
+
+		return $this->updateQuantity($quantity - $amount);
+	}
+
+	/**
+	 * Updates the subscription quantity.
+	 *
+	 * @param  int  $quantity
+	 * @return \Cartalyst\Stripe\SubscriptionGateway
+	 */
+	public function updateQuantity($quantity)
+	{
+		return $this->update(compact('quantity'));
+	}
+
+	/**
+	 * Indicates that the plan change should be prorated.
+	 *
+	 * @return \Cartalyst\Stripe\SubscriptionGateway
+	 */
 	public function prorate()
 	{
 		$this->prorate = true;
@@ -266,6 +364,11 @@ class SubscriptionGateway extends StripeGateway {
 		return $this;
 	}
 
+	/**
+	 * Indicates that the plan change should not be prorated.
+	 *
+	 * @return \Cartalyst\Stripe\SubscriptionGateway
+	 */
 	public function noProrate()
 	{
 		$this->prorate = false;
@@ -273,6 +376,12 @@ class SubscriptionGateway extends StripeGateway {
 		return $this;
 	}
 
+	/**
+	 * Specify the endig date of the trial.
+	 *
+	 * @param  \Carbon\Carbon  $trialEnd
+	 * @return \Cartalyst\Stripe\SubscriptionGateway
+	 */
 	public function trialFor(Carbon $trialEnd)
 	{
 		$this->trialEnd = $trialEnd;
@@ -280,6 +389,49 @@ class SubscriptionGateway extends StripeGateway {
 		return $this;
 	}
 
+	/**
+	 * Sets the trial period of the subscription.
+	 *
+	 * @param  \Carbon\Carbon  $period
+	 * @return array
+	 */
+	public function setTrialPeriod(Carbon $period)
+	{
+		$subscription = $this->update([
+			'trial_end' => $period->getTimestamp(),
+		]);
+
+		$this->updateLocalSubscriptionData([
+			'trial_ends_at' => $period,
+		]);
+
+		return $subscription;
+	}
+
+	/**
+	 * Removes the trial period of the subscription.
+	 *
+	 * @return array
+	 */
+	public function removeTrialPeriod()
+	{
+		$subscription = $this->update([
+			'trial_end' => 'now',
+		]);
+
+		$this->updateLocalSubscriptionData([
+			'trial_ends_at' => null,
+		]);
+
+		return $subscription;
+	}
+
+	/**
+	 * Indicates that the subscription shouldn't
+	 * have any trial end period.
+	 *
+	 * @return \Cartalyst\Stripe\SubscriptionGateway
+	 */
 	public function skipTrial()
 	{
 		$this->skipTrial = true;
@@ -289,7 +441,16 @@ class SubscriptionGateway extends StripeGateway {
 
 	public function maintainTrial()
 	{
-		//
+		if ($trialEnd = $this->getSubscriptionTrialEnd())
+		{
+			$this->calculateRemainingTrialDays($trialEnd);
+		}
+		else
+		{
+			$this->skipTrial();
+		}
+
+		return $this;
 	}
 
 	/**
@@ -304,17 +465,32 @@ class SubscriptionGateway extends StripeGateway {
 		return $this->trialEnd ? $this->trialEnd->getTimestamp() : null;
 	}
 
+	/**
+	 * Calculate the remaining trial days based on the current trial end.
+	 *
+	 * @param  \Carbon\Carbon  $trialEnd
+	 * @return
+	 */
+	protected function calculateRemainingTrialDays($trialEnd)
+	{
+		$diff = Carbon::now()->diffInHours($trialEnd);
 
+		return $diff > 0 ? $this->trialFor(Carbon::now()->addHours($diff)) : $this->skipTrial();
+	}
 
-	protected function getSubscriptionPayload($attributes)
+	/**
+	 * Returns the request payload.
+	 *
+	 * @param  array  $attributes
+	 * @return array
+	 */
+	protected function getPayload(array $attributes = [])
 	{
 		return array_merge($attributes, [
 			'id'       => $this->subscription->stripe_id,
 			'customer' => $this->billable->stripe_id,
 		]);
 	}
-
-
 
 	/**
 	 * Updates the local subscription data.
