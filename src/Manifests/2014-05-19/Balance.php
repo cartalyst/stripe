@@ -23,7 +23,7 @@ return [
 
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/balance',
-		'summary'       => 'Returns the current account balance.',
+		'summary'       => 'Retrieves the current account balance.',
 		'responseModel' => 'Response',
 
 	],
@@ -32,7 +32,7 @@ return [
 
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/balance/history',
-		'summary'       => 'Returns a list of transactions.',
+		'summary'       => 'Returns a list of transactions that have contributed to the Stripe account balance.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
@@ -58,7 +58,7 @@ return [
 			],
 
 			'ending_before' => [
-				'description' => 'A cursor to be used in the pagination.',
+				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
@@ -81,7 +81,7 @@ return [
 			],
 
 			'starting_after' => [
-				'description' => 'A cursor to be used in the pagination.',
+				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
@@ -118,12 +118,12 @@ return [
 
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/balance/history/{id}',
-		'summary'       => 'Retrieves the balance transaction.',
+		'summary'       => 'Retrieves the balance transaction with the given ID.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Transaction unique id.',
+				'description' => 'The transaction unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,

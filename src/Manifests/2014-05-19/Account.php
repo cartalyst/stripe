@@ -23,7 +23,7 @@ return [
 
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/account',
-		'summary'       => 'Get details about the account',
+		'summary'       => 'Retrieves the details of the account.',
 		'responseModel' => 'Response',
 
 	],

@@ -27,8 +27,29 @@ return [
 		'responseModel' => 'Response',
 		'parameters'    => [
 
+			'charge' => [
+				'description' => 'The charge unique identifier.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'created' => [
+				'description' => 'A filter on the list based on the object created field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
+				'location'    => 'query',
+				'type'        => ['string', 'array'],
+				'required'    => false,
+			],
+
+			'ending_before' => [
+				'description' => 'A cursor to be used in pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
 			'limit' => [
-				'description' => 'Limit of how many application fees are retrieved.',
+				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'min'         => 1,
@@ -37,28 +58,7 @@ return [
 			],
 
 			'starting_after' => [
-				'description' => 'A cursor to be used in the pagination.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'ending_before' => [
-				'description' => 'A cursor to be used in the pagination.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'created' => [
-				'description' => 'A filter based on the "created" field. Can be an exact UTC timestamp, or a hash.',
-				'location'    => 'query',
-				'type'        => ['string', 'array'],
-				'required'    => false,
-			],
-
-			'charge' => [
-				'description' => 'Charge unique identifier.',
+				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
@@ -86,12 +86,12 @@ return [
 
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/application_fees/{id}',
-		'summary'       => 'Returns details about an application fee that your account has collected.',
+		'summary'       => 'Retrieves the details about an application fee that your account has collected.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Application fee unique identifier.',
+				'description' => 'The application fee unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -112,19 +112,19 @@ return [
 
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/application_fees/{id}/refund',
-		'summary'       => 'Refund an application fee that has previously been collected but not yet refunded',
+		'summary'       => 'Refunds an application fee that has previously been collected but not yet refunded.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Application fee unique identifier.',
+				'description' => 'The application fee unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
 			'amount' => [
-				'description' => 'A positive integer in cents representing how many of this fee to refund.',
+				'description' => 'A positive integer in the smallest currency unit.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => false,

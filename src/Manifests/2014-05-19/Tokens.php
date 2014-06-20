@@ -35,7 +35,7 @@ return [
 			],
 
 			'card' => [
-				'description' => 'Unique card identifier (can either be a token or an array)',
+				'description' => 'The card unique identifier.',
 				'location'    => 'query',
 				'type'        => ['string', 'array'],
 				'required'    => false,
@@ -63,12 +63,12 @@ return [
 
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/tokens/{id}',
-		'summary'       => 'Returns details about an existing token.',
+		'summary'       => 'Retrieves the details about an existing token.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Token unique identifier.',
+				'description' => 'The token unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,

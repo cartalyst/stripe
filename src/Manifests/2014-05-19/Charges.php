@@ -23,12 +23,33 @@ return [
 
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/charges',
-		'summary'       => 'Returns all the existing charges.',
+		'summary'       => 'Returns a list of charges that were previously created.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
+			'created' => [
+				'description' => 'A filter on the list based on the object created field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
+				'location'    => 'query',
+				'type'        => ['string', 'array'],
+				'required'    => false,
+			],
+
+			'customer' => [
+				'description' => 'Only return charges for the customer specified by this customer ID.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'ending_before' => [
+				'description' => 'A cursor to be used in pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
 			'limit' => [
-				'description' => 'Limit of how many charges are retrieved.',
+				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'min'         => 1,
@@ -37,28 +58,7 @@ return [
 			],
 
 			'starting_after' => [
-				'description' => 'A cursor to be used in the pagination.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'ending_before' => [
-				'description' => 'A cursor to be used in the pagination.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'created' => [
-				'description' => 'A filter based on the "created" field. Can be an exact UTC timestamp, or a hash.',
-				'location'    => 'query',
-				'type'        => ['string', 'array'],
-				'required'    => false,
-			],
-
-			'customer' => [
-				'description' => 'Only return charges for a specific customer.',
+				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
@@ -86,12 +86,12 @@ return [
 
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/charges/{id}',
-		'summary'       => 'Returns an existing charge.',
+		'summary'       => 'Retrieves the details of a charge that has been previously created.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Charge unique identifier.',
+				'description' => 'The charge unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -112,12 +112,12 @@ return [
 
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/charges',
-		'summary'       => 'Create a new charge (either card or customer is needed)',
+		'summary'       => 'Creates a new charge.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'amount' => [
-				'description' => 'Amount (in cents).',
+				'description' => 'A positive integer in the smallest currency unit.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => true,
@@ -131,16 +131,30 @@ return [
 			],
 
 			'customer' => [
-				'description' => 'Unique client identifier.',
+				'description' => 'The unique customer identifier.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'card' => [
-				'description' => 'Unique card identifier (can either be an ID or a hash).',
+				'description' => 'A credit card to be charged.',
 				'location'    => 'query',
 				'type'        => ['string', 'array'],
+				'required'    => false,
+			],
+
+			'description' => [
+				'description' => 'An arbitrary string which you can attach to a charge object.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'metadata' => [
+				'description' => 'A set of key/value pairs that you can attach to a charge object.',
+				'location'    => 'query',
+				'type'        => 'array',
 				'required'    => false,
 			],
 
@@ -151,36 +165,22 @@ return [
 				'required'    => false,
 			],
 
-			'description' => [
-				'description' => 'Charge description. (optional)',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'metadata' => [
-				'description' => 'Metadata. (optional)',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
-
 			'statement_description' => [
-				'description' => 'An arbitrary string to be displayed alongside your company name on your customer\'s credit card statement',
+				'description' => 'An arbitrary string to be displayed alongside your company name on your customer\'s credit card statement.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'receipt_email' => [
-				'description' => 'The email address to send this charge\'s receipt to',
+				'description' => 'The email address to send this charge\'s receipt to.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'application_fee' => [
-				'description' => 'A fee in cents that will be applied to the charge and transferred to the application owner\'s Stripe account',
+				'description' => 'A fee in cents that will be applied to the charge and transferred to the application owner\'s Stripe account.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => false,
@@ -201,12 +201,12 @@ return [
 
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/charges/{id}',
-		'summary'       => 'Updates an existing charge.',
+		'summary'       => 'Updates the specified charge.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Charge unique identifier. to update',
+				'description' => 'The charge unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -241,19 +241,26 @@ return [
 
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/charges/{id}/capture',
-		'summary'       => 'Captures an existing charge.',
+		'summary'       => 'Captures the payment of specified, uncaptured, charge.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Charge unique identifier.',
+				'description' => 'The charge unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
 			'amount' => [
-				'description' => 'Amount (in cents) to capture.',
+				'description' => 'A positive integer in the smallest currency unit.',
+				'location'    => 'query',
+				'type'        => 'integer',
+				'required'    => false,
+			],
+
+			'application_fee' => [
+				'description' => 'An application fee to add on to this charge. Can only be used with Stripe Connect.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => false,
@@ -263,13 +270,6 @@ return [
 				'description' => 'The email address to send this charge\'s receipt to.',
 				'location'    => 'query',
 				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'application_fee' => [
-				'description' => 'A fee in cents that will be applied to the charge and transferred to the application owner\'s Stripe account.',
-				'location'    => 'query',
-				'type'        => 'integer',
 				'required'    => false,
 			],
 
@@ -288,26 +288,26 @@ return [
 
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/charges/{id}/refund',
-		'summary'       => 'Refunds an existing charge.',
+		'summary'       => 'Refunds the specified charge.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Charge unique identifier.',
+				'description' => 'The charge unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
 			'amount' => [
-				'description' => 'Amount (in cents), it defaults to the whole charge if not provided.',
+				'description' => 'A positive integer in cents representing how much of this charge to refund.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => false,
 			],
 
 			'refund_application_fee' => [
-				'description' => 'Indicate whether the application fee should be refunded when refunding this charge.',
+				'description' => 'Boolean indicating whether the application fee should be refunded when refunding this charge.',
 				'location'    => 'query',
 				'type'        => 'string', #'boolean', <- Guzzle converts to 1/0
 				'required'    => false,

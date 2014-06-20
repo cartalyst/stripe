@@ -23,12 +23,19 @@ return [
 
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/recipients',
-		'summary'       => 'Returns all the existing recipients.',
+		'summary'       => 'Returns a list of existing recipients.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
+			'ending_before' => [
+				'description' => 'A cursor to be used in pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
 			'limit' => [
-				'description' => 'Limit of how many recipients are retrieved.',
+				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'min'         => 1,
@@ -37,21 +44,14 @@ return [
 			],
 
 			'starting_after' => [
-				'description' => 'A cursor to be used in the pagination.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'ending_before' => [
-				'description' => 'A cursor to be used in the pagination.',
+				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'verified' => [
-				'description' => 'Boolean to only return recipients that are verified or unverified',
+				'description' => 'Boolean to only return recipients that are verified or unverified.',
 				'location'    => 'query',
 				'type'        => 'string', #'boolean', <- Guzzle converts to 1/0
 				'required'    => false,
@@ -72,12 +72,12 @@ return [
 
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/recipients/{id}',
-		'summary'       => 'Returns an existing recipient.',
+		'summary'       => 'Retrieves the details of an existing recipient.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Recipient unique identifier.',
+				'description' => 'The recipient unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -146,14 +146,14 @@ return [
 			],
 
 			'description' => [
-				'description' => 'Description. (optional)',
+				'description' => 'An arbitrary string which you can attach to a recipient object.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => false,
 			],
 
 			'metadata' => [
-				'description' => 'Metadata. (optional)',
+				'description' => 'A set of key/value pairs that you can attach to a recipient object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -179,7 +179,7 @@ return [
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Recipient unique identifier.',
+				'description' => 'The recipient unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -205,7 +205,7 @@ return [
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Recipient unique identifier.',
+				'description' => 'The recipient unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -240,14 +240,14 @@ return [
 			],
 
 			'description' => [
-				'description' => 'Description. (optional)',
+				'description' => 'An arbitrary string which you can attach to a recipient object.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => false,
 			],
 
 			'metadata' => [
-				'description' => 'Metadata. (optional)',
+				'description' => 'A set of key/value pairs that you can attach to a recipient object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,

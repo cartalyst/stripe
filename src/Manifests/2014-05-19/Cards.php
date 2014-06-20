@@ -23,19 +23,26 @@ return [
 
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/customers/{customer}/cards',
-		'summary'       => 'Returns all the cards of an existing customer.',
+		'summary'       => 'Returns a list of cards that belongs to the given customer.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'customer' => [
-				'description' => 'Customer unique identifier.',
+				'description' => 'The customer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
+			'ending_before' => [
+				'description' => 'A cursor to be used in pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
 			'limit' => [
-				'description' => 'Limit of how many cards are retrieved.',
+				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'min'         => 1,
@@ -44,14 +51,7 @@ return [
 			],
 
 			'starting_after' => [
-				'description' => 'A cursor to be used in the pagination.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'ending_before' => [
-				'description' => 'A cursor to be used in the pagination.',
+				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
@@ -80,18 +80,19 @@ return [
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/customers/{customer}/cards/{id}',
 		'summary'       => 'Returns a card from an existing customer.',
+		'summary'       => 'Retrieves the details of a card that belongs to the given customer.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
-			'id' => [
-				'description' => 'Card unique identifier.',
+			'customer' => [
+				'description' => 'The customer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
-			'customer' => [
-				'description' => 'Customer unique identifier.',
+			'id' => [
+				'description' => 'The card unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -112,19 +113,19 @@ return [
 
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/customers/{customer}/cards',
-		'summary'       => 'Creates a new card on an existing customer.',
+		'summary'       => 'Creates a new card on the given customer.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'customer' => [
-				'description' => 'Customer unique identifier.',
+				'description' => 'The customer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
 			'card' => [
-				'description' => 'Unique card identifier.',
+				'description' => 'The card unique identifier.',
 				'location'    => 'query',
 				'type'        => ['string', 'array'],
 				'required'    => true,
@@ -145,19 +146,19 @@ return [
 
 		'httpMethod'    => 'DELETE',
 		'uri'           => '/v1/customers/{customer}/cards/{id}',
-		'summary'       => 'Deletes an existing customer card.',
+		'summary'       => 'Deletes a card from the given customer.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
-			'id' => [
-				'description' => 'Card unique identifier.',
+			'customer' => [
+				'description' => 'The customer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
-			'customer' => [
-				'description' => 'Customer unique identifier.',
+			'id' => [
+				'description' => 'The card unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -178,19 +179,19 @@ return [
 
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/customers/{customer}/cards/{id}',
-		'summary'       => 'Updates an existing customer card.',
+		'summary'       => 'Updates a card from the given customer.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
-			'id' => [
-				'description' => 'Card unique identifier.',
+			'customer' => [
+				'description' => 'The customer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
-			'customer' => [
-				'description' => 'Customer unique identifier.',
+			'id' => [
+				'description' => 'The card unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -233,21 +234,24 @@ return [
 			],
 
 			'exp_month' => [
-				'location' => 'query',
-				'type'     => 'string',
-				'required' => false,
+				'description' => 'Two digit number representing the card\'s expiration month.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
 			],
 
 			'exp_year' => [
-				'location' => 'query',
-				'type'     => 'string',
-				'required' => false,
+				'description' => 'Two or four digit number representing the card\'s expiration year.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
 			],
 
 			'name' => [
-				'location' => 'query',
-				'type'     => 'string',
-				'required' => false,
+				'description' => 'Cardholder\'s full name.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
 			],
 
 			'expand' => [

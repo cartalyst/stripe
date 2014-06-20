@@ -23,12 +23,31 @@ return [
 
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/transfers',
-		'summary'       => 'Returns all the existing transfers.',
+		'summary'       => 'Returns a list of the existing transfers.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
+			'created' => [
+				'description' => 'A filter on the list based on the object created field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
+				'location'    => 'query',
+				'required'    => false,
+			],
+
+			'date' => [
+				'description' => 'A filter on the list based on the object date field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
+				'location'    => 'query',
+				'required'    => false,
+			],
+
+			'ending_before' => [
+				'description' => 'A cursor to be used in pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
 			'limit' => [
-				'description' => 'Limit of how many transfers are retrieved.',
+				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'min'         => 1,
@@ -36,35 +55,22 @@ return [
 				'required'    => false,
 			],
 
-			'starting_after' => [
-				'description' => 'A cursor to be used in the pagination.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'ending_before' => [
-				'description' => 'A cursor to be used in the pagination.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'date' => [
-				'description' => 'A filter based on the "date" field. Can be an exact UTC timestamp, or a hash',
-				'location'    => 'query',
-				'required'    => false,
-			],
-
 			'recipient' => [
-				'description' => 'Only return transfers for a specific recipient',
+				'description' => 'Only return transfers for the recipient specified by this recipient ID.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'starting_after' => [
+				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'status' => [
-				'description' => 'Optionally filter by status',
+				'description' => 'Only return transfers that have the given status: "pending", "paid", or "failed".',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
@@ -93,12 +99,12 @@ return [
 
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/transfers/{id}',
-		'summary'       => 'Returns an existing transfer.',
+		'summary'       => 'Retrieves the details of an existing transfer.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Transfer unique identifier.',
+				'description' => 'The transfer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -124,42 +130,42 @@ return [
 		'parameters'    => [
 
 			'amount' => [
-				'description' => 'Amount (in cents)',
+				'description' => 'A positive integer in the smallest currency unit.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => true,
 			],
 
 			'currency' => [
-				'description' => '3-letter ISO code for currency',
+				'description' => '3-letter ISO code for currency.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
 			'recipient' => [
-				'description' => 'Recipiend id.',
+				'description' => 'The ID of an existing, verified recipient.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
 			'description' => [
-				'description' => 'Description. (optional)',
+				'description' => 'An arbitrary string which you can attach to a transfer object.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'statement_description' => [
-				'description' => 'An arbitrary string which will be displayed on the recipient\'s bank statement',
+				'description' => 'An arbitrary string which will be displayed on the recipient\'s bank statement.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'metadata' => [
-				'description' => 'Metadata. (optional)',
+				'description' => 'A set of key/value pairs that you can attach to a transfer object',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -185,21 +191,21 @@ return [
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Transfer unique identifier. to update',
+				'description' => 'The transfer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
 			'description' => [
-				'description' => 'Description. (optional)',
+				'description' => 'An arbitrary string which you can attach to a transfer object.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'metadata' => [
-				'description' => 'Metadata. (optional)',
+				'description' => 'A set of key/value pairs that you can attach to a transfer object',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -225,7 +231,7 @@ return [
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Transfer unique identifier.',
+				'description' => 'The transfer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,

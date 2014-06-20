@@ -23,12 +23,26 @@ return [
 
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/events',
-		'summary'       => 'Returns details about all the events.',
+		'summary'       => 'Returns a list of events, going back up to 30 days.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
+			'created' => [
+				'description' => 'A filter on the list based on the object created field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
+				'location'    => 'query',
+				'type'        => ['string', 'array'],
+				'required'    => false,
+			],
+
+			'ending_before' => [
+				'description' => 'A cursor to be used in pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
 			'limit' => [
-				'description' => 'Limit of how many events are retrieved.',
+				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'min'         => 1,
@@ -37,28 +51,14 @@ return [
 			],
 
 			'starting_after' => [
-				'description' => 'A cursor to be used in the pagination.',
+				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
 				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'ending_before' => [
-				'description' => 'A cursor to be used in the pagination.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'created' => [
-				'description' => 'A filter based on the "created" field. Can be an exact UTC timestamp, or a hash.',
-				'location'    => 'query',
-				'type'        => ['string', 'array'],
 				'required'    => false,
 			],
 
 			'type' => [
-				'description' => 'Allows to filter events by type',
+				'description' => 'Allows to filter events by type.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
@@ -86,12 +86,12 @@ return [
 
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/events/{id}',
-		'summary'       => 'Returns details about an event.',
+		'summary'       => 'Retrieves the details of an event.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Event unique identifier.',
+				'description' => 'The event unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,

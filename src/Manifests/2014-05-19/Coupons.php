@@ -23,12 +23,19 @@ return [
 
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/coupons',
-		'summary'       => 'Returns all the existing coupons.',
+		'summary'       => 'Returns a list of coupons that were previously created.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
+			'ending_before' => [
+				'description' => 'A cursor to be used in pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
 			'limit' => [
-				'description' => 'Limit of how many coupons are retrieved.',
+				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'min'         => 1,
@@ -37,14 +44,7 @@ return [
 			],
 
 			'starting_after' => [
-				'description' => 'A cursor to be used in the pagination.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'ending_before' => [
-				'description' => 'A cursor to be used in the pagination.',
+				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
@@ -72,12 +72,12 @@ return [
 
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/coupons/{id}',
-		'summary'       => 'Returns an existing coupon.',
+		'summary'       => 'Retrieves the details of an existing coupon.',
 		'responseModel' => 'Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Coupon unique identifier.',
+				'description' => 'The coupon unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -179,7 +179,7 @@ return [
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Coupon unique identifier.',
+				'description' => 'The coupon unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
