@@ -236,6 +236,68 @@ class ChargeGateway extends StripeGateway {
 	}
 
 	/**
+	 * Syncronizes the Stripe charges data with the local data.
+	 *
+	 * @return void
+	 */
+	public function syncWithStripe()
+	{
+		$entity = $this->billable;
+
+		$charges = $this->client->charges()->all([
+			'customer' => $entity->stripe_id,
+		])->toArray();
+
+		foreach ($charges['data'] as $charge)
+		{
+			$stripeId = $charge['id'];
+
+			$_charge = $entity->charges()->where('stripe_id', $stripeId)->first();
+
+			$data = [
+				'stripe_id'   => $stripeId,
+				'description' => $charge['description'],
+				'amount'      => $charge['amount'],
+				'paid'        => $charge['paid'],
+				'captured'    => $charge['captured'],
+				'refunded'    => $charge['refunded'],
+				'created_at'  => Carbon::createFromTimestamp($charge['created']),
+			];
+
+			if ( ! $_charge)
+			{
+				$_charge = $entity->charges()->create($data);
+			}
+			else
+			{
+				$_charge->update($data);
+			}
+
+			foreach ($charge['refunds'] as $refund)
+			{
+				$transactionId = $refund['balance_transaction'];
+
+				$_refund = $entity->refunds()->where('transaction_id', $transactionId)->first();
+
+				$data = [
+					'transaction_id' => $transactionId,
+					'amount'         => $refund['amount'],
+					'created_at'     => Carbon::createFromTimestamp($refund['created']),
+				];
+
+				if ( ! $_refund)
+				{
+					$_charge->refunds()->create($data);
+				}
+				else
+				{
+					$_refund->update($data);
+				}
+			}
+		}
+	}
+
+	/**
 	 * Returns the request payload.
 	 *
 	 * @param  array  $attributes

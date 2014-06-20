@@ -30,8 +30,8 @@ class CardGateway extends StripeGateway {
 	protected $card;
 
 	/**
-	 * Flag for wether the credit card should be
-	 * made the default credit card.
+	 * Flag for wether the credit card should
+	 * be made the default credit card.
 	 *
 	 * @var bool
 	 */
@@ -180,6 +180,50 @@ class CardGateway extends StripeGateway {
 		])->toArray();
 
 		$this->updateDefaultLocalCard($this->card->stripe_id);
+	}
+
+	/**
+	 * Syncronizes the Stripe cards data with the local data.
+	 *
+	 * @return void
+	 */
+	public function syncWithStripe()
+	{
+		$entity = $this->billable;
+
+		$customer = $this->client->customers()->find([
+			'id' => $entity->stripe_id,
+		])->toArray();
+
+		$cards = $this->client->cards()->all([
+			'customer' => $entity->stripe_id,
+		])->toArray();
+
+		$defaultCard = $customer['default_card'];
+
+		foreach ($cards['data'] as $card)
+		{
+			$stripeId = $card['id'];
+
+			$_card = $entity->cards()->where('stripe_id', $stripeId)->first();
+
+			$data = [
+				'stripe_id' => $stripeId,
+				'last_our'  => $card['last4'],
+				'exp_month' => $card['exp_month'],
+				'exp_year'  => $card['exp_year'],
+				'default'   => $defaultCard === $stripeId ? true : false,
+			];
+
+			if ( ! $_card)
+			{
+				$entity->cards()->create($data);
+			}
+			else
+			{
+				$_card->update($data);
+			}
+		}
 	}
 
 	/**

@@ -212,10 +212,9 @@ class SubscriptionGateway extends StripeGateway {
 	 *
 	 * @return array
 	 */
-	# need to keep the subscription trial if it's active
 	public function resume()
 	{
-		$subscription = $this->update([
+		$subscription = $this->noProrate()->update([
 			'plan' => $this->subscription->plan,
 		]);
 
@@ -439,7 +438,98 @@ class SubscriptionGateway extends StripeGateway {
 		return $this;
 	}
 
-	public function maintainTrial()
+	/**
+	 * Swap the billable entity to a new plan.
+	 *
+	 * @return array
+	 */
+	public function swap()
+	{
+		if ( ! $this->trialEnd && ! $this->skipTrial)
+		{
+			$this->maintainTrial();
+		}
+
+		$subscription = $this->update([
+			'plan'      => $this->plan,
+			'trial_end' => $this->getTrialEndDate(),
+		]);
+
+		$this->updateLocalSubscriptionData([
+			'plan'          => $this->plan,
+			'trial_ends_at' => $this->trialEnd,
+		]);
+
+		return $subscription;
+	}
+
+	/**
+	 * Syncronizes the Stripe subscriptions data with the local data.
+	 *
+	 * @return void
+	 */
+	public function syncWithStripe()
+	{
+		$entity = $this->billable;
+
+		$subscriptions = $this->client->subscriptions()->all([
+			'id' => $entity->stripe_id,
+		])->toArray();
+
+		$stripeSubscriptions = [];
+
+		foreach ($subscriptions['data'] as $subscription)
+		{
+			$stripeSubscriptions[$subscription['id']] = $subscription;
+		}
+
+		// Loop through the current entity subscriptions, this is
+		// to make sure that expired subscriptions are in sync.
+		foreach ($entity->subscriptions as $subscription)
+		{
+			if ( ! array_get($stripeSubscriptions, $subscription->stripe_id) && ! $subscription->expired())
+			{
+				$subscription->update([
+					'active'   => 0,
+					'ended_at' => Carbon::now(),
+				]);
+			}
+		}
+
+		// Loop through the Stripe subscriptions
+		foreach ($stripeSubscriptions as $subscription)
+		{
+			$stripeId = $subscription['id'];
+
+			$_subscription = $entity->subscriptions()->where('stripe_id', $stripeId)->first();
+
+			$data = [
+				'active'        => 1,
+				'stripe_id'     => $stripeId,
+				'plan'          => $subscription['plan']['id'],
+				'created_at'    => Carbon::createFromTimestamp($subscription['current_period_start']),
+				'ends_at'       => Carbon::createFromTimestamp($subscription['current_period_end']),
+				'canceled_at'   => $this->nullableTimestamp($subscription['canceled_at']),
+				'trial_ends_at' => $this->nullableTimestamp($subscription['trial_end']),
+			];
+
+			if ( ! $_subscription)
+			{
+				$entity->subscriptions()->create($data);
+			}
+			else
+			{
+				$_subscription->update($data);
+			}
+		}
+	}
+
+	/**
+	 * Maintain the days left of the current trial (if applicable).
+	 *
+	 * @return \Cartalyst\Stripe\SubscriptionGateway
+	 */
+	protected function maintainTrial()
 	{
 		if ($trialEnd = $this->getSubscriptionTrialEnd())
 		{
@@ -451,6 +541,20 @@ class SubscriptionGateway extends StripeGateway {
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Get the trial end date for the customer's subscription.
+	 *
+	 * @param  object  $customer
+	 * @return \Carbon\Carbon|null
+	 */
+	protected function getSubscriptionTrialEnd()
+	{
+		if (isset($this->subscription) && isset($this->subscription->trial_ends_at))
+		{
+			return $this->subscription->trial_ends_at;
+		}
 	}
 
 	/**

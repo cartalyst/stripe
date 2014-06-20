@@ -65,7 +65,7 @@ interface BillableInterface {
 	public function subscription($subscription = null);
 
 	/**
-	 * Checks if the entity currently has any active subscriptions.
+	 * Checks if the entity has any active subscriptions.
 	 *
 	 * @return bool
 	 */

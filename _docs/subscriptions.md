@@ -45,7 +45,9 @@ $subscription = Stripe::subscriptions()->update([
 ### Retrieve all subscriptions
 
 ```php
-$subscriptions = Stripe::subscriptions()->all()->toArray();
+$subscriptions = Stripe::subscriptions()->all([
+	'id' => 'cus_4EBumIjyaKooft',
+])->toArray();
 
 foreach ($subscriptions['data'] as $subscription)
 {
