@@ -158,28 +158,24 @@ class ChargeGateway extends StripeGateway {
 		]));
 
 		// Refunds the charge on Stripe
-		$charge = $this->client->charges()->refund($payload)->toArray();
+		$refund = $this->client->charges()->refund($payload)->toArray();
 
-		// Store the refunded flag
-		$refunded = $charge['refunded'];
+		// Create the local refund entry
+		$this
+			->charge
+			->refunds()
+			->create([
+				'transaction_id' => $refund['balance_transaction'],
+				'amount'         => ($refund['amount'] / 100),
+			]);
+
+		// Get the updated charge
+		$charge = $this->client->charges()->find($this->getPayload())->toArray();
 
 		// Update the local charge entry
 		$this->charge->update([
-			'paid'     => $charge['paid'],
-			'refunded' => $refunded,
+			'refunded' => $charge['refunded'],
 		]);
-
-		// Was the charge successfully refunded?
-		if ($refunded)
-		{
-			$this
-				->charge
-				->refunds()
-				->create([
-					'transaction_id' => $charge['balance_transaction'],
-					'amount'         => ($charge['amount_refunded'] / 100),
-				]);
-		}
 
 		return $charge;
 	}
