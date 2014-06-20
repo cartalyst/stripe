@@ -28,7 +28,7 @@ return [
 		'parameters'    => [
 
 			'limit' => [
-				'description' => 'Limit of how many plans are retrieved.',
+				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'min'         => 1,
@@ -37,14 +37,14 @@ return [
 			],
 
 			'starting_after' => [
-				'description' => 'A cursor to be used in the pagination.',
+				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'ending_before' => [
-				'description' => 'A cursor to be used in the pagination.',
+				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,

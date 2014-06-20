@@ -87,7 +87,7 @@ class Stripe {
 			'User-Agent' => 'cartalyst-stripe-php',
 		]);
 
-		$this->setVersion($version ?: '2014-05-19');
+		$this->setVersion($version ?: '2014-06-17');
 
 		$this->setManifestPath($manifestPath ?: __DIR__.'/Manifests');
 	}

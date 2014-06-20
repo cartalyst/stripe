@@ -24,7 +24,7 @@ Package history and capabilities.
 	- Retrieve all the charges
 	- Retrieve an existing charge
 
-- Refunds (this needs to be implemented, it's from the latest Stripe change)
+- Refunds
 	- Retrieve an existing refund
 	- Update a refund
 	- Retrieve all the refunds

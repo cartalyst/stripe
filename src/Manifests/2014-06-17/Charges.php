@@ -287,7 +287,7 @@ return [
 	'refund' => [
 
 		'httpMethod'    => 'POST',
-		'uri'           => '/v1/charges/{id}/refund',
+		'uri'           => '/v1/charges/{id}/refunds',
 		'summary'       => 'Refunds the specified charge.',
 		'responseModel' => 'Response',
 		'parameters'    => [
@@ -315,6 +315,84 @@ return [
 
 			'expand' => [
 				'description' => 'Allows to expand properties.',
+				'location'    => 'query',
+				'type'        => 'array',
+				'required'    => false,
+			],
+
+		],
+
+	],
+
+	'refunds' => [
+
+		'httpMethod'    => 'POST',
+		'uri'           => '/v1/charges/{id}/refunds',
+		'summary'       => 'Retrieves a list of all the refunds of a charge.',
+		'responseModel' => 'Response',
+		'parameters'    => [
+
+			'id' => [
+				'description' => 'The charge unique identifier.',
+				'location'    => 'uri',
+				'type'        => 'string',
+				'required'    => true,
+			],
+
+		],
+
+	],
+
+	'findRefund' => [
+
+		'httpMethod'    => 'POST',
+		'uri'           => '/v1/charges/{charge}/refunds/{id}',
+		'summary'       => 'Retrieves the given refund.',
+		'responseModel' => 'Response',
+		'parameters'    => [
+
+			'charge' => [
+				'description' => 'The charge unique identifier.',
+				'location'    => 'uri',
+				'type'        => 'string',
+				'required'    => true,
+			],
+
+			'id' => [
+				'description' => 'The refund unique identifier.',
+				'location'    => 'uri',
+				'type'        => 'string',
+				'required'    => true,
+			],
+
+		],
+
+	],
+
+	'updateRefund' => [
+
+		'httpMethod'    => 'POST',
+		'uri'           => '/v1/charges/{charge}/refunds/{id}',
+		'summary'       => 'Updates the given refund.',
+		'responseModel' => 'Response',
+		'parameters'    => [
+
+			'charge' => [
+				'description' => 'The charge unique identifier.',
+				'location'    => 'uri',
+				'type'        => 'string',
+				'required'    => true,
+			],
+
+			'id' => [
+				'description' => 'The refund unique identifier.',
+				'location'    => 'uri',
+				'type'        => 'string',
+				'required'    => true,
+			],
+
+			'metadata' => [
+				'description' => 'A set of key/value pairs that you can attach to a charge object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
