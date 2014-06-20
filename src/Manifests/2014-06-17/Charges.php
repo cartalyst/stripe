@@ -326,7 +326,7 @@ return [
 
 	'refunds' => [
 
-		'httpMethod'    => 'POST',
+		'httpMethod'    => 'GET',
 		'uri'           => '/v1/charges/{id}/refunds',
 		'summary'       => 'Retrieves a list of all the refunds of a charge.',
 		'responseModel' => 'Response',
@@ -345,7 +345,7 @@ return [
 
 	'findRefund' => [
 
-		'httpMethod'    => 'POST',
+		'httpMethod'    => 'GET',
 		'uri'           => '/v1/charges/{charge}/refunds/{id}',
 		'summary'       => 'Retrieves the given refund.',
 		'responseModel' => 'Response',
