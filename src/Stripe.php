@@ -244,9 +244,9 @@ class Stripe {
 	 */
 	protected function getManifestPayload($method)
 	{
-		return array_merge($this->getManifest(), [
-			'operations' => $this->getRequestManifestPayload($method),
-		]);
+		$operations = $this->getRequestManifestPayload($method);
+
+		return array_merge($this->getManifest(), compact('operations'));
 	}
 
 	/**
