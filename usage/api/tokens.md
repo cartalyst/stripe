@@ -2,10 +2,10 @@
 
 ### Create a card token
 
-Key      | Required | Type            | Description
--------- | -------- | --------------- | ----------------------------------------
-card     | true     | string or array | The card unique identifier.
-customer | false    | string          | A customer to create a token for.
+Key      | Required | Type            | Default | Description
+-------- | -------- | --------------- | ------- | ------------------------------
+card     | true     | string or array | null    | The card unique identifier.
+customer | false    | string          | null    | A customer to create a token for.
 
 ```php
 $token = Stripe::tokens()->create([
@@ -22,9 +22,9 @@ echo $token['id'];
 
 ### Create a bank account token
 
-Key          | Required | Type  | Description
------------- | -------- | ----- | ----------------------------------------------
-bank_account | true     | array | A bank account to attach to the recipient.
+Key          | Required | Type  | Default | Description
+------------ | -------- | ----- | ------- | ------------------------------------
+bank_account | true     | array | null    | A bank account to attach to the recipient.
 
 ```php
 $token = Stripe::tokens()->create([
