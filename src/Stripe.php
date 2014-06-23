@@ -82,9 +82,10 @@ class Stripe {
 		// Set the Stripe API key for authentication
 		$this->setStripeKey($stripeKey);
 
-		// Set the client user agent
+		// Set the client headers
 		$this->setHeaders([
-			'User-Agent' => 'cartalyst-stripe-php',
+			'User-Agent'     => 'cartalyst-stripe-php',
+			'Stripe-Version' => (string) $version,
 		]);
 
 		$this->setVersion($version ?: '2014-06-17');
@@ -177,6 +178,8 @@ class Stripe {
 	 */
 	public function setHeaders(array $headers = [])
 	{
+		$headers = array_merge($this->getHeaders(), $headers);
+
 		$this->client->setDefaultOption('headers', $headers);
 	}
 
@@ -272,7 +275,7 @@ class Stripe {
 	{
 		if ( ! $manifest = array_get($this->manifests, $method))
 		{
-			$manifest = require $this->getRequestManifestPath($method);
+			$manifest = require_once $this->getRequestManifestPath($method);
 
 			array_set($this->manifests, $method, $manifest);
 		}
