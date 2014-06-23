@@ -5,6 +5,9 @@
 		"integration"
 	],
 	"usage": [
+		"api",
+		"api/charges",
+		"api/customers",
 		"index",
 		"cards",
 		"charges",

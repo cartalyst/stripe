@@ -1,6 +1,6 @@
-# Usage
+# Billable Entities
 
-In this section we'll show how you can use the Stripe package with your model.
+In this section we'll show how you can use the entity billing feature.
 
 We'll use a User model for the following examples.
 

@@ -2,6 +2,18 @@
 
 ## Laravel 4
 
+The Stripe package has optional support for Laravel 4 and it comes bundled with a Service Provider and a Facade for easy integration.
+
+After installing the package, open your Laravel config file located at `app/config/app.php` and add the following lines.
+
+In the `$providers` array add the following service provider for this package.
+
+	'Cartalyst\Stripe\Laravel\StripeServiceProvider',
+
+In the `$aliases` array add the following facade for this package.
+
+	'Stripe' => 'Cartalyst\Stripe\Laravel\Facades\Stripe',
+
 ### Migrations
 
 Just run the following command
@@ -12,7 +24,7 @@ php artisan migrate --package=cartalyst/stripe
 
 ### Model setup
 
-Add the BillableTrait to your model:
+Add the `BillableTrait` to your model:
 
 ```php
 use Cartalyst\Stripe\BillableTrait;
@@ -25,7 +37,7 @@ class User extends Eloquent implements BillableInterface {
 }
 ```
 
-### Set the Stripe Key
+### Set the Stripe API Key
 
 First and recommended option is to add the stripe key into the `app/config/services.php` file, just follow the example
 
@@ -43,8 +55,3 @@ return [
 
 > **Note:** In case you don't have this file, you can simply create it.
 
-Second option is to setup the Stripe key in one of your bootstrap files:
-
-```php
-User::setStripeKey('your-stripe-key');
-```
