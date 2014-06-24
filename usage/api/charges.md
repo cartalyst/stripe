@@ -19,7 +19,7 @@ application_fee       | false    | int             | null    | An application fe
 $charge = Stripe::charges()->update([
 	'customer' => 'cus_4EBumIjyaKooft',
 	'currency' => 'USD',
-	'amount'   => 5049,
+	'amount'   => 5049, # $50.49
 ])->toArray();
 
 echo $charge['id'];
