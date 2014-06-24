@@ -1,11 +1,12 @@
 {
 	"name": "cartalyst/stripe",
-	"description": "A comprehensive billing package for stripe.",
+	"description": "A comprehensive billing and API package for Stripe.",
 	"keywords": [
 		"php",
 		"cartalyst",
 		"laravel",
-		"stripe"
+		"stripe",
+		"billing"
 	],
 	"license": "proprietary",
 	"authors": [
@@ -37,7 +38,8 @@
 		"php": ">=5.4.0",
 		"illuminate/support": "~4.1",
 		"nesbot/carbon": "~1.0",
-		"stripe/stripe-php": "~1.0"
+		"guzzlehttp/guzzle": "~4.0",
+		"guzzlehttp/guzzle-services": "~0.3"
 	},
 	"require-dev": {
 		"mockery/mockery": "~0.9",

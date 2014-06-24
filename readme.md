@@ -1,6 +1,6 @@
 # Stripe
 
-A comprehensive billing package for stripe.
+A comprehensive billing and API package for [Stripe](https://stripe.com/).
 
 The package requires PHP 5.4+ and follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP.
 
@@ -13,6 +13,116 @@ The package was inspired in the Laravel Cashier by Taylor Otwell.
 Package history and capabilities.
 
 #### xx-May-14 - v1.0.0
+
+#### API
+
+- Charges
+	- Create a new charge
+	- Update an existing charge
+	- Capture the payment of an existing, uncaptured, charge
+	- Refund a charge
+	- Retrieve all the charges
+	- Retrieve an existing charge
+
+- Refunds
+	- Retrieve an existing refund
+	- Update a refund
+	- Retrieve all the refunds
+
+- Customers
+	- Create a new customer
+	- Update an existing customer
+	- Delete an existing customer
+	- Retrieve all the existing customers
+	- Retrieve an existing customer
+	- Delete an existing customer discount
+
+- Cards
+	- Create a new card
+	- Update a card
+	- Delete a card
+	- Retrieve all cards attached to a customer
+	- Retrieve a card attached to an existing customer
+
+- Subscriptions
+	- Create a new subscription
+	- Update a subscription
+	- Cancel a subscription
+	- Retrieve all active subscriptions
+	- Retrieve an existing subscription
+	- Delete an existing subscription discount
+
+- Plans
+	- Create a new plan
+	- Update an existing plan
+	- Delete an existing plan
+	- Retrieve all the existing plans
+	- Retrieve an existing plan
+
+- Coupons
+	- Create a new coupon
+	- Delete an existing coupon
+	- Retrieve all the existing coupons
+	- Retrieve an existing coupon
+
+- Invoices
+	- Create a new invoice
+	- Update an existing invoice
+	- Delete an existing invoice
+	- Retrieve all the existing invoices
+	- Retrieve an existing invoice
+	- Retrieve an existing invoice line items
+	- Retrieve the upcoming invoice
+	- Pay an existing invoice
+
+- Invoice Items
+	- Create a new invoice item
+	- Update an existing invoice item
+	- Delete an existing invoice item
+	- Retrieve all the existing invoice items
+	- Retrieve an existing invoice item
+
+- Disputes
+	- Update a dispute
+	- Close a dispute
+
+- Transfers
+	- Create a new transfer
+	- Update an existing transfer
+	- Cancel an existing transfer
+	- Retrieve all the existing transfers
+	- Retrieve an existing transfer
+
+- Recipients
+	- Create a new recipient
+	- Update an existing recipient
+	- Delete an existing recipient
+	- Retrieve all the existing recipients
+	- Retrieve an existing recipient
+
+- Application Fees
+	- Retrieve all the existing application fees
+	- Retrieve an existing application fee
+	- Refund an application fee
+
+- Account
+	- Retrieve the account details
+
+- Balance
+	- Retrieve all the transactions
+	- Retrieve an existing transaction balance history
+	- Retrieve the current balance
+
+- Events
+	- Retrieve all the events
+	- Retrieve an event
+
+- Tokens
+	- Create a new card token
+	- Create a new bank account token
+	- Retrieve an existing token
+
+#### Billable entities
 
 - Can apply a coupon to the user.
 - Can swap the default user credit card.

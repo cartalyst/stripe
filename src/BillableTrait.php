@@ -17,10 +17,7 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Stripe\Card\CardGateway;
-use Cartalyst\Stripe\Charge\ChargeGateway;
-use Cartalyst\Stripe\Subscription\SubscriptionGateway;
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\App;
 
 trait BillableTrait {
 
@@ -29,21 +26,22 @@ trait BillableTrait {
 	 *
 	 * @var \Cartalyst\Stripe\StripeGateway
 	 */
-	protected $gateway = null;
+	protected $gateway;
 
 	/**
-	 * The Stripe Customer instance.
+	 * The Stripe instance.
 	 *
-	 * @var \Stripe_Customer
+	 * @var \Cartalyst\Stripe\Stripe
 	 */
-	protected $customer = null;
+	protected $stripeClient;
 
 	/**
-	 * The Stripe API key.
-	 *
-	 * @var string
+	 * {@inheritDoc}
 	 */
-	protected static $stripeKey;
+	public function cards()
+	{
+		return $this->hasMany('Cartalyst\Stripe\Models\IlluminateCard');
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -56,22 +54,9 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function cards()
+	public function charges()
 	{
-		return $this->hasMany('Cartalyst\Stripe\Card\IlluminateCard');
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function updateDefaultCard($token)
-	{
-		$customer = $this->getStripeCustomer();
-		$customer->card = $token;
-		$customer->save();
-
-		$this->last_four = $customer->cards->retrieve($customer->default_card)->last4;
-		$this->save();
+		return $this->hasMany('Cartalyst\Stripe\Models\IlluminateCharge');
 	}
 
 	/**
@@ -85,9 +70,9 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function charges()
+	public function subscriptions()
 	{
-		return $this->hasMany('Cartalyst\Stripe\Charge\IlluminateCharge');
+		return $this->hasMany('Cartalyst\Stripe\Models\IlluminateSubscription');
 	}
 
 	/**
@@ -96,14 +81,6 @@ trait BillableTrait {
 	public function subscription($subscription = null)
 	{
 		return new SubscriptionGateway($this, $subscription);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function subscriptions()
-	{
-		return $this->hasMany('Cartalyst\Stripe\Subscription\IlluminateSubscription');
 	}
 
 	/**
@@ -127,11 +104,21 @@ trait BillableTrait {
 	 */
 	public function applyCoupon($coupon)
 	{
-		$customer = $this->getStripeCustomer();
+		return $this->getStripeClient()->customers()->update([
+			'id'     => $this->getStripeId(),
+			'coupon' => $coupon,
+		])->toArray();
+	}
 
-		$customer->coupon = $coupon;
-
-		$customer->save();
+	/**
+	 * {@inheritDoc}
+	 */
+	public function updateDefaultCard($token)
+	{
+		return $this->getStripeClient()->customers()->update([
+			'id'   => $this->getStripeId(),
+			'card' => $token,
+		])->toArray();
 	}
 
 	/**
@@ -140,30 +127,6 @@ trait BillableTrait {
 	public function getStripeId()
 	{
 		return $this->stripe_id;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getStripeCustomer()
-	{
-		return $this->customer ?: $this->gateway()->getStripeCustomer();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public static function getStripeKey()
-	{
-		return static::$stripeKey ?: Config::get('services.stripe.secret');
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public static function setStripeKey($key)
-	{
-		static::$stripeKey = $key;
 	}
 
 	/**
@@ -179,7 +142,17 @@ trait BillableTrait {
 	}
 
 	/**
-	 * Returns the Stripe gateway.
+	 * Returns the Stripe instance.
+	 *
+	 * @return \Cartalyst\Stripe\Stripe
+	 */
+	public function getStripeClient()
+	{
+		return $this->stripeClient ?: App::make('stripe');
+	}
+
+	/**
+	 * Returns the Stripe gateway instance.
 	 *
 	 * @return \Cartalyst\Stripe\StripeGateway
 	 */

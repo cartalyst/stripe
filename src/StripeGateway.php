@@ -18,20 +18,26 @@
  */
 
 use Carbon\Carbon;
-use Stripe;
-use Stripe_Customer;
+use GuzzleHttp\Command\Exception\CommandClientException;
 
-class StripeGateway {
+abstract class StripeGateway {
 
 	/**
-	 * The billable instance.
+	 * The billable entity
 	 *
 	 * @var \Cartalyst\Stripe\BillableInterface
 	 */
 	protected $billable;
 
 	/**
-	 * Create a new Stripe gateway instance.
+	 * The Stripe client.
+	 *
+	 * @var \Cartalyst\Stripe\Stripe
+	 */
+	protected $client;
+
+	/**
+	 * Constructor.
 	 *
 	 * @param  \Cartalyst\Stripe\BillableInterface  $billable
 	 * @return void
@@ -40,97 +46,31 @@ class StripeGateway {
 	{
 		$this->billable = $billable;
 
-		Stripe::setApiKey($this->getStripeKey());
+		$this->client = $this->getStripeClient();
 	}
 
 	/**
-	 * Create a new Stripe customer.
+	 * Finds or creates a Stripe customer.
 	 *
-	 * @param  string  $token
+	 * @param  int  $id
 	 * @param  array  $attributes
-	 * @return \Stripe_Customer
+	 * @return array
 	 */
-	public function createStripeCustomer($token, array $attributes = [])
+	protected function findOrCreate($id, array $attributes = [])
 	{
-		$attributes = array_merge($attributes, ['card' => $token]);
-
-		$customer = Stripe_Customer::create($attributes, $this->getStripeKey());
-
-		$card = $customer->cards->retrieve($customer->default_card);
-
-		$this->billable->cards()->create([
-			'stripe_id' => $card->id,
-			'last_four' => $card->last4,
-			'exp_month' => $card->exp_month,
-			'exp_year'  => $card->exp_year,
-			'default'   => true,
-		]);
-
-		return $customer;
-	}
-
-	/**
-	 * Updates the Stripe customer.
-	 *
-	 * @param  string  $id
-	 * @param  array  $attributes
-	 * @return \Stripe_Customer
-	 */
-	public function updateStripeCustomer($id, array $attributes = [])
-	{
-		$customer = $this->getStripeCustomer($id);
-
-		foreach ($attributes as $key => $value)
+		try
 		{
-			$customer->{$key} = $value;
+			$customer = $this->client->customers()->find(compact('id'))->toArray();
+		}
+		catch (CommandClientException $e)
+		{
+			$customer = $this->client->customers()->create($attributes)->toArray();
+
+			$this->billable->stripe_id = $customer['id'];
+			$this->billable->save();
 		}
 
-		$customer->save();
-
 		return $customer;
-	}
-
-	/**
-	 * Returns the Stripe customer for entity.
-	 *
-	 * @param  string  $id
-	 * @return \Stripe_Customer
-	 */
-	public function getStripeCustomer($id = null)
-	{
-		return Stripe_Customer::retrieve(
-			$id ?: $this->billable->getStripeId(),
-			$this->getStripeKey()
-		);
-	}
-
-	/**
-	 * Update the local Stripe data in storage.
-	 *
-	 * @param  \Stripe_Customer  $customer
-	 * @return void
-	 */
-	public function updateLocalStripeData($customer)
-	{
-		$entity = $this->billable;
-
-		if ($customer->cards->total_count > 1)
-		{
-			$card = $customer->cards->retrieve($customer->default_card);
-
-			$entity
-				->cards()
-				->where('default', 1)
-				->update(['default' => 0]);
-
-			$entity
-				->cards()
-				->where('stripe_id', $card->id)
-				->update(['default' => 1]);
-		}
-
-		$entity->stripe_id = $customer->id;
-		$entity->save();
 	}
 
 	/**
@@ -138,26 +78,34 @@ class StripeGateway {
 	 * is valid and returns null otherwise.
 	 *
 	 * @param  int  $timestamp
-	 * @return \Carbon\Carbon
+	 * @return \Carbon\Carbon|null
 	 */
 	protected function nullableTimestamp($timestamp)
 	{
-		if ( ! $timestamp)
-		{
-			return null;
-		}
+		if ( ! $timestamp) return null;
 
 		return Carbon::createFromTimestamp($timestamp);
 	}
 
 	/**
-	 * Get the Stripe API key for the instance.
+	 * Returns the Stripe client.
 	 *
-	 * @return string
+	 * @return \Cartalyst\Stripe\Stripe
 	 */
-	protected function getStripeKey()
+	protected function getStripeClient()
 	{
-		return $this->billable->getStripeKey();
+		return $this->client ?: $this->billable->getStripeClient();
+	}
+
+	/**
+	 * Converts the amount from "dollars" to cents.
+	 *
+	 * @param  int  $amount
+	 * @return int
+	 */
+	protected function convertToCents($amount)
+	{
+		return (int) ($amount * 100);
 	}
 
 }
