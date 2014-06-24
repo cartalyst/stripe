@@ -1,6 +1,6 @@
 # Stripe
 
-A comprehensive billing package for stripe.
+A comprehensive billing and API package for [Stripe](https://stripe.com/).
 
 The package requires PHP 5.4+ and follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP.
 

@@ -1,11 +1,12 @@
 {
 	"name": "cartalyst/stripe",
-	"description": "A comprehensive billing package for stripe.",
+	"description": "A comprehensive billing and API package for Stripe.",
 	"keywords": [
 		"php",
 		"cartalyst",
 		"laravel",
-		"stripe"
+		"stripe",
+		"billing"
 	],
 	"license": "proprietary",
 	"authors": [
