@@ -36,11 +36,34 @@ trait BillableTrait {
 	protected $stripeClient;
 
 	/**
+	 * The Eloquent card model.
+	 *
+	 * @var string
+	 */
+	protected static $cardModel = 'Cartalyst\Stripe\Models\IlluminateCard';
+
+	/**
+	 * The Eloquent charge model.
+	 *
+	 * @var string
+	 */
+	protected static $chargeModel = 'Cartalyst\Stripe\Models\IlluminateCharge';
+
+
+	/**
+	 * The Eloquent subscription model.
+	 *
+	 * @var string
+	 */
+	protected static $subscriptionModel = 'Cartalyst\Stripe\Models\IlluminateSubscription';
+
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public function cards()
 	{
-		return $this->hasMany('Cartalyst\Stripe\Models\IlluminateCard');
+		return $this->hasMany(static::$cardModel);
 	}
 
 	/**
@@ -54,9 +77,17 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
+	public static function setCardModel($model)
+	{
+		static::$cardModel = $model;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function charges()
 	{
-		return $this->hasMany('Cartalyst\Stripe\Models\IlluminateCharge');
+		return $this->hasMany(static::$chargeModel);
 	}
 
 	/**
@@ -70,9 +101,17 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
+	public static function setChargeModel($model)
+	{
+		static::$chargeModel = $model;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function subscriptions()
 	{
-		return $this->hasMany('Cartalyst\Stripe\Models\IlluminateSubscription');
+		return $this->hasMany(static::$subscriptionModel);
 	}
 
 	/**
@@ -81,6 +120,14 @@ trait BillableTrait {
 	public function subscription($subscription = null)
 	{
 		return new SubscriptionGateway($this, $subscription);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public static function setSubscriptionModel($model)
+	{
+		static::$subscriptionModel = $model;
 	}
 
 	/**

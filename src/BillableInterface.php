@@ -35,6 +35,14 @@ interface BillableInterface {
 	public function card($card = null);
 
 	/**
+	 * Sets the Eloquent card model.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public static function setCardModel($model);
+
+	/**
 	 * Returns all the charges that this entity has made.
 	 *
 	 * @return \Cartalyst\Stripe\Models\IlluminateCharge
@@ -50,6 +58,14 @@ interface BillableInterface {
 	public function charge($charge = null);
 
 	/**
+	 * Sets the Eloquent charge model.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public static function setChargeModel($model);
+
+	/**
 	 * Returns all the subscriptions that this entity has.
 	 *
 	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
@@ -63,6 +79,14 @@ interface BillableInterface {
 	 * @return \Cartalyst\Stripe\SubscriptionGateway
 	 */
 	public function subscription($subscription = null);
+
+	/**
+	 * Sets the Eloquent subscription model.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public static function setSubscriptionModel($model);
 
 	/**
 	 * Checks if the entity has any active subscriptions.

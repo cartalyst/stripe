@@ -36,13 +36,31 @@ class IlluminateRefund extends Model {
 	];
 
 	/**
+	 * The Eloquent charges model.
+	 *
+	 * @var string
+	 */
+	protected static $chargeModel = 'Cartalyst\Stripe\Models\IlluminateCharge';
+
+	/**
 	 * Returns the charge associated to this refund.
 	 *
 	 * @return \Carbon\Stripe\Models\IlluminateCharge
 	 */
 	public function charge()
 	{
-		return $this->belongsTo('Cartalyst\Stripe\Models\IlluminateCharge', 'payment_id');
+		return $this->belongsTo(static::$chargeModel, 'payment_id');
+	}
+
+	/**
+	 * Sets the Eloquent model to be used for charges relationships.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public static function setChargeModel($model)
+	{
+		static::$chargeModel = $model;
 	}
 
 }

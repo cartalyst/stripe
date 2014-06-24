@@ -41,6 +41,13 @@ class IlluminateCharge extends Model {
 	];
 
 	/**
+	 * The Eloquent refunds model.
+	 *
+	 * @var string
+	 */
+	protected static $refundModel = 'Cartalyst\Stripe\Models\IlluminateRefund';
+
+	/**
 	 * Checks if the charge is partially refunded.
 	 *
 	 * @return bool
@@ -57,7 +64,7 @@ class IlluminateCharge extends Model {
 	 */
 	public function refunds()
 	{
-		return $this->hasMany('Cartalyst\Stripe\Models\IlluminateRefund', 'payment_id');
+		return $this->hasMany(static::$refundModel, 'payment_id');
 	}
 
 	/**
@@ -68,6 +75,17 @@ class IlluminateCharge extends Model {
 	public function getAmountRefundedAttribute()
 	{
 		return $this->refunds()->sum('amount');
+	}
+
+	/**
+	 * Sets the Eloquent model to be used for refunds relationships.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public static function setRefundModel($model)
+	{
+		static::$refundModel = $model;
 	}
 
 }
