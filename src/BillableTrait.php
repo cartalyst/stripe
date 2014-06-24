@@ -49,14 +49,12 @@ trait BillableTrait {
 	 */
 	protected static $chargeModel = 'Cartalyst\Stripe\Models\IlluminateCharge';
 
-
 	/**
 	 * The Eloquent subscription model.
 	 *
 	 * @var string
 	 */
 	protected static $subscriptionModel = 'Cartalyst\Stripe\Models\IlluminateSubscription';
-
 
 	/**
 	 * {@inheritDoc}
