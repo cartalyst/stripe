@@ -3,16 +3,16 @@
 ### Create a new customer
 
 Key             | Required | Type            | Default | Description
---------------- | -------- | --------------- | ---------------------------------
-account_balance | false    | integer         | An integer amount in cents that is the starting account balance for your customer.
-card            | false    | string or array | Unique card identifier (can either be an ID or a hash).
-coupon          | false    | string          | Coupon identifier that applies a discount on all recurring charges.
-plan            | false    | string          | Plan for the customer.
-quantity        | false    | integer         | Quantity you'd like to apply to the subscription you're creating.
-trial_end       | false    | integer         | UTC integer timestamp representing the end of the trial period the customer will get before being charged for the first time.
-description     | false    | string          | An arbitrary string that you can attach to a customer object.
-email           | false    | string          | Customer’s email address.
-metadata        | false    | array           | A set of key/value pairs that you can attach to a customer object.
+--------------- | -------- | --------------- | ------- | -----------------------
+account_balance | false    | integer         | null    | An integer amount in cents that is the starting account balance for your customer.
+card            | false    | string or array | null    | Unique card identifier (can either be an ID or a hash).
+coupon          | false    | string          | null    | Coupon identifier that applies a discount on all recurring charges.
+plan            | false    | string          | null    | Plan for the customer.
+quantity        | false    | integer         | null    | Quantity you'd like to apply to the subscription you're creating.
+trial_end       | false    | integer         | null    | UTC integer timestamp representing the end of the trial period the customer will get before being charged for the first time.
+description     | false    | string          | null    | An arbitrary string that you can attach to a customer object.
+email           | false    | string          | null    | Customer’s email address.
+metadata        | false    | array           | null    | A set of key/value pairs that you can attach to a customer object.
 
 ```php
 $customer = Stripe::customers()->create([

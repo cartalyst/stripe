@@ -11,7 +11,7 @@ bank_account | false    | array           | null    | A bank account to attach t
 card         | false    | string or array | null    | The card token or an array.
 email        | false    | string          | null    | The recipient's email address.
 description  | false    | string          | null    | An arbitrary string which you can attach to a recipient object.
-metadata     | false    | array           | null    | A set of key/value pairs that you can attach to a recipient object
+metadata     | false    | array           | null    | A set of key/value pairs that you can attach to a recipient object.
 
 ```php
 $recipient = Stripe::recipients()->create([
@@ -32,7 +32,7 @@ card         | false    | string or array | null    | The card token or an array
 default_card | false    | string          | null    | ID of card to make the recipient’s new default for transfers.
 email        | false    | string          | null    | The recipient's email address.
 description  | false    | string          | null    | An arbitrary string which you can attach to a recipient object.
-metadata     | false    | array           | null    | A set of key/value pairs that you can attach to a recipient object
+metadata     | false    | array           | null    | A set of key/value pairs that you can attach to a recipient object.
 
 ```php
 $recipient = Stripe::recipients()->update([

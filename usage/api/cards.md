@@ -2,21 +2,20 @@
 
 ### Create a new card
 
-Create a new credit card and attach it to a customer.
+Key      | Required | Type            | Default | Description
+-------- | -------- | --------------- | ------- | --------------------------------------
+customer | true     | string          | null    | The customer unique identifier.
+card     | true     | string or array | null    | The card unique identifier.
 
 ```php
-$token = Stripe::tokens()->create([
-	'card' => [
+$card = Stripe::cards()->create([
+	'customer' => 'cus_4DArhxP7RAFBaB',
+	'card'     => [
 		'number'    => '4242424242424242',
 		'exp_month' => 6,
 		'exp_year'  => 2015,
-		'cvc'       => '314'
+		'cvc'       => '314',
 	],
-])->toArray();
-
-$card = Stripe::cards()->create([
-	'customer' => 'cus_4DArhxP7RAFBaB',
-	'card'     => $token['id'],
 ])->toArray();
 ```
 
@@ -32,6 +31,19 @@ $response = Stripe::cards()->create([
 
 ### Update a card
 
+Key           | Required | Type   | Default | Description
+------------- | -------- | ------ | ------- | --------------------------------------
+id            | true     | string | null    | The card unique identifier.
+customer      | true     | string | null    | The customer unique identifier.
+name          | false    | string | null    | The card holder name.
+address_city  | false    | string | null    | The card holder city.
+address_line1 | false    | string | null    | The card holder address line 1.
+address_line2 | false    | string | null    | The card holder address line 2.
+address_state | false    | string | null    | The card holder state.
+address_zip   | false    | string | null    | The card holder address zip code.
+exp_month     | false    | string | null    | The card expiration month.
+exp_year      | false    | string | null    | The card expiration year.
+
 ```php
 $card = Stripe::cards()->update([
 	'id'            => 'card_4EBj4AslJlNXPs',
@@ -43,6 +55,11 @@ $card = Stripe::cards()->update([
 
 ### Delete a card
 
+Key      | Required | Type   | Default | Description
+-------- | -------- | ------ | ------- | --------------------------------------
+id       | true     | string | null    | The card unique identifier.
+customer | true     | string | null    | The customer unique identifier.
+
 ```php
 $response = Stripe::cards()->delete([
 	'id'       => 'card_4EBi3uAIBFnKy4',
@@ -52,23 +69,15 @@ $response = Stripe::cards()->delete([
 
 ### Retrieve all cards
 
-Fetch all the cards attached to a customer.
-
-#### Laravel
-
-```php
-$cards = Stripe::cards()->all(['customer' => 'cus_4DArhxP7RAFBaB'])->toArray();
-
-foreach ($cards['data'] as $card)
-{
-	var_dump($card['id']);
-}
-```
-
-#### Native
+Key            | Required | Type   | Default | Description
+-------------- | -------- | ------ | ------- | --------------------------------------
+id             | true     | string | null    | The customer unique identifier.
+ending_before  | false    | string | null    | A cursor to be used in pagination.
+limit          | false    | int    | 10      | A limit on the number of objects to be returned.
+starting_after | false    | string | null    | A cursor to be used in pagination.
 
 ```php
-$cards = $stripe->cards()->all([
+$cards = Stripe::cards()->all([
 	'customer' => 'cus_4DArhxP7RAFBaB',
 ])->toArray();
 
@@ -80,23 +89,13 @@ foreach ($cards['data'] as $card)
 
 ### Retrieve a Card
 
-Fetch a card that is attached to a customer.
-
-#### Laravel
+Key      | Required | Type   | Default | Description
+-------- | -------- | ------ | ------- | --------------------------------------
+id       | true     | string | null    | The card unique identifier.
+customer | true     | string | null    | The customer unique identifier.
 
 ```php
 $card = Stripe::cards()->find([
-	'id'       => 'card_4DmaB3muM8SNdZ',
-	'customer' => 'cus_4DArhxP7RAFBaB',
-])->toArray();
-
-echo $card['id'];
-```
-
-#### Native
-
-```php
-$card = $stripe->cards()->find([
 	'id'       => 'card_4DmaB3muM8SNdZ',
 	'customer' => 'cus_4DArhxP7RAFBaB',
 ])->toArray();

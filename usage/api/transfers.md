@@ -9,7 +9,7 @@ currency              | true     | string | null    | 3-letter ISO code for curr
 recipient             | true     | string | null    | The ID of an existing, verified recipient.
 description           | false    | string | null    | An arbitrary string which you can attach to a transfer object.
 statement_description | false    | string | null    | An arbitrary string which will be displayed on the recipient's bank statement.
-metadata              | false    | array  | []      | A set of key/value pairs that you can attach to a transfer object
+metadata              | false    | array  | []      | A set of key/value pairs that you can attach to a transfer object.
 
 ```php
 $transfer = Stripe::transfers()->create([
@@ -27,7 +27,7 @@ Key         | Required | Type    | Default | Description
 ----------- | -------- | ------- | ------- | -----------------------------------
 id          | true     | string  | null    | The transfer unique identifier.
 description | false    | string  | null    | An arbitrary string which you can attach to a transfer object.
-metadata    | false    | array   | []      | A set of key/value pairs that you can attach to a transfer object
+metadata    | false    | array   | []      | A set of key/value pairs that you can attach to a transfer object.
 
 ```php
 $transfer = Stripe::transfers()->update([
@@ -35,7 +35,7 @@ $transfer = Stripe::transfers()->update([
 	'description' => 'Transfer to John Doe',
 ])->toArray();
 
-echo $transfer['id'];
+echo $transfer['description'];
 ```
 
 ### Cancel a transfer

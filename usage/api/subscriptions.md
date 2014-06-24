@@ -3,7 +3,7 @@
 ### Create a subscription
 
 Key                     | Required | Type            | Default | Description
------------------------ | -------- | --------------- | ------- | -----------------------------------------
+----------------------- | -------- | --------------- | ------- | ---------------
 customer                | true     | string          | null    | The customer unique identifier that this subscription belongs to.
 id                      | true     | string          | null    | The subscription unique identifier.
 plan                    | false    | string          | null    | The plan unique identifier.
@@ -13,7 +13,7 @@ trial_end               | false    | int             | null    | UTC integer tim
 card                    | false    | string or array | null    | The card token or an array.
 quantity                | false    | int             | 1       | The quantity you'd like to apply to the subscription you're creating.
 application_fee_percent | false    | int             | null    | A positive decimal (with at most two decimal places) between 1 and 100.
-metadata                | false    | array           | []      | A set of key/value pairs that you can attach to a transfer object
+metadata                | false    | array           | []      | A set of key/value pairs that you can attach to a subscription object.
 
 ```php
 $subscription = Stripe::subscriptions()->create([
@@ -27,7 +27,7 @@ echo $subscription['id'];
 ### Cancel a subscription
 
 Key           | Required | Type   | Default | Description
-------------- | -------- | ------ | ------- | ------------------------------
+------------- | -------- | ------ | ------- | ----------------------------------
 customer      | true     | string | null    | The customer unique identifier that this subscription belongs to.
 id            | true     | string | null    | The subscription unique identifier.
 at_period_end | false    | bool   | false   | A flag that if set to true will delay the cancellation of the subscription until the end of the current period.
@@ -52,7 +52,7 @@ $subscription = Stripe::subscriptions()->cancel([
 ### Update a subscription
 
 Key                     | Required | Type            | Default | Description
------------------------ | -------- | --------------- | ------- | -----------------------------------------
+----------------------- | -------- | --------------- | ------- | ---------------
 customer                | true     | string          | null    | The customer unique identifier that this subscription belongs to.
 id                      | true     | string          | null    | The subscription unique identifier.
 plan                    | false    | string          | null    | The plan unique identifier.
@@ -62,7 +62,7 @@ trial_end               | false    | int             | null    | UTC integer tim
 card                    | false    | string or array | null    | The card token or an array.
 quantity                | false    | int             | 1       | The quantity you'd like to apply to the subscription you're creating.
 application_fee_percent | false    | int             | null    | A positive decimal (with at most two decimal places) between 1 and 100.
-metadata                | false    | array           | []      | A set of key/value pairs that you can attach to a transfer object
+metadata                | false    | array           | []      | A set of key/value pairs that you can attach to a subscription object.
 
 ```php
 $subscription = Stripe::subscriptions()->update([
@@ -73,7 +73,7 @@ $subscription = Stripe::subscriptions()->update([
 ])->toArray();
 ```
 
-### Retrieve all subscriptions
+### Retrieve all the subscriptions of a customer
 
 Key            | Required | Type    | Default | Description
 -------------- | -------- | ------- | ------------------------------------------
@@ -93,7 +93,7 @@ foreach ($subscriptions['data'] as $subscription)
 }
 ```
 
-### Retrieve a subscription
+### Retrieve a subscription of a customer
 
 Key      | Required | Type   | Default | Description
 -------- | -------- | ------ | ------- | ---------------------------------------

@@ -16,7 +16,7 @@ In the `$aliases` array add the following facade for this package.
 
 ### Set the Stripe API Key
 
-Now you need to setup the Stripe API key, to do this open or create the `app/config/services.php` file, and update or add the `'stripe'` array:
+Now you need to setup the Stripe API key, to do this open or create the `app/config/services.php` file, and add or update the `'stripe'` array:
 
 ```php
 <?php
@@ -32,7 +32,9 @@ return [
 
 ### Billing
 
-If you want to use the billing features, please follow the next steps:
+The Stripe package comes with billing functionality that you can attach to any entity.
+
+To use this feature please follow the next steps:
 
 #### Migrations
 
@@ -44,7 +46,7 @@ php artisan migrate --package=cartalyst/stripe
 
 #### Model setup
 
-Add the `BillableTrait` to your model:
+Add the `BillableTrait` to your Eloquent model and make sure the model implements the `BillableInterface`:
 
 ```php
 use Cartalyst\Stripe\BillableTrait;
