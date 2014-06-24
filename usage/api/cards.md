@@ -3,7 +3,7 @@
 ### Create a new card
 
 Key      | Required | Type            | Default | Description
--------- | -------- | --------------- | ------- | --------------------------------------
+-------- | -------- | --------------- | ------- | ------------------------------
 customer | true     | string          | null    | The customer unique identifier.
 card     | true     | string or array | null    | The card unique identifier.
 
@@ -24,15 +24,16 @@ Via Stripe.js plugin
 ```php
 $cardToken = Input::get('stripeToken');
 
-$response = Stripe::cards()->create([
+$card = Stripe::cards()->create([
 	'customer' => 'cus_4DArhxP7RAFBaB',
 	'card'     => $cardToken,
 ]);
+```
 
 ### Update a card
 
 Key           | Required | Type   | Default | Description
-------------- | -------- | ------ | ------- | --------------------------------------
+------------- | -------- | ------ | ------- | ----------------------------------
 id            | true     | string | null    | The card unique identifier.
 customer      | true     | string | null    | The customer unique identifier.
 name          | false    | string | null    | The card holder name.
@@ -56,12 +57,12 @@ $card = Stripe::cards()->update([
 ### Delete a card
 
 Key      | Required | Type   | Default | Description
--------- | -------- | ------ | ------- | --------------------------------------
+-------- | -------- | ------ | ------- | ---------------------------------------
 id       | true     | string | null    | The card unique identifier.
 customer | true     | string | null    | The customer unique identifier.
 
 ```php
-$response = Stripe::cards()->delete([
+$card = Stripe::cards()->delete([
 	'id'       => 'card_4EBi3uAIBFnKy4',
 	'customer' => 'cus_4DArhxP7RAFBaB',
 ])->toArray();
@@ -70,7 +71,7 @@ $response = Stripe::cards()->delete([
 ### Retrieve all cards
 
 Key            | Required | Type   | Default | Description
--------------- | -------- | ------ | ------- | --------------------------------------
+-------------- | -------- | ------ | ------- | ---------------------------------
 id             | true     | string | null    | The customer unique identifier.
 ending_before  | false    | string | null    | A cursor to be used in pagination.
 limit          | false    | int    | 10      | A limit on the number of objects to be returned.
@@ -90,7 +91,7 @@ foreach ($cards['data'] as $card)
 ### Retrieve a Card
 
 Key      | Required | Type   | Default | Description
--------- | -------- | ------ | ------- | --------------------------------------
+-------- | -------- | ------ | ------- | ---------------------------------------
 id       | true     | string | null    | The card unique identifier.
 customer | true     | string | null    | The customer unique identifier.
 
