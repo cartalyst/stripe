@@ -48,7 +48,7 @@ class WebhookController extends Controller {
 		}
 
 		// Return a positive message for Stripe anyways
-		return "Method [{$type}] doesn't exist.";
+		return $this->sendResponse();
 	}
 
 	/**
@@ -58,7 +58,7 @@ class WebhookController extends Controller {
 	 * @param  int  $status
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
-	public function sendResponse($message, $status = 200)
+	public function sendResponse($message = null, $status = 200)
 	{
 		return new Response($message, $status);
 	}
