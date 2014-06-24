@@ -3,7 +3,7 @@
 ### Create a new charge
 
 Key                   | Required | Type            | Default | Description
---------------------- | -------- | --------------- | ------- | --------------------------------------------
+--------------------- | -------- | --------------- | ------- | -----------------
 amount                | true     | int             | null    | A positive integer in the smallest currency unit.
 currency              | true     | string          | null    | 3-letter ISO code for currency.
 customer              | false    | string          | null    | The customer unique identifier.
@@ -16,7 +16,7 @@ receipt_email         | false    | string          | null    | The email address
 application_fee       | false    | int             | null    | An application fee to add on to this charge.
 
 ```php
-$charge = Stripe::charges()->update([
+$charge = Stripe::charges()->create([
 	'customer' => 'cus_4EBumIjyaKooft',
 	'currency' => 'USD',
 	'amount'   => 5049, # $50.49
@@ -28,7 +28,7 @@ echo $charge['id'];
 ### Update a charge
 
 Key         | Required | Type   | Default | Description
------------ | -------- | ------ | ------- | --------------------------------------------
+----------- | -------- | ------ | ------- | ------------------------------------
 id          | true     | string | null    | The charge unique identifier.
 description | false    | string | null    | An arbitrary string which you can attach to a charge object.
 metadata    | false    | array  | []      | A set of key/value pairs that you can attach to a charge object.
@@ -42,12 +42,12 @@ $charge = Stripe::charges()->update([
 
 ### Capture a charge
 
-Key             | Required | Type   | Default | Description
---------------- | -------- | ------ | ------- | --------------------------------------------
-id              | true     | string | null    | The charge unique identifier.
-amount          | false    | int    | null    | A positive integer in the smallest currency unit.
-application_fee | false    | int    | null    | An application fee to add on to this charge.
-receipt_email   | false    | string | null    | The email address to send this charge’s receipt to.
+Key                    | Required | Type   | Default | Description
+---------------------- | -------- | ------ | ------- | -------------------------
+id                     | true     | string | null    | The charge unique identifier.
+amount                 | false    | int    | null    | A positive integer in the smallest currency unit.
+refund_application_fee | false    | bool   | null    | Boolean indicating whether the application fee should be refunded when refunding this charge.
+metadata               | false    | array  | []      | A set of key/value pairs that you can attach to a charge object.
 
 ```php
 $charge = Stripe::charges()->capture([
@@ -57,9 +57,12 @@ $charge = Stripe::charges()->capture([
 
 ### Refund a charge
 
-Key | Required | Type   | Default | Description
---- | -------- | ------ | ------- | --------------------------------------------
-id  | true     | string | null    | The charge unique identifier.
+Key             | Required | Type   | Default | Description
+--------------- | -------- | ------ | ------- | --------------------------------
+id              | true     | string | null    | The charge unique identifier.
+amount          | false    | int    | null    | A positive integer in the smallest currency unit.
+application_fee | false    | int    | null    | An application fee to add on to this charge.
+receipt_email   | false    | string | null    | The email address to send this charge’s receipt to.
 
 ```php
 $charge = Stripe::charges()->refund([
@@ -70,7 +73,7 @@ $charge = Stripe::charges()->refund([
 ### Retrieve all charges
 
 Key            | Required | Type   | Default | Description
--------------- | -------- | ------ | ------- | --------------------------------------------
+-------------- | -------- | ------ | ------- | ---------------------------------
 created        | false    | string | null    | A filter on the list based on the object created field.
 customer       | false    | string | null    | The customer unique identifier.
 ending_before  | false    | string | null    | A cursor to be used in pagination.
