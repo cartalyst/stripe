@@ -32,7 +32,7 @@ class MigrationCartalystStripeCreateTables extends Migration {
 		Schema::create('cards', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('user_id');
+			$table->integer('billable_column_id');
 			$table->string('stripe_id')->unique();
 			$table->integer('last_four');
 			$table->integer('exp_month');
@@ -44,7 +44,7 @@ class MigrationCartalystStripeCreateTables extends Migration {
 		Schema::create('payments', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('user_id');
+			$table->integer('billable_column_id');
 			$table->string('stripe_id')->unique();
 			$table->string('description')->nullable();
 			$table->float('amount');
@@ -66,7 +66,7 @@ class MigrationCartalystStripeCreateTables extends Migration {
 		Schema::create('subscriptions', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('user_id');
+			$table->integer('billable_column_id');
 			$table->string('stripe_id')->unique();
 			$table->string('plan', 25)->nullable();
 			$table->boolean('active')->default(0);
@@ -77,7 +77,7 @@ class MigrationCartalystStripeCreateTables extends Migration {
 			$table->timestamp('trial_ends_at')->nullable();
 		});
 
-		Schema::table('users', function(Blueprint $table)
+		Schema::table('billable_table', function(Blueprint $table)
 		{
 			$table->string('stripe_id')->nullable()->unique();
 		});
@@ -102,7 +102,7 @@ class MigrationCartalystStripeCreateTables extends Migration {
 			Schema::drop($table);
 		}
 
-		Schema::table('users', function(Blueprint $table)
+		Schema::table('billable_table', function(Blueprint $table)
 		{
 			$table->dropColumn('stripe_id');
 		});

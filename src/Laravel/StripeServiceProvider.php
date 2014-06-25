@@ -18,6 +18,7 @@
  */
 
 use Cartalyst\Stripe\Stripe;
+use Cartalyst\Stripe\StripeMigratorCommand;
 use Illuminate\Support\ServiceProvider;
 
 class StripeServiceProvider extends ServiceProvider {
@@ -28,6 +29,13 @@ class StripeServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		$this->registerStripe();
+
+		$this->app['command.stripe.migrator'] = $this->app->share(function($app)
+		{
+			return new StripeMigratorCommand;
+		});
+
+		$this->commands('command.stripe.migrator');
 	}
 
 	/**
