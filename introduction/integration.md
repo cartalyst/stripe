@@ -38,11 +38,13 @@ To use this feature please follow the next steps:
 
 #### Migrations
 
-Just run the following command
+Now you need to migrate your database, but before doing that, you'll need to generate a migration that suits your billable table and to do this you just need to run the following command:
 
-```php
-php artisan migrate --package=cartalyst/stripe
-```
+	php artisan stripe:migrator table
+
+> **Note:** Replace `table` with the billable entity table name, example: `users`.
+
+Now that the migration file is created you just need to run `php artisan migrate`.
 
 #### Model setup
 
