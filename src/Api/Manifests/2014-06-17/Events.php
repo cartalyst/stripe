@@ -22,17 +22,10 @@ return [
 	'all' => [
 
 		'httpMethod'    => 'GET',
-		'uri'           => '/v1/application_fees',
-		'summary'       => 'Returns details about all application fees that your account has collected.',
-		'responseModel' => 'Response',
+		'uri'           => '/v1/events',
+		'summary'       => 'Returns a list of events, going back up to 30 days.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
-
-			'charge' => [
-				'description' => 'The charge unique identifier.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
 
 			'created' => [
 				'description' => 'A filter on the list based on the object created field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
@@ -64,6 +57,13 @@ return [
 				'required'    => false,
 			],
 
+			'type' => [
+				'description' => 'Allows to filter events by type.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
 			'expand' => [
 				'description' => 'Allows to expand properties.',
 				'location'    => 'query',
@@ -72,7 +72,7 @@ return [
 			],
 
 			'include' => [
-				'description' => 'Allow to include some additional properties',
+				'description' => 'Allows to include additional properties.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -82,52 +82,19 @@ return [
 
 	],
 
-   'find' => [
+	'find' => [
 
 		'httpMethod'    => 'GET',
-		'uri'           => '/v1/application_fees/{id}',
-		'summary'       => 'Retrieves the details about an application fee that your account has collected.',
-		'responseModel' => 'Response',
+		'uri'           => '/v1/events/{id}',
+		'summary'       => 'Retrieves the details of an event.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'The application fee unique identifier.',
+				'description' => 'The event unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
-			],
-
-			'expand' => [
-				'description' => 'Allows to expand properties.',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
-
-		],
-
-	],
-
-	'refund' => [
-
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/application_fees/{id}/refund',
-		'summary'       => 'Refunds an application fee that has previously been collected but not yet refunded.',
-		'responseModel' => 'Response',
-		'parameters'    => [
-
-			'id' => [
-				'description' => 'The application fee unique identifier.',
-				'location'    => 'uri',
-				'type'        => 'string',
-				'required'    => true,
-			],
-
-			'amount' => [
-				'description' => 'A positive integer in the smallest currency unit.',
-				'location'    => 'query',
-				'type'        => 'integer',
-				'required'    => false,
 			],
 
 			'expand' => [

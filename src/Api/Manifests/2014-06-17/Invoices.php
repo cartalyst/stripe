@@ -24,7 +24,7 @@ return [
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/invoices',
 		'summary'       => 'Returns all the existing invoices.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'limit' => [
@@ -87,7 +87,7 @@ return [
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/invoices/{id}',
 		'summary'       => 'Returns an existing invoice.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
@@ -113,7 +113,7 @@ return [
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/invoices',
 		'summary'       => 'Creates a new invoice.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'customer' => [
@@ -153,7 +153,7 @@ return [
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/invoices/{id}',
 		'summary'       => 'Updates an existing invoice.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
@@ -173,8 +173,11 @@ return [
 			'closed' => [
 				'description' => 'Boolean representing whether an invoice is closed or not',
 				'location'    => 'query',
-				'type'        => 'string', #'boolean', <- Guzzle converts to 1/0
+				'type'        => 'boolean',
 				'required'    => false,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Boolean::convert',
+				],
 			],
 
 			'expand' => [
@@ -193,7 +196,7 @@ return [
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/invoices/{id}/pay',
 		'summary'       => 'Pays an existing invoice.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
@@ -219,7 +222,7 @@ return [
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/invoices/{id}/lines',
 		'summary'       => 'Returns an existing invoice line items.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
@@ -275,7 +278,7 @@ return [
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/invoices/upcoming',
 		'summary'       => 'Get upcoming invoices',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'customer' => [

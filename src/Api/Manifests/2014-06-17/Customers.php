@@ -24,7 +24,7 @@ return [
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/customers',
 		'summary'       => 'Retrieves all the existing customers.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'limit' => [
@@ -80,7 +80,7 @@ return [
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/customers/{id}',
 		'summary'       => 'Retrieves an existing customer.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
@@ -106,7 +106,7 @@ return [
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/customers',
 		'summary'       => 'Creates a new customer.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'account_balance' => [
@@ -188,7 +188,7 @@ return [
 		'httpMethod'    => 'DELETE',
 		'uri'           => '/v1/customers/{id}',
 		'summary'       => 'Deletes an existing customer.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
@@ -214,7 +214,7 @@ return [
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/customers/{id}',
 		'summary'       => 'Updates an existing customer.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
@@ -289,7 +289,7 @@ return [
 		'httpMethod'    => 'DELETE',
 		'uri'           => '/v1/customers/{id}/discount',
 		'summary'       => 'Deletes an existing customer.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [

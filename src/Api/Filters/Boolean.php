@@ -1,4 +1,4 @@
-<?php
+<?php namespace Cartalyst\Stripe\Filters\Api;
 /**
  * Part of the Stripe package.
  *
@@ -17,24 +17,17 @@
  * @link       http://cartalyst.com
  */
 
-return [
+class Boolean {
 
-	'name'        => 'Stripe',
-	'apiVersion'  => '2014-06-17',
-	'baseUrl'     => 'https://api.stripe.com',
-	'description' => 'Stripe is a payment system',
-	'operations'  => [],
-	'models'      => [
+	/**
+	 * Converts a boolean into its string representation.
+	 *
+	 * @param  bool  $boolean
+	 * @return string
+	 */
+	public static function convert($boolean)
+	{
+		return $boolean ? 'true' : 'false';
+	}
 
-		'Response' => [
-
-			'type' => 'object',
-			'additionalProperties' => [
-				'location' => 'json'
-			],
-
-		],
-
-	],
-
-];
+}

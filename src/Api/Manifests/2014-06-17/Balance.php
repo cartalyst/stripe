@@ -24,7 +24,7 @@ return [
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/balance',
 		'summary'       => 'Retrieves the current account balance.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 
 	],
 
@@ -33,7 +33,7 @@ return [
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/balance/history',
 		'summary'       => 'Returns a list of transactions that have contributed to the Stripe account balance.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'available_on' => [
@@ -119,7 +119,7 @@ return [
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/balance/history/{id}',
 		'summary'       => 'Retrieves the balance transaction with the given ID.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [

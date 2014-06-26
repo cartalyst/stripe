@@ -22,10 +22,17 @@ return [
 	'all' => [
 
 		'httpMethod'    => 'GET',
-		'uri'           => '/v1/plans',
-		'summary'       => 'Returns all the existing plans.',
-		'responseModel' => 'Response',
+		'uri'           => '/v1/recipients',
+		'summary'       => 'Returns a list of existing recipients.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
+
+			'ending_before' => [
+				'description' => 'A cursor to be used in pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
 
 			'limit' => [
 				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
@@ -43,22 +50,18 @@ return [
 				'required'    => false,
 			],
 
-			'ending_before' => [
-				'description' => 'A cursor to be used in pagination.',
+			'verified' => [
+				'description' => 'Boolean to only return recipients that are verified or unverified.',
 				'location'    => 'query',
-				'type'        => 'string',
+				'type'        => 'boolean',
 				'required'    => false,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Boolean::convert',
+				],
 			],
 
 			'expand' => [
 				'description' => 'Allows to expand properties.',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
-
-			'include' => [
-				'description' => 'Allows to include additional properties.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -71,13 +74,13 @@ return [
 	'find' => [
 
 		'httpMethod'    => 'GET',
-		'uri'           => '/v1/plans/{id}',
-		'summary'       => 'Returns an existing plan.',
-		'responseModel' => 'Response',
+		'uri'           => '/v1/recipients/{id}',
+		'summary'       => 'Retrieves the details of an existing recipient.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Plan unique identifier.',
+				'description' => 'The recipient unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -97,72 +100,65 @@ return [
 	'create' => [
 
 		'httpMethod'    => 'POST',
-		'uri'           => '/v1/plans',
-		'summary'       => 'Creates a new plan.',
-		'responseModel' => 'Response',
+		'uri'           => '/v1/recipients',
+		'summary'       => 'Creates a new recipient.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
-			'id' => [
-				'description' => 'Plan unique identifier.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => true,
-			],
-
 			'name' => [
-				'description' => 'Plan name.',
+				'description' => 'Recipient full, legal name.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
-			'amount' => [
-				'description' => 'Amount (in cents)',
-				'location'    => 'query',
-				'type'        => 'integer',
-				'required'    => true,
-			],
-
-			'currency' => [
-				'description' => '3-letter ISO code for currency',
+			'type' => [
+				'description' => 'Type of the recipient (can be "individual" or "corporation").',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => true,
+				'enum'        => ['individual', 'corporation'],
 			],
 
-			'interval' => [
-				'description' => 'Specify the billing frequency',
+			'tax_id' => [
+				'description' => 'Recipient tax ID.',
 				'location'    => 'query',
 				'type'        => 'string',
-				'required'    => true,
-				'enum'        => ['day', 'week', 'month', 'year'],
-			],
-
-			'interval_count' => [
-				'description' => 'Number of interval between each subscription billing',
-				'location'    => 'query',
-				'type'        => 'integer',
 				'required'    => false,
 			],
 
-			'trial_period_days' => [
-				'description' => 'Specifies a trial period in (an integer number of) days',
+			'bank_account' => [
+				'description' => 'A bank account to attach to the recipient.',
+				'location'    => 'query',
+				'type'        => 'array',
+				'required'    => false,
+			],
+
+			'card' => [
+				'description' => 'A card to attach to the recipient.',
+				'location'    => 'query',
+				'type'        => ['string', 'array'],
+				'required'    => false,
+			],
+
+			'email' => [
+				'description' => 'Recipient email address.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'description' => [
+				'description' => 'An arbitrary string which you can attach to a recipient object.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => false,
 			],
 
 			'metadata' => [
-				'description' => 'Metadata. (optional)',
+				'description' => 'A set of key/value pairs that you can attach to a recipient object.',
 				'location'    => 'query',
 				'type'        => 'array',
-				'required'    => false,
-			],
-
-			'statement_description' => [
-				'description' => 'An arbitrary string to be displayed alongside your company name on your customer\'s credit card statement',
-				'location'    => 'query',
-				'type'        => 'string',
 				'required'    => false,
 			],
 
@@ -180,13 +176,13 @@ return [
 	'delete' => [
 
 		'httpMethod'    => 'DELETE',
-		'uri'           => '/v1/plans/{id}',
-		'summary'       => 'Deletes an existing plan.',
-		'responseModel' => 'Response',
+		'uri'           => '/v1/recipients/{id}',
+		'summary'       => 'Deletes an existing recipient.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Plan unique identifier.',
+				'description' => 'The recipient unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -206,36 +202,57 @@ return [
 	'update' => [
 
 		'httpMethod'    => 'POST',
-		'uri'           => '/v1/plans/{id}',
-		'summary'       => 'Updates an existing plan.',
-		'responseModel' => 'Response',
+		'uri'           => '/v1/recipients/{id}',
+		'summary'       => 'Updates an existing recipient.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Plan unique identifier.',
+				'description' => 'The recipient unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
 			'name' => [
-				'description' => 'Plan name.',
+				'description' => 'Recipient full, legal name',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
-			'metadata' => [
-				'description' => 'Metadata. (optional)',
+			'tax_id' => [
+				'description' => 'Recipient tax ID.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'bank_account' => [
+				'description' => 'A bank account to attach to the recipient.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
 			],
 
-			'statement_description' => [
-				'description' => 'An arbitrary string to be displayed alongside your company name on your customer\'s credit card statement',
+			'email' => [
+				'description' => 'Recipient email address.',
 				'location'    => 'query',
 				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'description' => [
+				'description' => 'An arbitrary string which you can attach to a recipient object.',
+				'location'    => 'query',
+				'type'        => 'integer',
+				'required'    => false,
+			],
+
+			'metadata' => [
+				'description' => 'A set of key/value pairs that you can attach to a recipient object.',
+				'location'    => 'query',
+				'type'        => 'array',
 				'required'    => false,
 			],
 

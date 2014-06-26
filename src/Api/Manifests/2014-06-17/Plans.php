@@ -22,29 +22,10 @@ return [
 	'all' => [
 
 		'httpMethod'    => 'GET',
-		'uri'           => '/v1/transfers',
-		'summary'       => 'Returns a list of the existing transfers.',
-		'responseModel' => 'Response',
+		'uri'           => '/v1/plans',
+		'summary'       => 'Returns all the existing plans.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
-
-			'created' => [
-				'description' => 'A filter on the list based on the object created field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
-				'location'    => 'query',
-				'required'    => false,
-			],
-
-			'date' => [
-				'description' => 'A filter on the list based on the object date field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
-				'location'    => 'query',
-				'required'    => false,
-			],
-
-			'ending_before' => [
-				'description' => 'A cursor to be used in pagination.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
 
 			'limit' => [
 				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
@@ -55,13 +36,6 @@ return [
 				'required'    => false,
 			],
 
-			'recipient' => [
-				'description' => 'Only return transfers for the recipient specified by this recipient ID.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
 			'starting_after' => [
 				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
@@ -69,12 +43,11 @@ return [
 				'required'    => false,
 			],
 
-			'status' => [
-				'description' => 'Only return transfers that have the given status: "pending", "paid", or "failed".',
+			'ending_before' => [
+				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
-				'enum'        => ['pending', 'paid', 'failed'],
 			],
 
 			'expand' => [
@@ -85,7 +58,7 @@ return [
 			],
 
 			'include' => [
-				'description' => 'Allow to include additional properties.',
+				'description' => 'Allows to include additional properties.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -98,13 +71,13 @@ return [
 	'find' => [
 
 		'httpMethod'    => 'GET',
-		'uri'           => '/v1/transfers/{id}',
-		'summary'       => 'Retrieves the details of an existing transfer.',
-		'responseModel' => 'Response',
+		'uri'           => '/v1/plans/{id}',
+		'summary'       => 'Returns an existing plan.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'The transfer unique identifier.',
+				'description' => 'Plan unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -124,51 +97,99 @@ return [
 	'create' => [
 
 		'httpMethod'    => 'POST',
-		'uri'           => '/v1/transfers',
-		'summary'       => 'Creates a new transfer.',
-		'responseModel' => 'Response',
+		'uri'           => '/v1/plans',
+		'summary'       => 'Creates a new plan.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
+			'id' => [
+				'description' => 'Plan unique identifier.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => true,
+			],
+
+			'name' => [
+				'description' => 'Plan name.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => true,
+			],
+
 			'amount' => [
-				'description' => 'A positive integer in the smallest currency unit.',
+				'description' => 'Amount (in cents)',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => true,
 			],
 
 			'currency' => [
-				'description' => '3-letter ISO code for currency.',
+				'description' => '3-letter ISO code for currency',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
-			'recipient' => [
-				'description' => 'The ID of an existing, verified recipient.',
+			'interval' => [
+				'description' => 'Specify the billing frequency',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => true,
+				'enum'        => ['day', 'week', 'month', 'year'],
 			],
 
-			'description' => [
-				'description' => 'An arbitrary string which you can attach to a transfer object.',
+			'interval_count' => [
+				'description' => 'Number of interval between each subscription billing',
 				'location'    => 'query',
-				'type'        => 'string',
+				'type'        => 'integer',
 				'required'    => false,
 			],
 
-			'statement_description' => [
-				'description' => 'An arbitrary string which will be displayed on the recipient\'s bank statement.',
+			'trial_period_days' => [
+				'description' => 'Specifies a trial period in (an integer number of) days',
 				'location'    => 'query',
-				'type'        => 'string',
+				'type'        => 'integer',
 				'required'    => false,
 			],
 
 			'metadata' => [
-				'description' => 'A set of key/value pairs that you can attach to a transfer object',
+				'description' => 'Metadata. (optional)',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
+			],
+
+			'statement_description' => [
+				'description' => 'An arbitrary string to be displayed alongside your company name on your customer\'s credit card statement',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'expand' => [
+				'description' => 'Allows to expand properties.',
+				'location'    => 'query',
+				'type'        => 'array',
+				'required'    => false,
+			],
+
+		],
+
+	],
+
+	'delete' => [
+
+		'httpMethod'    => 'DELETE',
+		'uri'           => '/v1/plans/{id}',
+		'summary'       => 'Deletes an existing plan.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
+		'parameters'    => [
+
+			'id' => [
+				'description' => 'Plan unique identifier.',
+				'location'    => 'uri',
+				'type'        => 'string',
+				'required'    => true,
 			],
 
 			'expand' => [
@@ -185,56 +206,37 @@ return [
 	'update' => [
 
 		'httpMethod'    => 'POST',
-		'uri'           => '/v1/transfers/{id}',
-		'summary'       => 'Updates an existing transfer.',
-		'responseModel' => 'Response',
+		'uri'           => '/v1/plans/{id}',
+		'summary'       => 'Updates an existing plan.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'The transfer unique identifier.',
+				'description' => 'Plan unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
-			'description' => [
-				'description' => 'An arbitrary string which you can attach to a transfer object.',
+			'name' => [
+				'description' => 'Plan name.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'metadata' => [
-				'description' => 'A set of key/value pairs that you can attach to a transfer object',
+				'description' => 'Metadata. (optional)',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
 			],
 
-			'expand' => [
-				'description' => 'Allows to expand properties.',
+			'statement_description' => [
+				'description' => 'An arbitrary string to be displayed alongside your company name on your customer\'s credit card statement',
 				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
-
-		],
-
-	],
-
-	'cancel' => [
-
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/transfers/{id}/cancel',
-		'summary'       => 'Cancels an existing transfer.',
-		'responseModel' => 'Response',
-		'parameters'    => [
-
-			'id' => [
-				'description' => 'The transfer unique identifier.',
-				'location'    => 'uri',
 				'type'        => 'string',
-				'required'    => true,
+				'required'    => false,
 			],
 
 			'expand' => [

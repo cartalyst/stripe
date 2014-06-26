@@ -24,7 +24,7 @@ return [
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/charges',
 		'summary'       => 'Returns a list of charges that were previously created.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'created' => [
@@ -87,7 +87,7 @@ return [
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/charges/{id}',
 		'summary'       => 'Retrieves the details of a charge that has been previously created.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
@@ -113,7 +113,7 @@ return [
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/charges',
 		'summary'       => 'Creates a new charge.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'amount' => [
@@ -161,8 +161,11 @@ return [
 			'capture' => [
 				'description' => 'Whether or not to immediately capture the charge.',
 				'location'    => 'query',
-				'type'        => 'string', #'boolean', <- Guzzle converts to 1/0
+				'type'        => 'boolean',
 				'required'    => false,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Boolean::convert',
+				],
 			],
 
 			'statement_description' => [
@@ -202,7 +205,7 @@ return [
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/charges/{id}',
 		'summary'       => 'Updates the specified charge.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
@@ -242,7 +245,7 @@ return [
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/charges/{id}/capture',
 		'summary'       => 'Captures the payment of specified, uncaptured, charge.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
@@ -289,7 +292,7 @@ return [
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/charges/{id}/refunds',
 		'summary'       => 'Refunds the specified charge.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
@@ -309,8 +312,11 @@ return [
 			'refund_application_fee' => [
 				'description' => 'Boolean indicating whether the application fee should be refunded when refunding this charge.',
 				'location'    => 'query',
-				'type'        => 'string', #'boolean', <- Guzzle converts to 1/0
+				'type'        => 'boolean',
 				'required'    => false,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Boolean::convert',
+				],
 			],
 
 			'expand' => [
@@ -329,7 +335,7 @@ return [
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/charges/{id}/refunds',
 		'summary'       => 'Retrieves a list of all the refunds of a charge.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
@@ -348,7 +354,7 @@ return [
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/charges/{charge}/refunds/{id}',
 		'summary'       => 'Retrieves the given refund.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'charge' => [
@@ -374,7 +380,7 @@ return [
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/charges/{charge}/refunds/{id}',
 		'summary'       => 'Updates the given refund.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'charge' => [

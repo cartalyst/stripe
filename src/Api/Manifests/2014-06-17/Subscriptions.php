@@ -24,7 +24,7 @@ return [
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/customers/{customer}/subscriptions',
 		'summary'       => 'Returns all the subscriptions of an existing customer.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'customer' => [
@@ -80,7 +80,13 @@ return [
 		'httpMethod'    => 'GET',
 		'uri'           => '/v1/customers/{customer}/subscriptions/{id}',
 		'summary'       => 'Returns a subscription from an existing customer.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => [
+			array(
+				'class' => 'Cartalyst\Stripe\Exception\NotFoundException',
+				'code'  => 404
+			),
+		],
 		'parameters'    => [
 
 			'id' => [
@@ -113,7 +119,7 @@ return [
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/customers/{customer}/subscriptions',
 		'summary'       => 'Creates a new subscription on an existing customer.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'customer' => [
@@ -188,7 +194,7 @@ return [
 		'httpMethod'    => 'DELETE',
 		'uri'           => '/v1/customers/{customer}/subscriptions/{id}',
 		'summary'       => 'Deletes an existing customer subscription.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
@@ -208,8 +214,11 @@ return [
 			'at_period_end' => [
 				'description' => 'A flag that if set to true, will delay the cancellation of the subscription until the end of the current period.',
 				'location'    => 'query',
-				'type'        => 'string', #'boolean', <- Guzzle converts to 1/0
+				'type'        => 'boolean',
 				'required'    => false,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Boolean::convert',
+				],
 			],
 
 			'expand' => [
@@ -228,7 +237,7 @@ return [
 		'httpMethod'    => 'POST',
 		'uri'           => '/v1/customers/{customer}/subscriptions/{id}',
 		'summary'       => 'Updates an existing customer subscription.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
@@ -276,8 +285,11 @@ return [
 			'prorate' => [
 				'description' => 'Flag telling us whether to prorate switching plans during a billing cycle.',
 				'location'    => 'query',
-				'type'        => 'string', #'boolean', <- Guzzle converts to 1/0
+				'type'        => 'boolean',
 				'required'    => false,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Boolean::convert',
+				],
 			],
 
 			'trial_end' => [
@@ -317,7 +329,7 @@ return [
 		'httpMethod'    => 'DELETE',
 		'uri'           => '/v1/customers/{customer}/subscriptions/{id}/discount',
 		'summary'       => 'Deletes an existing customer.',
-		'responseModel' => 'Response',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [

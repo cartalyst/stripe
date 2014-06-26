@@ -68,6 +68,20 @@ class StripeTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/** @test */
+	public function it_can_retrieve_the_user_agent()
+	{
+		$this->assertEquals('Cartalyst-Stripe/1.0.0', $this->stripe->getUserAgent());
+	}
+
+	/** @test */
+	public function it_can_set_the_user_agent()
+	{
+		$this->stripe->setUserAgent('Foo/Bar');
+
+		$this->assertEquals('Foo/Bar', $this->stripe->getUserAgent());
+	}
+
+	/** @test */
 	public function it_can_retrieve_the_manifest_path()
 	{
 		$this->assertEquals(__DIR__.'/../manifests', $this->stripe->getManifestPath());
@@ -87,7 +101,6 @@ class StripeTest extends PHPUnit_Framework_TestCase {
 		$headers = $this->stripe->getHeaders();
 
 		$expected = [
-			'User-Agent'     => 'cartalyst-stripe-php',
 			'Stripe-Version' => '2014-06-17',
 		];
 
@@ -98,13 +111,13 @@ class StripeTest extends PHPUnit_Framework_TestCase {
 	public function it_can_set_the_client_headers()
 	{
 		$this->stripe->setHeaders([
-			'User-Agent' => 'foo-bar',
+			'some-header' => 'foo-bar',
 		]);
 
 		$headers = $this->stripe->getHeaders();
 
 		$expected = [
-			'User-Agent'     => 'foo-bar',
+			'some-header'     => 'foo-bar',
 			'Stripe-Version' => '2014-06-17',
 		];
 

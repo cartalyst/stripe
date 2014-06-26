@@ -36,10 +36,9 @@
 	],
 	"require": {
 		"php": ">=5.4.0",
+		"guzzle/guzzle": "3.9.*",
 		"illuminate/support": "~4.1",
-		"nesbot/carbon": "~1.0",
-		"guzzlehttp/guzzle": "~4.0",
-		"guzzlehttp/guzzle-services": "~0.3"
+		"nesbot/carbon": "~1.0"
 	},
 	"require-dev": {
 		"mockery/mockery": "~0.9",

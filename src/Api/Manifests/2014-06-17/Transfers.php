@@ -22,24 +22,20 @@ return [
 	'all' => [
 
 		'httpMethod'    => 'GET',
-		'uri'           => '/v1/invoiceitems',
-		'summary'       => 'Returns all the existing invoice items.',
-		'responseModel' => 'Response',
+		'uri'           => '/v1/transfers',
+		'summary'       => 'Returns a list of the existing transfers.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
-			'limit' => [
-				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
+			'created' => [
+				'description' => 'A filter on the list based on the object created field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
 				'location'    => 'query',
-				'type'        => 'integer',
-				'min'         => 1,
-				'max'         => 100,
 				'required'    => false,
 			],
 
-			'starting_after' => [
-				'description' => 'A cursor to be used in pagination.',
+			'date' => [
+				'description' => 'A filter on the list based on the object date field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
 				'location'    => 'query',
-				'type'        => 'string',
 				'required'    => false,
 			],
 
@@ -50,17 +46,35 @@ return [
 				'required'    => false,
 			],
 
-			'date' => [
-				'description' => 'A filter based on the "date" field. Can be an exact UTC timestamp, or a hash',
+			'limit' => [
+				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
 				'location'    => 'query',
+				'type'        => 'integer',
+				'min'         => 1,
+				'max'         => 100,
 				'required'    => false,
 			],
 
-			'customer' => [
-				'description' => 'Only return invoices for a specific customer',
+			'recipient' => [
+				'description' => 'Only return transfers for the recipient specified by this recipient ID.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
+			],
+
+			'starting_after' => [
+				'description' => 'A cursor to be used in pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'status' => [
+				'description' => 'Only return transfers that have the given status: "pending", "paid", or "failed".',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+				'enum'        => ['pending', 'paid', 'failed'],
 			],
 
 			'expand' => [
@@ -71,7 +85,7 @@ return [
 			],
 
 			'include' => [
-				'description' => 'Allows to include additional properties.',
+				'description' => 'Allow to include additional properties.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -84,13 +98,13 @@ return [
 	'find' => [
 
 		'httpMethod'    => 'GET',
-		'uri'           => '/v1/invoiceitems/{id}',
-		'summary'       => 'Returns an existing invoice item.',
-		'responseModel' => 'Response',
+		'uri'           => '/v1/transfers/{id}',
+		'summary'       => 'Retrieves the details of an existing transfer.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Invoice item unique identifier.',
+				'description' => 'The transfer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -107,88 +121,54 @@ return [
 
 	],
 
-
 	'create' => [
 
 		'httpMethod'    => 'POST',
-		'uri'           => '/v1/invoiceitems',
-		'summary'       => 'Creates a new invoice item.',
-		'responseModel' => 'Response',
+		'uri'           => '/v1/transfers',
+		'summary'       => 'Creates a new transfer.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
-			'customer' => [
-				'description' => 'ID of the customer who will be billed when this invoice item is billed',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => true,
-			],
-
 			'amount' => [
-				'description' => 'Amount (in cents)',
+				'description' => 'A positive integer in the smallest currency unit.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => true,
 			],
 
 			'currency' => [
-				'description' => '3-letter ISO code for currency',
+				'description' => '3-letter ISO code for currency.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
-			'invoice' => [
-				'description' => 'Identifier of an existing invoice to add this invoice item to',
+			'recipient' => [
+				'description' => 'The ID of an existing, verified recipient.',
 				'location'    => 'query',
 				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'subscription' => [
-				'description' => 'Identifier of a subscription to add this invoice item to',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
+				'required'    => true,
 			],
 
 			'description' => [
-				'description' => 'Description. (optional)',
+				'description' => 'An arbitrary string which you can attach to a transfer object.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'statement_description' => [
+				'description' => 'An arbitrary string which will be displayed on the recipient\'s bank statement.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'metadata' => [
-				'description' => 'Metadata. (optional)',
+				'description' => 'A set of key/value pairs that you can attach to a transfer object',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
-			],
-
-			'expand' => [
-				'description' => 'Allows to expand properties.',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
-
-		],
-
-	],
-
-	'delete' => [
-
-		'httpMethod'    => 'DELETE',
-		'uri'           => '/v1/invoiceitems/{id}',
-		'summary'       => 'Deletes an existing invoice item.',
-		'responseModel' => 'Response',
-		'parameters'    => [
-
-			'id' => [
-				'description' => 'Invoice item unique identifier.',
-				'location'    => 'uri',
-				'type'        => 'string',
-				'required'    => true,
 			],
 
 			'expand' => [
@@ -205,30 +185,56 @@ return [
 	'update' => [
 
 		'httpMethod'    => 'POST',
-		'uri'           => '/v1/invoiceitems/{id}',
-		'summary'       => 'Updates an existing invoice item.',
-		'responseModel' => 'Response',
+		'uri'           => '/v1/transfers/{id}',
+		'summary'       => 'Updates an existing transfer.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
 			'id' => [
-				'description' => 'Invoice item unique identifier.',
+				'description' => 'The transfer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
 			'description' => [
-				'description' => 'Description. (optional)',
+				'description' => 'An arbitrary string which you can attach to a transfer object.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'metadata' => [
-				'description' => 'Metadata. (optional)',
+				'description' => 'A set of key/value pairs that you can attach to a transfer object',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
+			],
+
+			'expand' => [
+				'description' => 'Allows to expand properties.',
+				'location'    => 'query',
+				'type'        => 'array',
+				'required'    => false,
+			],
+
+		],
+
+	],
+
+	'cancel' => [
+
+		'httpMethod'    => 'POST',
+		'uri'           => '/v1/transfers/{id}/cancel',
+		'summary'       => 'Cancels an existing transfer.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
+		'parameters'    => [
+
+			'id' => [
+				'description' => 'The transfer unique identifier.',
+				'location'    => 'uri',
+				'type'        => 'string',
+				'required'    => true,
 			],
 
 			'expand' => [

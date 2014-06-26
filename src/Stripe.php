@@ -17,17 +17,16 @@
  * @link       http://cartalyst.com
  */
 
+use Guzzle\Service\Client;
+use Guzzle\Service\Description\ServiceDescription;
 use InvalidArgumentException;
-use GuzzleHttp\Client;
-use GuzzleHttp\Command\Guzzle\Description;
-use GuzzleHttp\Command\Guzzle\GuzzleClient;
 
 class Stripe {
 
 	/**
 	 * The Guzzle client.
 	 *
-	 * @var \GuzzleHttp\Client
+	 * @var \Guzzle\Service\Client
 	 */
 	protected $client;
 
@@ -43,7 +42,14 @@ class Stripe {
 	 *
 	 * @var string
 	 */
-	protected $version;
+	protected $version = '2014-06-17';
+
+	/**
+	 * The user agent.
+	 *
+	 * @var string
+	 */
+	protected $userAgent = 'Cartalyst-Stripe/1.0.0';
 
 	/**
 	 * The manifests path.
@@ -82,15 +88,13 @@ class Stripe {
 		// Set the Stripe API key for authentication
 		$this->setStripeKey($stripeKey);
 
-		// Set the client headers
-		$this->setHeaders([
-			'User-Agent'     => 'cartalyst-stripe-php',
-			'Stripe-Version' => (string) $version,
-		]);
+		// Set the user agent
+		$this->setUserAgent($this->userAgent);
 
-		$this->setVersion($version ?: '2014-06-17');
+		// Set the version
+		$this->setVersion($version ?: $this->version);
 
-		$this->setManifestPath($manifestPath ?: __DIR__.'/Manifests');
+		$this->setManifestPath($manifestPath ?: __DIR__.'/Api/Manifests');
 	}
 
 	/**
@@ -137,6 +141,33 @@ class Stripe {
 	public function setVersion($version)
 	{
 		$this->version = $version;
+
+		$this->setHeaders([
+			'Stripe-Version' => (string) $version,
+		]);
+	}
+
+	/**
+	 * Returns the user agent.
+	 *
+	 * @return string
+	 */
+	public function getUserAgent()
+	{
+		return $this->userAgent;
+	}
+
+	/**
+	 * Sets the user agent.
+	 *
+	 * @param  string  $userAgent
+	 * @return void
+	 */
+	public function setUserAgent($userAgent)
+	{
+		$this->userAgent = $userAgent;
+
+		$this->client->setUserAgent($userAgent, true);
 	}
 
 	/**
@@ -178,7 +209,11 @@ class Stripe {
 	 */
 	public function setHeaders(array $headers = [])
 	{
-		$headers = array_merge($this->getHeaders(), $headers);
+		$currentHeaders = $this->getHeaders();
+
+		if ( ! is_array($currentHeaders)) $currentHeaders = [];
+
+		$headers = array_merge($currentHeaders, $headers);
 
 		$this->client->setDefaultOption('headers', $headers);
 	}
@@ -205,13 +240,17 @@ class Stripe {
 	 * Handles the current request.
 	 *
 	 * @param  string  $method
-	 * @return \GuzzleHttp\Command\Guzzle\GuzzleClient
+	 * @return \Guzzle\Service\Client
 	 */
 	protected function handleRequest($method)
 	{
 		$manifest = $this->getManifestPayload($method);
 
-		return new GuzzleClient($this->client, new Description($manifest));
+		$description = ServiceDescription::factory($manifest);
+
+		$this->client->setDescription($description);
+
+		return $this->client;
 	}
 
 	/**

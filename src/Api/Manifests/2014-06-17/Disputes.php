@@ -19,33 +19,19 @@
 
 return [
 
-	'create' => [
+	'close' => [
 
 		'httpMethod'    => 'POST',
-		'uri'           => '/v1/tokens',
-		'summary'       => 'Creates a new token.',
-		'responseModel' => 'Response',
+		'uri'           => '/v1/charges/{charge}/dispute/close',
+		'summary'       => 'Closes a dispute.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
-			'bank_account' => [
-				'description' => 'A bank account to attach to the recipient.',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
-
-			'card' => [
-				'description' => 'The card unique identifier.',
-				'location'    => 'query',
-				'type'        => ['string', 'array'],
-				'required'    => false,
-			],
-
-			'customer' => [
-				'description' => 'A customer to create a token for.',
-				'location'    => 'query',
+			'charge' => [
+				'description' => 'Charge unique identifier.',
+				'location'    => 'uri',
 				'type'        => 'string',
-				'required'    => false,
+				'required'    => true,
 			],
 
 			'expand' => [
@@ -59,19 +45,26 @@ return [
 
 	],
 
-	'find' => [
+	'update' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/tokens/{id}',
-		'summary'       => 'Retrieves the details about an existing token.',
-		'responseModel' => 'Response',
+		'httpMethod'    => 'DELETE',
+		'uri'           => '/v1/charges/{charge}/dispute',
+		'summary'       => 'Updates a dispute.',
+		'responseClass' => 'Cartalyst\Stripe\Api\Response',
 		'parameters'    => [
 
-			'id' => [
-				'description' => 'The token unique identifier.',
+			'charge' => [
+				'description' => 'Charge unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
+			],
+
+			'evidence' => [
+				'description' => 'Evidence text.',
+				'location'    => 'uri',
+				'type'        => 'string',
+				'required'    => false,
 			],
 
 			'expand' => [
