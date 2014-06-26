@@ -19,7 +19,7 @@ $coupon = Stripe::coupons()->create([
 	'id'          => '50-PERCENT-OFF',
 	'duration'    => 'forever',
 	'percent_off' => 50,
-])->toArray();
+]);
 
 echo $coupon['id'];
 ```
@@ -33,7 +33,7 @@ id  | true     | string | null    | The coupon unique identifier.
 ```php
 $coupon = Stripe::coupons()->delete([
 	'id' => '50-PERCENT-OFF',
-])->toArray();
+]);
 ```
 
 ### Retrieve all the existing coupons
@@ -45,7 +45,7 @@ limit          | false    | int    | 10      | A limit on the number of objects 
 starting_after | false    | string | null    | A cursor to be used in pagination.
 
 ```php
-$coupons = Stripe::coupons()->all()->toArray();
+$coupons = Stripe::coupons()->all();
 
 foreach ($coupons['data'] as $coupon)
 {
@@ -62,7 +62,7 @@ id  | true     | string | null    | The coupon unique identifier.
 ```php
 $coupon = Stripe::coupons()->find([
 	'id' => '50-PERCENT-OFF',
-])->toArray();
+]);
 
 echo $coupon['id'];
 ```

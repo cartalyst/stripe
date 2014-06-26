@@ -11,7 +11,7 @@ starting_after | false    | string | null    | A cursor to be used in pagination
 type           | false    | string | null    | A string containing a specific event name, or group of events using * as a wildcard.
 
 ```php
-$events = Stripe::events()->all()->toArray();
+$events = Stripe::events()->all();
 
 foreach ($events['data'] as $event)
 {
@@ -28,7 +28,7 @@ id  | true     | string | null    | The event unique identifier.
 ```php
 $event = Stripe::events()->find([
 	'id' => 'evt_4ECnKrmXyNn8IM',
-])->toArray();
+]);
 
 echo $event['type'];
 ```

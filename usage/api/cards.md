@@ -16,7 +16,7 @@ $card = Stripe::cards()->create([
 		'exp_year'  => 2015,
 		'cvc'       => '314',
 	],
-])->toArray();
+]);
 ```
 
 Via Stripe.js plugin
@@ -51,7 +51,7 @@ $card = Stripe::cards()->update([
 	'customer'      => 'cus_4DArhxP7RAFBaB',
 	'name'          => 'John Doe',
 	'address_line1' => 'Example Street 1',
-])->toArray();
+]);
 ```
 
 ### Delete a card
@@ -65,7 +65,7 @@ customer | true     | string | null    | The customer unique identifier.
 $card = Stripe::cards()->delete([
 	'id'       => 'card_4EBi3uAIBFnKy4',
 	'customer' => 'cus_4DArhxP7RAFBaB',
-])->toArray();
+]);
 ```
 
 ### Retrieve all cards
@@ -80,7 +80,7 @@ starting_after | false    | string | null    | A cursor to be used in pagination
 ```php
 $cards = Stripe::cards()->all([
 	'customer' => 'cus_4DArhxP7RAFBaB',
-])->toArray();
+]);
 
 foreach ($cards['data'] as $card)
 {
@@ -99,7 +99,7 @@ customer | true     | string | null    | The customer unique identifier.
 $card = Stripe::cards()->find([
 	'id'       => 'card_4DmaB3muM8SNdZ',
 	'customer' => 'cus_4DArhxP7RAFBaB',
-])->toArray();
+]);
 
 echo $card['id'];
 ```

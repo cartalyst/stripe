@@ -16,7 +16,7 @@ $transfer = Stripe::transfers()->create([
 	'amount'    => 10,
 	'currency'  => 'USD',
 	'recipient' => 'rp_4EYxxX0LQWYDMs',
-])->toArray();
+]);
 
 echo $transfer['id'];
 ```
@@ -33,7 +33,7 @@ metadata    | false    | array   | []      | A set of key/value pairs that you c
 $transfer = Stripe::transfers()->update([
 	'id'          => 'tr_4EZer9REaUzJ76',
 	'description' => 'Transfer to John Doe',
-])->toArray();
+]);
 
 echo $transfer['description'];
 ```
@@ -47,7 +47,7 @@ id  | true     | string  | null    | The transfer unique identifier.
 ```php
 $transfer = Stripe::transfers()->cancel([
 	'id' => 'tr_4EZer9REaUzJ76',
-])->toArray();
+]);
 ```
 
 ### Retrieve all the existing transfers
@@ -63,7 +63,7 @@ starting_after | false    | string | null    | A cursor to be used in pagination
 status         | false    | string | null    | Only return transfers that have the given status: "pending", "paid", or "failed".
 
 ```php
-$transfers = Stripe::transfers()->all()->toArray();
+$transfers = Stripe::transfers()->all();
 
 foreach ($transfers['data'] as $transfer)
 {
@@ -80,7 +80,7 @@ id  | true     | string | null    | The transfer unique identifier.
 ```php
 $transfers = Stripe::transfers()->find([
 	'id' => 'tr_4EZer9REaUzJ76',
-])->toArray();
+]);
 
 echo $transfer['id'];
 ```

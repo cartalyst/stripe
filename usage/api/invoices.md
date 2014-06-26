@@ -5,7 +5,7 @@
 ```php
 $invoice = Stripe::invoices()->create([
 	'customer' => 'cus_4EgOG1jXMEt7Ou',
-])->toArray();
+]);
 ```
 
 ### Update an invoice
@@ -14,7 +14,7 @@ $invoice = Stripe::invoices()->create([
 $invoice = Stripe::invoices()->update([
 	'id'     => 'in_4EgP02zb8qxsLq',
 	'closed' => 'true',
-])->toArray();
+]);
 ```
 
 ### Pay an existing invoice
@@ -22,13 +22,13 @@ $invoice = Stripe::invoices()->update([
 ```php
 $invoice = Stripe::invoices()->pay([
 	'id' => 'in_4EgP02zb8qxsLq',
-])->toArray();
+]);
 ```
 
 ### Retrieve all the existing invoices
 
 ```php
-$invoices = Stripe::invoices()->all()->toArray();
+$invoices = Stripe::invoices()->all();
 
 foreach ($invoices['data'] as $invoice)
 {
@@ -41,7 +41,7 @@ foreach ($invoices['data'] as $invoice)
 ```php
 $invoice = Stripe::invoices()->find([
 	'id' => 'in_4EgP02zb8qxsLq',
-])->toArray();
+]);
 
 echo $invoice['paid'];
 ```
@@ -51,7 +51,7 @@ echo $invoice['paid'];
 ```php
 $lines = Stripe::invoices()->invoiceLineItems([
 	'id' => 'in_4EgP02zb8qxsLq',
-])->toArray();
+]);
 
 foreach ($lines['data'] as $line)
 {

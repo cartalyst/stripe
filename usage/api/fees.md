@@ -10,7 +10,7 @@ amount | true     | int    | null    | A positive integer in the smallest curren
 ```php
 $fee = Stripe::fees()->refund([
 	'id' => 'fee_4EUveQeJwxqxD4',
-])->toArray();
+]);
 ```
 
 ### Retrieve all the application fees
@@ -24,7 +24,7 @@ limit          | false    | int    | 10      | A limit on the number of objects 
 starting_after | false    | string | null    | A cursor to be used in pagination.
 
 ```php
-$fees = Stripe::fees()->all()->toArray();
+$fees = Stripe::fees()->all();
 
 foreach ($fees['data'] as $fee)
 {
@@ -41,7 +41,7 @@ id  | true     | string | null    | The application fee unique identifier.
 ```php
 $fee = Stripe::fees()->find([
 	'id' => 'fee_4EUveQeJwxqxD4',
-])->toArray();
+]);
 
 echo $fee['id'];
 ```

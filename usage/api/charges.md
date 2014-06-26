@@ -20,7 +20,7 @@ $charge = Stripe::charges()->create([
 	'customer' => 'cus_4EBumIjyaKooft',
 	'currency' => 'USD',
 	'amount'   => 5049, # $50.49
-])->toArray();
+]);
 
 echo $charge['id'];
 ```
@@ -37,7 +37,7 @@ metadata    | false    | array  | []      | A set of key/value pairs that you ca
 $charge = Stripe::charges()->update([
 	'id'          => 'ch_4ECWMVQp5SJKEx',
 	'description' => 'Payment to foo bar',
-])->toArray();
+]);
 ```
 
 ### Capture a charge
@@ -52,7 +52,7 @@ metadata               | false    | array  | []      | A set of key/value pairs 
 ```php
 $charge = Stripe::charges()->capture([
 	'id' => 'ch_4ECWMVQp5SJKEx',
-])->toArray();
+]);
 ```
 
 ### Refund a charge
@@ -67,7 +67,7 @@ receipt_email   | false    | string | null    | The email address to send this c
 ```php
 $charge = Stripe::charges()->refund([
 	'id' => 'ch_4ECWMVQp5SJKEx',
-])->toArray();
+]);
 ```
 
 ### Retrieve all charges
@@ -81,7 +81,7 @@ limit          | false    | int    | 10      | A limit on the number of objects 
 starting_after | false    | string | null    | A cursor to be used in pagination.
 
 ```php
-$charges = Stripe::charges()->all()->toArray();
+$charges = Stripe::charges()->all();
 
 foreach ($charges['data'] as $charge)
 {
@@ -98,5 +98,5 @@ id  | true     | string | null    | The charge unique identifier.
 ```php
 $charge = Stripe::charges()->find([
 	'id' => 'ch_4ECWMVQp5SJKEx',
-])->toArray();
+]);
 ```

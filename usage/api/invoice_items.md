@@ -7,7 +7,7 @@ $item = Stripe::invoiceItems()->create([
 	'customer' => 'cus_4EgOG1jXMEt7Ou',
 	'currency' => 'USD',
 	'amount'   => 5000,
-])->toArray();
+]);
 
 echo $item['id'];
 ```
@@ -21,7 +21,7 @@ $response = Stripe::invoiceItems()->update([
 	'metadata'    => [
 		'foo' => 'Bar',
 	],
-])->toArray();
+]);
 ```
 
 ### Delete an invoice item
@@ -29,7 +29,7 @@ $response = Stripe::invoiceItems()->update([
 ```php
 $item = Stripe::invoiceItems()->delete([
 	'id' => 'ii_4Egr3tUtHjVEnm',
-])->toArray();
+]);
 
 echo $item['id'];
 ```
@@ -37,7 +37,7 @@ echo $item['id'];
 ### Retrieve all invoice items
 
 ```php
-$items = Stripe::invoiceItems()->find()->toArray();
+$items = Stripe::invoiceItems()->find();
 
 foreach ($items['data'] as $item)
 {
@@ -50,7 +50,7 @@ foreach ($items['data'] as $item)
 ```php
 $item = Stripe::invoiceItems()->find([
 	'id' => 'ii_4Egr3tUtHjVEnm',
-])->toArray();
+]);
 
 echo $item['id'];
 ```

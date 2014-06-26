@@ -17,7 +17,7 @@ metadata     | false    | array           | null    | A set of key/value pairs t
 $recipient = Stripe::recipients()->create([
 	'name' => 'John Doe',
 	'type' => 'individual',
-])->toArray();
+]);
 ```
 
 ### Update a recipient
@@ -38,7 +38,7 @@ metadata     | false    | array           | null    | A set of key/value pairs t
 $recipient = Stripe::recipients()->update([
 	'id'   => 'rp_4EYRyEYthf2Doc',
 	'name' => 'John Doe Inc.',
-])->toArray();
+]);
 ```
 
 ### Delete a recipient
@@ -50,7 +50,7 @@ id  | true     | string | null    | The recipient unique identifier.
 ```php
 $recipient = Stripe::recipients()->delete([
 	'id' => 'rp_4EYRyEYthf2Doc',
-])->toArray();
+]);
 ```
 
 ### Retrieve all the recipients
@@ -63,7 +63,7 @@ starting_after | false    | string | null    | A cursor to be used in pagination
 verified       | false    | bool   | null    | Only return recipients that are verified or unverified.
 
 ```php
-$recipients = Stripe::recipients()->all()->toArray();
+$recipients = Stripe::recipients()->all();
 
 foreach ($recipients['data'] as $recipient)
 {
@@ -80,7 +80,7 @@ id  | true     | string | null    | The recipient unique identifier.
 ```php
 $recipient = Stripe::recipients()->find([
 	'id' => '50-PERCENT-OFF',
-])->toArray();
+]);
 
 echo $recipient['id'];
 ```

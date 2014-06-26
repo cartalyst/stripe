@@ -15,7 +15,7 @@ $token = Stripe::tokens()->create([
 		'exp_year'  => 2015,
 		'cvc'       => '314',
 	],
-])->toArray();
+]);
 
 echo $token['id'];
 ```
@@ -33,7 +33,7 @@ $token = Stripe::tokens()->create([
 		'routing_number' => '110000000',
 		'account_number' => '000123456789',
 	],
-])->toArray();
+]);
 
 echo $token['id'];
 ```

@@ -17,7 +17,7 @@ metadata        | false    | array           | null    | A set of key/value pair
 ```php
 $customer = Stripe::customers()->create([
 	'email' => 'john.doe@example.com',
-])->toArray();
+]);
 
 echo $customer['id'];
 ```
@@ -31,7 +31,7 @@ id  | true     | string | null    | The customer unique identifier.
 ```php
 $customer = Stripe::customers()->delete([
 	'id' => 'cus_4EBxvk6aBPexFO',
-])->toArray();
+]);
 ```
 
 ### Update a customer
@@ -51,7 +51,7 @@ metadata        | false    | array           | null    | A set of key/value pair
 $customer = Stripe::customers()->update([
 	'id'    => 'cus_4EBumIjyaKooft',
 	'email' => 'jonathan@doe.com',
-])->toArray();
+]);
 
 echo $customer['email'];
 ```
@@ -66,7 +66,7 @@ limit           | false    | integer         | 10      | A limit on the number o
 starting_after  | false    | string          | null    | A cursor to be used in pagination.
 
 ```php
-$customers = Stripe::customers()->all()->toArray();
+$customers = Stripe::customers()->all();
 
 foreach ($customers['id'] as $customer)
 {
@@ -83,7 +83,7 @@ id  | true     | string | null    | The customer unique identifier.
 ```php
 $customer = Stripe::customers()->find([
 	'id' => 'cus_4EBumIjyaKooft',
-])->toArray();
+]);
 
 echo $customer['email'];
 ```

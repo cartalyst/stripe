@@ -19,7 +19,7 @@ metadata                | false    | array           | []      | A set of key/va
 $subscription = Stripe::subscriptions()->create([
 	'customer' => 'cus_4EBumIjyaKooft',
 	'plan'     => 'monthly',
-])->toArray();
+]);
 
 echo $subscription['id'];
 ```
@@ -36,7 +36,7 @@ at_period_end | false    | bool   | false   | A flag that if set to true will de
 $subscription = Stripe::subscriptions()->cancel([
 	'customer' => 'cus_4EBumIjyaKooft',
 	'id'       => 'sub_4ETjGeEPC5ai9J',
-])->toArray();
+]);
 ```
 
 Cancel at the end of the period
@@ -46,7 +46,7 @@ $subscription = Stripe::subscriptions()->cancel([
 	'customer'      => 'cus_4EBumIjyaKooft',
 	'id'            => 'sub_4ETjGeEPC5ai9J',
 	'at_period_end' => 'true', # needs to be a string, Guzzle converts booleans to integers at the moment
-])->toArray();
+]);
 ```
 
 ### Update a subscription
@@ -70,7 +70,7 @@ $subscription = Stripe::subscriptions()->update([
 	'id'            => 'sub_4EUEBlsoU7kRHX',
 	'plan'          => 'monthly',
 	'at_period_end' => 'false', # needs to be a string, Guzzle converts booleans to integers at the moment
-])->toArray();
+]);
 ```
 
 ### Retrieve all the subscriptions of a customer
@@ -85,7 +85,7 @@ starting_after | false    | string  | null    | A cursor to be used in paginatio
 ```php
 $subscriptions = Stripe::subscriptions()->all([
 	'id' => 'cus_4EBumIjyaKooft',
-])->toArray();
+]);
 
 foreach ($subscriptions['data'] as $subscription)
 {
@@ -104,7 +104,7 @@ id       | true     | string | null    | The subscription unique identifier.
 $subscription = Stripe::subscriptions()->find([
 	'customer' => 'cus_4EBumIjyaKooft',
 	'id'       => 'sub_4ETjGeEPC5ai9J',
-])->toArray();
+]);
 
 echo $subscription['id'];
 ```

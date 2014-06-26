@@ -22,7 +22,7 @@ $plan = Stripe::plans()->create([
 	'currency'              => 'USD',
 	'interval'              => 'month',
 	'statement_description' => 'Monthly Subscription to Foo Bar Inc.',
-])->toArray();
+]);
 
 echo $plan['id'];
 ```
@@ -36,7 +36,7 @@ id  | true     | string | null    | The plan unique identifier.
 ```php
 $plan = Stripe::plans()->delete([
 	'id' => 'monthly',
-])->toArray();
+]);
 ```
 
 ### Update a plan
@@ -52,7 +52,7 @@ statement_description | false    | string | null    | An arbitrary string which 
 $plan = Stripe::plans()->update([
 	'id'   => 'monthly',
 	'name' => 'Monthly Subscription',
-])->toArray();
+]);
 
 echo $plan['name'];
 ```
@@ -66,7 +66,7 @@ limit          | false    | int    | 10      | A limit on the number of objects 
 starting_after | false    | string | null    | A cursor to be used in pagination.
 
 ```php
-$plans = Stripe::plans()->all()->toArray();
+$plans = Stripe::plans()->all();
 
 foreach ($plans['data'] as $plan)
 {
@@ -83,7 +83,7 @@ id  | true     | string | null    | The plan unique identifier.
 ```php
 $plan = Stripe::plans()->find([
 	'id' => 'monthly',
-])->toArray();
+]);
 
 echo $plan['name'];
 ```

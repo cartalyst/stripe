@@ -3,7 +3,7 @@
 ### Retrieve account balance
 
 ```php
-$balance = Stripe::balance()->current()->toArray();
+$balance = Stripe::balance()->current();
 
 echo $balance['pending']['amount'];
 ```
@@ -11,7 +11,7 @@ echo $balance['pending']['amount'];
 ### Retrieve all the balance history
 
 ```php
-$history = Stripe::balance()->all()->toArray();
+$history = Stripe::balance()->all();
 
 foreach ($history['data'] as $balance)
 {
@@ -24,7 +24,7 @@ foreach ($history['data'] as $balance)
 ```php
 $balance = Stripe::balance()->history([
 	'id' => 'txn_4EI2Pu1gPR27yT',
-])->toArray();
+]);
 
 echo $balance['amount'];
 ```
