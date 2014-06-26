@@ -81,12 +81,6 @@ return [
 		'uri'           => '/v1/customers/{customer}/subscriptions/{id}',
 		'summary'       => 'Returns a subscription from an existing customer.',
 		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'errorResponses' => [
-			array(
-				'class' => 'Cartalyst\Stripe\Exception\NotFoundException',
-				'code'  => 404
-			),
-		],
 		'parameters'    => [
 
 			'id' => [
