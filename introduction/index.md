@@ -11,7 +11,7 @@ Have a [read through the Installation Guide](#installation) and on how to [Integ
 **Using the API**
 
 ```php
-$customers = Stripe::customers()->all()->toArray();
+$customers = Stripe::customers()->all();
 
 foreach ($customers['data'] as $customer)
 {
