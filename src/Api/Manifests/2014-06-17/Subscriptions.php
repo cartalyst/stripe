@@ -21,11 +21,12 @@ return [
 
 	'all' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/customers/{customer}/subscriptions',
-		'summary'       => 'Returns all the subscriptions of an existing customer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/customers/{customer}/subscriptions',
+		'summary'        => 'Returns all the subscriptions of an existing customer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'customer' => [
 				'description' => 'Customer unique identifier.',
@@ -77,11 +78,13 @@ return [
 
 	'find' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/customers/{customer}/subscriptions/{id}',
-		'summary'       => 'Returns a subscription from an existing customer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/customers/{customer}/subscriptions/{id}',
+		'summary'        => 'Returns a subscription from an existing customer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Subscription unique identifier.',
@@ -110,11 +113,12 @@ return [
 
 	'create' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/customers/{customer}/subscriptions',
-		'summary'       => 'Creates a new subscription on an existing customer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/customers/{customer}/subscriptions',
+		'summary'        => 'Creates a new subscription on an existing customer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'customer' => [
 				'description' => 'Customer unique identifier.',
@@ -185,11 +189,12 @@ return [
 
 	'cancel' => [
 
-		'httpMethod'    => 'DELETE',
-		'uri'           => '/v1/customers/{customer}/subscriptions/{id}',
-		'summary'       => 'Deletes an existing customer subscription.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'DELETE',
+		'uri'            => '/v1/customers/{customer}/subscriptions/{id}',
+		'summary'        => 'Deletes an existing customer subscription.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Subscription unique identifier.',
@@ -228,11 +233,12 @@ return [
 
 	'update' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/customers/{customer}/subscriptions/{id}',
-		'summary'       => 'Updates an existing customer subscription.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/customers/{customer}/subscriptions/{id}',
+		'summary'        => 'Updates an existing customer subscription.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Subscription unique identifier.',
@@ -320,11 +326,12 @@ return [
 
 	'deleteDiscount' =>	[
 
-		'httpMethod'    => 'DELETE',
-		'uri'           => '/v1/customers/{customer}/subscriptions/{id}/discount',
-		'summary'       => 'Deletes an existing customer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'DELETE',
+		'uri'            => '/v1/customers/{customer}/subscriptions/{id}/discount',
+		'summary'        => 'Deletes an existing customer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Subscription unique identifier.',

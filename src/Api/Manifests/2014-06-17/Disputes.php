@@ -21,11 +21,11 @@ return [
 
 	'close' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/charges/{charge}/dispute/close',
-		'summary'       => 'Closes a dispute.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/charges/{charge}/dispute/close',
+		'summary'        => 'Closes a dispute.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'charge' => [
 				'description' => 'Charge unique identifier.',
@@ -47,11 +47,11 @@ return [
 
 	'update' => [
 
-		'httpMethod'    => 'DELETE',
-		'uri'           => '/v1/charges/{charge}/dispute',
-		'summary'       => 'Updates a dispute.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'DELETE',
+		'uri'            => '/v1/charges/{charge}/dispute',
+		'summary'        => 'Updates a dispute.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'charge' => [
 				'description' => 'Charge unique identifier.',

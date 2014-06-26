@@ -21,11 +21,11 @@ return [
 
 	'all' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/invoices',
-		'summary'       => 'Returns all the existing invoices.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/invoices',
+		'summary'        => 'Returns all the existing invoices.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'limit' => [
 				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
@@ -84,11 +84,11 @@ return [
 
 	'find' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/invoices/{id}',
-		'summary'       => 'Returns an existing invoice.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/invoices/{id}',
+		'summary'        => 'Returns an existing invoice.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Invoice unique identifier.',
@@ -110,11 +110,11 @@ return [
 
 	'create' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/invoices',
-		'summary'       => 'Creates a new invoice.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/invoices',
+		'summary'        => 'Creates a new invoice.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'customer' => [
 				'description' => 'Unique string to identify the plan',
@@ -150,11 +150,11 @@ return [
 
 	'update' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/invoices/{id}',
-		'summary'       => 'Updates an existing invoice.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/invoices/{id}',
+		'summary'        => 'Updates an existing invoice.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Invoice unique identifier.',
@@ -193,11 +193,11 @@ return [
 
 	'pay' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/invoices/{id}/pay',
-		'summary'       => 'Pays an existing invoice.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/invoices/{id}/pay',
+		'summary'        => 'Pays an existing invoice.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Invoice unique identifier.',
@@ -219,11 +219,11 @@ return [
 
 	'invoiceLineItems' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/invoices/{id}/lines',
-		'summary'       => 'Returns an existing invoice line items.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/invoices/{id}/lines',
+		'summary'        => 'Returns an existing invoice line items.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Invoice unique identifier.',
@@ -275,11 +275,11 @@ return [
 
 	'upcomingInvoice' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/invoices/upcoming',
-		'summary'       => 'Get upcoming invoices',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/invoices/upcoming',
+		'summary'        => 'Get upcoming invoices',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'customer' => [
 				'description' => 'Only return upcoming invoices for a specific customer',

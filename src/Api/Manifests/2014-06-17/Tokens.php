@@ -21,11 +21,12 @@ return [
 
 	'create' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/tokens',
-		'summary'       => 'Creates a new token.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/tokens',
+		'summary'        => 'Creates a new token.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'bank_account' => [
 				'description' => 'A bank account to attach to the recipient.',
@@ -61,11 +62,12 @@ return [
 
 	'find' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/tokens/{id}',
-		'summary'       => 'Retrieves the details about an existing token.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/tokens/{id}',
+		'summary'        => 'Retrieves the details about an existing token.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The token unique identifier.',

@@ -21,11 +21,12 @@ return [
 
 	'all' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/transfers',
-		'summary'       => 'Returns a list of the existing transfers.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/transfers',
+		'summary'        => 'Returns a list of the existing transfers.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'created' => [
 				'description' => 'A filter on the list based on the object created field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
@@ -97,11 +98,12 @@ return [
 
 	'find' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/transfers/{id}',
-		'summary'       => 'Retrieves the details of an existing transfer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/transfers/{id}',
+		'summary'        => 'Retrieves the details of an existing transfer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The transfer unique identifier.',
@@ -123,11 +125,12 @@ return [
 
 	'create' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/transfers',
-		'summary'       => 'Creates a new transfer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/transfers',
+		'summary'        => 'Creates a new transfer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'amount' => [
 				'description' => 'A positive integer in the smallest currency unit.',
@@ -184,11 +187,12 @@ return [
 
 	'update' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/transfers/{id}',
-		'summary'       => 'Updates an existing transfer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/transfers/{id}',
+		'summary'        => 'Updates an existing transfer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The transfer unique identifier.',
@@ -224,11 +228,12 @@ return [
 
 	'cancel' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/transfers/{id}/cancel',
-		'summary'       => 'Cancels an existing transfer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/transfers/{id}/cancel',
+		'summary'        => 'Cancels an existing transfer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The transfer unique identifier.',

@@ -21,11 +21,12 @@ return [
 
 	'all' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/coupons',
-		'summary'       => 'Returns a list of coupons that were previously created.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/coupons',
+		'summary'        => 'Returns a list of coupons that were previously created.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'ending_before' => [
 				'description' => 'A cursor to be used in pagination.',
@@ -70,11 +71,12 @@ return [
 
 	'find' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/coupons/{id}',
-		'summary'       => 'Retrieves the details of an existing coupon.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/coupons/{id}',
+		'summary'        => 'Retrieves the details of an existing coupon.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The coupon unique identifier.',
@@ -96,11 +98,12 @@ return [
 
 	'create' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/coupons',
-		'summary'       => 'Creates a new coupon.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/coupons',
+		'summary'        => 'Creates a new coupon.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Unique string to identify the coupon (if none specified, it will be auto-generated).',
@@ -145,6 +148,13 @@ return [
 				'required'    => false,
 			],
 
+			'metadata' => [
+				'description' => 'A set of key/value pairs that you can attach to a charge object.',
+				'location'    => 'query',
+				'type'        => 'array',
+				'required'    => false,
+			],
+
 			'percent_off' => [
 				'description' => 'A positive integer between 1 and 100 that represents the discount the coupon will apply (required if amount_off is not passed).',
 				'location'    => 'query',
@@ -172,11 +182,12 @@ return [
 
 	'delete' => [
 
-		'httpMethod'    => 'DELETE',
-		'uri'           => '/v1/coupons/{id}',
-		'summary'       => 'Deletes an existing coupon.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'DELETE',
+		'uri'            => '/v1/coupons/{id}',
+		'summary'        => 'Deletes an existing coupon.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The coupon unique identifier.',

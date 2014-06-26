@@ -21,11 +21,11 @@ return [
 
 	'all' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/events',
-		'summary'       => 'Returns a list of events, going back up to 30 days.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/events',
+		'summary'        => 'Returns a list of events, going back up to 30 days.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'created' => [
 				'description' => 'A filter on the list based on the object created field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
@@ -84,11 +84,11 @@ return [
 
 	'find' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/events/{id}',
-		'summary'       => 'Retrieves the details of an event.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/events/{id}',
+		'summary'        => 'Retrieves the details of an event.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The event unique identifier.',

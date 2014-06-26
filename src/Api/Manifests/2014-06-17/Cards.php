@@ -21,11 +21,12 @@ return [
 
 	'all' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/customers/{customer}/cards',
-		'summary'       => 'Returns a list of cards that belongs to the given customer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/customers/{customer}/cards',
+		'summary'        => 'Returns a list of cards that belongs to the given customer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'customer' => [
 				'description' => 'The customer unique identifier.',
@@ -77,12 +78,13 @@ return [
 
 	'find' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/customers/{customer}/cards/{id}',
-		'summary'       => 'Returns a card from an existing customer.',
-		'summary'       => 'Retrieves the details of a card that belongs to the given customer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/customers/{customer}/cards/{id}',
+		'summary'        => 'Returns a card from an existing customer.',
+		'summary'        => 'Retrieves the details of a card that belongs to the given customer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'customer' => [
 				'description' => 'The customer unique identifier.',
@@ -111,11 +113,12 @@ return [
 
 	'create' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/customers/{customer}/cards',
-		'summary'       => 'Creates a new card on the given customer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/customers/{customer}/cards',
+		'summary'        => 'Creates a new card on the given customer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'customer' => [
 				'description' => 'The customer unique identifier.',
@@ -144,11 +147,12 @@ return [
 
 	'delete' => [
 
-		'httpMethod'    => 'DELETE',
-		'uri'           => '/v1/customers/{customer}/cards/{id}',
-		'summary'       => 'Deletes a card from the given customer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'DELETE',
+		'uri'            => '/v1/customers/{customer}/cards/{id}',
+		'summary'        => 'Deletes a card from the given customer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'customer' => [
 				'description' => 'The customer unique identifier.',
@@ -177,11 +181,12 @@ return [
 
 	'update' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/customers/{customer}/cards/{id}',
-		'summary'       => 'Updates a card from the given customer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/customers/{customer}/cards/{id}',
+		'summary'        => 'Updates a card from the given customer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'customer' => [
 				'description' => 'The customer unique identifier.',

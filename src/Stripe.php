@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use Guzzle\Plugin\ErrorResponse\ErrorResponsePlugin;
 use Guzzle\Service\Client;
 use Guzzle\Service\Description\ServiceDescription;
 use InvalidArgumentException;
@@ -85,6 +86,12 @@ class Stripe {
 		// Initialize the Guzzle client
 		$this->client = new Client;
 
+		// Get the Guzzle event dispatcher
+		$dispatcher = $this->client->getEventDispatcher();
+
+		// Register the error response plugin for our custom exceptions
+		$dispatcher->addSubscriber(new ErrorResponsePlugin);
+
 		// Set the Stripe API key for authentication
 		$this->setStripeKey($stripeKey);
 
@@ -94,6 +101,7 @@ class Stripe {
 		// Set the version
 		$this->setVersion($version ?: $this->version);
 
+		// Set the manifest path
 		$this->setManifestPath($manifestPath ?: __DIR__.'/Api/Manifests');
 	}
 
@@ -314,6 +322,8 @@ class Stripe {
 	{
 		if ( ! $manifest = array_get($this->manifests, $method))
 		{
+			$errors = require_once $this->getRequestManifestPath('Errors');
+
 			$manifest = require_once $this->getRequestManifestPath($method);
 
 			array_set($this->manifests, $method, $manifest);

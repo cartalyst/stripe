@@ -1,4 +1,4 @@
-<?php
+<?php namespace Cartalyst\Stripe\Api\Exception;
 /**
  * Part of the Stripe package.
  *
@@ -17,16 +17,6 @@
  * @link       http://cartalyst.com
  */
 
-return [
+class CardErrorException extends StripeException {
 
-	'details' => [
-
-		'httpMethod'     => 'GET',
-		'uri'            => '/v1/account',
-		'summary'        => 'Retrieves the details of the account.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
-		'errorResponses' => $errors,
-
-	],
-
-];
+}

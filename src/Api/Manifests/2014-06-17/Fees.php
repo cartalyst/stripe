@@ -21,11 +21,11 @@ return [
 
 	'all' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/application_fees',
-		'summary'       => 'Returns details about all application fees that your account has collected.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/application_fees',
+		'summary'        => 'Returns details about all application fees that your account has collected.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'charge' => [
 				'description' => 'The charge unique identifier.',
@@ -84,11 +84,11 @@ return [
 
    'find' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/application_fees/{id}',
-		'summary'       => 'Retrieves the details about an application fee that your account has collected.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/application_fees/{id}',
+		'summary'        => 'Retrieves the details about an application fee that your account has collected.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The application fee unique identifier.',
@@ -110,11 +110,11 @@ return [
 
 	'refund' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/application_fees/{id}/refund',
-		'summary'       => 'Refunds an application fee that has previously been collected but not yet refunded.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/application_fees/{id}/refund',
+		'summary'        => 'Refunds an application fee that has previously been collected but not yet refunded.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The application fee unique identifier.',

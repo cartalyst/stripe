@@ -21,11 +21,11 @@ return [
 
 	'all' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/invoiceitems',
-		'summary'       => 'Returns all the existing invoice items.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/invoiceitems',
+		'summary'        => 'Returns all the existing invoice items.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'limit' => [
 				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
@@ -83,11 +83,11 @@ return [
 
 	'find' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/invoiceitems/{id}',
-		'summary'       => 'Returns an existing invoice item.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/invoiceitems/{id}',
+		'summary'        => 'Returns an existing invoice item.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Invoice item unique identifier.',
@@ -110,11 +110,11 @@ return [
 
 	'create' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/invoiceitems',
-		'summary'       => 'Creates a new invoice item.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/invoiceitems',
+		'summary'        => 'Creates a new invoice item.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'customer' => [
 				'description' => 'ID of the customer who will be billed when this invoice item is billed',
@@ -178,11 +178,11 @@ return [
 
 	'delete' => [
 
-		'httpMethod'    => 'DELETE',
-		'uri'           => '/v1/invoiceitems/{id}',
-		'summary'       => 'Deletes an existing invoice item.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'DELETE',
+		'uri'            => '/v1/invoiceitems/{id}',
+		'summary'        => 'Deletes an existing invoice item.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Invoice item unique identifier.',
@@ -204,11 +204,11 @@ return [
 
 	'update' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/invoiceitems/{id}',
-		'summary'       => 'Updates an existing invoice item.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/invoiceitems/{id}',
+		'summary'        => 'Updates an existing invoice item.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Invoice item unique identifier.',

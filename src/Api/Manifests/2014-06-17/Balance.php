@@ -21,20 +21,22 @@ return [
 
 	'current' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/balance',
-		'summary'       => 'Retrieves the current account balance.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/balance',
+		'summary'        => 'Retrieves the current account balance.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 
 	],
 
 	'all' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/balance/history',
-		'summary'       => 'Returns a list of transactions that have contributed to the Stripe account balance.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/balance/history',
+		'summary'        => 'Returns a list of transactions that have contributed to the Stripe account balance.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'available_on' => [
 				'description' => 'A filter on the list based on the object available_on field.',
@@ -116,11 +118,12 @@ return [
 
 	'history' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/balance/history/{id}',
-		'summary'       => 'Retrieves the balance transaction with the given ID.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/balance/history/{id}',
+		'summary'        => 'Retrieves the balance transaction with the given ID.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The transaction unique identifier.',

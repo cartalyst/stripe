@@ -21,11 +21,12 @@ return [
 
 	'all' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/customers',
-		'summary'       => 'Retrieves all the existing customers.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/customers',
+		'summary'        => 'Retrieves all the existing customers.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'limit' => [
 				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
@@ -77,11 +78,12 @@ return [
 
 	'find' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/customers/{id}',
-		'summary'       => 'Retrieves an existing customer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/customers/{id}',
+		'summary'        => 'Retrieves an existing customer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Customer unique identifier.',
@@ -103,11 +105,12 @@ return [
 
 	'create' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/customers',
-		'summary'       => 'Creates a new customer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/customers',
+		'summary'        => 'Creates a new customer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'account_balance' => [
 				'description' => 'An integer amount in cents that is the starting account balance for your customer.',
@@ -185,11 +188,12 @@ return [
 
 	'delete' => [
 
-		'httpMethod'    => 'DELETE',
-		'uri'           => '/v1/customers/{id}',
-		'summary'       => 'Deletes an existing customer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'DELETE',
+		'uri'            => '/v1/customers/{id}',
+		'summary'        => 'Deletes an existing customer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Customer unique identifier.',
@@ -211,11 +215,12 @@ return [
 
 	'update' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/customers/{id}',
-		'summary'       => 'Updates an existing customer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/customers/{id}',
+		'summary'        => 'Updates an existing customer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Customer unique identifier.',
@@ -286,11 +291,12 @@ return [
 
 	'deleteDiscount' =>	[
 
-		'httpMethod'    => 'DELETE',
-		'uri'           => '/v1/customers/{id}/discount',
-		'summary'       => 'Deletes an existing customer.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'DELETE',
+		'uri'            => '/v1/customers/{id}/discount',
+		'summary'        => 'Deletes an existing customer.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Customer unique identifier.',

@@ -21,11 +21,11 @@ return [
 
 	'all' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/plans',
-		'summary'       => 'Returns all the existing plans.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/plans',
+		'summary'        => 'Returns all the existing plans.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'limit' => [
 				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
@@ -70,11 +70,11 @@ return [
 
 	'find' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/plans/{id}',
-		'summary'       => 'Returns an existing plan.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/plans/{id}',
+		'summary'        => 'Returns an existing plan.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Plan unique identifier.',
@@ -96,11 +96,11 @@ return [
 
 	'create' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/plans',
-		'summary'       => 'Creates a new plan.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/plans',
+		'summary'        => 'Creates a new plan.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Plan unique identifier.',
@@ -153,7 +153,7 @@ return [
 			],
 
 			'metadata' => [
-				'description' => 'Metadata. (optional)',
+				'description' => 'A set of key/value pairs that you can attach to a charge object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -179,11 +179,11 @@ return [
 
 	'delete' => [
 
-		'httpMethod'    => 'DELETE',
-		'uri'           => '/v1/plans/{id}',
-		'summary'       => 'Deletes an existing plan.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'DELETE',
+		'uri'            => '/v1/plans/{id}',
+		'summary'        => 'Deletes an existing plan.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Plan unique identifier.',
@@ -205,11 +205,11 @@ return [
 
 	'update' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/plans/{id}',
-		'summary'       => 'Updates an existing plan.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/plans/{id}',
+		'summary'        => 'Updates an existing plan.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'Plan unique identifier.',

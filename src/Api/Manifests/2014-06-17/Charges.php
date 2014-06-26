@@ -21,11 +21,12 @@ return [
 
 	'all' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/charges',
-		'summary'       => 'Returns a list of charges that were previously created.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/charges',
+		'summary'        => 'Returns a list of charges that were previously created.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'created' => [
 				'description' => 'A filter on the list based on the object created field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
@@ -84,11 +85,12 @@ return [
 
 	'find' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/charges/{id}',
-		'summary'       => 'Retrieves the details of a charge that has been previously created.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/charges/{id}',
+		'summary'        => 'Retrieves the details of a charge that has been previously created.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The charge unique identifier.',
@@ -110,11 +112,12 @@ return [
 
 	'create' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/charges',
-		'summary'       => 'Creates a new charge.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/charges',
+		'summary'        => 'Creates a new charge.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'amount' => [
 				'description' => 'A positive integer in the smallest currency unit.',
@@ -202,11 +205,12 @@ return [
 
 	'update' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/charges/{id}',
-		'summary'       => 'Updates the specified charge.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/charges/{id}',
+		'summary'        => 'Updates the specified charge.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The charge unique identifier.',
@@ -242,11 +246,12 @@ return [
 
 	'capture' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/charges/{id}/capture',
-		'summary'       => 'Captures the payment of specified, uncaptured, charge.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/charges/{id}/capture',
+		'summary'        => 'Captures the payment of specified, uncaptured, charge.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The charge unique identifier.',
@@ -289,11 +294,12 @@ return [
 
 	'refund' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/charges/{id}/refunds',
-		'summary'       => 'Refunds the specified charge.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/charges/{id}/refunds',
+		'summary'        => 'Refunds the specified charge.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The charge unique identifier.',
@@ -332,11 +338,12 @@ return [
 
 	'refunds' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/charges/{id}/refunds',
-		'summary'       => 'Retrieves a list of all the refunds of a charge.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/charges/{id}/refunds',
+		'summary'        => 'Retrieves a list of all the refunds of a charge.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The charge unique identifier.',
@@ -351,11 +358,12 @@ return [
 
 	'findRefund' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/charges/{charge}/refunds/{id}',
-		'summary'       => 'Retrieves the given refund.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/charges/{charge}/refunds/{id}',
+		'summary'        => 'Retrieves the given refund.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'charge' => [
 				'description' => 'The charge unique identifier.',
@@ -377,11 +385,12 @@ return [
 
 	'updateRefund' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/charges/{charge}/refunds/{id}',
-		'summary'       => 'Updates the given refund.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/charges/{charge}/refunds/{id}',
+		'summary'        => 'Updates the given refund.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
 
 			'charge' => [
 				'description' => 'The charge unique identifier.',

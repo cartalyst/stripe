@@ -21,11 +21,11 @@ return [
 
 	'all' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/recipients',
-		'summary'       => 'Returns a list of existing recipients.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/recipients',
+		'summary'        => 'Returns a list of existing recipients.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'ending_before' => [
 				'description' => 'A cursor to be used in pagination.',
@@ -73,11 +73,11 @@ return [
 
 	'find' => [
 
-		'httpMethod'    => 'GET',
-		'uri'           => '/v1/recipients/{id}',
-		'summary'       => 'Retrieves the details of an existing recipient.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'GET',
+		'uri'            => '/v1/recipients/{id}',
+		'summary'        => 'Retrieves the details of an existing recipient.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The recipient unique identifier.',
@@ -99,11 +99,11 @@ return [
 
 	'create' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/recipients',
-		'summary'       => 'Creates a new recipient.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/recipients',
+		'summary'        => 'Creates a new recipient.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'name' => [
 				'description' => 'Recipient full, legal name.',
@@ -175,11 +175,11 @@ return [
 
 	'delete' => [
 
-		'httpMethod'    => 'DELETE',
-		'uri'           => '/v1/recipients/{id}',
-		'summary'       => 'Deletes an existing recipient.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'DELETE',
+		'uri'            => '/v1/recipients/{id}',
+		'summary'        => 'Deletes an existing recipient.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The recipient unique identifier.',
@@ -201,11 +201,11 @@ return [
 
 	'update' => [
 
-		'httpMethod'    => 'POST',
-		'uri'           => '/v1/recipients/{id}',
-		'summary'       => 'Updates an existing recipient.',
-		'responseClass' => 'Cartalyst\Stripe\Api\Response',
-		'parameters'    => [
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/recipients/{id}',
+		'summary'        => 'Updates an existing recipient.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'parameters'     => [
 
 			'id' => [
 				'description' => 'The recipient unique identifier.',
