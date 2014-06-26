@@ -45,7 +45,7 @@ Cancel at the end of the period
 $subscription = Stripe::subscriptions()->cancel([
 	'customer'      => 'cus_4EBumIjyaKooft',
 	'id'            => 'sub_4ETjGeEPC5ai9J',
-	'at_period_end' => 'true', # needs to be a string, Guzzle converts booleans to integers at the moment
+	'at_period_end' => true,
 ]);
 ```
 
@@ -69,7 +69,7 @@ $subscription = Stripe::subscriptions()->update([
 	'customer'      => 'cus_4EBumIjyaKooft',
 	'id'            => 'sub_4EUEBlsoU7kRHX',
 	'plan'          => 'monthly',
-	'at_period_end' => 'false', # needs to be a string, Guzzle converts booleans to integers at the moment
+	'at_period_end' => false,
 ]);
 ```
 

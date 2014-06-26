@@ -13,7 +13,7 @@ $invoice = Stripe::invoices()->create([
 ```php
 $invoice = Stripe::invoices()->update([
 	'id'     => 'in_4EgP02zb8qxsLq',
-	'closed' => 'true',
+	'closed' => true,
 ]);
 ```
 
