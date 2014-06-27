@@ -201,7 +201,7 @@ class SubscriptionGateway extends StripeGateway {
 		$this->updateLocalSubscriptionData($data);
 
 		$payload = $this->getPayload([
-			'at_period_end' => $atPeriodEnd ? 'true' : 'false',
+			'at_period_end' => $atPeriodEnd,
 		]);
 
 		return $this->client->subscriptions()->cancel($payload);

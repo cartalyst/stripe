@@ -109,7 +109,7 @@ class ChargeGateway extends StripeGateway {
 		// Prepares the payload
 		$attributes = array_merge($attributes, [
 			'customer' => $entity->stripe_id,
-			'capture'  => $this->capture ? 'true' : 'false',
+			'capture'  => $this->capture,
 			'currency' => $this->currency,
 			'amount'   => $this->convertToCents($amount),
 			'card'     => $card,
