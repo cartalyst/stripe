@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Filters\Api;
+<?php namespace Cartalyst\Stripe\Api\Filters;
 /**
  * Part of the Stripe package.
  *
