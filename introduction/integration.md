@@ -51,8 +51,8 @@ Now that the migration file is created you just need to run `php artisan migrate
 Add the `BillableTrait` to your Eloquent model and make sure the model implements the `BillableInterface`:
 
 ```php
-use Cartalyst\Stripe\BillableTrait;
-use Cartalyst\Stripe\BillableInterface;
+use Cartalyst\Stripe\Billing\BillableTrait;
+use Cartalyst\Stripe\Billing\BillableInterface;
 
 class User extends Eloquent implements BillableInterface {
 
