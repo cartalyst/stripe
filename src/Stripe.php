@@ -25,13 +25,6 @@ use InvalidArgumentException;
 class Stripe {
 
 	/**
-	 * The Guzzle client.
-	 *
-	 * @var \Guzzle\Service\Client
-	 */
-	protected $client;
-
-	/**
 	 * The Stripe API key.
 	 *
 	 * @var string
@@ -67,11 +60,18 @@ class Stripe {
 	protected $manifest;
 
 	/**
-	 * Cached manifests data.
+	 * The Cached manifests data.
 	 *
 	 * @var array
 	 */
 	protected $manifests = [];
+
+	/**
+	 * The headers to be sent to the Guzzle client.
+	 *
+	 * @var array
+	 */
+	protected $headers = [];
 
 	/**
 	 * Constructor.
@@ -83,20 +83,8 @@ class Stripe {
 	 */
 	public function __construct($stripeKey, $version = null, $manifestPath = null)
 	{
-		// Initialize the Guzzle client
-		$this->client = new Client;
-
-		// Get the Guzzle event dispatcher
-		$dispatcher = $this->client->getEventDispatcher();
-
-		// Register the error response plugin for our custom exceptions
-		$dispatcher->addSubscriber(new ErrorResponsePlugin);
-
 		// Set the Stripe API key for authentication
 		$this->setStripeKey($stripeKey);
-
-		// Set the user agent
-		$this->setUserAgent($this->userAgent);
 
 		// Set the version
 		$this->setVersion($version ?: $this->version);
@@ -124,10 +112,6 @@ class Stripe {
 	public function setStripeKey($stripeKey)
 	{
 		$this->stripeKey = $stripeKey;
-
-		$this->client->setDefaultOption('auth', [
-			$stripeKey, null,
-		]);
 	}
 
 	/**
@@ -174,8 +158,6 @@ class Stripe {
 	public function setUserAgent($userAgent)
 	{
 		$this->userAgent = $userAgent;
-
-		$this->client->setUserAgent($userAgent, true);
 	}
 
 	/**
@@ -206,7 +188,7 @@ class Stripe {
 	 */
 	public function getHeaders()
 	{
-		return $this->client->getDefaultOption('headers');
+		return $this->headers;
 	}
 
 	/**
@@ -217,13 +199,7 @@ class Stripe {
 	 */
 	public function setHeaders(array $headers = [])
 	{
-		$currentHeaders = $this->getHeaders();
-
-		if ( ! is_array($currentHeaders)) $currentHeaders = [];
-
-		$headers = array_merge($currentHeaders, $headers);
-
-		$this->client->setDefaultOption('headers', $headers);
+		$this->headers = array_merge($this->headers, $headers);
 	}
 
 	/**
@@ -252,13 +228,32 @@ class Stripe {
 	 */
 	protected function handleRequest($method)
 	{
+		// Initialize the Guzzle client
+		$client = new Client;
+
+		// Set the client user agent
+		$client->setUserAgent($this->getUserAgent(), true);
+
+		// Set the authentication
+		$client->setDefaultOption('auth', [
+			$this->getStripeKey(), null,
+		]);
+
+		// Set the headers
+		$client->setDefaultOption('headers', $this->getHeaders());
+
+		// Get the Guzzle event dispatcher
+		$dispatcher = $client->getEventDispatcher();
+
+		// Register the error response plugin for our custom exceptions
+		$dispatcher->addSubscriber(new ErrorResponsePlugin);
+
+		//
 		$manifest = $this->getManifestPayload($method);
+		$client->setDescription(ServiceDescription::factory($manifest));
 
-		$description = ServiceDescription::factory($manifest);
-
-		$this->client->setDescription($description);
-
-		return $this->client;
+		// Return the Guzzle client
+		return $client;
 	}
 
 	/**
@@ -322,7 +317,7 @@ class Stripe {
 	{
 		if ( ! $manifest = array_get($this->manifests, $method))
 		{
-			$errors = require_once $this->getRequestManifestPath('Errors');
+			$errors = require $this->getRequestManifestPath('Errors');
 
 			$manifest = require_once $this->getRequestManifestPath($method);
 
