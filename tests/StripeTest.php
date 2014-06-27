@@ -117,7 +117,7 @@ class StripeTest extends PHPUnit_Framework_TestCase {
 		$headers = $this->stripe->getHeaders();
 
 		$expected = [
-			'some-header'     => 'foo-bar',
+			'some-header'    => 'foo-bar',
 			'Stripe-Version' => '2014-06-17',
 		];
 
