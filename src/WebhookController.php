@@ -20,7 +20,6 @@
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class WebhookController extends Controller {
@@ -39,7 +38,7 @@ class WebhookController extends Controller {
 		$type = $payload['type'];
 
 		// Make sure we have a proper method name
-		$method = Str::camel(str_replace('.', '_', $type));
+		$method = 'handle'.studly_case(str_replace('.', '_', $type));
 
 		// Check if the method exists
 		if (method_exists($this, $method))
