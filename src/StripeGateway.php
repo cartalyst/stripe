@@ -18,7 +18,7 @@
  */
 
 use Carbon\Carbon;
-use GuzzleHttp\Command\Exception\CommandClientException;
+use Cartalyst\Stripe\Api\Exception\NotFoundException;
 
 abstract class StripeGateway {
 
@@ -60,11 +60,11 @@ abstract class StripeGateway {
 	{
 		try
 		{
-			$customer = $this->client->customers()->find(compact('id'))->toArray();
+			$customer = $this->client->customers()->find(compact('id'));
 		}
-		catch (CommandClientException $e)
+		catch (NotFoundException $e)
 		{
-			$customer = $this->client->customers()->create($attributes)->toArray();
+			$customer = $this->client->customers()->create($attributes);
 
 			$this->billable->stripe_id = $customer['id'];
 			$this->billable->save();

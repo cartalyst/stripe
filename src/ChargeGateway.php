@@ -116,7 +116,7 @@ class ChargeGateway extends StripeGateway {
 		]);
 
 		// Create the charge on Stripe
-		$charge = $this->client->charges()->create($attributes)->toArray();
+		$charge = $this->client->charges()->create($attributes);
 
 		// Attach the created charge to the billable entity
 		$this->billable->charges()->create([
@@ -141,7 +141,7 @@ class ChargeGateway extends StripeGateway {
 	{
 		$payload = $this->getPayload($attributes);
 
-		return $this->client->charges()->update($payload)->toArray();
+		return $this->client->charges()->update($payload);
 	}
 
 	/**
@@ -158,7 +158,7 @@ class ChargeGateway extends StripeGateway {
 		]));
 
 		// Refunds the charge on Stripe
-		$refund = $this->client->charges()->refund($payload)->toArray();
+		$refund = $this->client->charges()->refund($payload);
 
 		// Create the local refund entry
 		$this
@@ -170,7 +170,7 @@ class ChargeGateway extends StripeGateway {
 			]);
 
 		// Get the updated charge
-		$charge = $this->client->charges()->find($this->getPayload())->toArray();
+		$charge = $this->client->charges()->find($this->getPayload());
 
 		// Update the local charge entry
 		$this->charge->update([
@@ -189,7 +189,7 @@ class ChargeGateway extends StripeGateway {
 	{
 		$payload = $this->getPayload();
 
-		return $this->client->charges()->capture($payload)->toArray();
+		return $this->client->charges()->capture($payload);
 	}
 
 	/**
@@ -242,7 +242,7 @@ class ChargeGateway extends StripeGateway {
 
 		$charges = $this->client->charges()->all([
 			'customer' => $entity->stripe_id,
-		])->toArray();
+		]);
 
 		foreach ($charges['data'] as $charge)
 		{

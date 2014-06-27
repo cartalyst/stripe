@@ -152,7 +152,7 @@ trait BillableTrait {
 		return $this->getStripeClient()->customers()->update([
 			'id'     => $this->getStripeId(),
 			'coupon' => $coupon,
-		])->toArray();
+		]);
 	}
 
 	/**
@@ -163,7 +163,7 @@ trait BillableTrait {
 		return $this->getStripeClient()->customers()->update([
 			'id'   => $this->getStripeId(),
 			'card' => $token,
-		])->toArray();
+		]);
 	}
 
 	/**

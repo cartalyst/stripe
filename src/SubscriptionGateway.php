@@ -110,7 +110,7 @@ class SubscriptionGateway extends StripeGateway {
 	{
 		$payload = $this->getPayload();
 
-		return $this->client->subscriptions()->find($payload)->toArray();
+		return $this->client->subscriptions()->find($payload);
 	}
 
 	/**
@@ -152,7 +152,7 @@ class SubscriptionGateway extends StripeGateway {
 		]);
 
 		// Create the subscription on Stripe
-		$subscription = $this->client->subscriptions()->create($attributes)->toArray();
+		$subscription = $this->client->subscriptions()->create($attributes);
 
 		// Attach the created subscription to the billable entity
 		$entity->subscriptions()->create([
@@ -174,7 +174,7 @@ class SubscriptionGateway extends StripeGateway {
 	{
 		$payload = $this->getPayload($attributes);
 
-		return $this->client->subscriptions()->update($payload)->toArray();
+		return $this->client->subscriptions()->update($payload);
 	}
 
 	/**
@@ -204,7 +204,7 @@ class SubscriptionGateway extends StripeGateway {
 			'at_period_end' => $atPeriodEnd ? 'true' : 'false',
 		]);
 
-		return $this->client->subscriptions()->cancel($payload)->toArray();
+		return $this->client->subscriptions()->cancel($payload);
 	}
 
 	/**
@@ -298,7 +298,7 @@ class SubscriptionGateway extends StripeGateway {
 	{
 		$payload = $this->getPayload();
 
-		return $this->client->subscriptions()->deleteDiscount($payload)->toArray();
+		return $this->client->subscriptions()->deleteDiscount($payload);
 	}
 
 	/**
@@ -474,7 +474,7 @@ class SubscriptionGateway extends StripeGateway {
 
 		$subscriptions = $this->client->subscriptions()->all([
 			'id' => $entity->stripe_id,
-		])->toArray();
+		]);
 
 		$stripeSubscriptions = [];
 

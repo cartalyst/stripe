@@ -85,12 +85,12 @@ class CardGateway extends StripeGateway {
 		$card = $this->client->cards()->create(array_merge($attributes, [
 			'card'     => $token,
 			'customer' => $stripeId,
-		]))->toArray();
+		]));
 
 		// Get the Stripe customer
 		$customer = $this->client->customers()->find([
 			'id' => $stripeId,
-		])->toArray();
+		]);
 
 		// Is this the default credit card?
 		$isDefault = ($this->default || $customer['default_card'] === $card['id']);
@@ -123,7 +123,7 @@ class CardGateway extends StripeGateway {
 	{
 		$payload = $this->getPayload($attributes);
 
-		return $this->client->cards()->update($payload)->toArray();
+		return $this->client->cards()->update($payload);
 	}
 
 	/**
@@ -140,7 +140,7 @@ class CardGateway extends StripeGateway {
 		$payload = $this->getPayload();
 
 		// Delete the card on Stripe
-		$card = $this->client->cards()->delete($payload)->toArray();
+		$card = $this->client->cards()->delete($payload);
 
 		// Delete the card locally
 		$this->card->delete();
@@ -148,7 +148,7 @@ class CardGateway extends StripeGateway {
 		// Get the Stripe customer
 		$customer = $this->client->customers()->find([
 			'id' => $entity->stripe_id,
-		])->toArray();
+		]);
 
 		$this->updateDefaultLocalCard($customer['default_card']);
 
@@ -177,7 +177,7 @@ class CardGateway extends StripeGateway {
 		$this->client->customers()->update([
 			'id'           => $this->billable->stripe_id,
 			'default_card' => $this->card->stripe_id,
-		])->toArray();
+		]);
 
 		$this->updateDefaultLocalCard($this->card->stripe_id);
 	}
@@ -193,11 +193,11 @@ class CardGateway extends StripeGateway {
 
 		$customer = $this->client->customers()->find([
 			'id' => $entity->stripe_id,
-		])->toArray();
+		]);
 
 		$cards = $this->client->cards()->all([
 			'customer' => $entity->stripe_id,
-		])->toArray();
+		]);
 
 		$defaultCard = $customer['default_card'];
 
