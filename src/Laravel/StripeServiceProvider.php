@@ -17,7 +17,7 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Stripe\Stripe;
+use Cartalyst\Stripe\Api\Stripe;
 use Cartalyst\Stripe\StripeMigratorCommand;
 use Illuminate\Support\ServiceProvider;
 

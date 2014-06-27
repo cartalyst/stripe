@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe;
+<?php namespace Cartalyst\Stripe\Billing;
 /**
  * Part of the Stripe package.
  *
@@ -22,7 +22,7 @@ interface BillableInterface {
 	/**
 	 * Returns all the cards attached to this entity.
 	 *
-	 * @return \Cartalyst\Stripe\Models\IlluminateCard
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCard
 	 */
 	public function cards();
 
@@ -30,7 +30,7 @@ interface BillableInterface {
 	 * Returns a new Stripe Card gateway.
 	 *
 	 * @param  mixed  $card
-	 * @return \Cartalyst\Stripe\CardGateway
+	 * @return \Cartalyst\Stripe\Billing\CardGateway
 	 */
 	public function card($card = null);
 
@@ -45,7 +45,7 @@ interface BillableInterface {
 	/**
 	 * Returns all the charges that this entity has made.
 	 *
-	 * @return \Cartalyst\Stripe\Models\IlluminateCharge
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
 	 */
 	public function charges();
 
@@ -53,7 +53,7 @@ interface BillableInterface {
 	 * Returns a new Stripe Charge gateway.
 	 *
 	 * @param  mixed  $charge
-	 * @return \Cartalyst\Stripe\ChargeGateway
+	 * @return \Cartalyst\Stripe\Billing\ChargeGateway
 	 */
 	public function charge($charge = null);
 
@@ -68,7 +68,7 @@ interface BillableInterface {
 	/**
 	 * Returns all the subscriptions that this entity has.
 	 *
-	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
 	 */
 	public function subscriptions();
 
@@ -76,7 +76,7 @@ interface BillableInterface {
 	 * Returns a new Stripe Subscription gateway.
 	 *
 	 * @param  mixed  $subscription
-	 * @return \Cartalyst\Stripe\SubscriptionGateway
+	 * @return \Cartalyst\Stripe\Billing\SubscriptionGateway
 	 */
 	public function subscription($subscription = null);
 

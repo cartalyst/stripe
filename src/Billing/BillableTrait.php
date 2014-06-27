@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe;
+<?php namespace Cartalyst\Stripe\Billing;
 /**
  * Part of the Stripe package.
  *
@@ -24,14 +24,14 @@ trait BillableTrait {
 	/**
 	 * The Stripe gateway instance.
 	 *
-	 * @var \Cartalyst\Stripe\StripeGateway
+	 * @var \Cartalyst\Stripe\Billing\StripeGateway
 	 */
 	protected $gateway;
 
 	/**
 	 * The Stripe instance.
 	 *
-	 * @var \Cartalyst\Stripe\Stripe
+	 * @var \Cartalyst\Stripe\Api\Stripe
 	 */
 	protected $stripeClient;
 
@@ -40,21 +40,21 @@ trait BillableTrait {
 	 *
 	 * @var string
 	 */
-	protected static $cardModel = 'Cartalyst\Stripe\Models\IlluminateCard';
+	protected static $cardModel = 'Cartalyst\Stripe\Billing\Models\IlluminateCard';
 
 	/**
 	 * The Eloquent charge model.
 	 *
 	 * @var string
 	 */
-	protected static $chargeModel = 'Cartalyst\Stripe\Models\IlluminateCharge';
+	protected static $chargeModel = 'Cartalyst\Stripe\Billing\Models\IlluminateCharge';
 
 	/**
 	 * The Eloquent subscription model.
 	 *
 	 * @var string
 	 */
-	protected static $subscriptionModel = 'Cartalyst\Stripe\Models\IlluminateSubscription';
+	protected static $subscriptionModel = 'Cartalyst\Stripe\Billing\Models\IlluminateSubscription';
 
 	/**
 	 * {@inheritDoc}
@@ -189,7 +189,7 @@ trait BillableTrait {
 	/**
 	 * Returns the Stripe instance.
 	 *
-	 * @return \Cartalyst\Stripe\Stripe
+	 * @return \Cartalyst\Stripe\Api\Stripe
 	 */
 	public function getStripeClient()
 	{
@@ -199,7 +199,7 @@ trait BillableTrait {
 	/**
 	 * Returns the Stripe gateway instance.
 	 *
-	 * @return \Cartalyst\Stripe\StripeGateway
+	 * @return \Cartalyst\Stripe\Billing\StripeGateway
 	 */
 	protected function gateway()
 	{

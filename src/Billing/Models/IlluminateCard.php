@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Models;
+<?php namespace Cartalyst\Stripe\Billing\Models;
 /**
  * Part of the Stripe package.
  *

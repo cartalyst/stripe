@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Models;
+<?php namespace Cartalyst\Stripe\Billing\Models;
 /**
  * Part of the Stripe package.
  *
@@ -45,7 +45,7 @@ class IlluminateCharge extends Model {
 	 *
 	 * @var string
 	 */
-	protected static $refundModel = 'Cartalyst\Stripe\Models\IlluminateRefund';
+	protected static $refundModel = 'Cartalyst\Stripe\Billing\Models\IlluminateRefund';
 
 	/**
 	 * Checks if the charge is partially refunded.
@@ -60,7 +60,7 @@ class IlluminateCharge extends Model {
 	/**
 	 * Returns all the refunds associated to this charge.
 	 *
-	 * @return \Cartalyst\Stripe\Models\IlluminateRefund
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateRefund
 	 */
 	public function refunds()
 	{

@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe;
+<?php namespace Cartalyst\Stripe\Billing;
 /**
  * Part of the Stripe package.
  *
@@ -25,21 +25,21 @@ abstract class StripeGateway {
 	/**
 	 * The billable entity
 	 *
-	 * @var \Cartalyst\Stripe\BillableInterface
+	 * @var \Cartalyst\Stripe\Billing\BillableInterface
 	 */
 	protected $billable;
 
 	/**
 	 * The Stripe client.
 	 *
-	 * @var \Cartalyst\Stripe\Stripe
+	 * @var \Cartalyst\Stripe\Api\Stripe
 	 */
 	protected $client;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param  \Cartalyst\Stripe\BillableInterface  $billable
+	 * @param  \Cartalyst\Stripe\Billing\BillableInterface  $billable
 	 * @return void
 	 */
 	public function __construct(BillableInterface $billable)
@@ -90,7 +90,7 @@ abstract class StripeGateway {
 	/**
 	 * Returns the Stripe client.
 	 *
-	 * @return \Cartalyst\Stripe\Stripe
+	 * @return \Cartalyst\Stripe\Api\Stripe
 	 */
 	protected function getStripeClient()
 	{

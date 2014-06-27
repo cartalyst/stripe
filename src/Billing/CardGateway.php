@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe;
+<?php namespace Cartalyst\Stripe\Billing;
 /**
  * Part of the Stripe package.
  *
@@ -17,15 +17,15 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Stripe\BillableInterface;
-use Cartalyst\Stripe\Models\IlluminateCard;
+use Cartalyst\Stripe\Billing\BillableInterface;
+use Cartalyst\Stripe\Billing\Models\IlluminateCard;
 
 class CardGateway extends StripeGateway {
 
 	/**
 	 * The card object.
 	 *
-	 * @var \Cartalyst\Stripe\Models\IlluminateCard
+	 * @var \Cartalyst\Stripe\Billing\Models\IlluminateCard
 	 */
 	protected $card;
 
@@ -40,7 +40,7 @@ class CardGateway extends StripeGateway {
 	/**
 	 * Constructor.
 	 *
-	 * @param  \Cartalyst\Stripe\BillableInterface  $billable
+	 * @param  \Cartalyst\Stripe\Billing\BillableInterface  $billable
 	 * @param  mixed  $card
 	 * @return void
 	 */
@@ -158,7 +158,7 @@ class CardGateway extends StripeGateway {
 	/**
 	 * Make this credit card the default one after creation.
 	 *
-	 * @return \Cartalyst\Stripe\CardGateway
+	 * @return \Cartalyst\Stripe\Billing\CardGateway
 	 */
 	public function makeDefault()
 	{

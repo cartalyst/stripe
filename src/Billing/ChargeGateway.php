@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe;
+<?php namespace Cartalyst\Stripe\Billing;
 /**
  * Part of the Stripe package.
  *
@@ -17,15 +17,15 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Stripe\BillableInterface;
-use Cartalyst\Stripe\Models\IlluminateCharge;
+use Cartalyst\Stripe\Billing\BillableInterface;
+use Cartalyst\Stripe\Billing\Models\IlluminateCharge;
 
 class ChargeGateway extends StripeGateway {
 
 	/**
 	 * The charge object.
 	 *
-	 * @var \Cartalyst\Stripe\Models\IlluminateCharge
+	 * @var \Cartalyst\Stripe\Billing\Models\IlluminateCharge
 	 */
 	protected $charge;
 
@@ -53,7 +53,7 @@ class ChargeGateway extends StripeGateway {
 	/**
 	 * Constructor.
 	 *
-	 * @param  \Cartalyst\Stripe\BillableInterface  $billable
+	 * @param  \Cartalyst\Stripe\Billing\BillableInterface  $billable
 	 * @param  mixed  $charge
 	 * @return void
 	 */
@@ -195,7 +195,7 @@ class ChargeGateway extends StripeGateway {
 	/**
 	 * Disables the charge from being captured.
 	 *
-	 * @return \Cartalyst\Stripe\ChargeGateway
+	 * @return \Cartalyst\Stripe\Billing\ChargeGateway
 	 */
 	public function disableCapture()
 	{
@@ -208,7 +208,7 @@ class ChargeGateway extends StripeGateway {
 	 * Sets the currency to be used upon a new charge.
 	 *
 	 * @param  string  $currency
-	 * @return \Cartalyst\Stripe\ChargeGateway
+	 * @return \Cartalyst\Stripe\Billing\ChargeGateway
 	 */
 	public function setCurrency($currency)
 	{
@@ -222,7 +222,7 @@ class ChargeGateway extends StripeGateway {
 	 * create a new credit card.
 	 *
 	 * @param  string  $token
-	 * @return \Cartalyst\Stripe\ChargeGateway
+	 * @return \Cartalyst\Stripe\Billing\ChargeGateway
 	 */
 	public function setToken($token)
 	{

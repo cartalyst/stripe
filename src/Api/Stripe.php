@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe;
+<?php namespace Cartalyst\Stripe\Api;
 /**
  * Part of the Stripe package.
  *
@@ -90,7 +90,7 @@ class Stripe {
 		$this->setVersion($version ?: $this->version);
 
 		// Set the manifest path
-		$this->setManifestPath($manifestPath ?: __DIR__.'/Api/Manifests');
+		$this->setManifestPath($manifestPath ?: __DIR__.'/Manifests');
 	}
 
 	/**
