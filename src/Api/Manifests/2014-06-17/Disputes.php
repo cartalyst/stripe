@@ -25,10 +25,11 @@ return [
 		'uri'            => '/v1/charges/{charge}/dispute/close',
 		'summary'        => 'Closes a dispute.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'charge' => [
-				'description' => 'Charge unique identifier.',
+				'description' => 'The charge unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -51,10 +52,11 @@ return [
 		'uri'            => '/v1/charges/{charge}/dispute',
 		'summary'        => 'Updates a dispute.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'charge' => [
-				'description' => 'Charge unique identifier.',
+				'description' => 'The charge unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -64,6 +66,13 @@ return [
 				'description' => 'Evidence text.',
 				'location'    => 'uri',
 				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'metadata' => [
+				'description' => 'A set of key/value pairs that you can attach to a charge object.',
+				'location'    => 'query',
+				'type'        => 'array',
 				'required'    => false,
 			],
 

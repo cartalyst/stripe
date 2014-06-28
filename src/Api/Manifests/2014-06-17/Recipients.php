@@ -25,6 +25,7 @@ return [
 		'uri'            => '/v1/recipients',
 		'summary'        => 'Returns a list of existing recipients.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'ending_before' => [
@@ -77,6 +78,7 @@ return [
 		'uri'            => '/v1/recipients/{id}',
 		'summary'        => 'Retrieves the details of an existing recipient.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'id' => [
@@ -103,6 +105,7 @@ return [
 		'uri'            => '/v1/recipients',
 		'summary'        => 'Creates a new recipient.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'name' => [
@@ -179,6 +182,7 @@ return [
 		'uri'            => '/v1/recipients/{id}',
 		'summary'        => 'Deletes an existing recipient.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'id' => [
@@ -205,6 +209,7 @@ return [
 		'uri'            => '/v1/recipients/{id}',
 		'summary'        => 'Updates an existing recipient.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'id' => [
@@ -215,7 +220,7 @@ return [
 			],
 
 			'name' => [
-				'description' => 'Recipient full, legal name',
+				'description' => 'Recipient full, legal name.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
@@ -232,6 +237,20 @@ return [
 				'description' => 'A bank account to attach to the recipient.',
 				'location'    => 'query',
 				'type'        => 'array',
+				'required'    => false,
+			],
+
+			'card' => [
+				'description' => 'A card to attach to the recipient.',
+				'location'    => 'query',
+				'type'        => ['string', 'array'],
+				'required'    => false,
+			],
+
+			'default_card' => [
+				'description' => 'ID of card to make the recipient’s new default for transfers.',
+				'location'    => 'query',
+				'type'        => 'integer',
 				'required'    => false,
 			],
 

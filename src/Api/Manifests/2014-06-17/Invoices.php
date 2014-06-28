@@ -25,26 +25,11 @@ return [
 		'uri'            => '/v1/invoices',
 		'summary'        => 'Returns all the existing invoices.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
-			'limit' => [
-				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
-				'location'    => 'query',
-				'type'        => 'integer',
-				'min'         => 1,
-				'max'         => 100,
-				'required'    => false,
-			],
-
-			'starting_after' => [
-				'description' => 'A cursor to be used in pagination.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'ending_before' => [
-				'description' => 'A cursor to be used in pagination.',
+			'customer' => [
+				'description' => 'Only return invoices for the given customer.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
@@ -57,8 +42,24 @@ return [
 				'required'    => false,
 			],
 
-			'customer' => [
-				'description' => 'Only return invoices for a specific customer',
+			'ending_before' => [
+				'description' => 'A cursor to be used in pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'limit' => [
+				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
+				'location'    => 'query',
+				'type'        => 'integer',
+				'min'         => 1,
+				'max'         => 100,
+				'required'    => false,
+			],
+
+			'starting_after' => [
+				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
@@ -88,10 +89,11 @@ return [
 		'uri'            => '/v1/invoices/{id}',
 		'summary'        => 'Returns an existing invoice.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'id' => [
-				'description' => 'Invoice unique identifier.',
+				'description' => 'The invoice unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -114,26 +116,48 @@ return [
 		'uri'            => '/v1/invoices',
 		'summary'        => 'Creates a new invoice.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'customer' => [
-				'description' => 'Unique string to identify the plan',
+				'description' => 'The customer unique identifier.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => true,
-			],
-
-			'subscription' => [
-				'description' => 'Identifier of the subscription to invoice',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
 			],
 
 			'application_fee' => [
 				'description' => 'A fee in cents that will be applied to the invoice and transferred to the application owner\'s Stripe account',
 				'location'    => 'query',
 				'type'        => 'integer',
+				'required'    => false,
+			],
+
+			'description' => [
+				'description' => 'An arbitrary string which you can attach to a invoice object.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'metadata' => [
+				'description' => 'A set of key/value pairs that you can attach to a invoice object.',
+				'location'    => 'query',
+				'type'        => 'array',
+				'required'    => false,
+			],
+
+			'statement_description' => [
+				'description' => 'An arbitrary string to be displayed alongside your company name on your customer\'s credit card statement.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'subscription' => [
+				'description' => 'The subscription unique identifier.',
+				'location'    => 'query',
+				'type'        => 'string',
 				'required'    => false,
 			],
 
@@ -154,10 +178,11 @@ return [
 		'uri'            => '/v1/invoices/{id}',
 		'summary'        => 'Updates an existing invoice.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'id' => [
-				'description' => 'Invoice unique identifier.',
+				'description' => 'The invoice unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -180,6 +205,27 @@ return [
 				],
 			],
 
+			'description' => [
+				'description' => 'An arbitrary string which you can attach to a invoice object.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'metadata' => [
+				'description' => 'A set of key/value pairs that you can attach to a invoice object.',
+				'location'    => 'query',
+				'type'        => 'array',
+				'required'    => false,
+			],
+
+			'statement_description' => [
+				'description' => 'An arbitrary string to be displayed alongside your company name on your customer\'s credit card statement.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
 			'expand' => [
 				'description' => 'Allows to expand properties.',
 				'location'    => 'query',
@@ -197,10 +243,11 @@ return [
 		'uri'            => '/v1/invoices/{id}/pay',
 		'summary'        => 'Pays an existing invoice.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'id' => [
-				'description' => 'Invoice unique identifier.',
+				'description' => 'The invoice unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -223,17 +270,32 @@ return [
 		'uri'            => '/v1/invoices/{id}/lines',
 		'summary'        => 'Returns an existing invoice line items.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'id' => [
-				'description' => 'Invoice unique identifier.',
+				'description' => 'The invoice unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
-			'count' => [
-				'description' => 'Limit on how many invoice line items are retrieved',
+			'customer' => [
+				'description' => 'Only return invoice line items for a specific customer',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'ending_before' => [
+				'description' => 'A cursor to be used in pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'limit' => [
+				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'min'         => 1,
@@ -241,15 +303,8 @@ return [
 				'required'    => false,
 			],
 
-			'offset' => [
-				'description' => 'Offset into the list of returned items',
-				'location'    => 'query',
-				'type'        => 'integer',
-				'required'    => false,
-			],
-
-			'customer' => [
-				'description' => 'Only return invoice line items for a specific customer',
+			'starting_after' => [
+				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
@@ -279,6 +334,7 @@ return [
 		'uri'            => '/v1/invoices/upcoming',
 		'summary'        => 'Get upcoming invoices',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'customer' => [

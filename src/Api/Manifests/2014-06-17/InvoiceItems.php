@@ -25,19 +25,18 @@ return [
 		'uri'            => '/v1/invoiceitems',
 		'summary'        => 'Returns all the existing invoice items.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
-			'limit' => [
-				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
+			'created' => [
+				'description' => 'A filter based on the "created" field. Can be an exact UTC timestamp, or an hash.',
 				'location'    => 'query',
-				'type'        => 'integer',
-				'min'         => 1,
-				'max'         => 100,
+				'type'        => ['string', 'array'],
 				'required'    => false,
 			],
 
-			'starting_after' => [
-				'description' => 'A cursor to be used in pagination.',
+			'customer' => [
+				'description' => 'Only return invoices items for a specific customer',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
@@ -50,14 +49,17 @@ return [
 				'required'    => false,
 			],
 
-			'date' => [
-				'description' => 'A filter based on the "date" field. Can be an exact UTC timestamp, or a hash',
+			'limit' => [
+				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
 				'location'    => 'query',
+				'type'        => 'integer',
+				'min'         => 1,
+				'max'         => 100,
 				'required'    => false,
 			],
 
-			'customer' => [
-				'description' => 'Only return invoices for a specific customer',
+			'starting_after' => [
+				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
@@ -87,10 +89,11 @@ return [
 		'uri'            => '/v1/invoiceitems/{id}',
 		'summary'        => 'Returns an existing invoice item.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'id' => [
-				'description' => 'Invoice item unique identifier.',
+				'description' => 'The invoice item unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -107,13 +110,13 @@ return [
 
 	],
 
-
 	'create' => [
 
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/invoiceitems',
 		'summary'        => 'Creates a new invoice item.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'customer' => [
@@ -124,7 +127,7 @@ return [
 			],
 
 			'amount' => [
-				'description' => 'Amount (in cents)',
+				'description' => 'A positive integer in the smallest currency unit.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => true,
@@ -152,14 +155,14 @@ return [
 			],
 
 			'description' => [
-				'description' => 'Description. (optional)',
+				'description' => 'Description.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'metadata' => [
-				'description' => 'Metadata. (optional)',
+				'description' => 'A set of key/value pairs that you can attach to a charge object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -182,10 +185,11 @@ return [
 		'uri'            => '/v1/invoiceitems/{id}',
 		'summary'        => 'Deletes an existing invoice item.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'id' => [
-				'description' => 'Invoice item unique identifier.',
+				'description' => 'The invoice item unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -208,24 +212,25 @@ return [
 		'uri'            => '/v1/invoiceitems/{id}',
 		'summary'        => 'Updates an existing invoice item.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'id' => [
-				'description' => 'Invoice item unique identifier.',
+				'description' => 'The invoice item unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
 			'description' => [
-				'description' => 'Description. (optional)',
+				'description' => 'Description.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'metadata' => [
-				'description' => 'Metadata. (optional)',
+				'description' => 'A set of key/value pairs that you can attach to a charge object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,

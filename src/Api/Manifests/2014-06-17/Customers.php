@@ -28,6 +28,20 @@ return [
 		'errorResponses' => $errors,
 		'parameters'     => [
 
+			'created' => [
+				'description' => 'A filter based on the "created" field. Can be an exact UTC timestamp, or an hash.',
+				'location'    => 'query',
+				'type'        => ['string', 'array'],
+				'required'    => false,
+			],
+
+			'ending_before' => [
+				'description' => 'A cursor to be used in pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
 			'limit' => [
 				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
 				'location'    => 'query',
@@ -44,20 +58,6 @@ return [
 				'required'    => false,
 			],
 
-			'ending_before' => [
-				'description' => 'A cursor to be used in pagination.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'created' => [
-				'description' => 'A filter based on the "created" field. Can be an exact UTC timestamp, or an hash.',
-				'location'    => 'query',
-				'type'        => ['string', 'array'],
-				'required'    => false,
-			],
-
 			'expand' => [
 				'description' => 'Allows to expand properties.',
 				'location'    => 'query',
@@ -66,7 +66,7 @@ return [
 			],
 
 			'include' => [
-				'description' => 'Allows to include some additional properties.',
+				'description' => 'Allows to include additional properties.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -86,7 +86,7 @@ return [
 		'parameters'     => [
 
 			'id' => [
-				'description' => 'Customer unique identifier.',
+				'description' => 'The customer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -127,14 +127,35 @@ return [
 			],
 
 			'coupon' => [
-				'description' => 'Coupon identifier that applies a discount on all recurring charges. (optional)',
+				'description' => 'Coupon identifier that applies a discount on all recurring charges.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
+			'description' => [
+				'description' => 'Customer description.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'email' => [
+				'description' => 'Customer email address.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'metadata' => [
+				'description' => 'A set of key/value pairs that you can attach to a charge object.',
+				'location'    => 'query',
+				'type'        => 'array',
+				'required'    => false,
+			],
+
 			'plan' => [
-				'description' => 'Plan for the customer. (optional)',
+				'description' => 'Plan for the customer.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
@@ -151,27 +172,6 @@ return [
 				'description' => 'UTC integer timestamp representing the end of the trial period the customer will get before being charged for the first time.',
 				'location'    => 'query',
 				'type'        => 'integer',
-				'required'    => false,
-			],
-
-			'description' => [
-				'description' => 'Customer description. (optional)',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'email' => [
-				'description' => 'Customer email address. (optional)',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'metadata' => [
-				'description' => 'Metadata. (optional)',
-				'location'    => 'query',
-				'type'        => 'array',
 				'required'    => false,
 			],
 
@@ -196,7 +196,7 @@ return [
 		'parameters'     => [
 
 			'id' => [
-				'description' => 'Customer unique identifier.',
+				'description' => 'The customer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -223,7 +223,7 @@ return [
 		'parameters'     => [
 
 			'id' => [
-				'description' => 'Customer unique identifier.',
+				'description' => 'The customer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -243,6 +243,13 @@ return [
 				'required'    => false,
 			],
 
+			'coupon' => [
+				'description' => 'Coupon identifier that applies a discount on all recurring charges.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
 			'default_card' => [
 				'description' => 'Default card identifier.',
 				'location'    => 'query',
@@ -250,29 +257,22 @@ return [
 				'required'    => false,
 			],
 
-			'coupon' => [
-				'description' => 'Coupon identifier that applies a discount on all recurring charges. (optional)',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
 			'description' => [
-				'description' => 'Customer description. (optional)',
+				'description' => 'Customer description.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'email' => [
-				'description' => 'Customer email address. (optional)',
+				'description' => 'Customer email address.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'metadata' => [
-				'description' => 'Metadata. (optional)',
+				'description' => 'A set of key/value pairs that you can attach to a charge object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -299,7 +299,7 @@ return [
 		'parameters'     => [
 
 			'id' => [
-				'description' => 'Customer unique identifier.',
+				'description' => 'The customer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,

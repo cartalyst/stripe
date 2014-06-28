@@ -23,16 +23,23 @@ return [
 
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/customers/{customer}/subscriptions',
-		'summary'        => 'Returns all the subscriptions of an existing customer.',
+		'summary'        => 'Returns all the active subscriptions of an existing customer.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'customer' => [
-				'description' => 'Customer unique identifier.',
+				'description' => 'The customer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
+			],
+
+			'ending_before' => [
+				'description' => 'A cursor to be used in pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
 			],
 
 			'limit' => [
@@ -45,13 +52,6 @@ return [
 			],
 
 			'starting_after' => [
-				'description' => 'A cursor to be used in pagination.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'ending_before' => [
 				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
 				'type'        => 'string',
@@ -87,14 +87,14 @@ return [
 		'parameters'     => [
 
 			'id' => [
-				'description' => 'Subscription unique identifier.',
+				'description' => 'The subscription unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
 			'customer' => [
-				'description' => 'Customer unique identifier.',
+				'description' => 'The customer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -121,31 +121,17 @@ return [
 		'parameters'     => [
 
 			'customer' => [
-				'description' => 'Customer unique identifier.',
+				'description' => 'The customer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
 			'plan' => [
-				'description' => 'Plan unique identifier.',
+				'description' => 'The plan unique identifier.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => true,
-			],
-
-			'quantity' => [
-				'description' => 'Quantity you\'d like to apply to the subscription.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'card' => [
-				'description' => 'Unique card identifier (can either be an ID or a hash)',
-				'location'    => 'query',
-				'type'        => ['string', 'array'],
-				'required'    => false,
 			],
 
 			'coupon' => [
@@ -162,6 +148,20 @@ return [
 				'required'    => false,
 			],
 
+			'card' => [
+				'description' => 'Unique card identifier (can either be an ID or a hash)',
+				'location'    => 'query',
+				'type'        => ['string', 'array'],
+				'required'    => false,
+			],
+
+			'quantity' => [
+				'description' => 'Quantity you\'d like to apply to the subscription.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
 			'application_fee_percent' => [
 				'description' => 'A positive decimal (with at most two decimal places) between 1 and 100 that represents the percentage of the subscription invoice amount due each billing period that will be transferred to the application owner’s Stripe account.',
 				'location'    => 'query',
@@ -170,7 +170,7 @@ return [
 			],
 
 			'metadata' => [
-				'description' => 'Metadata. (optional)',
+				'description' => 'A set of key/value pairs that you can attach to a charge object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -196,15 +196,15 @@ return [
 		'errorResponses' => $errors,
 		'parameters'     => [
 
-			'id' => [
-				'description' => 'Subscription unique identifier.',
+			'customer' => [
+				'description' => 'The customer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
-			'customer' => [
-				'description' => 'Customer unique identifier.',
+			'id' => [
+				'description' => 'The subscription unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -240,39 +240,25 @@ return [
 		'errorResponses' => $errors,
 		'parameters'     => [
 
-			'id' => [
-				'description' => 'Subscription unique identifier.',
+			'customer' => [
+				'description' => 'The customer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
-			'customer' => [
-				'description' => 'Customer unique identifier.',
+			'id' => [
+				'description' => 'The subscription unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
 			'plan' => [
-				'description' => 'Plan unique identifier.',
+				'description' => 'The plan unique identifier.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => true,
-			],
-
-			'quantity' => [
-				'description' => 'Quantity you\'d like to apply to the subscription.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'card' => [
-				'description' => 'Unique card identifier.',
-				'location'    => 'query',
-				'type'        => ['string', 'array'],
-				'required'    => false,
 			],
 
 			'coupon' => [
@@ -299,6 +285,20 @@ return [
 				'required'    => false,
 			],
 
+			'card' => [
+				'description' => 'Unique card identifier.',
+				'location'    => 'query',
+				'type'        => ['string', 'array'],
+				'required'    => false,
+			],
+
+			'quantity' => [
+				'description' => 'Quantity you\'d like to apply to the subscription.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
 			'application_fee_percent' => [
 				'description' => 'A positive decimal (with at most two decimal places) between 1 and 100 that represents the percentage of the subscription invoice amount due each billing period that will be transferred to the application owner’s Stripe account.',
 				'location'    => 'query',
@@ -307,7 +307,7 @@ return [
 			],
 
 			'metadata' => [
-				'description' => 'Metadata. (optional)',
+				'description' => 'A set of key/value pairs that you can attach to a charge object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -333,15 +333,15 @@ return [
 		'errorResponses' => $errors,
 		'parameters'     => [
 
-			'id' => [
-				'description' => 'Subscription unique identifier.',
+			'customer' => [
+				'description' => 'The customer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
-			'customer' => [
-				'description' => 'Customer unique identifier.',
+			'id' => [
+				'description' => 'The subscription unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,

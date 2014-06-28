@@ -67,7 +67,7 @@ return [
 			],
 
 			'limit' => [
-				'description' => 'Limits of how many customers are retrieved.',
+				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'min'         => 1,

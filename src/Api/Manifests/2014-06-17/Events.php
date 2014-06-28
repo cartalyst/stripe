@@ -25,10 +25,11 @@ return [
 		'uri'            => '/v1/events',
 		'summary'        => 'Returns a list of events, going back up to 30 days.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'created' => [
-				'description' => 'A filter on the list based on the object created field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
+				'description' => 'A filter based on the "created" field. Can be an exact UTC timestamp, or an hash.',
 				'location'    => 'query',
 				'type'        => ['string', 'array'],
 				'required'    => false,
@@ -88,6 +89,7 @@ return [
 		'uri'            => '/v1/events/{id}',
 		'summary'        => 'Retrieves the details of an event.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'id' => [

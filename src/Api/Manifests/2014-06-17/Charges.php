@@ -29,7 +29,7 @@ return [
 		'parameters'     => [
 
 			'created' => [
-				'description' => 'A filter on the list based on the object created field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
+				'description' => 'A filter based on the "created" field. Can be an exact UTC timestamp, or an hash.',
 				'location'    => 'query',
 				'type'        => ['string', 'array'],
 				'required'    => false,
@@ -220,14 +220,14 @@ return [
 			],
 
 			'description' => [
-				'description' => 'Charge description. (optional)',
+				'description' => 'Charge description.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'metadata' => [
-				'description' => 'Metadata. (optional)',
+				'description' => 'A set of key/value pairs that you can attach to a charge object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -325,6 +325,13 @@ return [
 				],
 			],
 
+			'metadata' => [
+				'description' => 'A set of key/value pairs that you can attach to a charge object.',
+				'location'    => 'query',
+				'type'        => 'array',
+				'required'    => false,
+			],
+
 			'expand' => [
 				'description' => 'Allows to expand properties.',
 				'location'    => 'query',
@@ -350,6 +357,29 @@ return [
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
+			],
+
+			'ending_before' => [
+				'description' => 'A cursor to be used in pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'limit' => [
+				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
+				'location'    => 'query',
+				'type'        => 'integer',
+				'min'         => 1,
+				'max'         => 100,
+				'required'    => false,
+			],
+
+			'starting_after' => [
+				'description' => 'A cursor to be used in pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
 			],
 
 		],

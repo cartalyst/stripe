@@ -25,7 +25,15 @@ return [
 		'uri'            => '/v1/plans',
 		'summary'        => 'Returns all the existing plans.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
+
+			'ending_before' => [
+				'description' => 'A cursor to be used in pagination.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
 
 			'limit' => [
 				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
@@ -37,13 +45,6 @@ return [
 			],
 
 			'starting_after' => [
-				'description' => 'A cursor to be used in pagination.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
-
-			'ending_before' => [
 				'description' => 'A cursor to be used in pagination.',
 				'location'    => 'query',
 				'type'        => 'string',
@@ -74,10 +75,11 @@ return [
 		'uri'            => '/v1/plans/{id}',
 		'summary'        => 'Returns an existing plan.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'id' => [
-				'description' => 'Plan unique identifier.',
+				'description' => 'The plan unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -100,24 +102,18 @@ return [
 		'uri'            => '/v1/plans',
 		'summary'        => 'Creates a new plan.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'id' => [
-				'description' => 'Plan unique identifier.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => true,
-			],
-
-			'name' => [
-				'description' => 'Plan name.',
+				'description' => 'The plan unique identifier.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
 			'amount' => [
-				'description' => 'Amount (in cents)',
+				'description' => 'A positive integer in the smallest currency unit.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => true,
@@ -143,6 +139,13 @@ return [
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => false,
+			],
+
+			'name' => [
+				'description' => 'The name of the plan.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => true,
 			],
 
 			'trial_period_days' => [
@@ -183,10 +186,11 @@ return [
 		'uri'            => '/v1/plans/{id}',
 		'summary'        => 'Deletes an existing plan.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'id' => [
-				'description' => 'Plan unique identifier.',
+				'description' => 'The plan unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
@@ -209,24 +213,25 @@ return [
 		'uri'            => '/v1/plans/{id}',
 		'summary'        => 'Updates an existing plan.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
 		'parameters'     => [
 
 			'id' => [
-				'description' => 'Plan unique identifier.',
+				'description' => 'The plan unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
 			'name' => [
-				'description' => 'Plan name.',
+				'description' => 'The name of the plan.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
 			],
 
 			'metadata' => [
-				'description' => 'Metadata. (optional)',
+				'description' => 'A set of key/value pairs that you can attach to a charge object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,

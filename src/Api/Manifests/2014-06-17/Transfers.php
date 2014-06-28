@@ -29,7 +29,7 @@ return [
 		'parameters'     => [
 
 			'created' => [
-				'description' => 'A filter on the list based on the object created field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
+				'description' => 'A filter based on the "created" field. Can be an exact UTC timestamp, or an hash.',
 				'location'    => 'query',
 				'required'    => false,
 			],
@@ -157,6 +157,20 @@ return [
 				'description' => 'An arbitrary string which you can attach to a transfer object.',
 				'location'    => 'query',
 				'type'        => 'string',
+				'required'    => false,
+			],
+
+			'bank_account' => [
+				'description' => 'A bank account to attach to the recipient.',
+				'location'    => 'query',
+				'type'        => 'array',
+				'required'    => false,
+			],
+
+			'card' => [
+				'description' => 'A card to attach to the recipient.',
+				'location'    => 'query',
+				'type'        => ['string', 'array'],
 				'required'    => false,
 			],
 
