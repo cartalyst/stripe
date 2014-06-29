@@ -212,12 +212,35 @@ class Stripe {
 	 */
 	public function __call($method, array $arguments = [])
 	{
-		if ($this->manifestExists($method))
+		if (substr($method, -8) === 'Iterator')
+		{
+			$method = strtolower(substr($method, 0, -8));
+
+			return $this->handleIteratorRequest($method, $arguments);
+		}
+
+		elseif ($this->manifestExists($method))
 		{
 			return $this->handleRequest($method);
 		}
 
 		throw new InvalidArgumentException("Undefined method [{$method}] called.");
+	}
+
+	/**
+	 * Handles an iterator request.
+	 *
+	 * @param  string  $method
+	 * @param  array  $arguments
+	 * @return \Cartalyst\Stripe\Api\ResourceIterator
+	 */
+	protected function handleIteratorRequest($method, array $arguments = [])
+	{
+		$client = $this->handleRequest($method);
+
+		$command = $client->getCommand('all', array_get($arguments, 0, []));
+
+		return new ResourceIterator($command, array_get($arguments, 1, []));
 	}
 
 	/**
