@@ -20,6 +20,7 @@
 		"api/account",
 		"api/balance",
 		"api/events",
+		"api/pagination",
 		"api/exceptions",
 		"index",
 		"cards",
