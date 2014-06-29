@@ -7,7 +7,7 @@ Here is an example of grabbing all the customers:
 ```php
 $customers = Stripe::customersIterator();
 
-foreach ($customer as $customer)
+foreach ($customers as $customer)
 {
 	var_dump($customer['id']);
 }
@@ -20,7 +20,7 @@ $customers = Stripe::customersIterator([
 	'created' => 123456789,
 ]);
 
-foreach ($customer as $customer)
+foreach ($customers as $customer)
 {
 	var_dump($customer['id']);
 }
@@ -34,7 +34,7 @@ If you have the need to lock the number of results, you can achieve this by usin
 $customers = Stripe::customersIterator();
 $customers->setLimit(30);
 
-foreach ($customer as $customer)
+foreach ($customers as $customer)
 {
 	var_dump($customer['id']);
 }
@@ -50,7 +50,7 @@ Setting a number of results per page is very easy and very similar to the result
 $customers = Stripe::customersIterator();
 $customers->setPageSize(50);
 
-foreach ($customer as $customer)
+foreach ($customers as $customer)
 {
 	var_dump($customer['id']);
 }
