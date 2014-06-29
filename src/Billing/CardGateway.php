@@ -195,13 +195,13 @@ class CardGateway extends StripeGateway {
 			'id' => $entity->stripe_id,
 		]);
 
-		$cards = $this->client->cards()->all([
+		$cards = $this->client->cardsIterator([
 			'customer' => $entity->stripe_id,
 		]);
 
 		$defaultCard = $customer['default_card'];
 
-		foreach ($cards['data'] as $card)
+		foreach ($cards as $card)
 		{
 			$stripeId = $card['id'];
 
@@ -209,7 +209,7 @@ class CardGateway extends StripeGateway {
 
 			$data = [
 				'stripe_id' => $stripeId,
-				'last_our'  => $card['last4'],
+				'last_four' => $card['last4'],
 				'exp_month' => $card['exp_month'],
 				'exp_year'  => $card['exp_year'],
 				'default'   => $defaultCard === $stripeId ? true : false,

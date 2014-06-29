@@ -471,13 +471,13 @@ class SubscriptionGateway extends StripeGateway {
 	{
 		$entity = $this->billable;
 
-		$subscriptions = $this->client->subscriptions()->all([
-			'id' => $entity->stripe_id,
+		$subscriptions = $this->client->subscriptionsIterator([
+			'customer' => $entity->stripe_id,
 		]);
 
 		$stripeSubscriptions = [];
 
-		foreach ($subscriptions['data'] as $subscription)
+		foreach ($subscriptions as $subscription)
 		{
 			$stripeSubscriptions[$subscription['id']] = $subscription;
 		}

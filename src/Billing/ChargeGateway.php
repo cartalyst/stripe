@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use Carbon\Carbon;
 use Cartalyst\Stripe\Billing\BillableInterface;
 use Cartalyst\Stripe\Billing\Models\IlluminateCharge;
 
@@ -240,11 +241,11 @@ class ChargeGateway extends StripeGateway {
 	{
 		$entity = $this->billable;
 
-		$charges = $this->client->charges()->all([
+		$charges = $this->client->chargesIterator([
 			'customer' => $entity->stripe_id,
 		]);
 
-		foreach ($charges['data'] as $charge)
+		foreach ($charges as $charge)
 		{
 			$stripeId = $charge['id'];
 
@@ -253,7 +254,7 @@ class ChargeGateway extends StripeGateway {
 			$data = [
 				'stripe_id'   => $stripeId,
 				'description' => $charge['description'],
-				'amount'      => $charge['amount'],
+				'amount'      => ($charge['amount'] / 100),
 				'paid'        => $charge['paid'],
 				'captured'    => $charge['captured'],
 				'refunded'    => $charge['refunded'],
@@ -269,15 +270,19 @@ class ChargeGateway extends StripeGateway {
 				$_charge->update($data);
 			}
 
-			foreach ($charge['refunds'] as $refund)
+			$refunds = $this->client->refundsIterator([
+				'id' => $stripeId,
+			]);
+
+			foreach ($refunds as $refund)
 			{
 				$transactionId = $refund['balance_transaction'];
 
-				$_refund = $entity->refunds()->where('transaction_id', $transactionId)->first();
+				$_refund = $_charge->refunds()->where('transaction_id', $transactionId)->first();
 
 				$data = [
 					'transaction_id' => $transactionId,
-					'amount'         => $refund['amount'],
+					'amount'         => ($refund['amount'] / 100),
 					'created_at'     => Carbon::createFromTimestamp($refund['created']),
 				];
 
