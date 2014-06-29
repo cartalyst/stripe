@@ -271,7 +271,7 @@ class ChargeGateway extends StripeGateway {
 			}
 
 			$refunds = $this->client->refundsIterator([
-				'id' => $stripeId,
+				'charge' => $stripeId,
 			]);
 
 			foreach ($refunds as $refund)

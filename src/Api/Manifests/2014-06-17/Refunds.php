@@ -22,13 +22,13 @@ return [
 	'all' => [
 
 		'httpMethod'     => 'GET',
-		'uri'            => '/v1/charges/{id}/refunds',
+		'uri'            => '/v1/charges/{charge}/refunds',
 		'summary'        => 'Retrieves a list of all the refunds of a charge.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
-			'id' => [
+			'charge' => [
 				'description' => 'The charge unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
