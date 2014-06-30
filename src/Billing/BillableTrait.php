@@ -57,6 +57,13 @@ trait BillableTrait {
 	protected static $subscriptionModel = 'Cartalyst\Stripe\Billing\Models\IlluminateSubscription';
 
 	/**
+	 * The Eloquent invoice model.
+	 *
+	 * @var string
+	 */
+	protected static $invoiceModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoice';
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public function cards()
@@ -131,6 +138,30 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
+	public function invoice($invoice = null)
+	{
+		return new InvoiceGateway($this, $invoice);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function invoices()
+	{
+		return $this->hasMany(static::$invoiceModel);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public static function setInvoiceModel($model)
+	{
+		static::$invoiceModel = $model;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function isSubscribed()
 	{
 		return (bool) $this->subscriptions()->whereActive(1)->count();
@@ -182,6 +213,8 @@ trait BillableTrait {
 		$this->card()->syncWithStripe();
 
 		$this->charge()->syncWithStripe();
+
+		$this->invoice()->syncWithStripe();
 
 		$this->subscription()->syncWithStripe();
 	}

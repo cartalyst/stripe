@@ -33,9 +33,11 @@ class IlluminateCharge extends Model {
 	protected $fillable = [
 		'paid',
 		'amount',
+		'currency',
 		'captured',
 		'refunded',
 		'stripe_id',
+		'invoice_id',
 		'created_at',
 		'description',
 	];
@@ -78,7 +80,7 @@ class IlluminateCharge extends Model {
 	}
 
 	/**
-	 * Sets the Eloquent model to be used for refunds relationships.
+	 * Sets the Eloquent model to be used for refunds relationship.
 	 *
 	 * @param  string  $model
 	 * @return void

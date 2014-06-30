@@ -253,11 +253,13 @@ class ChargeGateway extends StripeGateway {
 
 			$data = [
 				'stripe_id'   => $stripeId,
+				'invoice_id'  => $charge['invoice'],
+				'currency'    => $charge['currency'],
 				'description' => $charge['description'],
 				'amount'      => ($charge['amount'] / 100),
-				'paid'        => $charge['paid'],
-				'captured'    => $charge['captured'],
-				'refunded'    => $charge['refunded'],
+				'paid'        => (bool) $charge['paid'],
+				'captured'    => (bool) $charge['captured'],
+				'refunded'    => (bool) $charge['refunded'],
 				'created_at'  => Carbon::createFromTimestamp($charge['created']),
 			];
 
@@ -283,6 +285,7 @@ class ChargeGateway extends StripeGateway {
 				$data = [
 					'transaction_id' => $transactionId,
 					'amount'         => ($refund['amount'] / 100),
+					'currency'       => $refund['currency'],
 					'created_at'     => Carbon::createFromTimestamp($refund['created']),
 				];
 
