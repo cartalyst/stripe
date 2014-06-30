@@ -56,6 +56,7 @@ class InvoiceGateway extends StripeGateway {
 	 * Syncronizes the Stripe invoices data with the local data.
 	 *
 	 * @return void
+	 * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
 	 */
 	public function syncWithStripe()
 	{

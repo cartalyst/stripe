@@ -236,6 +236,7 @@ class ChargeGateway extends StripeGateway {
 	 * Syncronizes the Stripe charges data with the local data.
 	 *
 	 * @return void
+	 * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
 	 */
 	public function syncWithStripe()
 	{

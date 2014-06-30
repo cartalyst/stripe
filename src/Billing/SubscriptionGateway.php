@@ -467,6 +467,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * Syncronizes the Stripe subscriptions data with the local data.
 	 *
 	 * @return void
+	 * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
 	 */
 	public function syncWithStripe()
 	{
