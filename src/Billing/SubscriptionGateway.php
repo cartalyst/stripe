@@ -545,12 +545,11 @@ class SubscriptionGateway extends StripeGateway {
 	/**
 	 * Get the trial end date for the customer's subscription.
 	 *
-	 * @param  object  $customer
 	 * @return \Carbon\Carbon|null
 	 */
 	protected function getSubscriptionTrialEnd()
 	{
-		if (isset($this->subscription) && isset($this->subscription->trial_ends_at))
+		if ($this->subscription && $this->subscription->trial_ends_at)
 		{
 			return $this->subscription->trial_ends_at;
 		}
@@ -572,7 +571,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * Calculate the remaining trial days based on the current trial end.
 	 *
 	 * @param  \Carbon\Carbon  $trialEnd
-	 * @return
+	 * @return mixed
 	 */
 	protected function calculateRemainingTrialDays($trialEnd)
 	{
@@ -590,8 +589,8 @@ class SubscriptionGateway extends StripeGateway {
 	protected function getPayload(array $attributes = [])
 	{
 		return array_merge($attributes, [
-			'id'       => $this->subscription->stripe_id,
 			'customer' => $this->billable->stripe_id,
+			'id'       => $this->subscription->stripe_id,
 		]);
 	}
 

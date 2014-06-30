@@ -72,7 +72,6 @@ class InvoiceGateway extends StripeGateway {
 
 			$data = [
 				'stripe_id'       => $stripeId,
-				//'charge_id'       => $invoice['charge'],
 				'subscription_id' => $invoice['subscription'],
 				'currency'        => $invoice['currency'],
 				'subtotal'        => ($invoice['subtotal'] / 100),

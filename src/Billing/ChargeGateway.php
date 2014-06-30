@@ -219,8 +219,7 @@ class ChargeGateway extends StripeGateway {
 	}
 
 	/**
-	 * Sets the token that'll be used to
-	 * create a new credit card.
+	 * Sets the token that'll be used to create a new credit card.
 	 *
 	 * @param  string  $token
 	 * @return \Cartalyst\Stripe\Billing\ChargeGateway
