@@ -26,6 +26,7 @@
 		"index",
 		"cards",
 		"charges",
+		"invoices",
 		"subscriptions",
 		"webhooks"
 	]

@@ -1,11 +1,21 @@
 ## Charges
 
-### Listing the charges
+### Retrieve all the charges
 
 ```php
 $user = User::find(1);
 
 $charges = $user->charges;
+```
+
+### Retrieve an existing charge
+
+```php
+$user = User::find(1);
+
+$charge = $user->charges->find(10);
+
+echo $charge['amount'];
 ```
 
 ### Creating charges
@@ -100,4 +110,4 @@ $user
 	->syncWithStripe();
 ```
 
-> **Note:** You can pass a charge id `integer` or a `Cartalyst\Stripe\Charge\IlluminateCharge` object through the `charge()` method.
+> **Note:** You can pass a charge id `integer` or a `Cartalyst\Stripe\Billing\Models\IlluminateCharge` object through the `charge()` method.

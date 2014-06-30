@@ -1,6 +1,6 @@
 ## Credit Cards
 
-### Listing the attached cards
+### Retrieve all the attached cards
 
 Listing the attached cards from an user is very easy.
 
@@ -85,4 +85,4 @@ $user
 	->syncWithStripe();
 ```
 
-> **Note:** You can pass a card id `integer` or a `Cartalyst\Stripe\Card\IlluminateCard` object through the `card()` method.
+> **Note:** You can pass a card id `integer` or a `Cartalyst\Stripe\Billing\Models\IlluminateCard` object through the `card()` method.

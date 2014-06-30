@@ -64,7 +64,7 @@ Cancel a Subscription using its `id`
 $user = User::find(1);
 
 $user
-	->subscription(3)
+	->subscription(10)
 	->cancel();
 ```
 
@@ -86,7 +86,7 @@ Cancel a subscription at the End of the Period
 $user = User::find(1);
 
 $user
-	->subscription(3)
+	->subscription(10)
 	->cancelAtEndOfPeriod();
 ```
 
@@ -98,7 +98,7 @@ Apply a trial period on a subscription
 $user = User::find(1);
 
 $user
-	->subscription(3)
+	->subscription(10)
 	->setTrialPeriod(Carbon::now()->addDays(14))
 ```
 
@@ -108,7 +108,7 @@ Removing the trial period from a subscription
 $user = User::find(1);
 
 $user
-	->subscription(3)
+	->subscription(10)
 	->removeTrialPeriod()
 ```
 
@@ -120,7 +120,7 @@ $coupon = Input::get('coupon');
 $user = User::find(1);
 
 $user
-	->subscription(3)
+	->subscription(10)
 	->applyCoupon($coupon);
 ```
 
@@ -130,7 +130,7 @@ Remove a coupon from an existing subscription
 $user = User::find(1);
 
 $user
-	->subscription(3)
+	->subscription(10)
 	->removeCoupon();
 ```
 
@@ -142,7 +142,7 @@ Resume a canceled subscription
 $user = User::find(1);
 
 $user
-	->subscription(3)
+	->subscription(10)
 	->resume();
 ```
 
@@ -152,7 +152,7 @@ Resume a canceled subscription and remove its trial period
 $user = User::find(1);
 
 $user
-	->subscription(3)
+	->subscription(10)
 	->skipTrial()
 	->resume();
 ```
@@ -163,7 +163,7 @@ Resume a canceled subscription and change its trial period end date
 $user = User::find(1);
 
 $user
-	->subscription(3)
+	->subscription(10)
 	->trialFor(Carbon::now()->addDays(14))
 	->resume()
 ```
@@ -175,7 +175,7 @@ First, we need to grab the subscription:
 ```php
 $user = User::find(1);
 
-$subscription = $user->subscriptions->find(3);
+$subscription = $user->subscriptions->find(10);
 ```
 
 To determine if the subscription is on the trial period, you may use the `onTrialPeriod()` method:
@@ -226,4 +226,4 @@ $user
 	->syncWithStripe();
 ```
 
-> **Note:** You can pass a subscription id `integer` or a `Cartalyst\Stripe\Subscription\IlluminateSubscription` object through the `subscription()` method.
+> **Note:** You can pass a subscription id `integer` or a `Cartalyst\Stripe\Billing\Models\IlluminateSubscription` object through the `subscription()` method.
