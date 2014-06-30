@@ -18,6 +18,7 @@
  */
 
 use Illuminate\Support\Facades\App;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 trait BillableTrait {
 
@@ -62,6 +63,14 @@ trait BillableTrait {
 	 * @var string
 	 */
 	protected static $invoiceModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoice';
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isBillable()
+	{
+		return $this->stripe_id;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -210,6 +219,11 @@ trait BillableTrait {
 	 */
 	public function syncWithStripe()
 	{
+		if ( ! $this->isBillable())
+		{
+			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
+		}
+
 		$this->card()->syncWithStripe();
 
 		$this->charge()->syncWithStripe();

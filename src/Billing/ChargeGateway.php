@@ -20,6 +20,7 @@
 use Carbon\Carbon;
 use Cartalyst\Stripe\Billing\BillableInterface;
 use Cartalyst\Stripe\Billing\Models\IlluminateCharge;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class ChargeGateway extends StripeGateway {
 
@@ -239,6 +240,11 @@ class ChargeGateway extends StripeGateway {
 	public function syncWithStripe()
 	{
 		$entity = $this->billable;
+
+		if ( ! $entity->isBillable())
+		{
+			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
+		}
 
 		$charges = $this->client->chargesIterator([
 			'customer' => $entity->stripe_id,

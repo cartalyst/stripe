@@ -20,6 +20,13 @@
 interface BillableInterface {
 
 	/**
+	 * Determines if the entity is a Stripe customer.
+	 *
+	 * @return bool
+	 */
+	public function isBillable();
+
+	/**
 	 * Returns all the cards attached to this entity.
 	 *
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCard
@@ -129,6 +136,7 @@ interface BillableInterface {
 	 * Syncronizes the Stripe data with the local data.
 	 *
 	 * @return void
+	 * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
 	 */
 	public function syncWithStripe();
 

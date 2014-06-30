@@ -19,6 +19,7 @@
 
 use Carbon\Carbon;
 use Cartalyst\Stripe\Billing\Models\IlluminateSubscription;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class SubscriptionGateway extends StripeGateway {
 
@@ -470,6 +471,11 @@ class SubscriptionGateway extends StripeGateway {
 	public function syncWithStripe()
 	{
 		$entity = $this->billable;
+
+		if ( ! $entity->isBillable())
+		{
+			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
+		}
 
 		$subscriptions = $this->client->subscriptionsIterator([
 			'customer' => $entity->stripe_id,
