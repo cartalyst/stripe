@@ -60,7 +60,9 @@ abstract class StripeGateway {
 	{
 		try
 		{
-			$customer = $this->client->customers()->find(compact('id'));
+			$customer = $this->client->customers()->find([
+				'id' => (string) $id,
+			]);
 		}
 		catch (NotFoundException $e)
 		{
