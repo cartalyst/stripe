@@ -68,7 +68,7 @@ starting_after  | false    | string          | null    | A cursor to be used in 
 ```php
 $customers = Stripe::customers()->all();
 
-foreach ($customers['id'] as $customer)
+foreach ($customers['data'] as $customer)
 {
 	var_dump($customer['id']);
 }
