@@ -41,7 +41,9 @@ class WebhookController extends Cartalyst\Stripe\WebhookController {
 	 */
 	public function handleChargeSucceeded($payload)
 	{
-		$this->handlePayment($payload);
+		$charge = $this->handlePayment($payload);
+
+		// apply your own logic here if required
 
 		return $this->sendResponse('Webhook successfully handled.');
 	}
@@ -54,7 +56,24 @@ class WebhookController extends Cartalyst\Stripe\WebhookController {
 	 */
 	public function handleChargeFailed($payload)
 	{
-		$this->handlePayment($payload);
+		$charge = $this->handlePayment($payload);
+
+		// apply your own logic here if required
+
+		return $this->sendResponse('Webhook successfully handled.');
+	}
+
+	/**
+	 * Handles a payment refund.
+	 *
+	 * @param  array  $payload
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
+	public function handleChargeRefunded($payload)
+	{
+		$charge = $this->handlePayment($payload);
+
+		// apply your own logic here if required
 
 		return $this->sendResponse('Webhook successfully handled.');
 	}
@@ -62,42 +81,24 @@ class WebhookController extends Cartalyst\Stripe\WebhookController {
 	/**
 	 * Handles the payment event.
 	 *
-	 * @param  array  $payload
-	 * @return \Cartalyst\Stripe\Charge\IlluminateCharge
+	 * @param  array  $charge
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
 	 */
-	protected function handlePayment($payload)
+	protected function handlePayment($charge)
 	{
-		$chargeId = $payload['id'];
+		$entity = $this->getBillable($charge['customer']);
 
-		$entity = $this->getBillable($payload['customer']);
+		$entity->charge()->syncWithStripe();
 
-		if ( ! $charge = $entity->charges()->whereStripeId($chargeId)->first())
-		{
-			$charge = $entity
-				->charges()
-				->create([
-					'stripe_id'  => $chargeId,
-					'amount'     => $payload['amount'],
-					'paid'       => $payload['paid'],
-					'refunded'   => $payload['refunded'],
-					'created_at' => Carbon::createFromTimestamp($payload['created']),
-				]);
-		}
-		else
-		{
-			$charge->update([
-				'paid'     => $payload['paid'],
-				'refunded' => $payload['refunded'],
-			]);
-		}
-
-		return $charge;
+		return $entity->charges()->whereStripeId($charge['id'])->first();
 	}
 
 }
 ```
 
-> **Note:** Please refer to the list below for all the events that Stripe sends and to know which controller method name you need to use.
+> **Note 1:** The examples above are merely for demonstration, you can apply your own logic for each event notification, we're just showing the power of the synchronization methods the Stripe package has to offer :)
+
+> **Note 2:** Please refer to the list below for all the events that Stripe sends and to know which controller method name you need to use.
 
 ## Types of Events
 
