@@ -67,9 +67,11 @@ class WebhookController extends Cartalyst\Stripe\WebhookController {
 	 */
 	protected function handlePayment($payload)
 	{
+		$chargeId = $payload['id'];
+
 		$entity = $this->getBillable($payload['customer']);
 
-		if ( ! $charge = $entity->charges()->where('stripe_id', $chargeId)->first())
+		if ( ! $charge = $entity->charges()->whereStripeId($chargeId)->first())
 		{
 			$charge = $entity
 				->charges()
