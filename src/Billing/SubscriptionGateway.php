@@ -524,8 +524,10 @@ class SubscriptionGateway extends StripeGateway {
 			if ( ! array_get($stripeSubscriptions, $subscription->stripe_id) && ! $subscription->expired())
 			{
 				$subscription->update([
-					'active'   => 0,
-					'ended_at' => Carbon::now(),
+					'active'        => 0,
+					'ended_at'      => Carbon::now(),
+					'canceled_at'   => null,
+					'trial_ends_at' => null,
 				]);
 			}
 		}
