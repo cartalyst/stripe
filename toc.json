@@ -28,6 +28,7 @@
 		"charges",
 		"invoices",
 		"subscriptions",
+		"events",
 		"webhooks"
 	]
 }

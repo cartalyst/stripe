@@ -20,8 +20,6 @@ $items = $invoice->items;
 echo $invoice['total'];
 ```
 
-
-
 ### Sync data from Stripe
 
 Often you might have the need to sync the data from Stripe with your database, we have an easy way to achieve this.
