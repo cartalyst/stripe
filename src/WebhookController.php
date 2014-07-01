@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use Carbon\Carbon;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
@@ -85,6 +86,20 @@ class WebhookController extends Controller {
 	protected function getJsonPayload()
 	{
 		return (array) json_decode(Request::getContent(), true);
+	}
+
+	/**
+	 * Returns a Carbon object if the provided timestamp
+	 * is valid and returns null otherwise.
+	 *
+	 * @param  int  $timestamp
+	 * @return \Carbon\Carbon|null
+	 */
+	protected function nullableTimestamp($timestamp)
+	{
+		if ( ! $timestamp) return null;
+
+		return Carbon::createFromTimestamp($timestamp);
 	}
 
 }
