@@ -71,7 +71,7 @@ class WebhookController extends Controller {
 	 */
 	protected function getBillable($stripeId)
 	{
-		$model = Config::get('service.stripe.model');
+		$model = Config::get('services.stripe.model');
 
 		$class = '\\'.ltrim($model, '\\');
 
