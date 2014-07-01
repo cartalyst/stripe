@@ -37,6 +37,7 @@
 	"require": {
 		"php": ">=5.4.0",
 		"guzzle/guzzle": "3.9.*",
+		"illuminate/database": "~4.1",
 		"illuminate/support": "~4.1",
 		"nesbot/carbon": "~1.0",
 		"symfony/console": "~2.5",

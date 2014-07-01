@@ -110,4 +110,18 @@ abstract class StripeGateway {
 		return (int) ($amount * 100);
 	}
 
+	/**
+	 * Fires an event.
+	 *
+	 * @param  string  $event
+	 * @param  mixed  $data
+	 * @return void
+	 */
+	protected function fire($event, array $data = [])
+	{
+		$dispatcher = $this->billable->getEventDispatcher();
+
+		$dispatcher->fire("cartalyst.stripe.{$event}", $data);
+	}
+
 }

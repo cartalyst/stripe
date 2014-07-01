@@ -162,6 +162,12 @@ class SubscriptionGateway extends StripeGateway {
 			'stripe_id'     => $subscription['id'],
 			'trial_ends_at' => $this->nullableTimestamp($subscription['trial_end']),
 		]);
+
+		// Fire the 'cartalyst.stripe.subscription.created' event
+		$this->fire('subscription.created', [
+			$entity,
+			$subscription,
+		]);
 	}
 
 	/**
@@ -174,7 +180,15 @@ class SubscriptionGateway extends StripeGateway {
 	{
 		$payload = $this->getPayload($attributes);
 
-		return $this->client->subscriptions()->update($payload);
+		$subscription = $this->client->subscriptions()->update($payload);
+
+		// Fire the 'cartalyst.stripe.subscription.updated' event
+		$this->fire('subscription.updated', [
+			$this->billable,
+			$subscription,
+		]);
+
+		return $subscription;
 	}
 
 	/**
@@ -204,7 +218,15 @@ class SubscriptionGateway extends StripeGateway {
 			'at_period_end' => $atPeriodEnd,
 		]);
 
-		return $this->client->subscriptions()->cancel($payload);
+		$subscription = $this->client->subscriptions()->cancel($payload);
+
+		// Fire the 'cartalyst.stripe.subscription.canceled' event
+		$this->fire('subscription.canceled', [
+			$this->billable,
+			$subscription,
+		]);
+
+		return $subscription;
 	}
 
 	/**
@@ -224,6 +246,12 @@ class SubscriptionGateway extends StripeGateway {
 			'ended_at'      => null,
 			'trial_ends_at' => $this->nullableTimestamp($subscription['trial_end']),
 			'canceled_at'   => null,
+		]);
+
+		// Fire the 'cartalyst.stripe.subscription.resumed' event
+		$this->fire('subscription.resumed', [
+			$this->billable,
+			$subscription,
 		]);
 
 		return $subscription;
