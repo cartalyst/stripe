@@ -2,8 +2,6 @@
 
 The best and easiest way to install the Stripe package is with [Composer](http://getcomposer.org).
 
-> **Note:** You will need to have an active [Cartalyst](https://cartalyst.com/pricing) subscription to install the package!
-
 ## Preparation
 
 Open your `composer.json` file and add the following to the `require` array:
