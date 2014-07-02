@@ -89,8 +89,8 @@ class InvoiceGateway extends StripeGateway {
 				'paid'            => (bool) $invoice['paid'],
 				'attempt_count'   => $invoice['attempt_count'],
 				'created_at'      => Carbon::createFromTimestamp($invoice['date']),
-				'period_start'    => Carbon::createFromTimestamp($invoice['period_start']),
-				'period_end'      => Carbon::createFromTimestamp($invoice['period_end']),
+				'period_start'    => $this->nullableTimestamp($invoice['period_start']),
+				'period_end'      => $this->nullableTimestamp($invoice['period_end']),
 			];
 
 			if ( ! $_invoice)
@@ -111,14 +111,14 @@ class InvoiceGateway extends StripeGateway {
 				$data = [
 					'stripe_id'    => $id,
 					'currency'     => $item['currency'],
-					'type'         => $item['type'],
+					'type'         => array_get($item, 'type', null),
 					'amount'       => ($item['amount'] / 100),
 					'proration'    => (bool) $item['proration'],
 					'description'  => $item['description'],
-					'plan'         => $item['plan']['id'],
-					'quantity'     => $item['quantity'],
-					'period_start' => Carbon::createFromTimestamp($item['period']['start']),
-					'period_end'   => Carbon::createFromTimestamp($item['period']['end']),
+					'plan'         => array_get($item, 'plan.id', null),
+					'quantity'     => array_get($item, 'quantity', null),
+					'period_start' => $this->nullableTimestamp(array_get($item, 'start', null)),
+					'period_end'   => $this->nullableTimestamp(array_get($item, 'end', null)),
 				];
 
 				if ( ! $_item)

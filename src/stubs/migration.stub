@@ -67,7 +67,7 @@ class CartalystStripeCreateTables extends Migration {
 			$table->string('stripe_id');
 			$table->integer('invoice_id');
 			$table->string('currency');
-			$table->string('type');
+			$table->string('type')->nullable();
 			$table->float('amount');
 			$table->boolean('proration')->default(0);
 			$table->string('description')->nullable();
