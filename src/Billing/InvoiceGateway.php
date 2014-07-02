@@ -117,8 +117,8 @@ class InvoiceGateway extends StripeGateway {
 					'description'  => $item['description'],
 					'plan'         => array_get($item, 'plan.id', null),
 					'quantity'     => array_get($item, 'quantity', null),
-					'period_start' => $this->nullableTimestamp(array_get($item, 'start', null)),
-					'period_end'   => $this->nullableTimestamp(array_get($item, 'end', null)),
+					'period_start' => $this->nullableTimestamp(array_get($item, 'period.start', null)),
+					'period_end'   => $this->nullableTimestamp(array_get($item, 'period.end', null)),
 				];
 
 				if ( ! $_item)
