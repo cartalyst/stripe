@@ -104,12 +104,13 @@ class InvoiceGateway extends StripeGateway {
 
 			foreach ($invoice['lines']['data'] as $item)
 			{
-				$id = $item['id'];
+				$stripeId = $item['id'];
 
-				$_item = $_invoice->items()->where('stripe_id', $id)->first();
+				$_item = $entity->invoiceItems()->where('stripe_id', $stripeId)->first();
 
 				$data = [
-					'stripe_id'    => $id,
+					'stripe_id'    => $stripeId,
+					'invoice_id'   => $_invoice->id,
 					'currency'     => $item['currency'],
 					'type'         => array_get($item, 'type', null),
 					'amount'       => ($item['amount'] / 100),
@@ -123,7 +124,7 @@ class InvoiceGateway extends StripeGateway {
 
 				if ( ! $_item)
 				{
-					$_item = $_invoice->items()->create($data);
+					$_item = $entity->invoiceItems()->create($data);
 				}
 				else
 				{
