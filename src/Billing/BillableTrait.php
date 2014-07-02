@@ -65,6 +65,13 @@ trait BillableTrait {
 	protected static $invoiceModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoice';
 
 	/**
+	 * The Eloquent invoice item model.
+	 *
+	 * @var string
+	 */
+	protected static $invoiceItemModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem';
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public function isBillable()
@@ -123,30 +130,6 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function subscriptions()
-	{
-		return $this->hasMany(static::$subscriptionModel);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function subscription($subscription = null)
-	{
-		return new SubscriptionGateway($this, $subscription);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public static function setSubscriptionModel($model)
-	{
-		static::$subscriptionModel = $model;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public function invoice($invoice = null)
 	{
 		return new InvoiceGateway($this, $invoice);
@@ -166,6 +149,46 @@ trait BillableTrait {
 	public static function setInvoiceModel($model)
 	{
 		static::$invoiceModel = $model;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function invoiceItems()
+	{
+		return $this->hasMany(static::$invoiceItemModel);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public static function setInvoiceItemModel($model)
+	{
+		static::$invoiceItemModel = $model;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function subscriptions()
+	{
+		return $this->hasMany(static::$subscriptionModel);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function subscription($subscription = null)
+	{
+		return new SubscriptionGateway($this, $subscription);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public static function setSubscriptionModel($model)
+	{
+		static::$subscriptionModel = $model;
 	}
 
 	/**

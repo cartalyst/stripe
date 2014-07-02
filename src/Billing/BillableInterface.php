@@ -73,6 +73,44 @@ interface BillableInterface {
 	public static function setChargeModel($model);
 
 	/**
+	 * Returns all the invoices that this entity has.
+	 *
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
+	 */
+	public function invoices();
+
+	/**
+	 * Returns a new Stripe Invoice gateway.
+	 *
+	 * @param  mixed  $invoice
+	 * @return \Cartalyst\Stripe\Billing\InvoiceGateway
+	 */
+	public function invoice($invoice = null);
+
+	/**
+	 * Sets the Eloquent invoice model.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public static function setInvoiceModel($model);
+
+	/**
+	 * Returns all the invoice items that this entity has.
+	 *
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
+	 */
+	public function invoiceItems();
+
+	/**
+	 * Sets the Eloquent invoice items model.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public static function setInvoiceItemModel($model);
+
+	/**
 	 * Returns all the subscriptions that this entity has.
 	 *
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
@@ -110,7 +148,7 @@ interface BillableInterface {
 	public function hasActiveCard();
 
 	/**
-	 * Apply a coupon to the billable entity.
+	 * Applies a coupon to the billable entity.
 	 *
 	 * @param  string  $coupon
 	 * @return array
@@ -118,7 +156,7 @@ interface BillableInterface {
 	public function applyCoupon($coupon);
 
 	/**
-	 * Update the default credit card attached to the entity.
+	 * Updates the default credit card attached to the entity.
 	 *
 	 * @param  string  $token
 	 * @return array
