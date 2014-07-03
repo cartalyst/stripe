@@ -48,7 +48,7 @@ Key | Required | Type   | Default | Description
 id  | true     | string | null    | The recipient unique identifier.
 
 ```php
-$recipient = Stripe::recipients()->delete([
+$recipient = Stripe::recipients()->destroy([
 	'id' => 'rp_4EYRyEYthf2Doc',
 ]);
 ```

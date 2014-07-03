@@ -62,7 +62,7 @@ id       | true     | string | null    | The card unique identifier.
 customer | true     | string | null    | The customer unique identifier.
 
 ```php
-$card = Stripe::cards()->delete([
+$card = Stripe::cards()->destroy([
 	'id'       => 'card_4EBi3uAIBFnKy4',
 	'customer' => 'cus_4DArhxP7RAFBaB',
 ]);

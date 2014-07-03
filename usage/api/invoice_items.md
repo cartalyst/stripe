@@ -27,7 +27,7 @@ $response = Stripe::invoiceItems()->update([
 ### Delete an invoice item
 
 ```php
-$item = Stripe::invoiceItems()->delete([
+$item = Stripe::invoiceItems()->destroy([
 	'id' => 'ii_4Egr3tUtHjVEnm',
 ]);
 

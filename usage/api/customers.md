@@ -29,7 +29,7 @@ Key | Required | Type   | Default | Description
 id  | true     | string | null    | The customer unique identifier.
 
 ```php
-$customer = Stripe::customers()->delete([
+$customer = Stripe::customers()->destroy([
 	'id' => 'cus_4EBxvk6aBPexFO',
 ]);
 ```

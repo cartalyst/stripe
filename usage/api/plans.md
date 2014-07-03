@@ -34,7 +34,7 @@ Key | Required | Type   | Default | Description
 id  | true     | string | null    | The plan unique identifier.
 
 ```php
-$plan = Stripe::plans()->delete([
+$plan = Stripe::plans()->destroy([
 	'id' => 'monthly',
 ]);
 ```

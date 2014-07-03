@@ -31,7 +31,7 @@ Key | Required | Type   | Default | Description
 id  | true     | string | null    | The coupon unique identifier.
 
 ```php
-$coupon = Stripe::coupons()->delete([
+$coupon = Stripe::coupons()->destroy([
 	'id' => '50-PERCENT-OFF',
 ]);
 ```
