@@ -176,7 +176,7 @@ return [
 
 	],
 
-	'delete' => [
+	'destroy' => [
 
 		'httpMethod'     => 'DELETE',
 		'uri'            => '/v1/recipients/{id}',

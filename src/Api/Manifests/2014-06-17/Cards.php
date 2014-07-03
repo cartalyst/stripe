@@ -145,7 +145,7 @@ return [
 
 	],
 
-	'delete' => [
+	'destroy' => [
 
 		'httpMethod'     => 'DELETE',
 		'uri'            => '/v1/customers/{customer}/cards/{id}',
