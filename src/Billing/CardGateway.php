@@ -226,9 +226,26 @@ class CardGateway extends StripeGateway {
 			'customer' => $entity->stripe_id,
 		]);
 
-		$defaultCard = $customer['default_card'];
+		$stripeCards = [];
 
 		foreach ($cards as $card)
+		{
+			$stripeCards[$card['id']] = $card;
+		}
+
+		// Loop through the current entity cards, this is to
+		// make sure that non existing cards gets removed.
+		foreach ($entity->cards as $card)
+		{
+			if ( ! array_get($stripeCards, $card->stripe_id))
+			{
+				$card->delete();
+			}
+		}
+
+		$defaultCard = $customer['default_card'];
+
+		foreach ($stripeCards as $card)
 		{
 			$stripeId = $card['id'];
 
