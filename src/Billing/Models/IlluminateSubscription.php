@@ -31,9 +31,9 @@ class IlluminateSubscription extends Model {
 	 * {@inheritDoc}
 	 */
 	protected $fillable = [
-		'plan',
 		'active',
 		'ends_at',
+		'plan_id',
 		'ended_at',
 		'stripe_id',
 		'created_at',

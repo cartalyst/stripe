@@ -72,7 +72,7 @@ class CartalystStripeCreateTables extends Migration {
 			$table->float('amount');
 			$table->boolean('proration')->default(0);
 			$table->string('description')->nullable();
-			$table->string('plan')->nullable();
+			$table->string('plan_id')->nullable();
 			$table->integer('quantity')->nullable();
 			$table->timestamps();
 			$table->timestamp('period_start')->nullable();
@@ -109,7 +109,7 @@ class CartalystStripeCreateTables extends Migration {
 			$table->increments('id');
 			$table->integer('billable_column_id');
 			$table->string('stripe_id')->unique();
-			$table->string('plan', 25)->nullable();
+			$table->string('plan_id', 25)->nullable();
 			$table->boolean('active')->default(0);
 			$table->timestamps();
 			$table->timestamp('ends_at')->nullable();

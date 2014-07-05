@@ -144,7 +144,7 @@ class SubscriptionGateway extends StripeGateway {
 		// Prepares the payload
 		$attributes = array_merge($attributes, [
 			'customer'  => $entity->stripe_id,
-			'plan'      => $this->plan,
+			'plan_id'   => $this->plan,
 			'coupon'    => $this->coupon,
 			'prorate'   => $this->prorate,
 			'quantity'  => $this->quantity,
@@ -156,7 +156,7 @@ class SubscriptionGateway extends StripeGateway {
 
 		// Attach the created subscription to the billable entity
 		$entity->subscriptions()->create([
-			'plan'          => $this->plan,
+			'plan_id'       => $this->plan,
 			'active'        => 1,
 			'created_at'    => $this->nullableTimestamp($subscription['current_period_start']),
 			'ends_at'       => $this->nullableTimestamp($subscription['current_period_end']),
@@ -238,7 +238,7 @@ class SubscriptionGateway extends StripeGateway {
 	public function resume()
 	{
 		$subscription = $this->noProrate()->update([
-			'plan' => $this->subscription->plan,
+			'plan_id' => $this->subscription->plan,
 		]);
 
 		$this->updateLocalSubscriptionData([
@@ -480,12 +480,12 @@ class SubscriptionGateway extends StripeGateway {
 		}
 
 		$subscription = $this->update([
-			'plan'      => $this->plan,
+			'plan_id'   => $this->plan,
 			'trial_end' => $this->getTrialEndDate(),
 		]);
 
 		$this->updateLocalSubscriptionData([
-			'plan'          => $this->plan,
+			'plan_id'       => $this->plan,
 			'trial_ends_at' => $this->trialEnd,
 		]);
 
@@ -543,7 +543,7 @@ class SubscriptionGateway extends StripeGateway {
 			$data = [
 				'active'        => 1,
 				'stripe_id'     => $stripeId,
-				'plan'          => $subscription['plan']['id'],
+				'plan_id'       => $subscription['plan']['id'],
 				'created_at'    => $this->nullableTimestamp($subscription['current_period_start']),
 				'ends_at'       => $this->nullableTimestamp($subscription['current_period_end']),
 				'canceled_at'   => $this->nullableTimestamp($subscription['canceled_at']),

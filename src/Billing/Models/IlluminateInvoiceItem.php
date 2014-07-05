@@ -32,8 +32,8 @@ class IlluminateInvoiceItem extends Model {
 	 */
 	protected $fillable = [
 		'type',
-		'plan',
 		'amount',
+		'plan_id',
 		'quantity',
 		'currency',
 		'stripe_id',

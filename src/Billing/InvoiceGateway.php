@@ -116,7 +116,7 @@ class InvoiceGateway extends StripeGateway {
 					'amount'       => ($item['amount'] / 100),
 					'proration'    => (bool) $item['proration'],
 					'description'  => $item['description'],
-					'plan'         => array_get($item, 'plan.id', null),
+					'plan_id'      => array_get($item, 'plan.id', null),
 					'quantity'     => array_get($item, 'quantity', null),
 					'period_start' => $this->nullableTimestamp(array_get($item, 'period.start', null)),
 					'period_end'   => $this->nullableTimestamp(array_get($item, 'period.end', null)),
