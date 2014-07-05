@@ -238,7 +238,7 @@ class SubscriptionGateway extends StripeGateway {
 	public function resume()
 	{
 		$subscription = $this->noProrate()->update([
-			'plan_id' => $this->subscription->plan,
+			'plan' => $this->subscription->plan,
 		]);
 
 		$this->updateLocalSubscriptionData([
@@ -480,7 +480,7 @@ class SubscriptionGateway extends StripeGateway {
 		}
 
 		$subscription = $this->update([
-			'plan_id'   => $this->plan,
+			'plan'      => $this->plan,
 			'trial_end' => $this->getTrialEndDate(),
 		]);
 
