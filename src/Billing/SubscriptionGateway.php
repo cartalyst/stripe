@@ -158,6 +158,7 @@ class SubscriptionGateway extends StripeGateway {
 		$entity->subscriptions()->create([
 			'plan'          => $this->plan,
 			'active'        => 1,
+			'created_at'    => $this->nullableTimestamp($subscription['current_period_start']),
 			'ends_at'       => $this->nullableTimestamp($subscription['current_period_end']),
 			'stripe_id'     => $subscription['id'],
 			'trial_ends_at' => $this->nullableTimestamp($subscription['trial_end']),
@@ -543,7 +544,7 @@ class SubscriptionGateway extends StripeGateway {
 				'active'        => 1,
 				'stripe_id'     => $stripeId,
 				'plan'          => $subscription['plan']['id'],
-				'created_at'    => Carbon::createFromTimestamp($subscription['current_period_start']),
+				'created_at'    => $this->nullableTimestamp($subscription['current_period_start']),
 				'ends_at'       => $this->nullableTimestamp($subscription['current_period_end']),
 				'canceled_at'   => $this->nullableTimestamp($subscription['canceled_at']),
 				'trial_ends_at' => $this->nullableTimestamp($subscription['trial_end']),
