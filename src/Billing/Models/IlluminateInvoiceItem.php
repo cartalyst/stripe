@@ -38,6 +38,7 @@ class IlluminateInvoiceItem extends Model {
 		'currency',
 		'stripe_id',
 		'proration',
+		'invoice_id',
 		'period_end',
 		'description',
 		'period_start',
