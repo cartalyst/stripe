@@ -189,14 +189,14 @@ return [
 			],
 
 			'application_fee' => [
-				'description' => 'A fee in cents that will be applied to the invoice and transferred to the application owner\'s Stripe account',
+				'description' => 'A fee in cents that will be applied to the invoice and transferred to the application owner\'s Stripe account.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => false,
 			],
 
 			'closed' => [
-				'description' => 'Boolean representing whether an invoice is closed or not',
+				'description' => 'Boolean representing whether an invoice is closed or not.',
 				'location'    => 'query',
 				'type'        => 'boolean',
 				'required'    => false,
@@ -210,6 +210,16 @@ return [
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
+			],
+
+			'forgiven' => [
+				'description' => 'Boolean representing whether an invoice is forgiven or not.',
+				'location'    => 'query',
+				'type'        => 'boolean',
+				'required'    => false,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Boolean::convert',
+				],
 			],
 
 			'metadata' => [
