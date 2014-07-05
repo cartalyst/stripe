@@ -10,7 +10,7 @@ $subscriptions = $user->subscriptions;
 
 ### Creating subscriptions
 
-Subscribing a user to a plan
+Subscribing an entity to a plan
 
 ```php
 $token = Input::get('stripeToken');
@@ -24,7 +24,7 @@ $user
 	->create();
 ```
 
-Subscribing a user to a plan and apply a coupon to this new subscription
+Subscribing an entity to a plan and apply a coupon to this new subscription
 
 ```php
 $token = Input::get('stripeToken');

@@ -2,7 +2,7 @@
 
 ### Retrieve all the attached cards
 
-Listing the attached cards from an user is very easy.
+Listing the attached cards from an entity is very easy.
 
 ```php
 $user = User::find(1);
@@ -12,7 +12,7 @@ $cards = $user->cards;
 
 ### Attaching credit cards
 
-Attach a new credit card to the user.
+Attach a new credit card to the entity.
 
 ```php
 $token = Input::get('stripeToken');
@@ -24,7 +24,7 @@ $user
 	->create($token);
 ```
 
-Attach a new credit card to the user and make it the default credit card.
+Attach a new credit card to the entity and make it the default credit card.
 
 ```php
 $token = Input::get('stripeToken');
