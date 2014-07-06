@@ -243,7 +243,7 @@ class SubscriptionGateway extends StripeGateway {
 	public function resume()
 	{
 		$subscription = $this->noProrate()->update([
-			'plan' => $this->subscription->plan,
+			'plan' => $this->subscription->plan_id,
 		]);
 
 		$this->updateLocalSubscriptionData([
