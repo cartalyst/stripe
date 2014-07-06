@@ -32,23 +32,24 @@ class IlluminateSubscription extends Model {
 	 */
 	protected $fillable = [
 		'active',
-		'ends_at',
 		'plan_id',
 		'ended_at',
 		'stripe_id',
-		'created_at',
 		'canceled_at',
 		'trial_ends_at',
+		'period_ends_at',
+		'period_starts_at',
 	];
 
 	/**
 	 * {@inheritDoc}
 	 */
 	protected $dates = [
-		'ends_at',
 		'ended_at',
 		'canceled_at',
 		'trial_ends_at',
+		'period_ends_at',
+		'period_starts_at',
 	];
 
 	/**
@@ -68,7 +69,7 @@ class IlluminateSubscription extends Model {
 	 */
 	public function onTrialPeriod()
 	{
-		$endsAt = $this->ends_at;
+		$endsAt = $this->period_ends_at;
 
 		if ($endsAt && $this->trial_ends_at)
 		{

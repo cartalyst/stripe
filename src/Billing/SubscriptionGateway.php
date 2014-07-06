@@ -156,12 +156,12 @@ class SubscriptionGateway extends StripeGateway {
 
 		// Attach the created subscription to the billable entity
 		$entity->subscriptions()->create([
-			'plan_id'       => $this->plan,
-			'active'        => 1,
-			'created_at'    => $this->nullableTimestamp($subscription['current_period_start']),
-			'ends_at'       => $this->nullableTimestamp($subscription['current_period_end']),
-			'stripe_id'     => $subscription['id'],
-			'trial_ends_at' => $this->nullableTimestamp($subscription['trial_end']),
+			'plan_id'          => $this->plan,
+			'active'           => 1,
+			'period_starts_at' => $this->nullableTimestamp($subscription['current_period_start']),
+			'period_ends_at'   => $this->nullableTimestamp($subscription['current_period_end']),
+			'stripe_id'        => $subscription['id'],
+			'trial_ends_at'    => $this->nullableTimestamp($subscription['trial_end']),
 		]);
 
 		// Fire the 'cartalyst.stripe.subscription.created' event
@@ -182,6 +182,11 @@ class SubscriptionGateway extends StripeGateway {
 		$payload = $this->getPayload($attributes);
 
 		$subscription = $this->client->subscriptions()->update($payload);
+
+		$this->updateLocalSubscriptionData([
+			'period_starts_at' => $this->nullableTimestamp($subscription['current_period_start']),
+			'period_ends_at'   => $this->nullableTimestamp($subscription['current_period_end']),
+		]);
 
 		// Fire the 'cartalyst.stripe.subscription.updated' event
 		$this->fire('subscription.updated', [
@@ -242,11 +247,12 @@ class SubscriptionGateway extends StripeGateway {
 		]);
 
 		$this->updateLocalSubscriptionData([
-			'active'        => 1,
-			'ends_at'       => $this->nullableTimestamp($subscription['current_period_end']),
-			'ended_at'      => null,
-			'trial_ends_at' => $this->nullableTimestamp($subscription['trial_end']),
-			'canceled_at'   => null,
+			'active'           => 1,
+			'period_starts_at' => $this->nullableTimestamp($subscription['current_period_start']),
+			'period_ends_at'   => $this->nullableTimestamp($subscription['current_period_end']),
+			'ended_at'         => null,
+			'trial_ends_at'    => $this->nullableTimestamp($subscription['trial_end']),
+			'canceled_at'      => null,
 		]);
 
 		// Fire the 'cartalyst.stripe.subscription.resumed' event
@@ -541,13 +547,13 @@ class SubscriptionGateway extends StripeGateway {
 			$_subscription = $entity->subscriptions()->where('stripe_id', $stripeId)->first();
 
 			$data = [
-				'active'        => 1,
-				'stripe_id'     => $stripeId,
-				'plan_id'       => $subscription['plan']['id'],
-				'created_at'    => $this->nullableTimestamp($subscription['current_period_start']),
-				'ends_at'       => $this->nullableTimestamp($subscription['current_period_end']),
-				'canceled_at'   => $this->nullableTimestamp($subscription['canceled_at']),
-				'trial_ends_at' => $this->nullableTimestamp($subscription['trial_end']),
+				'active'           => 1,
+				'stripe_id'        => $stripeId,
+				'plan_id'          => $subscription['plan']['id'],
+				'period_starts_at' => $this->nullableTimestamp($subscription['current_period_start']),
+				'period_ends_at'   => $this->nullableTimestamp($subscription['current_period_end']),
+				'canceled_at'      => $this->nullableTimestamp($subscription['canceled_at']),
+				'trial_ends_at'    => $this->nullableTimestamp($subscription['trial_end']),
 			];
 
 			if ( ! $_subscription)
