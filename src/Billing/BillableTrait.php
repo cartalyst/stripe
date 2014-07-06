@@ -221,6 +221,14 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
+	public function getDefaultCard()
+	{
+		return $this->cards()->whereDefault(1)->first();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function updateDefaultCard($token)
 	{
 		return $this->getStripeClient()->customers()->update([

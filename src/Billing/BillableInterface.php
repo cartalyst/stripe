@@ -156,6 +156,13 @@ interface BillableInterface {
 	public function applyCoupon($coupon);
 
 	/**
+	 * Returns the entity default card.
+	 *
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCard
+	 */
+	public function getDefaultCard();
+
+	/**
 	 * Updates the default credit card attached to the entity.
 	 *
 	 * @param  string  $token
