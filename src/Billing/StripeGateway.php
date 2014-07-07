@@ -111,6 +111,17 @@ abstract class StripeGateway {
 	}
 
 	/**
+	 * Converts the amount from cents to "dollars".
+	 *
+	 * @param  int  $amount
+	 * @return double
+	 */
+	protected function convertToDecimal($amount)
+	{
+		return (double) ($amount / 100);
+	}
+
+	/**
 	 * Fires an event.
 	 *
 	 * @param  string  $event
