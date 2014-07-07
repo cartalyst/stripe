@@ -182,7 +182,7 @@ class ChargeGateway extends StripeGateway {
 			->refunds()
 			->create([
 				'transaction_id' => $refund['balance_transaction'],
-				'amount'         => ($refund['amount'] / 100),
+				'amount'         => $this->convertToDecimal($refund['amount']),
 			]);
 
 		// Get the updated charge
@@ -290,7 +290,7 @@ class ChargeGateway extends StripeGateway {
 				'invoice_id'  => $charge['invoice'],
 				'currency'    => $charge['currency'],
 				'description' => $charge['description'],
-				'amount'      => ($charge['amount'] / 100),
+				'amount'      => $this->convertToDecimal($charge['amount']),
 				'paid'        => (bool) $charge['paid'],
 				'captured'    => (bool) $charge['captured'],
 				'refunded'    => (bool) $charge['refunded'],
@@ -318,7 +318,7 @@ class ChargeGateway extends StripeGateway {
 
 				$data = [
 					'transaction_id' => $transactionId,
-					'amount'         => ($refund['amount'] / 100),
+					'amount'         => $this->convertToDecimal($refund['amount']),
 					'currency'       => $refund['currency'],
 					'created_at'     => Carbon::createFromTimestamp($refund['created']),
 				];
