@@ -123,7 +123,7 @@ class ChargeGateway extends StripeGateway {
 		// Attach the created charge to the billable entity
 		$this->billable->charges()->create([
 			'stripe_id'   => $charge['id'],
-			'amount'      => $amount,
+			'amount'      => $this->convertToDecimal($charge['amount']),
 			'paid'        => $charge['paid'],
 			'captured'    => $charge['captured'],
 			'refunded'    => $charge['refunded'],
