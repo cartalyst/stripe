@@ -49,9 +49,9 @@ class CartalystStripeCreateTables extends Migration {
 			$table->string('subscription_id');
 			$table->string('currency');
 			$table->string('description');
-			$table->float('subtotal');
-			$table->float('total');
-			$table->float('amount_due');
+			$table->decimal('subtotal', 15, 4);
+			$table->decimal('total', 15, 4);
+			$table->decimal('amount_due', 15, 4);
 			$table->boolean('attempted')->default(0);
 			$table->integer('attempt_count')->default(0);
 			$table->boolean('closed')->default(0);
@@ -69,7 +69,7 @@ class CartalystStripeCreateTables extends Migration {
 			$table->integer('invoice_id');
 			$table->string('currency');
 			$table->string('type')->nullable();
-			$table->float('amount');
+			$table->decimal('amount', 15, 4);
 			$table->boolean('proration')->default(0);
 			$table->string('description')->nullable();
 			$table->string('plan_id')->nullable();
@@ -87,7 +87,7 @@ class CartalystStripeCreateTables extends Migration {
 			$table->string('invoice_id')->nullable();
 			$table->string('currency');
 			$table->string('description')->nullable();
-			$table->float('amount');
+			$table->decimal('amount', 15, 4);
 			$table->boolean('paid')->default(0);
 			$table->boolean('captured')->default(0);
 			$table->boolean('refunded')->default(0);
@@ -100,7 +100,7 @@ class CartalystStripeCreateTables extends Migration {
 			$table->integer('payment_id');
 			$table->string('transaction_id');
 			$table->string('currency');
-			$table->float('amount');
+			$table->decimal('amount', 15, 4);
 			$table->timestamps();
 		});
 
