@@ -31,20 +31,20 @@ class IlluminateInvoice extends Model {
 	 * {@inheritDoc}
 	 */
 	protected $fillable = [
+		'paid',
+		'total',
+		'closed',
+		'currency',
+		'subtotal',
 		'stripe_id',
 		'charge_id',
-		'subscription_id',
-		'currency',
-		'description',
-		'subtotal',
-		'total',
-		'amount_due',
 		'attempted',
-		'attempt_count',
-		'closed',
-		'paid',
-		'period_start',
+		'amount_due',
 		'period_end',
+		'description',
+		'period_start',
+		'attempt_count',
+		'subscription_id',
 	];
 
 	/**
@@ -56,11 +56,25 @@ class IlluminateInvoice extends Model {
 	];
 
 	/**
+	 * The Eloquent charges model.
+	 *
+	 * @var string
+	 */
+	protected static $chargeModel = 'Cartalyst\Stripe\Billing\Models\IlluminateCharge';
+
+	/**
 	 * The Eloquent invoice items model.
 	 *
 	 * @var string
 	 */
 	protected static $invoiceItemModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem';
+
+	/**
+	 * The Eloquent subscriptions model.
+	 *
+	 * @var string
+	 */
+	protected static $subscriptionModel = 'Cartalyst\Stripe\Billing\Models\IlluminateSubscription';
 
 	/**
 	 * Returns the charge that is associated to this invoice.
@@ -69,17 +83,7 @@ class IlluminateInvoice extends Model {
 	 */
 	public function charge()
 	{
-		return $this->belongsTo('Cartalyst\Stripe\Billing\Models\IlluminateCharge', 'invoice_id');
-	}
-
-	/**
-	 * Returns the charge that is associated to this subscription.
-	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
-	 */
-	public function subscription()
-	{
-		return $this->belongsTo('Cartalyst\Stripe\Billing\Models\IlluminateSubscription', 'invoice_id');
+		return $this->belongsTo(static::$chargeModel, 'id');
 	}
 
 	/**
@@ -93,6 +97,27 @@ class IlluminateInvoice extends Model {
 	}
 
 	/**
+	 * Returns the subscription that is associated to this invoice.
+	 *
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
+	 */
+	public function subscription()
+	{
+		return $this->belongsTo(static::$subscriptionModel, 'subscription_id');
+	}
+
+	/**
+	 * Sets the Eloquent model to be used for the charge relationship.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public static function setChargeModel($model)
+	{
+		static::$chargeModel = $model;
+	}
+
+	/**
 	 * Sets the Eloquent model to be used for the invoice items relationship.
 	 *
 	 * @param  string  $model
@@ -101,6 +126,17 @@ class IlluminateInvoice extends Model {
 	public static function setInvoiceItemModel($model)
 	{
 		static::$invoiceItemModel = $model;
+	}
+
+	/**
+	 * Sets the Eloquent model to be used for the subscription relationship.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public static function setSubscriptionModel($model)
+	{
+		static::$subscriptionModel = $model;
 	}
 
 }
