@@ -34,9 +34,9 @@ class CartalystStripeCreateTables extends Migration {
 			$table->increments('id');
 			$table->integer('billable_column_id')->unsigned();
 			$table->string('stripe_id')->unique();
-			$table->integer('last_four');
-			$table->integer('exp_month');
-			$table->integer('exp_year');
+			$table->smallInteger('last_four');
+			$table->tinyInteger('exp_month');
+			$table->smallInteger('exp_year');
 			$table->boolean('default')->default(0);
 			$table->timestamps();
 		});
