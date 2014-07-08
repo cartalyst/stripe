@@ -51,11 +51,11 @@ trait BillableTrait {
 	protected static $chargeModel = 'Cartalyst\Stripe\Billing\Models\IlluminateCharge';
 
 	/**
-	 * The Eloquent subscription model.
+	 * The Eloquent charge refund model.
 	 *
 	 * @var string
 	 */
-	protected static $subscriptionModel = 'Cartalyst\Stripe\Billing\Models\IlluminateSubscription';
+	protected static $chargeRefundModel = 'Cartalyst\Stripe\Billing\Models\IlluminateRefund';
 
 	/**
 	 * The Eloquent invoice model.
@@ -70,6 +70,20 @@ trait BillableTrait {
 	 * @var string
 	 */
 	protected static $invoiceItemModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem';
+
+	/**
+	 * The Eloquent invoice metadata model.
+	 *
+	 * @var string
+	 */
+	protected static $invoiceMetadataModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoiceMetadata';
+
+	/**
+	 * The Eloquent subscription model.
+	 *
+	 * @var string
+	 */
+	protected static $subscriptionModel = 'Cartalyst\Stripe\Billing\Models\IlluminateSubscription';
 
 	/**
 	 * {@inheritDoc}
@@ -106,6 +120,33 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
+	public function hasActiveCard()
+	{
+		return (bool) $this->cards->count();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getDefaultCard()
+	{
+		return $this->cards()->whereDefault(1)->first();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function updateDefaultCard($token)
+	{
+		return $this->getStripeClient()->customers()->update([
+			'id'   => $this->getStripeId(),
+			'card' => $token,
+		]);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function charges()
 	{
 		return $this->hasMany(static::$chargeModel);
@@ -125,14 +166,18 @@ trait BillableTrait {
 	public static function setChargeModel($model)
 	{
 		static::$chargeModel = $model;
+
+		forward_static_call_array([static::$chargeRefundModel, 'setChargeModel'], [$model]);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function invoice($invoice = null)
+	public static function setChargeRefundModel($model)
 	{
-		return new InvoiceGateway($this, $invoice);
+		static::$chargeRefundModel = $model;
+
+		forward_static_call_array([static::$chargeModel, 'setRefundModel'], [$model]);
 	}
 
 	/**
@@ -146,9 +191,9 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
-	public static function setInvoiceModel($model)
+	public function invoice($invoice = null)
 	{
-		static::$invoiceModel = $model;
+		return new InvoiceGateway($this, $invoice);
 	}
 
 	/**
@@ -162,9 +207,29 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
+	public static function setInvoiceModel($model)
+	{
+		static::$invoiceModel = $model;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public static function setInvoiceItemModel($model)
 	{
 		static::$invoiceItemModel = $model;
+
+		forward_static_call_array([static::$invoiceModel, 'setInvoiceItemModel'], [$model]);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public static function setInvoiceMetadataModel($model)
+	{
+		static::$invoiceMetadataModel = $model;
+
+		forward_static_call_array([static::$invoiceModel, 'setInvoiceMetadataModel'], [$model]);
 	}
 
 	/**
@@ -202,38 +267,11 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function hasActiveCard()
-	{
-		return (bool) $this->cards->count();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public function applyCoupon($coupon)
 	{
 		return $this->getStripeClient()->customers()->update([
 			'id'     => $this->getStripeId(),
 			'coupon' => $coupon,
-		]);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getDefaultCard()
-	{
-		return $this->cards()->whereDefault(1)->first();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function updateDefaultCard($token)
-	{
-		return $this->getStripeClient()->customers()->update([
-			'id'   => $this->getStripeId(),
-			'card' => $token,
 		]);
 	}
 

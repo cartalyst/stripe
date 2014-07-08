@@ -50,6 +50,28 @@ interface BillableInterface {
 	public static function setCardModel($model);
 
 	/**
+	 * Checks if the entity has any active card.
+	 *
+	 * @return bool
+	 */
+	public function hasActiveCard();
+
+	/**
+	 * Returns the entity default card.
+	 *
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCard
+	 */
+	public function getDefaultCard();
+
+	/**
+	 * Updates the default credit card attached to the entity.
+	 *
+	 * @param  string  $token
+	 * @return array
+	 */
+	public function updateDefaultCard($token);
+
+	/**
 	 * Returns all the charges that this entity has made.
 	 *
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
@@ -73,6 +95,14 @@ interface BillableInterface {
 	public static function setChargeModel($model);
 
 	/**
+	 * Sets the Eloquent charge refund model.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public static function setChargeRefundModel($model);
+
+	/**
 	 * Returns all the invoices that this entity has.
 	 *
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
@@ -88,6 +118,13 @@ interface BillableInterface {
 	public function invoice($invoice = null);
 
 	/**
+	 * Returns all the invoice items that this entity has.
+	 *
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
+	 */
+	public function invoiceItems();
+
+	/**
 	 * Sets the Eloquent invoice model.
 	 *
 	 * @param  string  $model
@@ -96,19 +133,20 @@ interface BillableInterface {
 	public static function setInvoiceModel($model);
 
 	/**
-	 * Returns all the invoice items that this entity has.
-	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
-	 */
-	public function invoiceItems();
-
-	/**
 	 * Sets the Eloquent invoice items model.
 	 *
 	 * @param  string  $model
 	 * @return void
 	 */
 	public static function setInvoiceItemModel($model);
+
+	/**
+	 * Sets the Eloquent invoice metadata model.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public static function setInvoiceMetadataModel($model);
 
 	/**
 	 * Returns all the subscriptions that this entity has.
@@ -141,34 +179,12 @@ interface BillableInterface {
 	public function isSubscribed();
 
 	/**
-	 * Checks if the entity has any active card.
-	 *
-	 * @return bool
-	 */
-	public function hasActiveCard();
-
-	/**
 	 * Applies a coupon to the billable entity.
 	 *
 	 * @param  string  $coupon
 	 * @return array
 	 */
 	public function applyCoupon($coupon);
-
-	/**
-	 * Returns the entity default card.
-	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCard
-	 */
-	public function getDefaultCard();
-
-	/**
-	 * Updates the default credit card attached to the entity.
-	 *
-	 * @param  string  $token
-	 * @return array
-	 */
-	public function updateDefaultCard($token);
 
 	/**
 	 * Returns the Stripe ID for the entity.
