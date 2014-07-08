@@ -44,4 +44,12 @@ class IlluminateInvoiceItem extends Model {
 		'period_start',
 	];
 
+	/**
+	 * {@inheritDoc}
+	 */
+	protected $dates = [
+		'period_end',
+		'period_start',
+	];
+
 }
