@@ -106,7 +106,7 @@ class InvoiceGateway extends StripeGateway {
 			{
 				$stripeId = $item['id'];
 
-				$_item = $entity->invoiceItems()->where('stripe_id', $stripeId)->first();
+				$_item = $_invoice->items()->where('stripe_id', $stripeId)->first();
 
 				$type = array_get($item, 'type', null);
 
