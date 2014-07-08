@@ -274,14 +274,4 @@ trait BillableTrait {
 		return $this->stripeClient ?: App::make('stripe');
 	}
 
-	/**
-	 * Returns the Stripe gateway instance.
-	 *
-	 * @return \Cartalyst\Stripe\Billing\StripeGateway
-	 */
-	protected function gateway()
-	{
-		return $this->gateway ?: new StripeGateway($this);
-	}
-
 }
