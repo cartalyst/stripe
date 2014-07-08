@@ -214,7 +214,7 @@ class Stripe {
 	{
 		if (substr($method, -8) === 'Iterator')
 		{
-			$method = strtolower(substr($method, 0, -8));
+			$method = substr($method, 0, -8);
 
 			return $this->handleIteratorRequest($method, $arguments);
 		}
