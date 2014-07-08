@@ -48,7 +48,7 @@ class CartalystStripeCreateTables extends Migration {
 			$table->string('stripe_id')->unique();
 			$table->string('subscription_id')->nullable();
 			$table->string('currency');
-			$table->string('description');
+			$table->string('description')->nullable();
 			$table->decimal('subtotal', 15, 4);
 			$table->decimal('total', 15, 4);
 			$table->decimal('amount_due', 15, 4);
