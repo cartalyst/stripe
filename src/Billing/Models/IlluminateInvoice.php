@@ -70,6 +70,13 @@ class IlluminateInvoice extends Model {
 	protected static $invoiceItemModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem';
 
 	/**
+	 * The Eloquent invoice metadata model.
+	 *
+	 * @var string
+	 */
+	protected static $invoiceMetadataModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoiceMetadata';
+
+	/**
 	 * The Eloquent subscriptions model.
 	 *
 	 * @var string
@@ -94,6 +101,16 @@ class IlluminateInvoice extends Model {
 	public function items()
 	{
 		return $this->hasMany(static::$invoiceItemModel, 'invoice_id');
+	}
+
+	/**
+	 * Returns the metadata associated to this invoice.
+	 *
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoiceMetadata
+	 */
+	public function metadata()
+	{
+		return $this->hasOne(static::$invoiceMetadataModel, 'invoice_id');
 	}
 
 	/**
@@ -126,6 +143,17 @@ class IlluminateInvoice extends Model {
 	public static function setInvoiceItemModel($model)
 	{
 		static::$invoiceItemModel = $model;
+	}
+
+	/**
+	 * Sets the Eloquent model to be used for the invoice metadata relationship.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public static function setInvoiceMetadataModel($model)
+	{
+		static::$invoiceMetadataModel = $model;
 	}
 
 	/**

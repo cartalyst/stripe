@@ -112,7 +112,6 @@ class InvoiceGateway extends StripeGateway {
 
 				$data = [
 					'stripe_id'    => $stripeId,
-					'invoice_id'   => $_invoice->id,
 					'currency'     => $item['currency'],
 					'type'         => $type,
 					'amount'       => $this->convertToDecimal($item['amount']),
@@ -126,7 +125,7 @@ class InvoiceGateway extends StripeGateway {
 
 				if ( ! $_item)
 				{
-					$_item = $entity->invoiceItems()->create($data);
+					$_item = $_invoice->items()->create($data);
 				}
 				else
 				{

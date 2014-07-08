@@ -39,6 +39,8 @@ class CartalystStripeCreateTables extends Migration {
 			$table->smallInteger('exp_year');
 			$table->boolean('default')->default(0);
 			$table->timestamps();
+
+			$table->engine = 'InnoDB';
 		});
 
 		Schema::create('invoices', function(Blueprint $table)
@@ -59,12 +61,13 @@ class CartalystStripeCreateTables extends Migration {
 			$table->timestamps();
 			$table->timestamp('period_start')->nullable();
 			$table->timestamp('period_end')->nullable();
+
+			$table->engine = 'InnoDB';
 		});
 
 		Schema::create('invoice_items', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('billable_column_id')->unsigned();
 			$table->string('stripe_id');
 			$table->integer('invoice_id');
 			$table->string('currency');
@@ -77,6 +80,23 @@ class CartalystStripeCreateTables extends Migration {
 			$table->timestamps();
 			$table->timestamp('period_start')->nullable();
 			$table->timestamp('period_end')->nullable();
+
+			$table->engine = 'InnoDB';
+		});
+
+		Schema::create('invoice_metadata', function(Blueprint $table)
+		{
+			$table->increments('id');
+			$table->integer('invoice_id');
+			$table->string('name')->nullable();
+			$table->string('address_line_1')->nullable();
+			$table->string('address_line_2')->nullable();
+			$table->string('country')->nullable();
+			$table->string('city')->nullable();
+			$table->string('zip_code')->nullable();
+			$table->timestamps();
+
+			$table->engine = 'InnoDB';
 		});
 
 		Schema::create('payments', function(Blueprint $table)
@@ -92,6 +112,8 @@ class CartalystStripeCreateTables extends Migration {
 			$table->boolean('captured')->default(0);
 			$table->boolean('refunded')->default(0);
 			$table->timestamps();
+
+			$table->engine = 'InnoDB';
 		});
 
 		Schema::create('refunds', function(Blueprint $table)
@@ -102,6 +124,8 @@ class CartalystStripeCreateTables extends Migration {
 			$table->string('currency');
 			$table->decimal('amount', 15, 4);
 			$table->timestamps();
+
+			$table->engine = 'InnoDB';
 		});
 
 		Schema::create('subscriptions', function(Blueprint $table)
@@ -117,6 +141,8 @@ class CartalystStripeCreateTables extends Migration {
 			$table->timestamp('ended_at')->nullable();
 			$table->timestamp('canceled_at')->nullable();
 			$table->timestamp('trial_ends_at')->nullable();
+
+			$table->engine = 'InnoDB';
 		});
 
 		Schema::table('billable_table', function(Blueprint $table)
