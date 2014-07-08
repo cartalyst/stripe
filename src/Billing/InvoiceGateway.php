@@ -108,14 +108,16 @@ class InvoiceGateway extends StripeGateway {
 
 				$_item = $entity->invoiceItems()->where('stripe_id', $stripeId)->first();
 
+				$type = array_get($item, 'type', null);
+
 				$data = [
 					'stripe_id'    => $stripeId,
 					'invoice_id'   => $_invoice->id,
 					'currency'     => $item['currency'],
-					'type'         => array_get($item, 'type', null),
+					'type'         => $type,
 					'amount'       => $this->convertToDecimal($item['amount']),
 					'proration'    => (bool) $item['proration'],
-					'description'  => $item['description'],
+					'description'  => $this->prepareInvoiceItemDescription($type, $item),
 					'plan_id'      => array_get($item, 'plan.id', null),
 					'quantity'     => array_get($item, 'quantity', null),
 					'period_start' => $this->nullableTimestamp(array_get($item, 'period.start', null)),
@@ -132,6 +134,18 @@ class InvoiceGateway extends StripeGateway {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Prepares the invoice item description.
+	 *
+	 * @param  string  $type
+	 * @param  array  $item
+	 * @return string
+	 */
+	protected function prepareInvoiceItemDescription($type, $item)
+	{
+		return $type === 'subscription' ? $item['plan']['name'] : $item['description'];
 	}
 
 }
