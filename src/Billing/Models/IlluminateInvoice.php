@@ -41,6 +41,7 @@ class IlluminateInvoice extends Model {
 		'attempted',
 		'amount_due',
 		'period_end',
+		'created_at',
 		'description',
 		'period_start',
 		'attempt_count',
