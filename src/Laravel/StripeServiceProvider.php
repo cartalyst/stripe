@@ -18,8 +18,8 @@
  */
 
 use Cartalyst\Stripe\Api\Stripe;
-use Cartalyst\Stripe\StripeMigratorCommand;
 use Illuminate\Support\ServiceProvider;
+use Cartalyst\Stripe\StripeMigratorCommand;
 
 class StripeServiceProvider extends ServiceProvider {
 

@@ -17,9 +17,9 @@
  * @link       http://cartalyst.com
  */
 
+use Illuminate\Support\Collection;
 use Guzzle\Service\Command\OperationCommand;
 use Guzzle\Service\Command\ResponseClassInterface;
-use Illuminate\Support\Collection;
 
 class Response extends Collection implements ResponseClassInterface {
 

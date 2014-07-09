@@ -17,10 +17,10 @@
  * @link       http://cartalyst.com
  */
 
-use Guzzle\Plugin\ErrorResponse\ErrorResponsePlugin;
 use Guzzle\Service\Client;
-use Guzzle\Service\Description\ServiceDescription;
 use InvalidArgumentException;
+use Guzzle\Service\Description\ServiceDescription;
+use Guzzle\Plugin\ErrorResponse\ErrorResponsePlugin;
 
 class Stripe {
 
