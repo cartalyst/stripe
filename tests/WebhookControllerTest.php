@@ -20,6 +20,7 @@
 use PHPUnit_Framework_TestCase;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Request;
+use Cartalyst\Stripe\Tests\Stubs\WebhookControllerStub;
 
 class WebhookControllerTest extends PHPUnit_Framework_TestCase {
 
@@ -47,7 +48,7 @@ class WebhookControllerTest extends PHPUnit_Framework_TestCase {
 			],
 		]));
 
-		$controller = new WebhookControllerTestStub;
+		$controller = new WebhookControllerStub;
 		$response = $controller->handleWebhook();
 
 		$this->assertEquals($_SERVER['__stripe_event_id'], 'foobar');
@@ -60,21 +61,10 @@ class WebhookControllerTest extends PHPUnit_Framework_TestCase {
 	{
 		Request::shouldReceive('getContent')->andReturn(json_encode(['type' => 'foo.bar']));
 
-		$controller = new WebhookControllerTestStub;
+		$controller = new WebhookControllerStub;
 		$response = $controller->handleWebhook();
 
 		$this->assertEquals($response->getContent(), null);
-	}
-
-}
-
-class WebhookControllerTestStub extends \Cartalyst\Stripe\WebhookController {
-
-	public function handleChargeSucceeded()
-	{
-		$_SERVER['__stripe_event_id'] = 'foobar';
-
-		return $this->sendResponse('Handled');
 	}
 
 }
