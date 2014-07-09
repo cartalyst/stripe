@@ -17,8 +17,8 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Stripe\Api\Stripe;
 use PHPUnit_Framework_TestCase;
+use Cartalyst\Stripe\Api\Stripe;
 
 class StripeTest extends PHPUnit_Framework_TestCase {
 
