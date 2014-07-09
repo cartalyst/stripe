@@ -123,8 +123,11 @@ return [
 			'amount_off' => [
 				'description' => 'A positive integer representing the amount to subtract from an invoice total (required if "percent_off" is not passed).',
 				'location'    => 'query',
-				'type'        => 'integer',
+				'type'        => 'number',
 				'required'    => false,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Number::convert',
+				],
 			],
 
 			'currency' => [

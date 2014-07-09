@@ -122,8 +122,11 @@ return [
 			'amount' => [
 				'description' => 'A positive integer in the smallest currency unit.',
 				'location'    => 'query',
-				'type'        => 'integer',
+				'type'        => 'number',
 				'required'    => true,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Number::convert',
+				],
 			],
 
 			'currency' => [
@@ -263,8 +266,11 @@ return [
 			'amount' => [
 				'description' => 'A positive integer in the smallest currency unit.',
 				'location'    => 'query',
-				'type'        => 'integer',
+				'type'        => 'number',
 				'required'    => false,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Number::convert',
+				],
 			],
 
 			'application_fee' => [
@@ -311,8 +317,11 @@ return [
 			'amount' => [
 				'description' => 'A positive integer in cents representing how much of this charge to refund.',
 				'location'    => 'query',
-				'type'        => 'integer',
+				'type'        => 'number',
 				'required'    => false,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Number::convert',
+				],
 			],
 
 			'refund_application_fee' => [

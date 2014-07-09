@@ -100,17 +100,6 @@ abstract class StripeGateway {
 	}
 
 	/**
-	 * Converts the amount from "dollars" to cents.
-	 *
-	 * @param  int  $amount
-	 * @return int
-	 */
-	protected function convertToCents($amount)
-	{
-		return (int) ($amount * 100);
-	}
-
-	/**
 	 * Converts the amount from cents to "dollars".
 	 *
 	 * @param  int  $amount

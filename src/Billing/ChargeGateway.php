@@ -113,7 +113,7 @@ class ChargeGateway extends StripeGateway {
 			'customer' => $entity->stripe_id,
 			'capture'  => $this->capture,
 			'currency' => $this->currency,
-			'amount'   => $this->convertToCents($amount),
+			'amount'   => $amount,
 			'card'     => $card,
 		]);
 
@@ -169,9 +169,7 @@ class ChargeGateway extends StripeGateway {
 	public function refund($amount = null)
 	{
 		// Prepares the payload
-		$payload = $this->getPayload(array_filter([
-			'amount' => $this->convertToCents($amount),
-		]));
+		$payload = $this->getPayload(array_filter(compact('amount')));
 
 		// Refunds the charge on Stripe
 		$refund = $this->client->charges()->refund($payload);

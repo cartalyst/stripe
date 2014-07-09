@@ -115,8 +115,11 @@ return [
 			'amount' => [
 				'description' => 'A positive integer in the smallest currency unit.',
 				'location'    => 'query',
-				'type'        => 'integer',
+				'type'        => 'number',
 				'required'    => true,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Number::convert',
+				],
 			],
 
 			'currency' => [
