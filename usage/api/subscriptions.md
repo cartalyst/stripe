@@ -76,7 +76,7 @@ $subscription = Stripe::subscriptions()->update([
 ### Retrieve all the subscriptions of a customer
 
 Key            | Required | Type    | Default | Description
--------------- | -------- | ------- | ------------------------------------------
+-------------- | -------- | ------- | ------- | --------------------------------
 customer       | true     | string  | null    | ID of the customer that this subscription belongs to.
 ending_before  | false    | string  | null    | A cursor to be used in pagination.
 limit          | false    | integer | 10      | A limit on the number of objects to be returned.

@@ -4,6 +4,16 @@ In this section we'll show how you can use the entity billing feature.
 
 We'll use a User model for the following examples.
 
+### Determine if the entity is ready to be billed
+
+```php
+$user = User::find(1);
+
+if ( ! $user->isBillable())
+{
+echo "User is not ready to be billed!";
+}
+
 ### Apply a coupon on the entity
 
 ```php
@@ -12,16 +22,6 @@ $coupon = Input::get('coupon');
 $user = User::find(1);
 
 $user->applyCoupon($coupon);
-```
-
-### Update the entity Default Credit Card
-
-```php
-$token = Input::get('stripeToken');
-
-$user = User::find(1);
-
-$user->updateDefaultCard($token);
 ```
 
 ### Check if the entity has any active subscription

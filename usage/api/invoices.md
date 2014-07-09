@@ -58,3 +58,16 @@ foreach ($lines['data'] as $line)
 	var_dump($line['id']);
 }
 ```
+
+### Retrieve the upcoming invoice
+
+```php
+$invoice = Stripe::invoices()->upcomingInvoice([
+	'customer' => 'cus_4EgOG1jXMEt7Ou',
+]);
+
+foreach ($invoice['lines']['data'] as $item)
+{
+	var_dump($item['id']);
+}
+```

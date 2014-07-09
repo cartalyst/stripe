@@ -73,6 +73,36 @@ $user
 	->delete();
 ```
 
+### Get the entity default Credit Card
+
+```php
+$user = User::find(1);
+
+$card = $user->getDefaultCard();
+
+echo $card->last_four;
+```
+
+### Update the entity default Credit Card
+
+```php
+$token = Input::get('stripeToken');
+
+$user = User::find(1);
+
+$user->updateDefaultCard($token);
+```
+
+### Check if the entity has any active card
+
+```php
+$user = User::find(1);
+
+if ( ! $user->hasActiveCard())
+{
+echo "User doesn't have any active credit card!";
+}
+
 ### Sync data from Stripe
 
 Often you might have the need to sync the data from Stripe with your database, we have an easy way to achieve this.
