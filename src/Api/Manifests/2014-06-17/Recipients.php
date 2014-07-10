@@ -76,7 +76,7 @@ return [
 
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/recipients/{id}',
-		'summary'        => 'Retrieves the details of an existing recipient.',
+		'summary'        => 'Returns the details of an existing recipient.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [

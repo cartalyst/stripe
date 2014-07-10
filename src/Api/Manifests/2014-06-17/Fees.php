@@ -87,7 +87,7 @@ return [
 
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/application_fees/{id}',
-		'summary'        => 'Retrieves the details about an application fee that your account has collected.',
+		'summary'        => 'Returns the details about an application fee that your account has collected.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
@@ -127,7 +127,7 @@ return [
 			],
 
 			'amount' => [
-				'description' => 'A positive integer in the smallest currency unit.',
+				'description' => 'A positive amount for the transaction.',
 				'location'    => 'query',
 				'type'        => 'number',
 				'required'    => false,

@@ -107,11 +107,13 @@ class Stripe {
 	 * Sets the Stripe API key.
 	 *
 	 * @param  string  $stripeKey
-	 * @return void
+	 * @return \Cartalyst\Stripe\Api\Stripe
 	 */
 	public function setStripeKey($stripeKey)
 	{
 		$this->stripeKey = $stripeKey;
+
+		return $this;
 	}
 
 	/**
@@ -128,7 +130,7 @@ class Stripe {
 	 * Sets the version to be used.
 	 *
 	 * @param  string  $version
-	 * @return void
+	 * @return \Cartalyst\Stripe\Api\Stripe
 	 */
 	public function setVersion($version)
 	{
@@ -137,6 +139,8 @@ class Stripe {
 		$this->setHeaders([
 			'Stripe-Version' => (string) $version,
 		]);
+
+		return $this;
 	}
 
 	/**
@@ -153,11 +157,13 @@ class Stripe {
 	 * Sets the user agent.
 	 *
 	 * @param  string  $userAgent
-	 * @return void
+	 * @return \Cartalyst\Stripe\Api\Stripe
 	 */
 	public function setUserAgent($userAgent)
 	{
 		$this->userAgent = $userAgent;
+
+		return $this;
 	}
 
 	/**
@@ -174,11 +180,13 @@ class Stripe {
 	 * Sets the manifests path.
 	 *
 	 * @param  string  $manifestPath
-	 * @return void
+	 * @return \Cartalyst\Stripe\Api\Stripe
 	 */
 	public function setManifestPath($manifestPath)
 	{
 		$this->manifestPath = $manifestPath;
+
+		return $this;
 	}
 
 	/**
@@ -195,11 +203,13 @@ class Stripe {
 	 * Sets the Guzzle client headers.
 	 *
 	 * @param  array  $headers
-	 * @return void
+	 * @return \Cartalyst\Stripe\Api\Stripe
 	 */
 	public function setHeaders(array $headers = [])
 	{
 		$this->headers = array_merge($this->headers, $headers);
+
+		return $this;
 	}
 
 	/**
@@ -208,7 +218,6 @@ class Stripe {
 	 * @param  string  $method
 	 * @param  array  $arguments
 	 * @return mixed
-	 * @throws \InvalidArgumentException
 	 */
 	public function __call($method, array $arguments = [])
 	{
@@ -219,12 +228,7 @@ class Stripe {
 			return $this->handleIteratorRequest($method, $arguments);
 		}
 
-		elseif ($this->manifestExists($method))
-		{
-			return $this->handleRequest($method);
-		}
-
-		throw new InvalidArgumentException("Undefined method [{$method}] called.");
+		return $this->handleRequest($method);
 	}
 
 	/**
@@ -248,9 +252,15 @@ class Stripe {
 	 *
 	 * @param  string  $method
 	 * @return \Guzzle\Service\Client
+	 * @throws \InvalidArgumentException
 	 */
 	protected function handleRequest($method)
 	{
+		if ( ! $this->manifestExists($method))
+		{
+			throw new InvalidArgumentException("Undefined method [{$method}] called.");
+		}
+
 		// Initialize the Guzzle client
 		$client = new Client;
 
@@ -271,7 +281,7 @@ class Stripe {
 		// Register the error response plugin for our custom exceptions
 		$dispatcher->addSubscriber(new ErrorResponsePlugin);
 
-		//
+		// Set the manifest payload into the Guzzle client
 		$manifest = $this->getManifestPayload($method);
 		$client->setDescription(ServiceDescription::factory($manifest));
 

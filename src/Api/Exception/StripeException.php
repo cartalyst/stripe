@@ -19,8 +19,8 @@
 
 use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
-use Guzzle\Plugin\ErrorResponse\ErrorResponseExceptionInterface;
 use Guzzle\Service\Command\CommandInterface;
+use Guzzle\Plugin\ErrorResponse\ErrorResponseExceptionInterface;
 
 class StripeException extends \Exception implements ErrorResponseExceptionInterface {
 

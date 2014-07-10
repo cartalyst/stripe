@@ -73,7 +73,7 @@ return [
 
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/coupons/{id}',
-		'summary'        => 'Retrieves the details of an existing coupon.',
+		'summary'        => 'Returns the details of an existing coupon.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
@@ -121,7 +121,7 @@ return [
 			],
 
 			'amount_off' => [
-				'description' => 'A positive integer representing the amount to subtract from an invoice total (required if "percent_off" is not passed).',
+				'description' => 'A positive amount representing the amount to subtract from an invoice total (required if "percent_off" is not passed).',
 				'location'    => 'query',
 				'type'        => 'number',
 				'required'    => false,
@@ -145,21 +145,21 @@ return [
 			],
 
 			'max_redemptions' => [
-				'description' => 'A positive integer specifying the number of times the coupon can be redeemed before it\'s no longer valid.',
+				'description' => 'A positive amount specifying the number of times the coupon can be redeemed before it\'s no longer valid.',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => false,
 			],
 
 			'metadata' => [
-				'description' => 'A set of key/value pairs that you can attach to a charge object.',
+				'description' => 'A set of key/value pairs that you can attach to a coupon object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
 			],
 
 			'percent_off' => [
-				'description' => 'A positive integer between 1 and 100 that represents the discount the coupon will apply (required if amount_off is not passed).',
+				'description' => 'A positive amount between 1 and 100 that represents the discount the coupon will apply (required if amount_off is not passed).',
 				'location'    => 'query',
 				'type'        => 'integer',
 				'required'    => false,

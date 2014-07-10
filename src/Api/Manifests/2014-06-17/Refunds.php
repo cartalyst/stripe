@@ -23,7 +23,7 @@ return [
 
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/charges/{charge}/refunds',
-		'summary'        => 'Retrieves a list of all the refunds of a charge.',
+		'summary'        => 'Returns a list of all the refunds of a charge.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
@@ -66,7 +66,7 @@ return [
 
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/charges/{charge}/refunds/{id}',
-		'summary'        => 'Retrieves the given refund.',
+		'summary'        => 'Returns the given refund.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
@@ -113,7 +113,7 @@ return [
 			],
 
 			'metadata' => [
-				'description' => 'A set of key/value pairs that you can attach to a charge object.',
+				'description' => 'A set of key/value pairs that you can attach to a refund object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,

@@ -100,7 +100,7 @@ return [
 
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/transfers/{id}',
-		'summary'        => 'Retrieves the details of an existing transfer.',
+		'summary'        => 'Returns the details of an existing transfer.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
@@ -133,7 +133,7 @@ return [
 		'parameters'     => [
 
 			'amount' => [
-				'description' => 'A positive integer in the smallest currency unit.',
+				'description' => 'A positive amount for the transaction.',
 				'location'    => 'query',
 				'type'        => 'number',
 				'required'    => true,

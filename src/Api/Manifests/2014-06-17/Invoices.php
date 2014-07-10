@@ -141,7 +141,7 @@ return [
 			],
 
 			'metadata' => [
-				'description' => 'A set of key/value pairs that you can attach to a invoice object.',
+				'description' => 'A set of key/value pairs that you can attach to an invoice object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -223,7 +223,7 @@ return [
 			],
 
 			'metadata' => [
-				'description' => 'A set of key/value pairs that you can attach to a invoice object.',
+				'description' => 'A set of key/value pairs that you can attach to an invoice object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,

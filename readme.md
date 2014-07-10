@@ -124,20 +124,27 @@ Package history and capabilities.
 
 #### Billable entities
 
-- Can apply a coupon to the user.
-- Can swap the default user credit card.
-- Can list all the attached credit cards.
+- Can check if the entity is ready to be billable.
+- Can apply a coupon to the entity.
+- Can check if the entity has any active credit card.
+- Can list all the entity credit cards.
 - Can attach new credit cards.
-- Can update existing credit cards.
-- Can delete existing credit cards.
-- Can make an existing credit card the default credit card.
-- Can check if the user has any active credit cards.
-- Can list all the charges the user has made.
+- Can update an existing credit card.
+- Can delete an existing credit card.
+- Can swap the default entity credit card with a new credit card.
+- Can make an existing credit card the default one.
+- Can syncronize all the cards that belongs to this entity from Stripe to storage.
+- Can list all the entity charges.
 - Can create a new charge.
 - Can create a new charge to be captured later.
+- Can capture an existing charge that was marked to be captured later.
 - Can create a new charge with a new credit card.
-- Can refund charges.
-- Can list all the subscriptions the user has.
+- Can refund an existing and captured charge.
+- Can syncronize all the charges that belongs to this entity from Stripe to storage.
+- Can list all the entity invoices.
+- Can retrieve a single invoice and the belonging invoice items.
+- Can syncronize all the invoices that belongs to this entity from Stripe to storage.
+- Can list all the entity subscriptions.
 - Can create a new subscription.
 - Can create a new subscription with a trial period.
 - Can create a new subscription and apply a coupon to the subscription.
@@ -150,11 +157,13 @@ Package history and capabilities.
 - Can remove a coupon from an existing subscription.
 - Can apply a trial period on an existing subscription.
 - Can remove a trial period from an existing subscription.
+- Can swap a subscription from one plan to another.
 - Can check if the subscription is on its trial period.
 - Can check if the subscription is canceled.
 - Can check if the subscription has expired.
 - Can check if the subscription is on the grace period.
-- Can check if the user has any active subscriptions.
+- Can check if the entity has any active subscriptions.
+- Can syncronize all the entity active subscriptions from Stripe to storage.
 
 ## Requirements
 

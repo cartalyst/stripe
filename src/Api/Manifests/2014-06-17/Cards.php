@@ -81,7 +81,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/customers/{customer}/cards/{id}',
 		'summary'        => 'Returns a card from an existing customer.',
-		'summary'        => 'Retrieves the details of a card that belongs to the given customer.',
+		'summary'        => 'Returns the details of a card that belongs to the given customer.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
@@ -253,7 +253,7 @@ return [
 			],
 
 			'name' => [
-				'description' => 'Cardholder\'s full name.',
+				'description' => 'The cardholder\'s full name.',
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,

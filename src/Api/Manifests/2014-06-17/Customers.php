@@ -23,7 +23,7 @@ return [
 
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/customers',
-		'summary'        => 'Retrieves all the existing customers.',
+		'summary'        => 'Returns all the existing customers.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
@@ -80,7 +80,7 @@ return [
 
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/customers/{id}',
-		'summary'        => 'Retrieves an existing customer.',
+		'summary'        => 'Returns an existing customer.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
@@ -115,8 +115,11 @@ return [
 			'account_balance' => [
 				'description' => 'An integer amount in cents that is the starting account balance for your customer.',
 				'location'    => 'query',
-				'type'        => 'integer',
+				'type'        => 'number',
 				'required'    => false,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Number::convert',
+				],
 			],
 
 			'card' => [
@@ -148,7 +151,7 @@ return [
 			],
 
 			'metadata' => [
-				'description' => 'A set of key/value pairs that you can attach to a charge object.',
+				'description' => 'A set of key/value pairs that you can attach to a customer object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -232,8 +235,11 @@ return [
 			'account_balance' => [
 				'description' => 'An integer amount in cents that is the starting account balance for your customer.',
 				'location'    => 'query',
-				'type'        => 'integer',
+				'type'        => 'number',
 				'required'    => false,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Number::convert',
+				],
 			],
 
 			'card' => [
@@ -272,7 +278,7 @@ return [
 			],
 
 			'metadata' => [
-				'description' => 'A set of key/value pairs that you can attach to a charge object.',
+				'description' => 'A set of key/value pairs that you can attach to a customer object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,

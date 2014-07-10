@@ -113,7 +113,7 @@ return [
 			],
 
 			'amount' => [
-				'description' => 'A positive integer in the smallest currency unit.',
+				'description' => 'A positive amount for the transaction.',
 				'location'    => 'query',
 				'type'        => 'number',
 				'required'    => true,
@@ -159,7 +159,7 @@ return [
 			],
 
 			'metadata' => [
-				'description' => 'A set of key/value pairs that you can attach to a charge object.',
+				'description' => 'A set of key/value pairs that you can attach to a plan object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -234,7 +234,7 @@ return [
 			],
 
 			'metadata' => [
-				'description' => 'A set of key/value pairs that you can attach to a charge object.',
+				'description' => 'A set of key/value pairs that you can attach to a plan object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,

@@ -87,7 +87,7 @@ return [
 
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/events/{id}',
-		'summary'        => 'Retrieves the details of an event.',
+		'summary'        => 'Returns the details of an event.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [

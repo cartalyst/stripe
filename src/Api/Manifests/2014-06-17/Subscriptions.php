@@ -170,7 +170,7 @@ return [
 			],
 
 			'metadata' => [
-				'description' => 'A set of key/value pairs that you can attach to a charge object.',
+				'description' => 'A set of key/value pairs that you can attach to a subscription object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,
@@ -307,7 +307,7 @@ return [
 			],
 
 			'metadata' => [
-				'description' => 'A set of key/value pairs that you can attach to a charge object.',
+				'description' => 'A set of key/value pairs that you can attach to a subscription object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,

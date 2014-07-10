@@ -23,7 +23,7 @@ return [
 
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/balance',
-		'summary'        => 'Retrieves the current account balance.',
+		'summary'        => 'Returns the current account balance.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
 		'errorResponses' => $errors,
 
@@ -120,7 +120,7 @@ return [
 
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/balance/history/{id}',
-		'summary'        => 'Retrieves the balance transaction with the given ID.',
+		'summary'        => 'Returns the balance transaction with the given ID.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [

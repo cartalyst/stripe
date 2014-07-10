@@ -70,7 +70,7 @@ return [
 			],
 
 			'metadata' => [
-				'description' => 'A set of key/value pairs that you can attach to a charge object.',
+				'description' => 'A set of key/value pairs that you can attach to a dispute object.',
 				'location'    => 'query',
 				'type'        => 'array',
 				'required'    => false,

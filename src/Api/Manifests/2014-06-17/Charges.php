@@ -87,7 +87,7 @@ return [
 
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/charges/{id}',
-		'summary'        => 'Retrieves the details of a charge that has been previously created.',
+		'summary'        => 'Returns the details of a charge that has been previously created.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
@@ -120,7 +120,7 @@ return [
 		'parameters'     => [
 
 			'amount' => [
-				'description' => 'A positive integer in the smallest currency unit.',
+				'description' => 'A positive amount for the transaction.',
 				'location'    => 'query',
 				'type'        => 'number',
 				'required'    => true,
@@ -264,7 +264,7 @@ return [
 			],
 
 			'amount' => [
-				'description' => 'A positive integer in the smallest currency unit.',
+				'description' => 'A positive amount for the transaction.',
 				'location'    => 'query',
 				'type'        => 'number',
 				'required'    => false,
@@ -315,7 +315,7 @@ return [
 			],
 
 			'amount' => [
-				'description' => 'A positive integer in cents representing how much of this charge to refund.',
+				'description' => 'A positive amount representing how much of this charge to refund.',
 				'location'    => 'query',
 				'type'        => 'number',
 				'required'    => false,

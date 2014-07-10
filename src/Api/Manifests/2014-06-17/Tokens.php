@@ -64,7 +64,7 @@ return [
 
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/tokens/{id}',
-		'summary'        => 'Retrieves the details about an existing token.',
+		'summary'        => 'Returns the details about an existing token.',
 		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
