@@ -113,7 +113,7 @@ return [
 		'parameters'     => [
 
 			'account_balance' => [
-				'description' => 'An integer amount in cents that is the starting account balance for your customer.',
+				'description' => 'A positive amount that is the starting account balance for your customer.',
 				'location'    => 'query',
 				'type'        => 'number',
 				'required'    => false,
@@ -233,7 +233,7 @@ return [
 			],
 
 			'account_balance' => [
-				'description' => 'An integer amount in cents that is the starting account balance for your customer.',
+				'description' => 'A positive amount that is the starting account balance for your customer.',
 				'location'    => 'query',
 				'type'        => 'number',
 				'required'    => false,
