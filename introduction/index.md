@@ -13,7 +13,7 @@ Have a [read through the Installation Guide](#installation) and on how to [Integ
 ```php
 $customers = Stripe::customers()->all();
 
-foreach ($customers['data'] as $customer)
+foreach ($customers as $customer)
 {
 	var_dump($customer['email']);
 }

@@ -23,7 +23,7 @@ catch (Guzzle\Service\Exception\ValidationException $e)
 
 ### Stripe API Exceptions
 
-Here is a list of all the exceptions that the Stripe API throws:
+Here is the full list of all the exceptions that the Stripe API throws with a brief description:
 
 Exception                                             | Description
 ----------------------------------------------------- | ------------------------

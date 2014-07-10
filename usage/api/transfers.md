@@ -4,7 +4,7 @@
 
 Key                   | Required | Type   | Default | Description
 --------------------- | -------- | ------ | ------- | --------------------------
-amount                | true     | int    | null    | A positive integer in the smallest currency unit.
+amount                | true     | number | null    | A positive amount for the transaction.
 currency              | true     | string | null    | 3-letter ISO code for currency.
 recipient             | true     | string | null    | The ID of an existing, verified recipient.
 description           | false    | string | null    | An arbitrary string which you can attach to a transfer object.
@@ -13,7 +13,7 @@ metadata              | false    | array  | []      | A set of key/value pairs t
 
 ```php
 $transfer = Stripe::transfers()->create([
-	'amount'    => 10,
+	'amount'    => 10.00,
 	'currency'  => 'USD',
 	'recipient' => 'rp_4EYxxX0LQWYDMs',
 ]);

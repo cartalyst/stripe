@@ -5,7 +5,7 @@
 Key                   | Required | Type   | Default | Description
 --------------------- | -------- | ------ | ------- | --------------------------
 id                    | true     | string | null    | The plan unique identifier.
-amount                | true     | int    | null    | A positive integer in the smallest currency unit.
+amount                | true     | number | null    | A positive amount for the transaction.
 currency              | true     | string | null    | 3-letter ISO code for currency.
 interval              | true     | string | null    | Specifies billing frequency. Either week, month or year.
 interval_count        | false    | int    | 1       | The number of intervals between each subscription billing.
@@ -18,7 +18,7 @@ statement_description | false    | string | null    | An arbitrary string which 
 $plan = Stripe::plans()->create([
 	'id'                    => 'monthly',
 	'name'                  => 'Monthly (30$)',
-	'amount'                => 3000, // 30.00$
+	'amount'                => 30.00,
 	'currency'              => 'USD',
 	'interval'              => 'month',
 	'statement_description' => 'Monthly Subscription to Foo Bar Inc.',

@@ -6,7 +6,7 @@ Key                | Required | Type   | Default | Description
 ------------------ | -------- | ------ | ------- | -----------------------------
 id                 | true     | string | null    | The coupon unique identifier.
 duration           | true     | string | null    | Specifies how long the discount will be in effect. Can be forever, once, or repeating.
-amount_off         | false    | int    | null    | A positive integer representing the amount to subtract from an invoice total (required if percent_off is not passed).
+amount_off         | false    | number | null    | A positive amount representing the amount to subtract from an invoice total (required if percent_off is not passed).
 currency           | true     | string | null    | 3-letter ISO code for currency.
 duration_in_months | false    | int    | null    |  If duration is repeating, a positive integer that specifies the number of months the discount will be in effect.
 max_redemptions    | false    | int    | null    | A positive integer specifying the number of times the coupon can be redeemed before it’s no longer valid.

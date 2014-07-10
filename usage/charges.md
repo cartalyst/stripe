@@ -32,21 +32,6 @@ $user
 	]);
 ```
 
-Creating a charge to be captured later.
-
-```php
-$user = User::find(1);
-
-$amount = 150.95;
-
-$user
-	->charge()
-	->disableCapture()
-	->create($amount, [
-		'description' => 'Purchased Book!',
-	]);
-```
-
 Creating a charge with a new credit card.
 
 ```php
@@ -59,6 +44,21 @@ $amount = 150.95;
 $user
 	->charge()
 	->setToken($token)
+	->create($amount, [
+		'description' => 'Purchased Book!',
+	]);
+```
+
+Creating a charge to be captured later.
+
+```php
+$user = User::find(1);
+
+$amount = 150.95;
+
+$user
+	->charge()
+	->disableCapture()
 	->create($amount, [
 		'description' => 'Purchased Book!',
 	]);

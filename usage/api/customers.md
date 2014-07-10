@@ -4,7 +4,7 @@
 
 Key             | Required | Type            | Default | Description
 --------------- | -------- | --------------- | ------- | -----------------------
-account_balance | false    | integer         | null    | An integer amount in cents that is the starting account balance for your customer.
+account_balance | false    | number          | null    | A positive amount that is the starting account balance for your customer.
 card            | false    | string or array | null    | Unique card identifier (can either be an ID or a hash).
 coupon          | false    | string          | null    | Coupon identifier that applies a discount on all recurring charges.
 plan            | false    | string          | null    | Plan for the customer.
@@ -39,7 +39,7 @@ $customer = Stripe::customers()->destroy([
 Key             | Required | Type            | Default | Description
 --------------- | -------- | --------------- | ------- | -----------------------
 id              | true     | string          | null    | The customer unique identifier.
-account_balance | false    | integer         | null    | An integer amount in cents that is the starting account balance for your customer.
+account_balance | false    | number          | null    | A positive amount that is the starting account balance for your customer.
 card            | false    | string or array | null    | Unique card identifier (can either be an ID or a hash).
 coupon          | false    | string          | null    | Coupon identifier that applies a discount on all recurring charges.
 plan            | false    | string          | null    | Plan for the customer.

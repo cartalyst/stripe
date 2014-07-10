@@ -5,7 +5,7 @@
 Key    | Required | Type   | Default | Description
 ------ | -------- | ------ | ------- | -----------------------------------------
 id     | true     | string | null    | The application fee unique identifier.
-amount | true     | int    | null    | A positive integer in the smallest currency unit.
+amount | true     | number | null    | A positive amount for the transaction.
 
 ```php
 $fee = Stripe::fees()->refund([

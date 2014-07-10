@@ -40,11 +40,11 @@ To use this feature please follow the next steps:
 
 Now you need to migrate your database, but before doing that, you'll need to generate a migration that suits your billable table and to do this you just need to run the following command:
 
-	php artisan stripe:migrator table
+	php artisan stripe:migrator users
 
-> **Note:** Replace `table` with the billable entity table name, example: `users`.
+> **Note:** Replace `users` with the billable entity table name.
 
-Now that the migration file is created you just need to run `php artisan migrate`.
+Now that the migration file is created you just need to run `php artisan migrate` to create the tables on your database.
 
 #### Model setup
 
