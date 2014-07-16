@@ -34,7 +34,7 @@ trait BillableTrait {
 	 *
 	 * @var \Cartalyst\Stripe\Api\Stripe
 	 */
-	protected $stripeClient;
+	protected static $stripeClient;
 
 	/**
 	 * The Eloquent card model.
@@ -307,9 +307,9 @@ trait BillableTrait {
 	 *
 	 * @return \Cartalyst\Stripe\Api\Stripe
 	 */
-	public function getStripeClient()
+	public static function getStripeClient()
 	{
-		return $this->stripeClient ?: App::make('stripe');
+		return static::$stripeClient ?: App::make('stripe');
 	}
 
 }
