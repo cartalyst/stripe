@@ -162,6 +162,7 @@ class CartalystStripeCreateTables extends Migration {
 			'cards',
 			'refunds',
 			'invoices',
+			'invoice_metadata',
 			'payments',
 			'invoice_items',
 			'subscriptions',
