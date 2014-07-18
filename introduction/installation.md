@@ -16,6 +16,10 @@ Add the following lines after the `require` array on your `composer.json` file:
 			"url": "http://packages.cartalyst.com"
 		}
 	]
+	
+If Installing into a fresh install of Laravel, set the minimum stability to dev (bottom of `composer.json`)
+
+	"minimum-stability": "dev"
 
 > **Note:** Make sure that after the required changes your `composer.json` file is valid by running `composer validate`.
 
