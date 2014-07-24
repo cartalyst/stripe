@@ -1,6 +1,8 @@
-## Application Fees
+### Application Fees
 
-### Refund an application fee
+When you collect a transaction fee on top of a charge made for your user (using Stripe Connect), an application fee object is created in your account. You can list, retrieve, and refund application fees.
+
+#### Refund an application fee
 
 Key    | Required | Type   | Default | Description
 ------ | -------- | ------ | ------- | -----------------------------------------
@@ -13,7 +15,7 @@ $fee = Stripe::fees()->refund([
 ]);
 ```
 
-### Retrieve all the application fees
+#### Retrieve all the application fees
 
 Key            | Required | Type   | Default | Description
 -------------- | -------- | ------ | ------- | ---------------------------------
@@ -32,7 +34,7 @@ foreach ($fees['data'] as $fee)
 }
 ```
 
-### Retrieve an existing fee
+#### Retrieve an existing fee
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------

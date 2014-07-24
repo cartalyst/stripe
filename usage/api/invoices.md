@@ -1,6 +1,8 @@
-## Invoices
+### Invoices
 
-### Create a new invoice
+Invoices are statements of what a customer owes for a particular billing period, including subscriptions, invoice items, and any automatic proration adjustments if necessary.
+
+#### Create a new invoice
 
 ```php
 $invoice = Stripe::invoices()->create([
@@ -8,7 +10,7 @@ $invoice = Stripe::invoices()->create([
 ]);
 ```
 
-### Update an invoice
+#### Update an invoice
 
 ```php
 $invoice = Stripe::invoices()->update([
@@ -17,7 +19,7 @@ $invoice = Stripe::invoices()->update([
 ]);
 ```
 
-### Pay an existing invoice
+#### Pay an existing invoice
 
 ```php
 $invoice = Stripe::invoices()->pay([
@@ -25,7 +27,7 @@ $invoice = Stripe::invoices()->pay([
 ]);
 ```
 
-### Retrieve all the existing invoices
+#### Retrieve all the existing invoices
 
 ```php
 $invoices = Stripe::invoices()->all();
@@ -36,7 +38,7 @@ foreach ($invoices['data'] as $invoice)
 }
 ```
 
-### Retrieve an existing invoice
+#### Retrieve an existing invoice
 
 ```php
 $invoice = Stripe::invoices()->find([
@@ -46,7 +48,7 @@ $invoice = Stripe::invoices()->find([
 echo $invoice['paid'];
 ```
 
-### Retrieve an existing invoice line items
+#### Retrieve an existing invoice line items
 
 ```php
 $lines = Stripe::invoices()->invoiceLineItems([
@@ -59,7 +61,7 @@ foreach ($lines['data'] as $line)
 }
 ```
 
-### Retrieve the upcoming invoice
+#### Retrieve the upcoming invoice
 
 ```php
 $invoice = Stripe::invoices()->upcomingInvoice([

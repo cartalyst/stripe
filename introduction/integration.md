@@ -1,6 +1,8 @@
-# Integration
+## Integration
 
-## Laravel 4
+Cartalyst packages are framework agnostic and as such can be integrated easily natively or with your favorite framework.
+
+### Laravel 4
 
 The Stripe package has optional support for Laravel 4 and it comes bundled with a Service Provider and a Facade for easy integration.
 
@@ -14,7 +16,7 @@ In the `$aliases` array add the following facade for this package.
 
 	'Stripe' => 'Cartalyst\Stripe\Laravel\Facades\Stripe',
 
-### Set the Stripe API Key
+#### Set the Stripe API Key
 
 Now you need to setup the Stripe API key, to do this open or create the `app/config/services.php` file, and add or update the `'stripe'` array:
 
@@ -30,7 +32,7 @@ return [
 ];
 ```
 
-### Billing
+#### Billing
 
 The Stripe package comes with billing functionality that you can attach to any entity.
 

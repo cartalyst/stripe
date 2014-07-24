@@ -1,6 +1,8 @@
-## Coupons
+### Coupons
 
-### Create a new coupon
+A coupon contains information about a percent-off discount you might want to apply to a customer. Coupons only apply to invoices created for recurring subscriptions and invoice items; they do not apply to one-off charges.
+
+#### Create a new coupon
 
 Key                | Required | Type   | Default | Description
 ------------------ | -------- | ------ | ------- | -----------------------------
@@ -24,7 +26,7 @@ $coupon = Stripe::coupons()->create([
 echo $coupon['id'];
 ```
 
-### Delete a coupon
+#### Delete a coupon
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------
@@ -36,7 +38,7 @@ $coupon = Stripe::coupons()->destroy([
 ]);
 ```
 
-### Retrieve all the existing coupons
+#### Retrieve all the existing coupons
 
 Key            | Required | Type   | Default | Description
 -------------- | -------- | ------ | ------- | ---------------------------------
@@ -53,7 +55,7 @@ foreach ($coupons['data'] as $coupon)
 }
 ```
 
-### Retrieve an existing coupon
+#### Retrieve an existing coupon
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------

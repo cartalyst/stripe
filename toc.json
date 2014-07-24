@@ -23,13 +23,13 @@
 		"api/events",
 		"api/pagination",
 		"api/exceptions",
-		"index",
-		"cards",
-		"charges",
-		"invoices",
-		"subscriptions",
-		"extending",
-		"events",
+		"billable",
+		"billable/cards",
+		"billable/charges",
+		"billable/invoices",
+		"billable/subscriptions",
+		"billable/extending",
+		"billable/events",
 		"webhooks"
 	]
 }

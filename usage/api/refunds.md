@@ -1,6 +1,8 @@
-## Refunds
+### Refunds
 
-### Retrieve all refunds of a charge
+Refund objects allow you to refund a charge that has previously been created but not yet refunded. Funds will be refunded to the credit or debit card that was originally charged. The fees you were originally charged are also refunded.
+
+#### Retrieve all refunds of a charge
 
 Key            | Required | Type   | Default | Description
 -------------- | -------- | ------ | ------- | ---------------------------------
@@ -20,7 +22,7 @@ foreach ($refunds['data'] as $refund)
 }
 ```
 
-### Retrieve an existing refund
+#### Retrieve an existing refund
 
 Key    | Required | Type   | Default | Description
 ------ | -------- | ------ | ------- | --------------------------------------------
@@ -34,7 +36,7 @@ $refund = Stripe::refunds()->find([
 ]);
 ```
 
-### Update an existing refund
+#### Update an existing refund
 
 Key      | Required | Type   | Default | Description
 -------- | -------- | ------ | ------- | --------------------------------------------

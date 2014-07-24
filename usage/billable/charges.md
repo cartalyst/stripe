@@ -1,6 +1,6 @@
-## Charges
+### Charges
 
-### Retrieve all the charges
+#### Retrieve all the charges
 
 ```php
 $user = User::find(1);
@@ -8,7 +8,7 @@ $user = User::find(1);
 $charges = $user->charges;
 ```
 
-### Retrieve an existing charge
+##### Retrieve an existing charge
 
 ```php
 $user = User::find(1);
@@ -18,7 +18,7 @@ $charge = $user->charges->find(10);
 echo $charge['amount'];
 ```
 
-### Creating charges
+##### Creating charges
 
 ```php
 $user = User::find(1);
@@ -74,7 +74,7 @@ $user
 	->capture();
 ```
 
-### Refund charges
+##### Refund charges
 
 Do a full refund
 
@@ -98,7 +98,7 @@ $user
     ->refund($amount);
 ```
 
-### Sync data from Stripe
+##### Sync data from Stripe
 
 Often you might have the need to sync the data from Stripe with your database, we have an easy way to achieve this.
 

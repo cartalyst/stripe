@@ -1,6 +1,8 @@
-## Transfers
+### Transfers
 
-### Create a new transfer
+When Stripe sends you money or you initiate a transfer to a third party recipient's bank account or debit card, a transfer object will be created. You can retrieve individual transfers as well as list all transfers.
+
+#### Create a new transfer
 
 Key                   | Required | Type   | Default | Description
 --------------------- | -------- | ------ | ------- | --------------------------
@@ -21,7 +23,7 @@ $transfer = Stripe::transfers()->create([
 echo $transfer['id'];
 ```
 
-### Update a transfer
+#### Update a transfer
 
 Key         | Required | Type    | Default | Description
 ----------- | -------- | ------- | ------- | -----------------------------------
@@ -38,7 +40,7 @@ $transfer = Stripe::transfers()->update([
 echo $transfer['description'];
 ```
 
-### Cancel a transfer
+#### Cancel a transfer
 
 Key | Required | Type    | Default | Description
 --- | -------- | ------- | ------- | -------------------------------------------
@@ -50,7 +52,7 @@ $transfer = Stripe::transfers()->cancel([
 ]);
 ```
 
-### Retrieve all the existing transfers
+#### Retrieve all the existing transfers
 
 Key            | Required | Type   | Default | Description
 -------------- | -------- | ------ | ------- | ---------------------------------
@@ -71,7 +73,7 @@ foreach ($transfers['data'] as $transfer)
 }
 ```
 
-### Retrieve an existing transfer
+#### Retrieve an existing transfer
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------

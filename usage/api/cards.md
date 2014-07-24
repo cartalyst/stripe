@@ -1,6 +1,8 @@
-## Cards
+### Cards
 
-### Create a new card
+You can store multiple cards on a customer in order to charge the customer later. You can also store multiple debit cards on a recipient in order to transfer to those cards later.
+
+#### Create a new card
 
 Key      | Required | Type            | Default | Description
 -------- | -------- | --------------- | ------- | ------------------------------
@@ -30,7 +32,7 @@ $card = Stripe::cards()->create([
 ]);
 ```
 
-### Update a card
+#### Update a card
 
 Key           | Required | Type   | Default | Description
 ------------- | -------- | ------ | ------- | ----------------------------------
@@ -54,7 +56,7 @@ $card = Stripe::cards()->update([
 ]);
 ```
 
-### Delete a card
+#### Delete a card
 
 Key      | Required | Type   | Default | Description
 -------- | -------- | ------ | ------- | ---------------------------------------
@@ -68,7 +70,7 @@ $card = Stripe::cards()->destroy([
 ]);
 ```
 
-### Retrieve all cards
+#### Retrieve all cards
 
 Key            | Required | Type   | Default | Description
 -------------- | -------- | ------ | ------- | ---------------------------------
@@ -88,7 +90,7 @@ foreach ($cards['data'] as $card)
 }
 ```
 
-### Retrieve a Card
+#### Retrieve a Card
 
 Key      | Required | Type   | Default | Description
 -------- | -------- | ------ | ------- | ---------------------------------------

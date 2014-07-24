@@ -1,4 +1,4 @@
-## Pagination
+### Pagination
 
 Handling pagination on APIs is very hard and instead of manually handling the pagination, the Stripe package comes with a resource iterator which handles all of this for you, automatically!
 
@@ -26,7 +26,7 @@ foreach ($customers as $customer)
 }
 ```
 
-### Set results limit
+#### Set results limit
 
 If you have the need to lock the number of results, you can achieve this by using the `->setLimit(:amount);` method:
 
@@ -42,7 +42,7 @@ foreach ($customers as $customer)
 
 In this example, it will only return 30 results.
 
-### Set results per page
+#### Set results per page
 
 Setting a number of results per page is very easy and very similar to the results limit "locking", you just need to use the `->setPageSize(:amount);` method:
 

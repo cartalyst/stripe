@@ -1,4 +1,4 @@
-## Events
+### Events
 
 On this section we have a list of all the events fired by the Stripe package that you can listen for.
 
@@ -16,7 +16,7 @@ cartalyst.stripe.subscription.updated  | $entity, $subscription | Event fired wh
 cartalyst.stripe.subscription.canceled | $entity, $subscription | Event fired when an existing subscription is canceled.
 cartalyst.stripe.subscription.resumed  | $entity, $subscription | Event fired when an existing subscription is resumed.
 
-### Examples
+#### Examples
 
 Whenever a new subscription is attached to an entity.
 

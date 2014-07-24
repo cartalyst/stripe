@@ -1,6 +1,8 @@
-## Customers
+### Customers
 
-### Create a new customer
+Customer objects allow you to perform recurring charges and track multiple charges that are associated with the same customer. The API allows you to create, delete, and update your customers. You can retrieve individual customers as well as a list of all your customers.
+
+#### Create a new customer
 
 Key             | Required | Type            | Default | Description
 --------------- | -------- | --------------- | ------- | -----------------------
@@ -22,7 +24,7 @@ $customer = Stripe::customers()->create([
 echo $customer['id'];
 ```
 
-### Delete a customer
+#### Delete a customer
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------
@@ -34,7 +36,7 @@ $customer = Stripe::customers()->destroy([
 ]);
 ```
 
-### Update a customer
+#### Update a customer
 
 Key             | Required | Type            | Default | Description
 --------------- | -------- | --------------- | ------- | -----------------------
@@ -56,7 +58,7 @@ $customer = Stripe::customers()->update([
 echo $customer['email'];
 ```
 
-### Retrieve all customers
+#### Retrieve all customers
 
 Key             | Required | Type            | Default | Description
 --------------- | -------- | --------------- | ------- | -----------------------
@@ -74,7 +76,7 @@ foreach ($customers['data'] as $customer)
 }
 ```
 
-### Retrieve a customer
+#### Retrieve a customer
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | -------------------------------------------
@@ -88,7 +90,7 @@ $customer = Stripe::customers()->find([
 echo $customer['email'];
 ```
 
-### Delete a customer discount
+#### Delete a customer discount
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | -------------------------------------------

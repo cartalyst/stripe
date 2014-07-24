@@ -1,6 +1,6 @@
-## Subscriptions
+### Subscriptions
 
-### List all the user subscriptions
+#### List all the user subscriptions
 
 ```php
 $user = User::find(1);
@@ -8,7 +8,7 @@ $user = User::find(1);
 $subscriptions = $user->subscriptions;
 ```
 
-### Creating subscriptions
+#### Creating subscriptions
 
 Subscribing an entity to a plan
 
@@ -56,7 +56,7 @@ $user
 	->create();
 ```
 
-### Cancelling subscriptions
+#### Cancelling subscriptions
 
 Cancel a Subscription using its `id`
 
@@ -90,7 +90,7 @@ $user
 	->cancelAtEndOfPeriod();
 ```
 
-### Updating subscriptions
+#### Updating subscriptions
 
 Apply a trial period on a subscription
 
@@ -134,7 +134,7 @@ $user
 	->removeCoupon();
 ```
 
-### Resuming subscriptions
+#### Resuming subscriptions
 
 Resume a canceled subscription
 
@@ -168,7 +168,7 @@ $user
 	->resume()
 ```
 
-### Checking a Subscription Status
+#### Checking a Subscription Status
 
 First, we need to grab the subscription:
 
@@ -214,7 +214,7 @@ if ($subscription->onGracePeriod())
 }
 ```
 
-### Sync data from Stripe
+#### Sync data from Stripe
 
 Often you might have the need to sync the data from Stripe with your database, we have an easy way to achieve this.
 

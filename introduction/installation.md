@@ -1,8 +1,8 @@
-# Installation
+## Installation
 
 The best and easiest way to install the Stripe package is with [Composer](http://getcomposer.org).
 
-## Preparation
+### Preparation
 
 Open your `composer.json` file and add the following to the `require` array:
 
@@ -23,7 +23,7 @@ Since the package is not yet marked as stable, you'll need to set the minimum st
 
 > **Note:** Make sure that after the required changes your `composer.json` file is valid by running `composer validate`.
 
-## Install the dependencies
+### Install the dependencies
 
 Run Composer to install or update the new requirement.
 

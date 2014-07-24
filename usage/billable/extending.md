@@ -1,4 +1,4 @@
-## Extending Models
+### Extending Models
 
 Extending the default models is very easy, we provide handy methods you can utilise with your Entity model.
 
@@ -36,7 +36,7 @@ Now that you've the model(s) created, it's time to set them, this is recommended
 
 This can be done for example on the `app/filters.php`, this is to ensure you only require to apply this change once per request!
 
-#### Change the Card model
+##### Change the Card model
 
 ```php
 app('User')->setCardModel('Acme\Models\Card');

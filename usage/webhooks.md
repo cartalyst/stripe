@@ -1,8 +1,8 @@
-# Webhooks
+## Webhooks
 
 Listening to Stripe notification events (Webhooks) is incredible easy and you can listen to any notification that Stripe sends.
 
-## Setup
+#### Setup
 
 First create a new controller somewhere inside your application that extends our `Cartalyst\Stripe\WebhookController` controller.
 
@@ -22,7 +22,7 @@ Route::post('webhook/stripe', 'WebhookController@handleWebhook');
 
 > **Note:** The route URI `webhook/stripe` is just for the example, you can choose to use a different one.
 
-## Handling events
+#### Handling events
 
 Now you just need to create the notification event handlers inside your controller, we have a few examples prepared below:
 
@@ -100,7 +100,7 @@ class WebhookController extends Cartalyst\Stripe\WebhookController {
 
 > **Note 2:** Please refer to the list below for all the events that Stripe sends and to know which controller method name you need to use.
 
-## Types of Events
+#### Types of Events
 
 Stripe Event Name                    | Controller Method Name                 | Description
 ------------------------------------ | -------------------------------------- | ----------------

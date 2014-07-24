@@ -1,6 +1,8 @@
-## Subscriptions
+### Subscriptions
 
-### Create a subscription
+Subscriptions allow you to charge a customer's card on a recurring basis. A subscription ties a customer to a particular plan.
+
+#### Create a subscription
 
 Key                     | Required | Type            | Default | Description
 ----------------------- | -------- | --------------- | ------- | ---------------
@@ -24,7 +26,7 @@ $subscription = Stripe::subscriptions()->create([
 echo $subscription['id'];
 ```
 
-### Cancel a subscription
+#### Cancel a subscription
 
 Key           | Required | Type   | Default | Description
 ------------- | -------- | ------ | ------- | ----------------------------------
@@ -49,7 +51,7 @@ $subscription = Stripe::subscriptions()->cancel([
 ]);
 ```
 
-### Update a subscription
+#### Update a subscription
 
 Key                     | Required | Type            | Default | Description
 ----------------------- | -------- | --------------- | ------- | ---------------
@@ -73,7 +75,7 @@ $subscription = Stripe::subscriptions()->update([
 ]);
 ```
 
-### Retrieve all the subscriptions of a customer
+#### Retrieve all the subscriptions of a customer
 
 Key            | Required | Type    | Default | Description
 -------------- | -------- | ------- | ------- | --------------------------------
@@ -93,7 +95,7 @@ foreach ($subscriptions['data'] as $subscription)
 }
 ```
 
-### Retrieve a subscription of a customer
+#### Retrieve a subscription of a customer
 
 Key      | Required | Type   | Default | Description
 -------- | -------- | ------ | ------- | ---------------------------------------
@@ -109,7 +111,7 @@ $subscription = Stripe::subscriptions()->find([
 echo $subscription['id'];
 ```
 
-### Delete a subscription discount
+#### Delete a subscription discount
 
 Key      | Required | Type   | Default | Description
 -------- | -------- | ------ | ------- | ---------------------------------------

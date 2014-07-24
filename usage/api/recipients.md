@@ -1,6 +1,8 @@
-## Recipients
+### Recipients
 
-### Create a new recipient
+With recipient objects, you can transfer money from your Stripe account to a third party bank account or debit card. The API allows you to create, delete, and update your recipients. You can retrieve individual recipients as well as a list of all your recipients.
+
+#### Create a new recipient
 
 Key          | Required | Type            | Default | Description
 ------------ | -------- | --------------- | ------- | --------------------------
@@ -20,7 +22,7 @@ $recipient = Stripe::recipients()->create([
 ]);
 ```
 
-### Update a recipient
+#### Update a recipient
 
 Key          | Required | Type            | Default | Description
 ------------ | -------- | --------------- | ------- | --------------------------
@@ -41,7 +43,7 @@ $recipient = Stripe::recipients()->update([
 ]);
 ```
 
-### Delete a recipient
+#### Delete a recipient
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------
@@ -53,7 +55,7 @@ $recipient = Stripe::recipients()->destroy([
 ]);
 ```
 
-### Retrieve all the recipients
+#### Retrieve all the recipients
 
 Key            | Required | Type   | Default | Description
 -------------- | -------- | ------ | ------- | ---------------------------------
@@ -71,7 +73,7 @@ foreach ($recipients['data'] as $recipient)
 }
 ```
 
-### Retrieve a recipient
+#### Retrieve a recipient
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------

@@ -1,8 +1,8 @@
-## Charges
+### Charges
 
 To charge a credit or a debit card, you create a new charge object. You can retrieve and refund individual charges as well as list all charges. Charges are identified by a unique ID.
 
-### Create a new charge
+#### Create a new charge
 
 To charge a credit card, you need to create a new charge object. If your API key is in test mode, the supplied card won't actually be charged, though everything else will occur as if in live mode. (Stripe will assume that the charge would have completed successfully).
 
@@ -29,7 +29,7 @@ $charge = Stripe::charges()->create([
 echo $charge['id'];
 ```
 
-### Update a charge
+#### Update a charge
 
 Updates the specified charge by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
 
@@ -46,7 +46,7 @@ $charge = Stripe::charges()->update([
 ]);
 ```
 
-### Capture a charge
+#### Capture a charge
 
 Capture the payment of an existing, uncaptured, charge. This is the second half of the two-step payment flow, where first you [created a charge](#create-a-new-charge) with the capture option set to false.
 
@@ -65,7 +65,7 @@ $charge = Stripe::charges()->capture([
 ]);
 ```
 
-### Refund a charge
+#### Refund a charge
 
 Key             | Required | Type   | Default | Description
 --------------- | -------- | ------ | ------- | --------------------------------
@@ -80,7 +80,7 @@ $charge = Stripe::charges()->refund([
 ]);
 ```
 
-### Retrieve all charges
+#### Retrieve all charges
 
 Returns a list of charges you've previously created. The charges are returned in sorted order, with the most recent charges appearing first.
 
@@ -101,7 +101,7 @@ foreach ($charges['data'] as $charge)
 }
 ```
 
-### Retrieve an existing charge
+#### Retrieve an existing charge
 
 Retrieves the details of a charge that has been previously created. Supply the unique charge ID that was returned from a previous request, and Stripe will return the corresponding charge information. The same information is returned when creating or refunding the charge.
 

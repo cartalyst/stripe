@@ -1,4 +1,4 @@
-# Introduction
+## Introduction
 
 A comprehensive billing and API package for Stripe.
 
@@ -6,9 +6,7 @@ The package requires PHP 5.4+ and follows the FIG standard PSR-4 to ensure a hig
 
 Have a [read through the Installation Guide](#installation) and on how to [Integrate it with Laravel 4](#laravel-4).
 
-### Quick Example
-
-**Using the API**
+###### Using the API
 
 ```php
 $customers = Stripe::customers()->all();
@@ -19,7 +17,7 @@ foreach ($customers as $customer)
 }
 ```
 
-**Using a Billable Entity**
+###### Using a Billable Entity
 
 ```php
 $user = User::find(1);

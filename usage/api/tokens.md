@@ -1,6 +1,8 @@
-## Tokens
+### Tokens
 
-### Create a card token
+Often you want to be able to charge credit cards or send payments to bank accounts without having to hold sensitive card information on your own servers. Stripe.js makes this easy in the browser, but you can use the same technique in other environments with our token API.
+
+#### Create a card token
 
 Key      | Required | Type            | Default | Description
 -------- | -------- | --------------- | ------- | ------------------------------
@@ -20,7 +22,7 @@ $token = Stripe::tokens()->create([
 echo $token['id'];
 ```
 
-### Create a bank account token
+#### Create a bank account token
 
 Key          | Required | Type  | Default | Description
 ------------ | -------- | ----- | ------- | ------------------------------------

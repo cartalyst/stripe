@@ -1,6 +1,6 @@
-## Invoices
+### Invoices
 
-### Retrieve all the invoices
+#### Retrieve all the invoices
 
 ```php
 $user = User::find(1);
@@ -8,7 +8,7 @@ $user = User::find(1);
 $invoices = $user->invoices;
 ```
 
-### Retrieve an existing invoice
+#### Retrieve an existing invoice
 
 ```php
 $user = User::find(1);
@@ -20,7 +20,7 @@ $items = $invoice->items;
 echo $invoice['total'];
 ```
 
-### Invoice metadata
+#### Invoice metadata
 
 Sometimes you might need to store additional information that is relevant to an invoice, like an order id or even the billing information of a customer.
 
@@ -34,7 +34,7 @@ $user = User::find(1);
 $invoice = $user->invoice->find(10);
 ```
 
-#### Get metadata
+##### Get metadata
 
 ```php
 $metadata = $invoice->metadata;
@@ -42,7 +42,7 @@ $metadata = $invoice->metadata;
 echo $metadata->name;
 ```
 
-#### Set metadata
+##### Set metadata
 
 Now you can attach metadata to this invoice
 
@@ -53,14 +53,15 @@ $invoice->metadata()->create([
 ]);
 ```
 
-### Update the metadata
+#### Update the metadata
 
 ```php
 $invoice->metadata->update([
 	'name' => 'Johnathan Doe',
 ]);
+```
 
-### Delete the metadata
+#### Delete the metadata
 
 ```php
 $invoice->metadata->delete();
@@ -68,7 +69,7 @@ $invoice->metadata->delete();
 
 > **Note:** The metadata table columns are configurable through the migration, but keep in mind that you might require to extend the invoice metadata model to include your own column names on the `$fillable` property.
 
-### Sync data from Stripe
+#### Sync data from Stripe
 
 Often you might have the need to sync the data from Stripe with your database, we have an easy way to achieve this.
 

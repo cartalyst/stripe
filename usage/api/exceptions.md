@@ -1,8 +1,8 @@
-## Handling Exceptions
+### Handling Exceptions
 
 The Stripe API throws two kinds of exceptions:
 
-### Guzzle Exceptions
+#### Guzzle Exceptions
 
 These exceptions will be thrown since Guzzle will automatically validate all the arguments you provide according to the manifest file rules.
 
@@ -21,7 +21,7 @@ catch (Guzzle\Service\Exception\ValidationException $e)
 }
 ```
 
-### Stripe API Exceptions
+#### Stripe API Exceptions
 
 Here is the full list of all the exceptions that the Stripe API throws with a brief description:
 
@@ -34,7 +34,7 @@ Cartalyst\Stripe\Api\Exception\CardErrorException     | This exception will be t
 Cartalyst\Stripe\Api\Exception\NotFoundException      | This exception will be thrown whenever a request results on a 404.
 Cartalyst\Stripe\Api\Exception\ServerErrorException   | This exception will be thrown whenever Stripe does something wrong.
 
-### Usage
+#### Usage
 
 ```php
 try
