@@ -67,9 +67,9 @@ class InvoiceGateway extends StripeGateway {
 			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
 		}
 
-		$invoices = $this->client->invoicesIterator([
+		$invoices = array_reverse($this->client->invoicesIterator([
 			'customer' => $entity->stripe_id,
-		]);
+		])->toArray());
 
 		foreach ($invoices as $invoice)
 		{

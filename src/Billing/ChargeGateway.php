@@ -273,9 +273,9 @@ class ChargeGateway extends StripeGateway {
 			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
 		}
 
-		$charges = $this->client->chargesIterator([
+		$charges = array_reverse($this->client->chargesIterator([
 			'customer' => $entity->stripe_id,
-		]);
+		])->toArray());
 
 		foreach ($charges as $charge)
 		{
