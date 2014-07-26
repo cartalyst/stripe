@@ -108,16 +108,14 @@ class SubscriptionGateway extends StripeGateway {
 	 */
 	public function find()
 	{
-		$payload = $this->getPayload();
-
-		return $this->client->subscriptions()->find($payload);
+		return $this->client->subscriptions()->find($this->getPayload());
 	}
 
 	/**
 	 * Creates a new subscription on the entity.
 	 *
 	 * @param  array  $attributes
-	 * @return void
+	 * @return \Cartalyst\Stripe\Api\Response
 	 */
 	public function create(array $attributes = [])
 	{
@@ -141,7 +139,7 @@ class SubscriptionGateway extends StripeGateway {
 			);
 		}
 
-		// Prepares the payload
+		// Prepare the payload
 		$attributes = array_merge($attributes, [
 			'customer'  => $entity->stripe_id,
 			'plan'      => $this->plan,
@@ -169,13 +167,15 @@ class SubscriptionGateway extends StripeGateway {
 			$entity,
 			$subscription,
 		]);
+
+		return $subscription;
 	}
 
 	/**
 	 * Updates the subscription.
 	 *
 	 * @param  array  $attributes
-	 * @return array
+	 * @return \Cartalyst\Stripe\Api\Response
 	 */
 	public function update(array $attributes = [])
 	{
@@ -201,7 +201,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * Cancels the subscription.
 	 *
 	 * @param  bool  $atPeriodEnd
-	 * @return array
+	 * @return \Cartalyst\Stripe\Api\Response
 	 */
 	public function cancel($atPeriodEnd = false)
 	{
@@ -238,7 +238,7 @@ class SubscriptionGateway extends StripeGateway {
 	/**
 	 * Resumes the subscription.
 	 *
-	 * @return array
+	 * @return \Cartalyst\Stripe\Api\Response
 	 */
 	public function resume()
 	{
@@ -267,7 +267,7 @@ class SubscriptionGateway extends StripeGateway {
 	/**
 	 * Cancels the subscription at the end of the period.
 	 *
-	 * @return array
+	 * @return \Cartalyst\Stripe\Api\Response
 	 */
 	public function cancelAtEndOfPeriod()
 	{

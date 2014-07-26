@@ -50,7 +50,7 @@ abstract class StripeGateway {
 	}
 
 	/**
-	 * Finds or creates a Stripe customer.
+	 * Finds or creates a new Stripe customer.
 	 *
 	 * @param  int  $id
 	 * @param  array  $attributes

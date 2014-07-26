@@ -31,6 +31,13 @@ class InvoiceGateway extends StripeGateway {
 	protected $invoice;
 
 	/**
+	 * The Invoice Items gateway instance.
+	 *
+	 * @var \Cartalyst\Stripe\Billing\InvoiceItemsGateway
+	 */
+	protected $invoiceItems;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param  \Cartalyst\Stripe\Billing\BillableInterface  $billable
@@ -50,6 +57,81 @@ class InvoiceGateway extends StripeGateway {
 		{
 			$this->invoice = $invoice;
 		}
+	}
+
+	/**
+	 * Returns the Invoice Items gateway instance.
+	 *
+	 * @return \Cartalyst\Stripe\Billing\InvoiceItemsGateway
+	 */
+	public function items()
+	{
+		return $this->invoiceItems ?: new InvoiceItemsGateway($this->billable);
+	}
+
+	/**
+	 * Creates a new invoice on the entity.
+	 *
+	 * @param  array  $attributes
+	 * @return \Cartalyst\Stripe\Api\Response
+	 */
+	public function create(array $attributes = [])
+	{
+		// Get the entity object
+		$entity = $this->billable;
+
+		// Find or Create the Stripe customer that
+		// will belong to this billable entity.
+		$customer = $this->findOrCreate(
+			$entity->stripe_id,
+			array_get($attributes, 'customer', [])
+		);
+
+		// Get the invoice items for this invoice
+		$items = array_get($attributes, 'items', []);
+		array_forget($attributes, 'items');
+
+		// Loop through the items and lazily create them
+		foreach ($items as $item)
+		{
+			$this->items()->create($item);
+		}
+
+		// Prepare the payload
+		$attributes = array_merge($attributes, [
+			'customer' => $entity->stripe_id,
+		]);
+
+		// Create the invoice on Stripe
+		$invoice = $this->client->invoices()->create($attributes);
+
+		// Fire the 'cartalyst.stripe.invoice.created' event
+		$this->fire('invoice.created', [
+			$entity,
+			$invoice,
+		]);
+
+		return $invoice;
+	}
+
+	/**
+	 * Pay the given invoice.
+	 *
+	 * @param  string  $id
+	 * @return \Cartalyst\Stripe\Api\Response
+	 */
+	public function pay($id)
+	{
+		// Pay the invoice
+		$invoice = $this->client->invoices()->pay(compact('id'));
+
+		// Fire the 'cartalyst.stripe.invoice.paid' event
+		$this->fire('invoice.paid', [
+			$this->billable,
+			$invoice,
+		]);
+
+		return $invoice;
 	}
 
 	/**
@@ -125,7 +207,7 @@ class InvoiceGateway extends StripeGateway {
 
 				if ( ! $_item)
 				{
-					$_item = $_invoice->items()->create($data);
+					$_invoice->items()->create($data);
 				}
 				else
 				{

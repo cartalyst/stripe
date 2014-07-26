@@ -65,7 +65,7 @@ class CardGateway extends StripeGateway {
 	 *
 	 * @param  string  $token
 	 * @param  array  $attributes
-	 * @return array
+	 * @return \Cartalyst\Stripe\Api\Response
 	 */
 	public function create($token, array $attributes = [])
 	{
@@ -124,7 +124,7 @@ class CardGateway extends StripeGateway {
 	 * Updates the card.
 	 *
 	 * @param  array  $attributes
-	 * @return array
+	 * @return \Cartalyst\Stripe\Api\Response
 	 */
 	public function update(array $attributes = [])
 	{
@@ -144,7 +144,7 @@ class CardGateway extends StripeGateway {
 	/**
 	 * Deletes the card.
 	 *
-	 * @return array
+	 * @return \Cartalyst\Stripe\Api\Response
 	 */
 	public function delete()
 	{

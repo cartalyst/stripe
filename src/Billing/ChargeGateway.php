@@ -79,7 +79,7 @@ class ChargeGateway extends StripeGateway {
 	 *
 	 * @param  int  $amount
 	 * @param  array  $attributes
-	 * @return array
+	 * @return \Cartalyst\Stripe\Api\Response
 	 */
 	public function create($amount, array $attributes = [])
 	{
@@ -108,7 +108,7 @@ class ChargeGateway extends StripeGateway {
 			$card = $card['id'];
 		}
 
-		// Prepares the payload
+		// Prepare the payload
 		$attributes = array_merge($attributes, [
 			'customer' => $entity->stripe_id,
 			'capture'  => $this->capture,
@@ -143,7 +143,7 @@ class ChargeGateway extends StripeGateway {
 	 * Updates the charge.
 	 *
 	 * @param  array  $attributes
-	 * @return array
+	 * @return \Cartalyst\Stripe\Api\Response
 	 */
 	public function update(array $attributes = [])
 	{
@@ -164,11 +164,11 @@ class ChargeGateway extends StripeGateway {
 	 * Refunds the charge.
 	 *
 	 * @param  int  $amount
-	 * @return array
+	 * @return \Cartalyst\Stripe\Api\Response
 	 */
 	public function refund($amount = null)
 	{
-		// Prepares the payload
+		// Prepare the payload
 		$payload = $this->getPayload(array_filter(compact('amount')));
 
 		// Refunds the charge on Stripe
@@ -203,7 +203,7 @@ class ChargeGateway extends StripeGateway {
 	/**
 	 * Captures the charge.
 	 *
-	 * @return array
+	 * @return \Cartalyst\Stripe\Api\Response
 	 */
 	public function capture()
 	{
