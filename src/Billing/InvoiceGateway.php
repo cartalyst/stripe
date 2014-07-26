@@ -105,6 +105,9 @@ class InvoiceGateway extends StripeGateway {
 		// Create the invoice on Stripe
 		$invoice = $this->client->invoices()->create($attributes);
 
+		// Attach the created invoice to the billable entity
+		$this->storeInvoice($invoice);
+
 		// Fire the 'cartalyst.stripe.invoice.created' event
 		$this->fire('invoice.created', [
 			$entity,
@@ -120,14 +123,23 @@ class InvoiceGateway extends StripeGateway {
 	 * @param  string  $id
 	 * @return \Cartalyst\Stripe\Api\Response
 	 */
-	public function pay($id)
+	public function pay($id = null)
 	{
+		// Get the entity object
+		$entity = $this->billable;
+
+		// Get the invoice id
+		$id = $id ?: $this->invoice->stripe_id;
+
 		// Pay the invoice
 		$invoice = $this->client->invoices()->pay(compact('id'));
 
+		// Update the invoice on storage
+		$this->storeInvoice($invoice);
+
 		// Fire the 'cartalyst.stripe.invoice.paid' event
 		$this->fire('invoice.paid', [
-			$this->billable,
+			$entity,
 			$invoice,
 		]);
 
@@ -155,65 +167,7 @@ class InvoiceGateway extends StripeGateway {
 
 		foreach ($invoices as $invoice)
 		{
-			$stripeId = $invoice['id'];
-
-			$_invoice = $entity->invoices()->where('stripe_id', $stripeId)->first();
-
-			$data = [
-				'stripe_id'       => $stripeId,
-				'subscription_id' => $invoice['subscription'],
-				'currency'        => $invoice['currency'],
-				'subtotal'        => $this->convertToDecimal($invoice['subtotal']),
-				'total'           => $this->convertToDecimal($invoice['total']),
-				'amount_due'      => $this->convertToDecimal($invoice['amount_due']),
-				'attempted'       => (bool) $invoice['attempted'],
-				'closed'          => (bool) $invoice['closed'],
-				'paid'            => (bool) $invoice['paid'],
-				'attempt_count'   => $invoice['attempt_count'],
-				'created_at'      => Carbon::createFromTimestamp($invoice['date']),
-				'period_start'    => $this->nullableTimestamp($invoice['period_start']),
-				'period_end'      => $this->nullableTimestamp($invoice['period_end']),
-			];
-
-			if ( ! $_invoice)
-			{
-				$_invoice = $entity->invoices()->create($data);
-			}
-			else
-			{
-				$_invoice->update($data);
-			}
-
-			foreach ($invoice['lines']['data'] as $item)
-			{
-				$stripeId = $item['id'];
-
-				$_item = $_invoice->items()->where('stripe_id', $stripeId)->first();
-
-				$type = array_get($item, 'type', null);
-
-				$data = [
-					'stripe_id'    => $stripeId,
-					'currency'     => $item['currency'],
-					'type'         => $type,
-					'amount'       => $this->convertToDecimal($item['amount']),
-					'proration'    => (bool) $item['proration'],
-					'description'  => $this->prepareInvoiceItemDescription($type, $item),
-					'plan_id'      => array_get($item, 'plan.id', null),
-					'quantity'     => array_get($item, 'quantity', null),
-					'period_start' => $this->nullableTimestamp(array_get($item, 'period.start', null)),
-					'period_end'   => $this->nullableTimestamp(array_get($item, 'period.end', null)),
-				];
-
-				if ( ! $_item)
-				{
-					$_invoice->items()->create($data);
-				}
-				else
-				{
-					$_item->update($data);
-				}
-			}
+			$this->storeInvoice($invoice);
 		}
 	}
 
@@ -227,6 +181,79 @@ class InvoiceGateway extends StripeGateway {
 	protected function prepareInvoiceItemDescription($type, $item)
 	{
 		return $type === 'subscription' ? $item['plan']['name'] : $item['description'];
+	}
+
+	/**
+	 * Stores the invoice information on local storage.
+	 *
+	 * @param  \Cartalyst\Stripe\Api\Response  $invoice
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
+	 */
+	protected function storeInvoice($invoice)
+	{
+		$entity = $this->billable;
+
+		$stripeId = $invoice['id'];
+
+		$_invoice = $entity->invoices()->where('stripe_id', $stripeId)->first();
+
+		$data = [
+			'stripe_id'       => $stripeId,
+			'subscription_id' => $invoice['subscription'],
+			'currency'        => $invoice['currency'],
+			'subtotal'        => $this->convertToDecimal($invoice['subtotal']),
+			'total'           => $this->convertToDecimal($invoice['total']),
+			'amount_due'      => $this->convertToDecimal($invoice['amount_due']),
+			'attempted'       => (bool) $invoice['attempted'],
+			'closed'          => (bool) $invoice['closed'],
+			'paid'            => (bool) $invoice['paid'],
+			'attempt_count'   => $invoice['attempt_count'],
+			'created_at'      => Carbon::createFromTimestamp($invoice['date']),
+			'period_start'    => $this->nullableTimestamp($invoice['period_start']),
+			'period_end'      => $this->nullableTimestamp($invoice['period_end']),
+		];
+
+		if ( ! $_invoice)
+		{
+			$_invoice = $entity->invoices()->create($data);
+		}
+		else
+		{
+			$_invoice->update($data);
+		}
+
+		foreach ($invoice['lines']['data'] as $item)
+		{
+			$stripeId = $item['id'];
+
+			$_item = $_invoice->items()->where('stripe_id', $stripeId)->first();
+
+			$type = array_get($item, 'type', null);
+
+			$data = [
+				'stripe_id'    => $stripeId,
+				'currency'     => $item['currency'],
+				'type'         => $type,
+				'amount'       => $this->convertToDecimal($item['amount']),
+				'proration'    => (bool) $item['proration'],
+				'description'  => $this->prepareInvoiceItemDescription($type, $item),
+				'plan_id'      => array_get($item, 'plan.id', null),
+				'quantity'     => array_get($item, 'quantity', null),
+				'period_start' => $this->nullableTimestamp(array_get($item, 'period.start', null)),
+				'period_end'   => $this->nullableTimestamp(array_get($item, 'period.end', null)),
+			];
+
+			if ( ! $_item)
+			{
+				$_invoice->items()->create($data);
+			}
+			else
+			{
+				$_item->update($data);
+			}
+		}
+
+		return $_invoice;
 	}
 
 }

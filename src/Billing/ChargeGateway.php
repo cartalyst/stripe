@@ -121,14 +121,7 @@ class ChargeGateway extends StripeGateway {
 		$charge = $this->client->charges()->create($attributes);
 
 		// Attach the created charge to the billable entity
-		$this->billable->charges()->create([
-			'stripe_id'   => $charge['id'],
-			'amount'      => $this->convertToDecimal($charge['amount']),
-			'paid'        => $charge['paid'],
-			'captured'    => $charge['captured'],
-			'refunded'    => $charge['refunded'],
-			'description' => array_get($attributes, 'description', null),
-		]);
+		$this->storeCharge($charge);
 
 		// Fire the 'cartalyst.stripe.charge.created' event
 		$this->fire('charge.created', [
@@ -150,6 +143,8 @@ class ChargeGateway extends StripeGateway {
 		$payload = $this->getPayload($attributes);
 
 		$charge = $this->client->charges()->update($payload);
+
+		$this->storeCharge($charge);
 
 		// Fire the 'cartalyst.stripe.charge.updated' event
 		$this->fire('charge.updated', [
@@ -279,57 +274,7 @@ class ChargeGateway extends StripeGateway {
 
 		foreach ($charges as $charge)
 		{
-			$stripeId = $charge['id'];
-
-			$_charge = $entity->charges()->where('stripe_id', $stripeId)->first();
-
-			$data = [
-				'stripe_id'   => $stripeId,
-				'invoice_id'  => $charge['invoice'],
-				'currency'    => $charge['currency'],
-				'description' => $charge['description'],
-				'amount'      => $this->convertToDecimal($charge['amount']),
-				'paid'        => (bool) $charge['paid'],
-				'captured'    => (bool) $charge['captured'],
-				'refunded'    => (bool) $charge['refunded'],
-				'created_at'  => Carbon::createFromTimestamp($charge['created']),
-			];
-
-			if ( ! $_charge)
-			{
-				$_charge = $entity->charges()->create($data);
-			}
-			else
-			{
-				$_charge->update($data);
-			}
-
-			$refunds = $this->client->refundsIterator([
-				'charge' => $stripeId,
-			]);
-
-			foreach ($refunds as $refund)
-			{
-				$transactionId = $refund['balance_transaction'];
-
-				$_refund = $_charge->refunds()->where('transaction_id', $transactionId)->first();
-
-				$data = [
-					'transaction_id' => $transactionId,
-					'amount'         => $this->convertToDecimal($refund['amount']),
-					'currency'       => $refund['currency'],
-					'created_at'     => Carbon::createFromTimestamp($refund['created']),
-				];
-
-				if ( ! $_refund)
-				{
-					$_charge->refunds()->create($data);
-				}
-				else
-				{
-					$_refund->update($data);
-				}
-			}
+			$this->storeCharge($charge);
 		}
 	}
 
@@ -344,6 +289,69 @@ class ChargeGateway extends StripeGateway {
 		return array_merge($attributes, [
 			'id' => $this->charge->stripe_id,
 		]);
+	}
+
+	/**
+	 * Stores the charge information on local storage.
+	 *
+	 * @param  \Cartalyst\Stripe\Api\Response  $charge
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
+	 */
+	protected function storeCharge($charge)
+	{
+		$entity = $this->billable;
+
+		$stripeId = $charge['id'];
+
+		$_charge = $entity->charges()->where('stripe_id', $stripeId)->first();
+
+		$data = [
+			'stripe_id'   => $stripeId,
+			'invoice_id'  => $charge['invoice'],
+			'currency'    => $charge['currency'],
+			'description' => $charge['description'],
+			'amount'      => $this->convertToDecimal($charge['amount']),
+			'paid'        => (bool) $charge['paid'],
+			'captured'    => (bool) $charge['captured'],
+			'refunded'    => (bool) $charge['refunded'],
+			'created_at'  => Carbon::createFromTimestamp($charge['created']),
+		];
+
+		if ( ! $_charge)
+		{
+			$_charge = $entity->charges()->create($data);
+		}
+		else
+		{
+			$_charge->update($data);
+		}
+
+		$refunds = $this->client->refundsIterator([
+			'charge' => $stripeId,
+		]);
+
+		foreach ($refunds as $refund)
+		{
+			$transactionId = $refund['balance_transaction'];
+
+			$_refund = $_charge->refunds()->where('transaction_id', $transactionId)->first();
+
+			$data = [
+				'transaction_id' => $transactionId,
+				'amount'         => $this->convertToDecimal($refund['amount']),
+				'currency'       => $refund['currency'],
+				'created_at'     => Carbon::createFromTimestamp($refund['created']),
+			];
+
+			if ( ! $_refund)
+			{
+				$_charge->refunds()->create($data);
+			}
+			else
+			{
+				$_refund->update($data);
+			}
+		}
 	}
 
 }
