@@ -58,6 +58,7 @@ class CartalystStripeCreateTables extends Migration {
 			$table->integer('attempt_count')->default(0);
 			$table->boolean('closed')->default(0);
 			$table->boolean('paid')->default(0);
+			$table->text('metadata');
 			$table->timestamps();
 			$table->timestamp('period_start')->nullable();
 			$table->timestamp('period_end')->nullable();
@@ -80,21 +81,6 @@ class CartalystStripeCreateTables extends Migration {
 			$table->timestamps();
 			$table->timestamp('period_start')->nullable();
 			$table->timestamp('period_end')->nullable();
-
-			$table->engine = 'InnoDB';
-		});
-
-		Schema::create('invoice_metadata', function(Blueprint $table)
-		{
-			$table->increments('id');
-			$table->integer('invoice_id');
-			$table->string('name')->nullable();
-			$table->string('address_line_1')->nullable();
-			$table->string('address_line_2')->nullable();
-			$table->string('country')->nullable();
-			$table->string('city')->nullable();
-			$table->string('zip_code')->nullable();
-			$table->timestamps();
 
 			$table->engine = 'InnoDB';
 		});
@@ -165,7 +151,6 @@ class CartalystStripeCreateTables extends Migration {
 			'payments',
 			'invoice_items',
 			'subscriptions',
-			'invoice_metadata',
 		];
 
 		foreach ($tables as $table)

@@ -112,10 +112,7 @@ class CardGateway extends StripeGateway {
 		}
 
 		// Fire the 'cartalyst.stripe.card.created' event
-		$this->fire('card.created', [
-			$entity,
-			$card,
-		]);
+		$this->fire('card.created', [$entity, $card]);
 
 		return $card;
 	}
@@ -133,10 +130,7 @@ class CardGateway extends StripeGateway {
 		$card = $this->client->cards()->update($payload);
 
 		// Fire the 'cartalyst.stripe.card.updated' event
-		$this->fire('card.updated', [
-			$this->billable,
-			$card,
-		]);
+		$this->fire('card.updated', [$this->billable, $card]);
 
 		return $card;
 	}
@@ -168,10 +162,7 @@ class CardGateway extends StripeGateway {
 		$this->updateDefaultLocalCard($customer['default_card']);
 
 		// Fire the 'cartalyst.stripe.card.deleted' event
-		$this->fire('card.deleted', [
-			$entity,
-			$card,
-		]);
+		$this->fire('card.deleted', [$entity, $card]);
 
 		return $card;
 	}

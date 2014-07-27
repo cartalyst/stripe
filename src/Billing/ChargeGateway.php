@@ -124,10 +124,7 @@ class ChargeGateway extends StripeGateway {
 		$this->storeCharge($charge);
 
 		// Fire the 'cartalyst.stripe.charge.created' event
-		$this->fire('charge.created', [
-			$entity,
-			$charge,
-		]);
+		$this->fire('charge.created', [$entity, $charge]);
 
 		return $charge;
 	}
@@ -147,10 +144,7 @@ class ChargeGateway extends StripeGateway {
 		$this->storeCharge($charge);
 
 		// Fire the 'cartalyst.stripe.charge.updated' event
-		$this->fire('charge.updated', [
-			$this->billable,
-			$charge,
-		]);
+		$this->fire('charge.updated', [$this->billable, $charge]);
 
 		return $charge;
 	}
@@ -187,10 +181,7 @@ class ChargeGateway extends StripeGateway {
 		]);
 
 		// Fire the 'cartalyst.stripe.charge.refunded' event
-		$this->fire('charge.refunded', [
-			$this->billable,
-			$charge,
-		]);
+		$this->fire('charge.refunded', [$this->billable, $charge]);
 
 		return $charge;
 	}
@@ -207,10 +198,7 @@ class ChargeGateway extends StripeGateway {
 		$charge = $this->client->charges()->capture($payload);
 
 		// Fire the 'cartalyst.stripe.charge.captured' event
-		$this->fire('charge.captured', [
-			$this->billable,
-			$charge,
-		]);
+		$this->fire('charge.captured', [$this->billable, $charge]);
 
 		return $charge;
 	}

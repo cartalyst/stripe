@@ -109,10 +109,7 @@ class InvoiceGateway extends StripeGateway {
 		$this->storeInvoice($invoice);
 
 		// Fire the 'cartalyst.stripe.invoice.created' event
-		$this->fire('invoice.created', [
-			$entity,
-			$invoice,
-		]);
+		$this->fire('invoice.created', [$entity, $invoice]);
 
 		return $invoice;
 	}
@@ -138,10 +135,7 @@ class InvoiceGateway extends StripeGateway {
 		$this->storeInvoice($invoice);
 
 		// Fire the 'cartalyst.stripe.invoice.paid' event
-		$this->fire('invoice.paid', [
-			$entity,
-			$invoice,
-		]);
+		$this->fire('invoice.paid', [$entity, $invoice]);
 
 		return $invoice;
 	}
@@ -201,13 +195,15 @@ class InvoiceGateway extends StripeGateway {
 			'stripe_id'       => $stripeId,
 			'subscription_id' => $invoice['subscription'],
 			'currency'        => $invoice['currency'],
+			'description'     => $invoice['description'],
 			'subtotal'        => $this->convertToDecimal($invoice['subtotal']),
 			'total'           => $this->convertToDecimal($invoice['total']),
 			'amount_due'      => $this->convertToDecimal($invoice['amount_due']),
 			'attempted'       => (bool) $invoice['attempted'],
+			'attempt_count'   => $invoice['attempt_count'],
 			'closed'          => (bool) $invoice['closed'],
 			'paid'            => (bool) $invoice['paid'],
-			'attempt_count'   => $invoice['attempt_count'],
+			'metadata'        => $invoice['metadata'],
 			'created_at'      => Carbon::createFromTimestamp($invoice['date']),
 			'period_start'    => $this->nullableTimestamp($invoice['period_start']),
 			'period_end'      => $this->nullableTimestamp($invoice['period_end']),

@@ -35,13 +35,14 @@ class IlluminateInvoice extends Model {
 		'total',
 		'closed',
 		'currency',
+		'metadata',
 		'subtotal',
-		'stripe_id',
-		'charge_id',
 		'attempted',
+		'charge_id',
+		'stripe_id',
 		'amount_due',
-		'period_end',
 		'created_at',
+		'period_end',
 		'description',
 		'period_start',
 		'attempt_count',
@@ -105,16 +106,6 @@ class IlluminateInvoice extends Model {
 	}
 
 	/**
-	 * Returns the metadata associated to this invoice.
-	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoiceMetadata
-	 */
-	public function metadata()
-	{
-		return $this->hasOne(static::$invoiceMetadataModel, 'invoice_id');
-	}
-
-	/**
 	 * Returns the subscription that is associated to this invoice.
 	 *
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
@@ -166,6 +157,28 @@ class IlluminateInvoice extends Model {
 	public static function setSubscriptionModel($model)
 	{
 		static::$subscriptionModel = $model;
+	}
+
+	/**
+	 * Get mutator for the "metadata" attribute.
+	 *
+	 * @param  string  $metadata
+	 * @return array
+	 */
+	public function getMetadataAttribute($metadata)
+	{
+		return $metadata ? json_decode($metadata, true) : [];
+	}
+
+	/**
+	 * Set mutator for the "metadata" attribute.
+	 *
+	 * @param  array  $metadata
+	 * @return void
+	 */
+	public function setMetadataAttribute(array $metadata)
+	{
+		$this->attributes['metadata'] = json_encode($metadata);
 	}
 
 }
