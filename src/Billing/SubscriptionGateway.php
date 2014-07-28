@@ -66,7 +66,7 @@ class SubscriptionGateway extends StripeGateway {
 	protected $skipTrial = false;
 
 	/**
-	 * The subscription object.
+	 * The Eloquent subscription object.
 	 *
 	 * @var \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
 	 */
@@ -163,7 +163,7 @@ class SubscriptionGateway extends StripeGateway {
 		]);
 
 		// Fire the 'cartalyst.stripe.subscription.created' event
-		$this->fire('subscription.created', [ $model, $subscription ]);
+		$this->fire('subscription.created', [ $subscription, $model ]);
 
 		return $subscription;
 	}
@@ -186,7 +186,7 @@ class SubscriptionGateway extends StripeGateway {
 		]);
 
 		// Fire the 'cartalyst.stripe.subscription.updated' event
-		$this->fire('subscription.updated', [ $model, $subscription ]);
+		$this->fire('subscription.updated', [ $subscription, $model ]);
 
 		return $subscription;
 	}
@@ -247,7 +247,7 @@ class SubscriptionGateway extends StripeGateway {
 		]);
 
 		// Fire the 'cartalyst.stripe.subscription.resumed' event
-		$this->fire('subscription.resumed', [ $model, $subscription ]);
+		$this->fire('subscription.resumed', [ $subscription, $model ]);
 
 		return $subscription;
 	}
@@ -494,13 +494,16 @@ class SubscriptionGateway extends StripeGateway {
 	 */
 	public function syncWithStripe()
 	{
+		// Get the entity object
 		$entity = $this->billable;
 
+		// Check if the entity is a stripe customer
 		if ( ! $entity->isBillable())
 		{
 			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
 		}
 
+		// Get all the current entity subscriptions
 		$subscriptions = $this->client->subscriptionsIterator([
 			'customer' => $entity->stripe_id,
 		]);
@@ -530,11 +533,14 @@ class SubscriptionGateway extends StripeGateway {
 		// Loop through the Stripe subscriptions
 		foreach ($stripeSubscriptions as $subscription)
 		{
+			// Get the subscription id
 			$stripeId = $subscription['id'];
 
+			// Find the subscription on storage
 			$_subscription = $entity->subscriptions()->where('stripe_id', $stripeId)->first();
 
-			$data = [
+			// Prepare the payload
+			$payload = [
 				'active'           => 1,
 				'stripe_id'        => $stripeId,
 				'plan_id'          => $subscription['plan']['id'],
@@ -544,13 +550,14 @@ class SubscriptionGateway extends StripeGateway {
 				'trial_ends_at'    => $this->nullableTimestamp($subscription['trial_end']),
 			];
 
+			// Does the subscription exist on storage?
 			if ( ! $_subscription)
 			{
-				$entity->subscriptions()->create($data);
+				$entity->subscriptions()->create($payload);
 			}
 			else
 			{
-				$_subscription->update($data);
+				$_subscription->update($payload);
 			}
 		}
 	}

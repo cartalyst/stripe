@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class InvoiceGateway extends StripeGateway {
 
 	/**
-	 * The invoice object.
+	 * The Eloquent invoice object.
 	 *
 	 * @var \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
 	 */
@@ -181,7 +181,7 @@ class InvoiceGateway extends StripeGateway {
 			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
 		}
 
-		// Fetch all this entity invoices
+		// Get all the entity invoices
 		$invoices = array_reverse($this->client->invoicesIterator([
 			'customer' => $entity->stripe_id,
 		])->toArray());
@@ -213,13 +213,17 @@ class InvoiceGateway extends StripeGateway {
 	 */
 	protected function storeInvoice($invoice)
 	{
+		// Get the entity object
 		$entity = $this->billable;
 
+		// Get the invoice id
 		$stripeId = $invoice['id'];
 
+		// Find the invoice on storage
 		$_invoice = $entity->invoices()->where('stripe_id', $stripeId)->first();
 
-		$data = [
+		// Prepare the payload
+		$payload = [
 			'stripe_id'       => $stripeId,
 			'subscription_id' => $invoice['subscription'],
 			'currency'        => $invoice['currency'],
@@ -237,24 +241,30 @@ class InvoiceGateway extends StripeGateway {
 			'period_end'      => $this->nullableTimestamp($invoice['period_end']),
 		];
 
+		// Does the invoice exist on storage?
 		if ( ! $_invoice)
 		{
-			$_invoice = $entity->invoices()->create($data);
+			$_invoice = $entity->invoices()->create($payload);
 		}
 		else
 		{
-			$_invoice->update($data);
+			$_invoice->update($payload);
 		}
 
+		// Loop through the invoice items
 		foreach ($invoice['lines']['data'] as $item)
 		{
+			// Get the invoice item id
 			$stripeId = $item['id'];
 
+			// Find the invoice item on storage
 			$_item = $_invoice->items()->where('stripe_id', $stripeId)->first();
 
+			// Get the invoice item type
 			$type = array_get($item, 'type', null);
 
-			$data = [
+			// Prepare the payload
+			$payload = [
 				'stripe_id'    => $stripeId,
 				'currency'     => $item['currency'],
 				'type'         => $type,
@@ -267,13 +277,14 @@ class InvoiceGateway extends StripeGateway {
 				'period_end'   => $this->nullableTimestamp(array_get($item, 'period.end', null)),
 			];
 
+			// Does the invoice item exist on storage?
 			if ( ! $_item)
 			{
-				$_invoice->items()->create($data);
+				$_invoice->items()->create($payload);
 			}
 			else
 			{
-				$_item->update($data);
+				$_item->update($payload);
 			}
 		}
 

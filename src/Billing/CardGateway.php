@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class CardGateway extends StripeGateway {
 
 	/**
-	 * The card object.
+	 * The Eloquent card object.
 	 *
 	 * @var \Cartalyst\Stripe\Billing\Models\IlluminateCard
 	 */
@@ -97,22 +97,10 @@ class CardGateway extends StripeGateway {
 		$isDefault = ($this->default || $customer['default_card'] === $card['id']);
 
 		// Attach the created card to the billable entity
-		$model = $entity->cards()->create([
-			'stripe_id' => $card['id'],
-			'last_four' => $card['last4'],
-			'exp_month' => $card['exp_month'],
-			'exp_year'  => $card['exp_year'],
-			'default'   => $isDefault,
-		]);
-
-		// Should we make this card the default one?
-		if ($isDefault)
-		{
-			$this->updateDefaultLocalCard($card['id']);
-		}
+		$model = $this->storeCard($card, $isDefault);
 
 		// Fire the 'cartalyst.stripe.card.created' event
-		$this->fire('card.created', [ $model, $card ]);
+		$this->fire('card.created', [ $card, $model ]);
 
 		return $card;
 	}
@@ -131,8 +119,11 @@ class CardGateway extends StripeGateway {
 		// Update the card on Stripe
 		$card = $this->client->cards()->update($payload);
 
+		// Update the card on storage
+		$model = $this->storeCard($card);
+
 		// Fire the 'cartalyst.stripe.card.updated' event
-		$this->fire('card.updated', [ $card ]);
+		$this->fire('card.updated', [ $card, $model ]);
 
 		return $card;
 	}
@@ -198,17 +189,21 @@ class CardGateway extends StripeGateway {
 	 */
 	public function syncWithStripe()
 	{
+		// Get the entity object
 		$entity = $this->billable;
 
+		// Check if the entity is a stripe customer
 		if ( ! $entity->isBillable())
 		{
 			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
 		}
 
+		// Get the entity stripe customer object
 		$customer = $this->client->customers()->find([
 			'id' => $entity->stripe_id,
 		]);
 
+		// Get all the entity cards
 		$cards = $this->client->cardsIterator([
 			'customer' => $entity->stripe_id,
 		]);
@@ -230,30 +225,15 @@ class CardGateway extends StripeGateway {
 			}
 		}
 
+		// Hold the entity current default credit card
 		$defaultCard = $customer['default_card'];
 
+		// Loop through the credit cards
 		foreach ($stripeCards as $card)
 		{
-			$stripeId = $card['id'];
+			$isDefault = $defaultCard === $card['id'] ? true : false;
 
-			$_card = $entity->cards()->where('stripe_id', $stripeId)->first();
-
-			$data = [
-				'stripe_id' => $stripeId,
-				'last_four' => $card['last4'],
-				'exp_month' => $card['exp_month'],
-				'exp_year'  => $card['exp_year'],
-				'default'   => $defaultCard === $stripeId ? true : false,
-			];
-
-			if ( ! $_card)
-			{
-				$entity->cards()->create($data);
-			}
-			else
-			{
-				$_card->update($data);
-			}
+			$this->storeCard($card, $isDefault);
 		}
 	}
 
@@ -284,6 +264,53 @@ class CardGateway extends StripeGateway {
 		$entity->cards()->where('default', true)->update(['default' => false]);
 
 		$entity->cards()->where('stripe_id', $id)->update(['default' => true]);
+	}
+
+	/**
+	 * Stores the card information on local storage.
+	 *
+	 * @param  \Cartalyst\Stripe\Api\Response  $card
+	 * @param  bool  $default
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCard
+	 */
+	protected function storeCard($card, $default = false)
+	{
+		// Get the entity object
+		$entity = $this->billable;
+
+		// Get the card id
+		$stripeId = $card['id'];
+
+		// Find the card on storage
+		$_card = $entity->cards()->where('stripe_id', $stripeId)->first();
+
+		// Prepare the payload
+		$payload = [
+			'stripe_id' => $stripeId,
+			'last_four' => $card['last4'],
+			'exp_month' => $card['exp_month'],
+			'exp_year'  => $card['exp_year'],
+		];
+
+		// Does the card exist on storage?
+		if ( ! $_card)
+		{
+			$_card = $entity->cards()->create($payload);
+		}
+		else
+		{
+			$_card->update($payload);
+		}
+
+		// Should we make this card the default card?
+		if ($default)
+		{
+			$entity->cards()->where('default', true)->update(['default' => false]);
+
+			$entity->cards()->where('stripe_id', $stripeId)->update(['default' => true]);
+		}
+
+		return $_card;
 	}
 
 }

@@ -25,7 +25,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class ChargeGateway extends StripeGateway {
 
 	/**
-	 * The charge object.
+	 * The Eloquent charge object.
 	 *
 	 * @var \Cartalyst\Stripe\Billing\Models\IlluminateCharge
 	 */
@@ -124,7 +124,7 @@ class ChargeGateway extends StripeGateway {
 		$model = $this->storeCharge($charge);
 
 		// Fire the 'cartalyst.stripe.charge.created' event
-		$this->fire('charge.created', [ $model, $charge ]);
+		$this->fire('charge.created', [ $charge, $model ]);
 
 		return $charge;
 	}
@@ -147,7 +147,7 @@ class ChargeGateway extends StripeGateway {
 		$model = $this->storeCharge($charge);
 
 		// Fire the 'cartalyst.stripe.charge.updated' event
-		$this->fire('charge.updated', [ $model, $charge ]);
+		$this->fire('charge.updated', [ $charge, $model ]);
 
 		return $charge;
 	}
@@ -182,7 +182,7 @@ class ChargeGateway extends StripeGateway {
 		$model = $this->storeCharge($charge);
 
 		// Fire the 'cartalyst.stripe.charge.refunded' event
-		$this->fire('charge.refunded', [ $model, $charge ]);
+		$this->fire('charge.refunded', [ $charge, $model ]);
 
 		return $charge;
 	}
@@ -204,7 +204,7 @@ class ChargeGateway extends StripeGateway {
 		$model = $this->storeCharge($charge);
 
 		// Fire the 'cartalyst.stripe.charge.captured' event
-		$this->fire('charge.captured', [ $model, $charge ]);
+		$this->fire('charge.captured', [ $charge, $model ]);
 
 		return $charge;
 	}
@@ -255,17 +255,21 @@ class ChargeGateway extends StripeGateway {
 	 */
 	public function syncWithStripe()
 	{
+		// Get the entity object
 		$entity = $this->billable;
 
+		// Check if the entity is a stripe customer
 		if ( ! $entity->isBillable())
 		{
 			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
 		}
 
+		// Get all the entity charges
 		$charges = array_reverse($this->client->chargesIterator([
 			'customer' => $entity->stripe_id,
 		])->toArray());
 
+		// Loop through the charges
 		foreach ($charges as $charge)
 		{
 			$this->storeCharge($charge);
@@ -293,13 +297,17 @@ class ChargeGateway extends StripeGateway {
 	 */
 	protected function storeCharge($charge)
 	{
+		// Get the entity object
 		$entity = $this->billable;
 
+		// Get the charge id
 		$stripeId = $charge['id'];
 
+		// Find the charge on storage
 		$_charge = $entity->charges()->where('stripe_id', $stripeId)->first();
 
-		$data = [
+		// Prepare the payload
+		$payload = [
 			'stripe_id'   => $stripeId,
 			'invoice_id'  => $charge['invoice'],
 			'currency'    => $charge['currency'],
@@ -311,39 +319,46 @@ class ChargeGateway extends StripeGateway {
 			'created_at'  => Carbon::createFromTimestamp($charge['created']),
 		];
 
+		// Does the charge exist on storage?
 		if ( ! $_charge)
 		{
-			$_charge = $entity->charges()->create($data);
+			$_charge = $entity->charges()->create($payload);
 		}
 		else
 		{
-			$_charge->update($data);
+			$_charge->update($payload);
 		}
 
+		// Get all the refunds of this charge
 		$refunds = $this->client->refundsIterator([
 			'charge' => $stripeId,
 		]);
 
+		// Loop through the refunds
 		foreach ($refunds as $refund)
 		{
+			// Get the transaction id
 			$transactionId = $refund['balance_transaction'];
 
+			// Find the refund on storage
 			$_refund = $_charge->refunds()->where('transaction_id', $transactionId)->first();
 
-			$data = [
+			// Prepare the payload
+			$payload = [
 				'transaction_id' => $transactionId,
 				'amount'         => $this->convertToDecimal($refund['amount']),
 				'currency'       => $refund['currency'],
 				'created_at'     => Carbon::createFromTimestamp($refund['created']),
 			];
 
+			// Does the refund exists on storage?
 			if ( ! $_refund)
 			{
-				$_charge->refunds()->create($data);
+				$_charge->refunds()->create($payload);
 			}
 			else
 			{
-				$_refund->update($data);
+				$_refund->update($payload);
 			}
 		}
 

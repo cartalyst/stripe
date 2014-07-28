@@ -54,7 +54,7 @@ class IlluminateRefund extends Model {
 	}
 
 	/**
-	 * Sets the Eloquent model to be used for charges relationship.
+	 * Sets the Eloquent model to be used for the charge relationship.
 	 *
 	 * @param  string  $model
 	 * @return void

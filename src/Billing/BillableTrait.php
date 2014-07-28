@@ -30,7 +30,7 @@ trait BillableTrait {
 	protected $gateway;
 
 	/**
-	 * The Stripe instance.
+	 * The Stripe API instance.
 	 *
 	 * @var \Cartalyst\Stripe\Api\Stripe
 	 */
@@ -286,7 +286,7 @@ trait BillableTrait {
 	}
 
 	/**
-	 * Returns the Stripe instance.
+	 * Returns the Stripe API instance.
 	 *
 	 * @return \Cartalyst\Stripe\Api\Stripe
 	 */
