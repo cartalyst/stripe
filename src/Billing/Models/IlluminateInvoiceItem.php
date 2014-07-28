@@ -17,7 +17,6 @@
  * @link       http://cartalyst.com
  */
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class IlluminateInvoiceItem extends Model {
@@ -35,9 +34,9 @@ class IlluminateInvoiceItem extends Model {
 		'amount',
 		'plan_id',
 		'quantity',
+		'proration',
 		'currency',
 		'stripe_id',
-		'proration',
 		'invoice_id',
 		'period_end',
 		'description',

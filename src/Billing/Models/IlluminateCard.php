@@ -17,7 +17,6 @@
  * @link       http://cartalyst.com
  */
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class IlluminateCard extends Model {

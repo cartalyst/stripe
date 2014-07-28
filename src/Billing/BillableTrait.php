@@ -72,13 +72,6 @@ trait BillableTrait {
 	protected static $invoiceItemModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem';
 
 	/**
-	 * The Eloquent invoice metadata model.
-	 *
-	 * @var string
-	 */
-	protected static $invoiceMetadataModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoiceMetadata';
-
-	/**
 	 * The Eloquent subscription model.
 	 *
 	 * @var string
@@ -88,9 +81,17 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function isBillable()
+	public function getStripeId()
 	{
 		return $this->stripe_id;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isBillable()
+	{
+		return $this->getStripeId();
 	}
 
 	/**
@@ -225,16 +226,6 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
-	public static function setInvoiceMetadataModel($model)
-	{
-		static::$invoiceMetadataModel = $model;
-
-		forward_static_call_array([static::$invoiceModel, 'setInvoiceMetadataModel'], [$model]);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public function subscriptions()
 	{
 		return $this->hasMany(static::$subscriptionModel);
@@ -273,14 +264,6 @@ trait BillableTrait {
 			'id'     => $this->getStripeId(),
 			'coupon' => $coupon,
 		]);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getStripeId()
-	{
-		return $this->stripe_id;
 	}
 
 	/**

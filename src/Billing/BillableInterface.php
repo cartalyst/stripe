@@ -20,6 +20,13 @@
 interface BillableInterface {
 
 	/**
+	 * Returns the entity Stripe ID.
+	 *
+	 * @return string
+	 */
+	public function getStripeId();
+
+	/**
 	 * Determines if the entity is a Stripe customer.
 	 *
 	 * @return bool
@@ -27,7 +34,7 @@ interface BillableInterface {
 	public function isBillable();
 
 	/**
-	 * Returns all the cards attached to this entity.
+	 * Returns the entity Eloquent card model object.
 	 *
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCard
 	 */
@@ -72,7 +79,7 @@ interface BillableInterface {
 	public function updateDefaultCard($token);
 
 	/**
-	 * Returns all the charges that this entity has made.
+	 * Returns the entity Eloquent charge model object.
 	 *
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
 	 */
@@ -103,7 +110,7 @@ interface BillableInterface {
 	public static function setChargeRefundModel($model);
 
 	/**
-	 * Returns all the invoices that this entity has.
+	 * Returns the entity Eloquent invoice model object.
 	 *
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
 	 */
@@ -118,7 +125,7 @@ interface BillableInterface {
 	public function invoice($invoice = null);
 
 	/**
-	 * Returns all the invoice items that this entity has.
+	 * Returns the entity Eloquent invoice items model object.
 	 *
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
 	 */
@@ -141,15 +148,7 @@ interface BillableInterface {
 	public static function setInvoiceItemModel($model);
 
 	/**
-	 * Sets the Eloquent invoice metadata model.
-	 *
-	 * @param  string  $model
-	 * @return void
-	 */
-	public static function setInvoiceMetadataModel($model);
-
-	/**
-	 * Returns all the subscriptions that this entity has.
+	 * Returns the entity Eloquent subscription model object.
 	 *
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
 	 */
@@ -179,19 +178,12 @@ interface BillableInterface {
 	public function isSubscribed();
 
 	/**
-	 * Applies a coupon to the billable entity.
+	 * Applies a coupon to the entity.
 	 *
 	 * @param  string  $coupon
 	 * @return array
 	 */
 	public function applyCoupon($coupon);
-
-	/**
-	 * Returns the Stripe ID for the entity.
-	 *
-	 * @return string
-	 */
-	public function getStripeId();
 
 	/**
 	 * Syncronizes the Stripe data with the local data.

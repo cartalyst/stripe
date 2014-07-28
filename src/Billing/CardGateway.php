@@ -31,8 +31,8 @@ class CardGateway extends StripeGateway {
 	protected $card;
 
 	/**
-	 * Flag for wether the credit card should
-	 * be made the default credit card.
+	 * Flag for wether the credit card should be
+	 * made the default credit card or not.
 	 *
 	 * @var bool
 	 */
@@ -97,7 +97,7 @@ class CardGateway extends StripeGateway {
 		$isDefault = ($this->default || $customer['default_card'] === $card['id']);
 
 		// Attach the created card to the billable entity
-		$entity->cards()->create([
+		$model = $entity->cards()->create([
 			'stripe_id' => $card['id'],
 			'last_four' => $card['last4'],
 			'exp_month' => $card['exp_month'],
@@ -112,7 +112,7 @@ class CardGateway extends StripeGateway {
 		}
 
 		// Fire the 'cartalyst.stripe.card.created' event
-		$this->fire('card.created', [$entity, $card]);
+		$this->fire('card.created', [ $model, $card ]);
 
 		return $card;
 	}
@@ -125,12 +125,14 @@ class CardGateway extends StripeGateway {
 	 */
 	public function update(array $attributes = [])
 	{
+		// Prepare the payload
 		$payload = $this->getPayload($attributes);
 
+		// Update the card on Stripe
 		$card = $this->client->cards()->update($payload);
 
 		// Fire the 'cartalyst.stripe.card.updated' event
-		$this->fire('card.updated', [$this->billable, $card]);
+		$this->fire('card.updated', [ $card ]);
 
 		return $card;
 	}
@@ -142,27 +144,21 @@ class CardGateway extends StripeGateway {
 	 */
 	public function delete()
 	{
-		// Get the entity object
-		$entity = $this->billable;
-
-		// Get the request payload
-		$payload = $this->getPayload();
-
 		// Delete the card on Stripe
-		$card = $this->client->cards()->delete($payload);
+		$card = $this->client->cards()->delete($this->getPayload());
 
 		// Delete the card locally
 		$this->card->delete();
 
 		// Get the Stripe customer
 		$customer = $this->client->customers()->find([
-			'id' => $entity->stripe_id,
+			'id' => $this->billable->stripe_id,
 		]);
 
 		$this->updateDefaultLocalCard($customer['default_card']);
 
 		// Fire the 'cartalyst.stripe.card.deleted' event
-		$this->fire('card.deleted', [$entity, $card]);
+		$this->fire('card.deleted', [ $card ]);
 
 		return $card;
 	}
@@ -180,7 +176,7 @@ class CardGateway extends StripeGateway {
 	}
 
 	/**
-	 * Sets the credit card as the default one.
+	 * Sets the credit card as the default card.
 	 *
 	 * @return void
 	 */
@@ -285,13 +281,9 @@ class CardGateway extends StripeGateway {
 	{
 		$entity = $this->billable;
 
-		$entity->cards()
-			->where('default', true)
-			->update(['default' => false]);
+		$entity->cards()->where('default', true)->update(['default' => false]);
 
-		$entity->cards()
-			->where('stripe_id', $id)
-			->update(['default' => true]);
+		$entity->cards()->where('stripe_id', $id)->update(['default' => true]);
 	}
 
 }

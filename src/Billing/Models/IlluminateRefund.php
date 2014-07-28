@@ -37,7 +37,7 @@ class IlluminateRefund extends Model {
 	];
 
 	/**
-	 * The Eloquent charges model.
+	 * The Eloquent charge model.
 	 *
 	 * @var string
 	 */

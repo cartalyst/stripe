@@ -46,10 +46,7 @@ class InvoiceItemsGateway extends StripeGateway {
 		$item = $this->client->invoiceItems()->create($attributes);
 
 		// Fire the 'cartalyst.stripe.invoice_item.created' event
-		$this->fire('invoice_item.created', [
-			$entity,
-			$item,
-		]);
+		$this->fire('invoice_item.created', [ $item ]);
 
 		return $item;
 	}
@@ -70,10 +67,7 @@ class InvoiceItemsGateway extends StripeGateway {
 		$item = $this->client->invoiceItems()->update($payload);
 
 		// Fire the 'cartalyst.stripe.invoice_item.updated' event
-		$this->fire('invoice_item.updated', [
-			$this->billable,
-			$item,
-		]);
+		$this->fire('invoice_item.updated', [ $item ]);
 
 		return $item;
 	}
@@ -90,10 +84,7 @@ class InvoiceItemsGateway extends StripeGateway {
 		$item = $this->client->invoiceItems()->destroy(compact('id'));
 
 		// Fire the 'cartalyst.stripe.invoice_item.deleted' event
-		$this->fire('invoice_item.deleted', [
-			$this->billable,
-			$item,
-		]);
+		$this->fire('invoice_item.deleted', [ $item ]);
 
 		return $item;
 	}

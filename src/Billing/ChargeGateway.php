@@ -109,7 +109,7 @@ class ChargeGateway extends StripeGateway {
 		}
 
 		// Prepare the payload
-		$attributes = array_merge($attributes, [
+		$payload = array_merge($attributes, [
 			'customer' => $entity->stripe_id,
 			'capture'  => $this->capture,
 			'currency' => $this->currency,
@@ -118,13 +118,13 @@ class ChargeGateway extends StripeGateway {
 		]);
 
 		// Create the charge on Stripe
-		$charge = $this->client->charges()->create($attributes);
+		$charge = $this->client->charges()->create($payload);
 
 		// Attach the created charge to the billable entity
-		$this->storeCharge($charge);
+		$model = $this->storeCharge($charge);
 
 		// Fire the 'cartalyst.stripe.charge.created' event
-		$this->fire('charge.created', [$entity, $charge]);
+		$this->fire('charge.created', [ $model, $charge ]);
 
 		return $charge;
 	}
@@ -137,14 +137,17 @@ class ChargeGateway extends StripeGateway {
 	 */
 	public function update(array $attributes = [])
 	{
+		// Prepare the payload
 		$payload = $this->getPayload($attributes);
 
+		// Update the charge on Stripe
 		$charge = $this->client->charges()->update($payload);
 
-		$this->storeCharge($charge);
+		// Update the charge on storage
+		$model = $this->storeCharge($charge);
 
 		// Fire the 'cartalyst.stripe.charge.updated' event
-		$this->fire('charge.updated', [$this->billable, $charge]);
+		$this->fire('charge.updated', [ $model, $charge ]);
 
 		return $charge;
 	}
@@ -175,13 +178,11 @@ class ChargeGateway extends StripeGateway {
 		// Get the updated charge
 		$charge = $this->client->charges()->find($this->getPayload());
 
-		// Update the local charge entry
-		$this->charge->update([
-			'refunded' => $charge['refunded'],
-		]);
+		// Update the charge on storage
+		$model = $this->storeCharge($charge);
 
 		// Fire the 'cartalyst.stripe.charge.refunded' event
-		$this->fire('charge.refunded', [$this->billable, $charge]);
+		$this->fire('charge.refunded', [ $model, $charge ]);
 
 		return $charge;
 	}
@@ -193,12 +194,17 @@ class ChargeGateway extends StripeGateway {
 	 */
 	public function capture()
 	{
+		// Prepare the payload
 		$payload = $this->getPayload();
 
+		// Capture the charge on Stripe
 		$charge = $this->client->charges()->capture($payload);
 
+		// Update the charge on storage
+		$model = $this->storeCharge($charge);
+
 		// Fire the 'cartalyst.stripe.charge.captured' event
-		$this->fire('charge.captured', [$this->billable, $charge]);
+		$this->fire('charge.captured', [ $model, $charge ]);
 
 		return $charge;
 	}
@@ -340,6 +346,8 @@ class ChargeGateway extends StripeGateway {
 				$_refund->update($data);
 			}
 		}
+
+		return $_charge;
 	}
 
 }

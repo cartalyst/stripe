@@ -23,14 +23,14 @@ use Cartalyst\Stripe\Api\Exception\NotFoundException;
 abstract class StripeGateway {
 
 	/**
-	 * The billable entity
+	 * The billable entity.
 	 *
 	 * @var \Cartalyst\Stripe\Billing\BillableInterface
 	 */
 	protected $billable;
 
 	/**
-	 * The Stripe client.
+	 * The Stripe API client.
 	 *
 	 * @var \Cartalyst\Stripe\Api\Stripe
 	 */
@@ -90,7 +90,7 @@ abstract class StripeGateway {
 	}
 
 	/**
-	 * Returns the Stripe client.
+	 * Returns the Stripe API client.
 	 *
 	 * @return \Cartalyst\Stripe\Api\Stripe
 	 */
@@ -114,12 +114,16 @@ abstract class StripeGateway {
 	 * Fires an event.
 	 *
 	 * @param  string  $event
-	 * @param  mixed  $data
+	 * @param  array  $data
 	 * @return void
 	 */
 	protected function fire($event, array $data = [])
 	{
-		$dispatcher = $this->billable->getEventDispatcher();
+		$entity = $this->billable;
+
+		$data = array_merge([$entity], $data);
+
+		$dispatcher = $entity->getEventDispatcher();
 
 		$dispatcher->fire("cartalyst.stripe.{$event}", $data);
 	}

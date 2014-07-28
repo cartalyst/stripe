@@ -63,7 +63,7 @@ class IlluminateSubscription extends Model {
 	}
 
 	/**
-	 * Determine if the subscription is within the trial period.
+	 * Determines if the subscription is within the trial period.
 	 *
 	 * @return bool
 	 */
@@ -80,7 +80,7 @@ class IlluminateSubscription extends Model {
 	}
 
 	/**
-	 * Determine if the subscription is on grace period after cancellation.
+	 * Determines if the subscription is on grace period after cancellation.
 	 *
 	 * @return bool
 	 */
@@ -97,7 +97,7 @@ class IlluminateSubscription extends Model {
 	}
 
 	/**
-	 * Determine if the subscription is no longer active.
+	 * Determines if the subscription is no longer active.
 	 *
 	 * @return bool
 	 */
@@ -107,7 +107,7 @@ class IlluminateSubscription extends Model {
 	}
 
 	/**
-	 * Determine if the subscription has expired.
+	 * Determines if the subscription has expired.
 	 *
 	 * @return bool
 	 */

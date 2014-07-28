@@ -17,7 +17,6 @@
  * @link       http://cartalyst.com
  */
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class IlluminateCharge extends Model {
@@ -43,7 +42,7 @@ class IlluminateCharge extends Model {
 	];
 
 	/**
-	 * The Eloquent refunds model.
+	 * The Eloquent refund model.
 	 *
 	 * @var string
 	 */

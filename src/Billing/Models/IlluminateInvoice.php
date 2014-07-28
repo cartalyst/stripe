@@ -17,7 +17,6 @@
  * @link       http://cartalyst.com
  */
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class IlluminateInvoice extends Model {
@@ -58,7 +57,7 @@ class IlluminateInvoice extends Model {
 	];
 
 	/**
-	 * The Eloquent charges model.
+	 * The Eloquent charge model.
 	 *
 	 * @var string
 	 */
@@ -72,14 +71,7 @@ class IlluminateInvoice extends Model {
 	protected static $invoiceItemModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem';
 
 	/**
-	 * The Eloquent invoice metadata model.
-	 *
-	 * @var string
-	 */
-	protected static $invoiceMetadataModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoiceMetadata';
-
-	/**
-	 * The Eloquent subscriptions model.
+	 * The Eloquent subscription model.
 	 *
 	 * @var string
 	 */
@@ -116,6 +108,28 @@ class IlluminateInvoice extends Model {
 	}
 
 	/**
+	 * Get mutator for the "metadata" attribute.
+	 *
+	 * @param  string  $metadata
+	 * @return array
+	 */
+	public function getMetadataAttribute($metadata)
+	{
+		return $metadata ? json_decode($metadata, true) : [];
+	}
+
+	/**
+	 * Set mutator for the "metadata" attribute.
+	 *
+	 * @param  array  $metadata
+	 * @return void
+	 */
+	public function setMetadataAttribute(array $metadata)
+	{
+		$this->attributes['metadata'] = json_encode($metadata);
+	}
+
+	/**
 	 * Sets the Eloquent model to be used for the charge relationship.
 	 *
 	 * @param  string  $model
@@ -138,17 +152,6 @@ class IlluminateInvoice extends Model {
 	}
 
 	/**
-	 * Sets the Eloquent model to be used for the invoice metadata relationship.
-	 *
-	 * @param  string  $model
-	 * @return void
-	 */
-	public static function setInvoiceMetadataModel($model)
-	{
-		static::$invoiceMetadataModel = $model;
-	}
-
-	/**
 	 * Sets the Eloquent model to be used for the subscription relationship.
 	 *
 	 * @param  string  $model
@@ -157,28 +160,6 @@ class IlluminateInvoice extends Model {
 	public static function setSubscriptionModel($model)
 	{
 		static::$subscriptionModel = $model;
-	}
-
-	/**
-	 * Get mutator for the "metadata" attribute.
-	 *
-	 * @param  string  $metadata
-	 * @return array
-	 */
-	public function getMetadataAttribute($metadata)
-	{
-		return $metadata ? json_decode($metadata, true) : [];
-	}
-
-	/**
-	 * Set mutator for the "metadata" attribute.
-	 *
-	 * @param  array  $metadata
-	 * @return void
-	 */
-	public function setMetadataAttribute(array $metadata)
-	{
-		$this->attributes['metadata'] = json_encode($metadata);
 	}
 
 }

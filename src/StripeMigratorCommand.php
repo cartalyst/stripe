@@ -39,7 +39,7 @@ class StripeMigratorCommand extends Command {
 	{
 		$fullPath = $this->createBaseMigration();
 
-		file_put_contents($fullPath, $this->getMigrationStub());
+		file_put_contents($fullPath, $this->getMigrationStubContents());
 
 		$this->info('Migration successfully created!');
 
@@ -65,21 +65,15 @@ class StripeMigratorCommand extends Command {
 	 *
 	 * @return string
 	 */
-	protected function getMigrationStub()
+	protected function getMigrationStubContents()
 	{
 		$contents = file_get_contents(__DIR__.'/stubs/migration.stub');
 
 		$tableName = $this->argument('table');
 
-		$search = [
-			'billable_table',
-			'billable_column',
-		];
+		$search = [ 'billable_table', 'billable_column' ];
 
-		$replace = [
-			$tableName,
-			str_singular($tableName),
-		];
+		$replace = [ $tableName, str_singular($tableName) ];
 
 		return str_replace($search, $replace, $contents);
 	}
