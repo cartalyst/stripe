@@ -89,6 +89,60 @@ return [
 
 	],
 
+	'create' => [
+
+		'httpMethod'     => 'POST',
+		'uri'            => '/v1/charges/{charge}/refunds',
+		'summary'        => 'Refunds the specified charge.',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'errorResponses' => $errors,
+		'parameters'     => [
+
+			'charge' => [
+				'description' => 'The charge unique identifier.',
+				'location'    => 'uri',
+				'type'        => 'string',
+				'required'    => true,
+			],
+
+			'amount' => [
+				'description' => 'A positive amount representing how much of this charge to refund.',
+				'location'    => 'query',
+				'type'        => 'number',
+				'required'    => false,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Number::convert',
+				],
+			],
+
+			'refund_application_fee' => [
+				'description' => 'Boolean indicating whether the application fee should be refunded when refunding this charge.',
+				'location'    => 'query',
+				'type'        => 'boolean',
+				'required'    => false,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Boolean::convert',
+				],
+			],
+
+			'metadata' => [
+				'description' => 'A set of key/value pairs that you can attach to a charge object.',
+				'location'    => 'query',
+				'type'        => 'array',
+				'required'    => false,
+			],
+
+			'expand' => [
+				'description' => 'Allows to expand properties.',
+				'location'    => 'query',
+				'type'        => 'array',
+				'required'    => false,
+			],
+
+		],
+
+	],
+
 	'update' => [
 
 		'httpMethod'     => 'POST',
