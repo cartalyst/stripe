@@ -36,6 +36,11 @@ abstract class StripeGateway {
 	 */
 	protected $client;
 
+	/**
+	 * The Event Dispatcher status.
+	 *
+	 * @var bool
+	 */
 	protected $dispatcherStatus = true;
 
 	/**
