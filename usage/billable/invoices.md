@@ -1,5 +1,58 @@
 ### Invoices
 
+#### Creating Invoices
+
+Creating invoices on your billable entities is a breeze.
+
+###### Create the invoices item and Create the Invoice
+
+First we need to create an invoice item:
+
+```php
+$item = $user->invoice()->items()->create([
+	'amount'      => 34.50,
+	'currency'    => 'USD',
+	'description' => 'Line 1 description',
+]);
+```
+
+Now that we have our item created we can create our invoice:
+
+```php
+$invoice = $user->invoice()->create();
+```
+
+###### Create a new Invoice and pass in invoice line items
+
+```php
+$invoice = $user->invoice()->create([
+	'items' => [
+		[
+			'amount'      => 34.50,
+			'currency'    => 'USD',
+			'description' => 'Line 1 description',
+		],
+		[
+			'amount'      => 10.95,
+			'currency'    => 'USD',
+			'description' => 'Line 2 description',
+		],
+	],
+]);
+```
+
+#### Pay an Invoice
+
+```php
+$user->invoice(10)->pay();
+```
+
+or
+
+```php
+$user->invoice()->pay('in_4TGCNPyz32qIUr');
+```
+
 #### Retrieve all the invoices
 
 ```php
@@ -18,53 +71,6 @@ $invoice = $user->invoices->find(10);
 $items = $invoice->items;
 
 echo $invoice['total'];
-```
-
-#### Invoice metadata
-
-Sometimes you might need to store additional information that is relevant to an invoice, like an order id or even the billing information of a customer.
-
-With the Stripe package storing this kind of information is a breeze, here's how you do it:
-
-First you need to grab the invoice you want to attach metadata:
-
-```php
-$user = User::find(1);
-
-$invoice = $user->invoice->find(10);
-```
-
-##### Get metadata
-
-```php
-$metadata = $invoice->metadata;
-
-echo $metadata->name;
-```
-
-##### Set metadata
-
-Now you can attach metadata to this invoice
-
-```php
-$invoice->metadata()->create([
-	'name'    => 'John Doe',
-	'address' => 'John Doe Industries',
-]);
-```
-
-#### Update the metadata
-
-```php
-$invoice->metadata->update([
-	'name' => 'Johnathan Doe',
-]);
-```
-
-#### Delete the metadata
-
-```php
-$invoice->metadata->delete();
 ```
 
 > **Note:** The metadata table columns are configurable through the migration, but keep in mind that you might require to extend the invoice metadata model to include your own column names on the `$fillable` property.
