@@ -121,10 +121,7 @@ class ChargeGateway extends StripeGateway {
 		$charge = $this->client->charges()->create($payload);
 
 		// Attach the created charge to the billable entity
-		$model = $this->storeCharge($charge);
-
-		// Fire the 'cartalyst.stripe.charge.created' event
-		$this->fire('charge.created', [ $charge, $model ]);
+		$this->storeCharge($charge);
 
 		return $charge;
 	}
@@ -144,10 +141,7 @@ class ChargeGateway extends StripeGateway {
 		$charge = $this->client->charges()->update($payload);
 
 		// Update the charge on storage
-		$model = $this->storeCharge($charge);
-
-		// Fire the 'cartalyst.stripe.charge.updated' event
-		$this->fire('charge.updated', [ $charge, $model ]);
+		$this->storeCharge($charge);
 
 		return $charge;
 	}
@@ -167,22 +161,13 @@ class ChargeGateway extends StripeGateway {
 		$refund = $this->client->charges()->refund($payload);
 
 		// Create the local refund entry
-		$this
-			->charge
-			->refunds()
-			->create([
-				'transaction_id' => $refund['balance_transaction'],
-				'amount'         => $this->convertToDecimal($refund['amount']),
-			]);
+		$this->storeChargeRefund($this->charge, $refund);
 
 		// Get the updated charge
 		$charge = $this->client->charges()->find($this->getPayload());
 
 		// Update the charge on storage
-		$model = $this->storeCharge($charge);
-
-		// Fire the 'cartalyst.stripe.charge.refunded' event
-		$this->fire('charge.refunded', [ $charge, $model ]);
+		$this->storeCharge($charge);
 
 		return $charge;
 	}
@@ -200,11 +185,17 @@ class ChargeGateway extends StripeGateway {
 		// Capture the charge on Stripe
 		$charge = $this->client->charges()->capture($payload);
 
+		// Fire the 'cartalyst.stripe.charge.captured' event
+		$this->fire('charge.captured', [ $charge, $model ]);
+
+		// Disable the event dispatcher
+		$this->disableEventDispatcher();
+
 		// Update the charge on storage
 		$model = $this->storeCharge($charge);
 
-		// Fire the 'cartalyst.stripe.charge.captured' event
-		$this->fire('charge.captured', [ $charge, $model ]);
+		// Enable the event dispatcher
+		$this->enableEventDispatcher();
 
 		return $charge;
 	}
@@ -306,6 +297,9 @@ class ChargeGateway extends StripeGateway {
 		// Find the charge on storage
 		$_charge = $entity->charges()->where('stripe_id', $stripeId)->first();
 
+		// Flag to know which event needs to be fired
+		$event = ! $_charge ? 'created' : 'updated';
+
 		// Prepare the payload
 		$payload = [
 			'stripe_id'   => $stripeId,
@@ -329,6 +323,9 @@ class ChargeGateway extends StripeGateway {
 			$_charge->update($payload);
 		}
 
+		// Fires the appropriate event
+		$this->fire("charge.{$event}", [ $charge, $_charge ]);
+
 		// Get all the refunds of this charge
 		$refunds = $this->client->refundsIterator([
 			'charge' => $stripeId,
@@ -337,32 +334,52 @@ class ChargeGateway extends StripeGateway {
 		// Loop through the refunds
 		foreach ($refunds as $refund)
 		{
-			// Get the transaction id
-			$transactionId = $refund['balance_transaction'];
-
-			// Find the refund on storage
-			$_refund = $_charge->refunds()->where('transaction_id', $transactionId)->first();
-
-			// Prepare the payload
-			$payload = [
-				'transaction_id' => $transactionId,
-				'amount'         => $this->convertToDecimal($refund['amount']),
-				'currency'       => $refund['currency'],
-				'created_at'     => Carbon::createFromTimestamp($refund['created']),
-			];
-
-			// Does the refund exists on storage?
-			if ( ! $_refund)
-			{
-				$_charge->refunds()->create($payload);
-			}
-			else
-			{
-				$_refund->update($payload);
-			}
+			$this->storeChargeRefund($_charge, $refund);
 		}
 
 		return $_charge;
+	}
+
+	/**
+	 * Stores the charge refund information on local storage.
+	 *
+	 * @param  \Cartalyst\Stripe\Billing\Models\IlluminateCharge
+	 * @param  \Cartalyst\Stripe\Api\Response  $refund
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateRefund
+	 */
+	protected function storeChargeRefund($charge, $refund)
+	{
+		// Get the transaction id
+		$transactionId = $refund['balance_transaction'];
+
+		// Find the refund on storage
+		$_refund = $charge->refunds()->where('transaction_id', $transactionId)->first();
+
+		// Flag to know which event needs to be fired
+		$event = ! $_refund ? 'created' : 'updated';
+
+		// Prepare the payload
+		$payload = [
+			'transaction_id' => $transactionId,
+			'amount'         => $this->convertToDecimal($refund['amount']),
+			'currency'       => $refund['currency'],
+			'created_at'     => Carbon::createFromTimestamp($refund['created']),
+		];
+
+		// Does the refund exists on storage?
+		if ( ! $_refund)
+		{
+			$_refund = $charge->refunds()->create($payload);
+		}
+		else
+		{
+			$_refund->update($payload);
+		}
+
+		// Fires the appropriate event
+		$this->fire("charge.refund.{$event}", [ $refund, $_refund ]);
+
+		return $_refund;
 	}
 
 }

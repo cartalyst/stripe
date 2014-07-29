@@ -140,7 +140,7 @@ class SubscriptionGateway extends StripeGateway {
 		}
 
 		// Prepare the payload
-		$attributes = array_merge($attributes, [
+		$payload = array_merge($attributes, [
 			'customer'  => $entity->stripe_id,
 			'plan'      => $this->plan,
 			'coupon'    => $this->coupon,
@@ -150,20 +150,10 @@ class SubscriptionGateway extends StripeGateway {
 		]);
 
 		// Create the subscription on Stripe
-		$subscription = $this->client->subscriptions()->create($attributes);
+		$subscription = $this->client->subscriptions()->create($payload);
 
 		// Attach the created subscription to the billable entity
-		$model = $entity->subscriptions()->create([
-			'plan_id'          => $this->plan,
-			'active'           => 1,
-			'period_starts_at' => $this->nullableTimestamp($subscription['current_period_start']),
-			'period_ends_at'   => $this->nullableTimestamp($subscription['current_period_end']),
-			'stripe_id'        => $subscription['id'],
-			'trial_ends_at'    => $this->nullableTimestamp($subscription['trial_end']),
-		]);
-
-		// Fire the 'cartalyst.stripe.subscription.created' event
-		$this->fire('subscription.created', [ $subscription, $model ]);
+		$this->storeSubscription($subscription);
 
 		return $subscription;
 	}
@@ -176,17 +166,14 @@ class SubscriptionGateway extends StripeGateway {
 	 */
 	public function update(array $attributes = [])
 	{
+		// Prepare the payload
 		$payload = $this->getPayload($attributes);
 
+		// Update the subscription on Stripe
 		$subscription = $this->client->subscriptions()->update($payload);
 
-		$model = $this->updateLocalSubscriptionData([
-			'period_starts_at' => $this->nullableTimestamp($subscription['current_period_start']),
-			'period_ends_at'   => $this->nullableTimestamp($subscription['current_period_end']),
-		]);
-
-		// Fire the 'cartalyst.stripe.subscription.updated' event
-		$this->fire('subscription.updated', [ $subscription, $model ]);
+		// Update the subscription on storage
+		$this->storeSubscription($subscription);
 
 		return $subscription;
 	}
@@ -199,6 +186,13 @@ class SubscriptionGateway extends StripeGateway {
 	 */
 	public function cancel($atPeriodEnd = false)
 	{
+		// Prepare the payload
+		$payload = $this->getPayload([ 'at_period_end' => $atPeriodEnd ]);
+
+		// Cancel the subscription on Stripe
+		$subscription = $this->client->subscriptions()->cancel($payload);
+
+		// Prepare the data for the subscription cancelation
 		$data = [
 			'canceled_at' => Carbon::now(),
 		];
@@ -212,16 +206,17 @@ class SubscriptionGateway extends StripeGateway {
 			]);
 		}
 
-		$payload = $this->getPayload([
-			'at_period_end' => $atPeriodEnd,
-		]);
+		// Disable the event dispatcher
+		$this->disableEventDispatcher();
 
-		$subscription = $this->client->subscriptions()->cancel($payload);
+		// Update the subscription on storage
+		$model = $this->storeSubscription($subscription, $data);
 
-		$model = $this->updateLocalSubscriptionData($data);
+		// Enable the event dispatcher
+		$this->enableEventDispatcher();
 
 		// Fire the 'cartalyst.stripe.subscription.canceled' event
-		$this->fire('subscription.canceled', [ $model = $subscription ]);
+		$this->fire('subscription.canceled', [ $subscription, $model ]);
 
 		return $subscription;
 	}
@@ -233,18 +228,25 @@ class SubscriptionGateway extends StripeGateway {
 	 */
 	public function resume()
 	{
+		// Disable the event dispatcher
+		$this->disableEventDispatcher();
+
+		// Update the subscription on Stripe
 		$subscription = $this->noProrate()->update([
 			'plan' => $this->subscription->plan_id,
 		]);
 
-		$model = $this->updateLocalSubscriptionData([
-			'active'           => 1,
-			'period_starts_at' => $this->nullableTimestamp($subscription['current_period_start']),
-			'period_ends_at'   => $this->nullableTimestamp($subscription['current_period_end']),
-			'ended_at'         => null,
-			'trial_ends_at'    => $this->nullableTimestamp($subscription['trial_end']),
-			'canceled_at'      => null,
-		]);
+		// Prepare the data for the subscription cancelation
+		$data = [
+			'ended_at'    => null,
+			'canceled_at' => null,
+		];
+
+		// Update the subscription on storage
+		$model = $this->storeSubscription($subscription, $data);
+
+		// Enable the event dispatcher
+		$this->enableEventDispatcher();
 
 		// Fire the 'cartalyst.stripe.subscription.resumed' event
 		$this->fire('subscription.resumed', [ $subscription, $model ]);
@@ -423,7 +425,7 @@ class SubscriptionGateway extends StripeGateway {
 			'trial_end' => $period->getTimestamp(),
 		]);
 
-		$this->updateLocalSubscriptionData([
+		$this->storeSubscription($subscription, [
 			'trial_ends_at' => $period,
 		]);
 
@@ -441,7 +443,7 @@ class SubscriptionGateway extends StripeGateway {
 			'trial_end' => 'now',
 		]);
 
-		$this->updateLocalSubscriptionData([
+		$this->storeSubscription($subscription, [
 			'trial_ends_at' => null,
 		]);
 
@@ -478,7 +480,7 @@ class SubscriptionGateway extends StripeGateway {
 			'trial_end' => $this->getTrialEndDate(),
 		]);
 
-		$this->updateLocalSubscriptionData([
+		$this->storeSubscription($subscription, [
 			'plan_id'       => $this->plan,
 			'trial_ends_at' => $this->trialEnd,
 		]);
@@ -634,14 +636,49 @@ class SubscriptionGateway extends StripeGateway {
 	}
 
 	/**
-	 * Updates the local subscription data.
+	 * Stores the subscription information on local storage.
 	 *
-	 * @param  array  $attributes
+	 * @param  \Cartalyst\Stripe\Api\Response  $subscription
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
 	 */
-	protected function updateLocalSubscriptionData(array $attributes = [])
+	protected function storeSubscription($subscription, array $attributes = [])
 	{
-		return $this->subscription->fill($attributes)->save();
+		// Get the entity object
+		$entity = $this->billable;
+
+		// Get the subscription id
+		$stripeId = $subscription['id'];
+
+		// Find the subscription on storage
+		$_subscription = $entity->subscriptions()->where('stripe_id', $stripeId)->first();
+
+		// Flag to know which event needs to be fired
+		$event = ! $_subscription ? 'created' : 'updated';
+
+		// Prepare the payload
+		$payload = array_merge($attributes, [
+			'stripe_id'        => $stripeId,
+			'plan_id'          => $this->plan,
+			'active'           => 1,
+			'period_starts_at' => $this->nullableTimestamp($subscription['current_period_start']),
+			'period_ends_at'   => $this->nullableTimestamp($subscription['current_period_end']),
+			'trial_ends_at'    => $this->nullableTimestamp($subscription['trial_end']),
+		]);
+
+		// Does the subscription exist on storage?
+		if ( ! $_subscription)
+		{
+			$_subscription = $entity->subscriptions()->create($payload);
+		}
+		else
+		{
+			$_subscription->update($payload);
+		}
+
+		// Fires the appropriate event
+		$this->fire("subscription.{$event}", [ $subscription, $_subscription ]);
+
+		return $_subscription;
 	}
 
 }

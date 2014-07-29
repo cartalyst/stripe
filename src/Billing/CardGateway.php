@@ -97,10 +97,7 @@ class CardGateway extends StripeGateway {
 		$isDefault = ($this->default || $customer['default_card'] === $card['id']);
 
 		// Attach the created card to the billable entity
-		$model = $this->storeCard($card, $isDefault);
-
-		// Fire the 'cartalyst.stripe.card.created' event
-		$this->fire('card.created', [ $card, $model ]);
+		$this->storeCard($card, $isDefault);
 
 		return $card;
 	}
@@ -120,10 +117,7 @@ class CardGateway extends StripeGateway {
 		$card = $this->client->cards()->update($payload);
 
 		// Update the card on storage
-		$model = $this->storeCard($card);
-
-		// Fire the 'cartalyst.stripe.card.updated' event
-		$this->fire('card.updated', [ $card, $model ]);
+		$this->storeCard($card);
 
 		return $card;
 	}
@@ -136,7 +130,7 @@ class CardGateway extends StripeGateway {
 	public function delete()
 	{
 		// Delete the card on Stripe
-		$card = $this->client->cards()->delete($this->getPayload());
+		$card = $this->client->cards()->destroy($this->getPayload());
 
 		// Delete the card locally
 		$this->card->delete();
@@ -284,6 +278,9 @@ class CardGateway extends StripeGateway {
 		// Find the card on storage
 		$_card = $entity->cards()->where('stripe_id', $stripeId)->first();
 
+		// Flag to know which event needs to be fired
+		$event = ! $_card ? 'created' : 'updated';
+
 		// Prepare the payload
 		$payload = [
 			'stripe_id' => $stripeId,
@@ -309,6 +306,9 @@ class CardGateway extends StripeGateway {
 
 			$entity->cards()->where('stripe_id', $stripeId)->update(['default' => true]);
 		}
+
+		// Fire the appropriate event
+		$this->fire("card.{$event}", [ $card, $_card ]);
 
 		return $_card;
 	}

@@ -36,6 +36,8 @@ abstract class StripeGateway {
 	 */
 	protected $client;
 
+	protected $dispatcherStatus = true;
+
 	/**
 	 * Constructor.
 	 *
@@ -111,6 +113,26 @@ abstract class StripeGateway {
 	}
 
 	/**
+	 * Enables the events dispatcher.
+	 *
+	 * @return void
+	 */
+	protected function enableEventDispatcher()
+	{
+		$this->dispatcherStatus = true;
+	}
+
+	/**
+	 * Disables the events dispatcher.
+	 *
+	 * @return void
+	 */
+	protected function disableEventDispatcher()
+	{
+		$this->dispatcherStatus = false;
+	}
+
+	/**
 	 * Fires an event.
 	 *
 	 * @param  string  $event
@@ -119,6 +141,8 @@ abstract class StripeGateway {
 	 */
 	protected function fire($event, array $data = [])
 	{
+		if ( ! $this->dispatcherStatus) return;
+
 		$entity = $this->billable;
 
 		$data = array_merge([$entity], $data);
