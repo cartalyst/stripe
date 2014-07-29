@@ -42,6 +42,13 @@ class IlluminateCharge extends Model {
 	];
 
 	/**
+	 * The Eloquent invoice model.
+	 *
+	 * @var string
+	 */
+	protected static $invoiceModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoice';
+
+	/**
 	 * The Eloquent refund model.
 	 *
 	 * @var string
@@ -56,6 +63,27 @@ class IlluminateCharge extends Model {
 	public function isPartialRefunded()
 	{
 		return ( ! $this->refunded && $this->refunds->count());
+	}
+
+	/**
+	 * Returns the invoice associated to this charge.
+	 *
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
+	 */
+	public function invoice()
+	{
+		return $this->hasOne(static::$invoiceModel, 'stripe_id', 'invoice_id');
+	}
+
+	/**
+	 * Sets the Eloquent model to be used for the invoice relationship.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public static function setInvoiceModel($model)
+	{
+		static::$invoiceModel = $model;
 	}
 
 	/**
