@@ -260,7 +260,7 @@ class InvoiceGateway extends StripeGateway {
 		// Loop through the invoice items
 		foreach ($invoice['lines']['data'] as $item)
 		{
-			$this->storeInvoiceItem($item);
+			$this->storeInvoiceItem($_invoice, $item);
 		}
 
 		return $_invoice;
@@ -269,16 +269,17 @@ class InvoiceGateway extends StripeGateway {
 	/**
 	 * Stores the invoice item information on local storage.
 	 *
+	 * @param  \Cartalyst\Stripe\Billing\Models\IlluminateInvoice  $invoice
 	 * @param  \Cartalyst\Stripe\Api\Response  $item
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
 	 */
-	protected function storeInvoiceItem($item)
+	protected function storeInvoiceItem($invoice, $item)
 	{
 		// Get the invoice item id
 		$stripeId = $item['id'];
 
 		// Find the invoice item on storage
-		$_item = $_invoice->items()->where('stripe_id', $stripeId)->first();
+		$_item = $invoice->items()->where('stripe_id', $stripeId)->first();
 
 		// Flag to know which event needs to be fired
 		$event = ! $_item ? 'created' : 'updated';
@@ -303,7 +304,7 @@ class InvoiceGateway extends StripeGateway {
 		// Does the invoice item exist on storage?
 		if ( ! $_item)
 		{
-			$_invoice->items()->create($payload);
+			$invoice->items()->create($payload);
 		}
 		else
 		{
@@ -311,7 +312,7 @@ class InvoiceGateway extends StripeGateway {
 		}
 
 		// Fires the appropriate event
-		$this->fire("invoice.item.{$event}", [ $invoice, $_invoice ]);
+		$this->fire("invoice.item.{$event}", [ $item, $_item ]);
 
 		return $_item;
 	}
