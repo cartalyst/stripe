@@ -211,6 +211,8 @@ trait BillableTrait {
 	public static function setInvoiceModel($model)
 	{
 		static::$invoiceModel = $model;
+
+		forward_static_call_array([static::$chargeModel, 'setInvoiceModel'], [$model]);
 	}
 
 	/**
