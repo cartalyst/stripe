@@ -38,7 +38,7 @@ The Stripe package comes with billing functionality that you can attach to any e
 
 To use this feature please follow the next steps:
 
-#### Migrations
+###### Migrations
 
 Now you need to migrate your database, but before doing that, you'll need to generate a migration that suits your billable table and to do this you just need to run the following command:
 
@@ -48,7 +48,7 @@ Now you need to migrate your database, but before doing that, you'll need to gen
 
 Now that the migration file is created you just need to run `php artisan migrate` to create the tables on your database.
 
-#### Model setup
+###### Model setup
 
 Add the `BillableTrait` to your Eloquent model and make sure the model implements the `BillableInterface`:
 

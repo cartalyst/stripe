@@ -8,7 +8,7 @@ To charge a credit card, you need to create a new charge object. If your API key
 
 Key                   | Required | Type            | Default | Description
 --------------------- | -------- | --------------- | ------- | -----------------
-amount                | true     | number          | null    | A positive amount for the transaction.
+amount                | true     | number          | null    | A positive amount representing how much to charge the card.
 currency              | true     | string          | null    | 3-letter ISO code for currency.
 customer              | false    | string          | null    | The customer unique identifier.
 card                  | false    | string or array | null    | The card unique identifier.
@@ -52,30 +52,15 @@ Capture the payment of an existing, uncaptured, charge. This is the second half 
 
 Uncaptured payments expire exactly seven days after they are created. If they are not captured by that point in time, they will be marked as refunded and will no longer be capturable.
 
-Key                    | Required | Type   | Default | Description
----------------------- | -------- | ------ | ------- | -------------------------
-id                     | true     | string | null    | The charge unique identifier.
-amount                 | false    | number | null    | A positive amount for the transaction.
-refund_application_fee | false    | bool   | null    | Boolean indicating whether the application fee should be refunded when refunding this charge.
-metadata               | false    | array  | []      | A set of key/value pairs that you can attach to a charge object.
-
-```php
-$charge = Stripe::charges()->capture([
-	'id' => 'ch_4ECWMVQp5SJKEx',
-]);
-```
-
-#### Refund a charge
-
 Key             | Required | Type   | Default | Description
 --------------- | -------- | ------ | ------- | --------------------------------
 id              | true     | string | null    | The charge unique identifier.
 amount          | false    | number | null    | A positive amount for the transaction.
-application_fee | false    | int    | null    | An application fee to add on to this charge.
-receipt_email   | false    | string | null    | The email address to send this charge’s receipt to.
+application_fee | false    | bool   | null    | An application fee to add on to this charge. Can only be used with Stripe Connect
+metadata        | false    | array  | []      | A set of key/value pairs that you can attach to a charge object.
 
 ```php
-$charge = Stripe::charges()->refund([
+$charge = Stripe::charges()->capture([
 	'id' => 'ch_4ECWMVQp5SJKEx',
 ]);
 ```

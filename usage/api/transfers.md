@@ -10,6 +10,8 @@ amount                | true     | number | null    | A positive amount for the 
 currency              | true     | string | null    | 3-letter ISO code for currency.
 recipient             | true     | string | null    | The ID of an existing, verified recipient.
 description           | false    | string | null    | An arbitrary string which you can attach to a transfer object.
+bank_account          | false    | string | null    | If a recipient has both a bank account and a card attached, this parameter or the `card` parameter must be provided, but never both.
+card                  | false    | string | null    | The card unique identifier.
 statement_description | false    | string | null    | An arbitrary string which will be displayed on the recipient's bank statement.
 metadata              | false    | array  | []      | A set of key/value pairs that you can attach to a transfer object.
 

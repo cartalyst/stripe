@@ -24,7 +24,9 @@ $user
 	->create($token);
 ```
 
-Attach a new credit card to the entity and make it the default credit card.
+###### Attaching and setting it as default
+
+If you want to attach a credit card to the entity and make it the default credit card, you need to use the `makeDefault()` method.
 
 ```php
 $token = Input::get('stripeToken');
@@ -53,7 +55,7 @@ $user
 	->update($attributes);
 ```
 
-Make an existing credit card the default credit card.
+###### Setting an existing credit card the default credit card.
 
 ```php
 $user = User::find(1);
@@ -100,7 +102,7 @@ $user = User::find(1);
 
 if ( ! $user->hasActiveCard())
 {
-echo "User doesn't have any active credit card!";
+	echo "User doesn't have any active credit card!";
 }
 ```
 

@@ -4,6 +4,8 @@ Often you want to be able to charge credit cards or send payments to bank accoun
 
 #### Create a card token
 
+Creates a single use token that wraps the details of a credit card. This token can be used in place of a credit card dictionary with any API method. These tokens can only be used once: by [creating a new charge object](#create-a-new-charge), or attaching them to a [customer](#create-a-new-customer).
+
 Key      | Required | Type            | Default | Description
 -------- | -------- | --------------- | ------- | ------------------------------
 card     | true     | string or array | null    | The card unique identifier.
@@ -23,6 +25,8 @@ echo $token['id'];
 ```
 
 #### Create a bank account token
+
+Creates a single use token that wraps the details of a bank account. This token can be used in place of a bank account dictionary with any API method. These tokens can only be used once: by attaching them to a [recipient](#create-a-new-recipient).
 
 Key          | Required | Type  | Default | Description
 ------------ | -------- | ----- | ------- | ------------------------------------
