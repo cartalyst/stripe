@@ -32,6 +32,7 @@ class IlluminateCharge extends Model {
 	protected $fillable = [
 		'paid',
 		'amount',
+		'failed',
 		'captured',
 		'currency',
 		'refunded',
@@ -63,6 +64,16 @@ class IlluminateCharge extends Model {
 	public function isPartialRefunded()
 	{
 		return ( ! $this->refunded && $this->refunds->count());
+	}
+
+	/**
+	 * Checks if the charge can be captured.
+	 *
+	 * @return bool
+	 */
+	public function canBeCaptured()
+	{
+		return ( ! $this->captured && ! $this->failed);
 	}
 
 	/**

@@ -535,32 +535,7 @@ class SubscriptionGateway extends StripeGateway {
 		// Loop through the Stripe subscriptions
 		foreach ($stripeSubscriptions as $subscription)
 		{
-			// Get the subscription id
-			$stripeId = $subscription['id'];
-
-			// Find the subscription on storage
-			$_subscription = $entity->subscriptions()->where('stripe_id', $stripeId)->first();
-
-			// Prepare the payload
-			$payload = [
-				'active'           => 1,
-				'stripe_id'        => $stripeId,
-				'plan_id'          => $subscription['plan']['id'],
-				'period_starts_at' => $this->nullableTimestamp($subscription['current_period_start']),
-				'period_ends_at'   => $this->nullableTimestamp($subscription['current_period_end']),
-				'canceled_at'      => $this->nullableTimestamp($subscription['canceled_at']),
-				'trial_ends_at'    => $this->nullableTimestamp($subscription['trial_end']),
-			];
-
-			// Does the subscription exist on storage?
-			if ( ! $_subscription)
-			{
-				$entity->subscriptions()->create($payload);
-			}
-			else
-			{
-				$_subscription->update($payload);
-			}
+			$this->storeSubscription($subscription);
 		}
 	}
 
@@ -638,47 +613,49 @@ class SubscriptionGateway extends StripeGateway {
 	/**
 	 * Stores the subscription information on local storage.
 	 *
-	 * @param  \Cartalyst\Stripe\Api\Response  $subscription
+	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
+	 * @param  array  $attributes
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
 	 */
-	protected function storeSubscription($subscription, array $attributes = [])
+	protected function storeSubscription($response, array $attributes = [])
 	{
 		// Get the entity object
 		$entity = $this->billable;
 
 		// Get the subscription id
-		$stripeId = $subscription['id'];
+		$stripeId = $response['id'];
 
 		// Find the subscription on storage
-		$_subscription = $entity->subscriptions()->where('stripe_id', $stripeId)->first();
+		$subscription = $entity->subscriptions()->where('stripe_id', $stripeId)->first();
 
 		// Flag to know which event needs to be fired
-		$event = ! $_subscription ? 'created' : 'updated';
+		$event = ! $subscription ? 'created' : 'updated';
 
 		// Prepare the payload
-		$payload = array_merge($attributes, [
+		$payload = array_merge([
 			'stripe_id'        => $stripeId,
-			'plan_id'          => $this->plan,
+			'plan_id'          => $this->plan ?: $response['plan']['id'],
 			'active'           => 1,
-			'period_starts_at' => $this->nullableTimestamp($subscription['current_period_start']),
-			'period_ends_at'   => $this->nullableTimestamp($subscription['current_period_end']),
-			'trial_ends_at'    => $this->nullableTimestamp($subscription['trial_end']),
-		]);
+			'period_starts_at' => $this->nullableTimestamp($response['current_period_start']),
+			'period_ends_at'   => $this->nullableTimestamp($response['current_period_end']),
+			'canceled_at'      => $this->nullableTimestamp($response['canceled_at']),
+			'trial_ends_at'    => $this->nullableTimestamp($response['trial_end']),
+		], $attributes);
 
 		// Does the subscription exist on storage?
-		if ( ! $_subscription)
+		if ( ! $subscription)
 		{
-			$_subscription = $entity->subscriptions()->create($payload);
+			$subscription = $entity->subscriptions()->create($payload);
 		}
 		else
 		{
-			$_subscription->update($payload);
+			$subscription->update($payload);
 		}
 
 		// Fires the appropriate event
-		$this->fire("subscription.{$event}", [ $subscription, $_subscription ]);
+		$this->fire("subscription.{$event}", [ $response, $subscription ]);
 
-		return $_subscription;
+		return $subscription;
 	}
 
 }

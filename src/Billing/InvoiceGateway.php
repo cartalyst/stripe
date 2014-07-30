@@ -147,19 +147,19 @@ class InvoiceGateway extends StripeGateway {
 		$id = $id ?: $this->invoice->stripe_id;
 
 		// Pay the invoice
-		$invoice = $this->client->invoices()->pay(compact('id'));
-
-		// Fire the 'cartalyst.stripe.invoice.paid' event
-		$this->fire('invoice.paid', [ $invoice, $model ]);
+		$response = $this->client->invoices()->pay(compact('id'));
 
 		// Disable the event dispatcher
 		$this->disableEventDispatcher();
 
 		// Update the invoice on storage
-		$model = $this->storeInvoice($invoice);
+		$invoice = $this->storeInvoice($response);
 
 		// Enable the event dispatcher
 		$this->enableEventDispatcher();
+
+		// Fire the 'cartalyst.stripe.invoice.paid' event
+		$this->fire('invoice.paid', [ $response, $invoice ]);
 
 		return $invoice;
 	}
@@ -208,113 +208,113 @@ class InvoiceGateway extends StripeGateway {
 	/**
 	 * Stores the invoice information on local storage.
 	 *
-	 * @param  \Cartalyst\Stripe\Api\Response  $invoice
+	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
 	 */
-	protected function storeInvoice($invoice)
+	protected function storeInvoice($response)
 	{
 		// Get the entity object
 		$entity = $this->billable;
 
 		// Get the invoice id
-		$stripeId = $invoice['id'];
+		$stripeId = $response['id'];
 
 		// Find the invoice on storage
-		$_invoice = $entity->invoices()->where('stripe_id', $stripeId)->first();
+		$invoice = $entity->invoices()->where('stripe_id', $stripeId)->first();
 
 		// Flag to know which event needs to be fired
-		$event = ! $_invoice ? 'created' : 'updated';
+		$event = ! $invoice ? 'created' : 'updated';
 
 		// Prepare the payload
 		$payload = [
 			'stripe_id'       => $stripeId,
-			'subscription_id' => $invoice['subscription'],
-			'currency'        => $invoice['currency'],
-			'description'     => $invoice['description'],
-			'subtotal'        => $this->convertToDecimal($invoice['subtotal']),
-			'total'           => $this->convertToDecimal($invoice['total']),
-			'amount_due'      => $this->convertToDecimal($invoice['amount_due']),
-			'attempted'       => (bool) $invoice['attempted'],
-			'attempt_count'   => $invoice['attempt_count'],
-			'closed'          => (bool) $invoice['closed'],
-			'paid'            => (bool) $invoice['paid'],
-			'metadata'        => $invoice['metadata'],
-			'created_at'      => Carbon::createFromTimestamp($invoice['date']),
-			'period_start'    => $this->nullableTimestamp($invoice['period_start']),
-			'period_end'      => $this->nullableTimestamp($invoice['period_end']),
+			'subscription_id' => $response['subscription'],
+			'currency'        => $response['currency'],
+			'description'     => $response['description'],
+			'subtotal'        => $this->convertToDecimal($response['subtotal']),
+			'total'           => $this->convertToDecimal($response['total']),
+			'amount_due'      => $this->convertToDecimal($response['amount_due']),
+			'attempted'       => (bool) $response['attempted'],
+			'attempt_count'   => $response['attempt_count'],
+			'closed'          => (bool) $response['closed'],
+			'paid'            => (bool) $response['paid'],
+			'metadata'        => $response['metadata'],
+			'created_at'      => Carbon::createFromTimestamp($response['date']),
+			'period_start'    => $this->nullableTimestamp($response['period_start']),
+			'period_end'      => $this->nullableTimestamp($response['period_end']),
 		];
 
 		// Does the invoice exist on storage?
-		if ( ! $_invoice)
+		if ( ! $invoice)
 		{
-			$_invoice = $entity->invoices()->create($payload);
+			$invoice = $entity->invoices()->create($payload);
 		}
 		else
 		{
-			$_invoice->update($payload);
+			$invoice->update($payload);
 		}
 
 		// Fires the appropriate event
-		$this->fire("invoice.{$event}", [ $invoice, $_invoice ]);
+		$this->fire("invoice.{$event}", [ $response, $invoice ]);
 
 		// Loop through the invoice items
-		foreach ($invoice['lines']['data'] as $item)
+		foreach ($response['lines']['data'] as $item)
 		{
-			$this->storeInvoiceItem($_invoice, $item);
+			$this->storeInvoiceItem($invoice, $item);
 		}
 
-		return $_invoice;
+		return $invoice;
 	}
 
 	/**
 	 * Stores the invoice item information on local storage.
 	 *
 	 * @param  \Cartalyst\Stripe\Billing\Models\IlluminateInvoice  $invoice
-	 * @param  \Cartalyst\Stripe\Api\Response  $item
+	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
 	 */
-	protected function storeInvoiceItem($invoice, $item)
+	protected function storeInvoiceItem(IlluminateInvoice $invoice, $response)
 	{
 		// Get the invoice item id
-		$stripeId = $item['id'];
+		$stripeId = $response['id'];
 
 		// Find the invoice item on storage
-		$_item = $invoice->items()->where('stripe_id', $stripeId)->first();
+		$item = $invoice->items()->where('stripe_id', $stripeId)->first();
 
 		// Flag to know which event needs to be fired
-		$event = ! $_item ? 'created' : 'updated';
+		$event = ! $item ? 'created' : 'updated';
 
 		// Get the invoice item type
-		$type = array_get($item, 'type', null);
+		$type = array_get($response, 'type', null);
 
 		// Prepare the payload
 		$payload = [
 			'stripe_id'    => $stripeId,
-			'currency'     => $item['currency'],
+			'currency'     => $response['currency'],
 			'type'         => $type,
-			'amount'       => $this->convertToDecimal($item['amount']),
-			'proration'    => (bool) $item['proration'],
-			'description'  => $this->prepareInvoiceItemDescription($type, $item),
-			'plan_id'      => array_get($item, 'plan.id', null),
-			'quantity'     => array_get($item, 'quantity', null),
-			'period_start' => $this->nullableTimestamp(array_get($item, 'period.start', null)),
-			'period_end'   => $this->nullableTimestamp(array_get($item, 'period.end', null)),
+			'amount'       => $this->convertToDecimal($response['amount']),
+			'proration'    => (bool) $response['proration'],
+			'description'  => $this->prepareInvoiceItemDescription($type, $response),
+			'plan_id'      => array_get($response, 'plan.id', null),
+			'quantity'     => array_get($response, 'quantity', null),
+			'period_start' => $this->nullableTimestamp(array_get($response, 'period.start', null)),
+			'period_end'   => $this->nullableTimestamp(array_get($response, 'period.end', null)),
 		];
 
 		// Does the invoice item exist on storage?
-		if ( ! $_item)
+		if ( ! $item)
 		{
 			$invoice->items()->create($payload);
 		}
 		else
 		{
-			$_item->update($payload);
+			$item->update($payload);
 		}
 
 		// Fires the appropriate event
-		$this->fire("invoice.item.{$event}", [ $item, $_item ]);
+		$this->fire("invoice.item.{$event}", [ $response, $item ]);
 
-		return $_item;
+		return $item;
 	}
 
 }

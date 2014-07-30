@@ -83,7 +83,7 @@ class CardGateway extends StripeGateway {
 		$stripeId = $entity->stripe_id;
 
 		// Create the card on Stripe
-		$card = $this->client->cards()->create(array_merge($attributes, [
+		$response = $this->client->cards()->create(array_merge($attributes, [
 			'card'     => $token,
 			'customer' => $stripeId,
 		]));
@@ -94,12 +94,21 @@ class CardGateway extends StripeGateway {
 		]);
 
 		// Is this the default credit card?
-		$isDefault = ($this->default || $customer['default_card'] === $card['id']);
+		$isDefault = ($this->default || $customer['default_card'] === $response['id']);
+
+		// Should we make the card the default?
+		if ($isDefault)
+		{
+			$this->client->customers()->update([
+				'id'           => $stripeId,
+				'default_card' => $response['id'],
+			]);
+		}
 
 		// Attach the created card to the billable entity
-		$this->storeCard($card, $isDefault);
+		$this->storeCard($response, $isDefault);
 
-		return $card;
+		return $response;
 	}
 
 	/**
@@ -114,12 +123,12 @@ class CardGateway extends StripeGateway {
 		$payload = $this->getPayload($attributes);
 
 		// Update the card on Stripe
-		$card = $this->client->cards()->update($payload);
+		$response = $this->client->cards()->update($payload);
 
 		// Update the card on storage
-		$this->storeCard($card);
+		$this->storeCard($response);
 
-		return $card;
+		return $response;
 	}
 
 	/**
@@ -130,7 +139,7 @@ class CardGateway extends StripeGateway {
 	public function delete()
 	{
 		// Delete the card on Stripe
-		$card = $this->client->cards()->destroy($this->getPayload());
+		$response = $this->client->cards()->destroy($this->getPayload());
 
 		// Delete the card locally
 		$this->card->delete();
@@ -143,9 +152,9 @@ class CardGateway extends StripeGateway {
 		$this->updateDefaultLocalCard($customer['default_card']);
 
 		// Fire the 'cartalyst.stripe.card.deleted' event
-		$this->fire('card.deleted', [ $card ]);
+		$this->fire('card.deleted', [ $response ]);
 
-		return $card;
+		return $response;
 	}
 
 	/**
@@ -225,7 +234,7 @@ class CardGateway extends StripeGateway {
 		// Loop through the credit cards
 		foreach ($stripeCards as $card)
 		{
-			$isDefault = $defaultCard === $card['id'] ? true : false;
+			$isDefault = ($defaultCard === $card['id']);
 
 			$this->storeCard($card, $isDefault);
 		}
@@ -263,40 +272,40 @@ class CardGateway extends StripeGateway {
 	/**
 	 * Stores the card information on local storage.
 	 *
-	 * @param  \Cartalyst\Stripe\Api\Response  $card
+	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
 	 * @param  bool  $default
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCard
 	 */
-	protected function storeCard($card, $default = false)
+	protected function storeCard($response, $default = false)
 	{
 		// Get the entity object
 		$entity = $this->billable;
 
 		// Get the card id
-		$stripeId = $card['id'];
+		$stripeId = $response['id'];
 
 		// Find the card on storage
-		$_card = $entity->cards()->where('stripe_id', $stripeId)->first();
+		$card = $entity->cards()->where('stripe_id', $stripeId)->first();
 
 		// Flag to know which event needs to be fired
-		$event = ! $_card ? 'created' : 'updated';
+		$event = ! $card ? 'created' : 'updated';
 
 		// Prepare the payload
 		$payload = [
 			'stripe_id' => $stripeId,
-			'last_four' => $card['last4'],
-			'exp_month' => $card['exp_month'],
-			'exp_year'  => $card['exp_year'],
+			'last_four' => $response['last4'],
+			'exp_month' => $response['exp_month'],
+			'exp_year'  => $response['exp_year'],
 		];
 
 		// Does the card exist on storage?
-		if ( ! $_card)
+		if ( ! $card)
 		{
-			$_card = $entity->cards()->create($payload);
+			$card = $entity->cards()->create($payload);
 		}
 		else
 		{
-			$_card->update($payload);
+			$card->update($payload);
 		}
 
 		// Should we make this card the default card?
@@ -308,9 +317,9 @@ class CardGateway extends StripeGateway {
 		}
 
 		// Fire the appropriate event
-		$this->fire("card.{$event}", [ $card, $_card ]);
+		$this->fire("card.{$event}", [ $response, $card ]);
 
-		return $_card;
+		return $card;
 	}
 
 }
