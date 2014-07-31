@@ -79,7 +79,7 @@ class ChargeGateway extends StripeGateway {
 	 *
 	 * @param  int  $amount
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Api\Response
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
 	 */
 	public function create($amount, array $attributes = [])
 	{
@@ -109,19 +109,19 @@ class ChargeGateway extends StripeGateway {
 		}
 
 		// Prepare the payload
-		$payload = array_merge($attributes, [
+		$payload = array_merge([
 			'customer' => $entity->stripe_id,
 			'capture'  => $this->capture,
 			'currency' => $this->currency,
 			'amount'   => $amount,
 			'card'     => $card,
-		]);
+		], $attributes);
 
 		// Create the charge on Stripe
-		$charge = $this->client->charges()->create($payload);
+		$response = $this->client->charges()->create($payload);
 
 		// Attach the created charge to the billable entity
-		$this->storeCharge($charge);
+		$charge = $this->storeCharge($response);
 
 		return $charge;
 	}
@@ -130,7 +130,7 @@ class ChargeGateway extends StripeGateway {
 	 * Updates the charge.
 	 *
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Api\Response
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
 	 */
 	public function update(array $attributes = [])
 	{
@@ -138,10 +138,10 @@ class ChargeGateway extends StripeGateway {
 		$payload = $this->getPayload($attributes);
 
 		// Update the charge on Stripe
-		$charge = $this->client->charges()->update($payload);
+		$response = $this->client->charges()->update($payload);
 
 		// Update the charge on storage
-		$this->storeCharge($charge);
+		$charge = $this->storeCharge($response);
 
 		return $charge;
 	}
@@ -150,7 +150,7 @@ class ChargeGateway extends StripeGateway {
 	 * Refunds the charge.
 	 *
 	 * @param  int  $amount
-	 * @return \Cartalyst\Stripe\Api\Response
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
 	 */
 	public function refund($amount = null)
 	{
@@ -166,10 +166,10 @@ class ChargeGateway extends StripeGateway {
 		$this->storeChargeRefund($this->charge, $refund);
 
 		// Get the updated charge
-		$charge = $this->client->charges()->find($this->getPayload());
+		$response = $this->client->charges()->find($this->getPayload());
 
 		// Update the charge on storage
-		$this->storeCharge($charge);
+		$charge = $this->storeCharge($response);
 
 		return $charge;
 	}
@@ -177,7 +177,7 @@ class ChargeGateway extends StripeGateway {
 	/**
 	 * Captures the charge.
 	 *
-	 * @return \Cartalyst\Stripe\Api\Response
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
 	 */
 	public function capture()
 	{
@@ -199,7 +199,7 @@ class ChargeGateway extends StripeGateway {
 		// Fire the 'cartalyst.stripe.charge.captured' event
 		$this->fire('charge.captured', [ $response, $charge ]);
 
-		return $response;
+		return $charge;
 	}
 
 	/**

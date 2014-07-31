@@ -132,6 +132,13 @@ interface BillableInterface {
 	public function invoiceItems();
 
 	/**
+	 * Returns the upcoming invoice items.
+	 *
+	 * @return \Illuminate\Database\Eloquent\Collection
+	 */
+	public function upcomingInvoice();
+
+	/**
 	 * Sets the Eloquent invoice model.
 	 *
 	 * @param  string  $model
@@ -192,5 +199,12 @@ interface BillableInterface {
 	 * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
 	 */
 	public function syncWithStripe();
+
+	/**
+	 * Returns the Stripe API instance.
+	 *
+	 * @return \Cartalyst\Stripe\Api\Stripe
+	 */
+	public static function getStripeClient();
 
 }

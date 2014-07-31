@@ -115,7 +115,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * Creates a new subscription on the entity.
 	 *
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Api\Response
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
 	 */
 	public function create(array $attributes = [])
 	{
@@ -150,10 +150,10 @@ class SubscriptionGateway extends StripeGateway {
 		]);
 
 		// Create the subscription on Stripe
-		$subscription = $this->client->subscriptions()->create($payload);
+		$response = $this->client->subscriptions()->create($payload);
 
 		// Attach the created subscription to the billable entity
-		$this->storeSubscription($subscription);
+		$subscription = $this->storeSubscription($response);
 
 		return $subscription;
 	}
@@ -162,7 +162,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * Updates the subscription.
 	 *
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Api\Response
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
 	 */
 	public function update(array $attributes = [])
 	{
@@ -170,10 +170,10 @@ class SubscriptionGateway extends StripeGateway {
 		$payload = $this->getPayload($attributes);
 
 		// Update the subscription on Stripe
-		$subscription = $this->client->subscriptions()->update($payload);
+		$response = $this->client->subscriptions()->update($payload);
 
 		// Update the subscription on storage
-		$this->storeSubscription($subscription);
+		$subscription = $this->storeSubscription($response);
 
 		return $subscription;
 	}
@@ -182,7 +182,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * Cancels the subscription.
 	 *
 	 * @param  bool  $atPeriodEnd
-	 * @return \Cartalyst\Stripe\Api\Response
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
 	 */
 	public function cancel($atPeriodEnd = false)
 	{
@@ -190,7 +190,7 @@ class SubscriptionGateway extends StripeGateway {
 		$payload = $this->getPayload([ 'at_period_end' => $atPeriodEnd ]);
 
 		// Cancel the subscription on Stripe
-		$subscription = $this->client->subscriptions()->cancel($payload);
+		$response = $this->client->subscriptions()->cancel($payload);
 
 		// Prepare the data for the subscription cancelation
 		$data = [
@@ -210,13 +210,13 @@ class SubscriptionGateway extends StripeGateway {
 		$this->disableEventDispatcher();
 
 		// Update the subscription on storage
-		$model = $this->storeSubscription($subscription, $data);
+		$subscription = $this->storeSubscription($response, $data);
 
 		// Enable the event dispatcher
 		$this->enableEventDispatcher();
 
 		// Fire the 'cartalyst.stripe.subscription.canceled' event
-		$this->fire('subscription.canceled', [ $subscription, $model ]);
+		$this->fire('subscription.canceled', [ $response, $subscription ]);
 
 		return $subscription;
 	}
@@ -224,7 +224,7 @@ class SubscriptionGateway extends StripeGateway {
 	/**
 	 * Resumes the subscription.
 	 *
-	 * @return \Cartalyst\Stripe\Api\Response
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
 	 */
 	public function resume()
 	{
@@ -232,7 +232,7 @@ class SubscriptionGateway extends StripeGateway {
 		$this->disableEventDispatcher();
 
 		// Update the subscription on Stripe
-		$subscription = $this->noProrate()->update([
+		$response = $this->noProrate()->update([
 			'plan' => $this->subscription->plan_id,
 		]);
 
@@ -243,13 +243,13 @@ class SubscriptionGateway extends StripeGateway {
 		];
 
 		// Update the subscription on storage
-		$model = $this->storeSubscription($subscription, $data);
+		$subscription = $this->storeSubscription($response, $data);
 
 		// Enable the event dispatcher
 		$this->enableEventDispatcher();
 
 		// Fire the 'cartalyst.stripe.subscription.resumed' event
-		$this->fire('subscription.resumed', [ $subscription, $model ]);
+		$this->fire('subscription.resumed', [ $response, $subscription ]);
 
 		return $subscription;
 	}

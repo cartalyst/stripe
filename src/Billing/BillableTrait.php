@@ -208,6 +208,14 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
+	public function upcomingInvoice()
+	{
+		return $this->invoiceItems()->where('invoice_id', 0)->get();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public static function setInvoiceModel($model)
 	{
 		static::$invoiceModel = $model;
@@ -288,9 +296,7 @@ trait BillableTrait {
 	}
 
 	/**
-	 * Returns the Stripe API instance.
-	 *
-	 * @return \Cartalyst\Stripe\Api\Stripe
+	 * {@inheritDoc}
 	 */
 	public static function getStripeClient()
 	{

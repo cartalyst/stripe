@@ -73,17 +73,14 @@ class InvoiceGateway extends StripeGateway {
 	 * Creates a new invoice on the entity.
 	 *
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Api\Response
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
 	 */
 	public function create(array $attributes = [])
 	{
-		// Get the entity stripe id
-		$stripeId = $this->billable->stripe_id;
-
 		// Find or Create the Stripe customer that
 		// will belong to this billable entity.
 		$customer = $this->findOrCreate(
-			$stripeId,
+			$this->billable->stripe_id,
 			array_get($attributes, 'customer', [])
 		);
 
@@ -99,14 +96,14 @@ class InvoiceGateway extends StripeGateway {
 
 		// Prepare the payload
 		$attributes = array_merge($attributes, [
-			'customer' => $stripeId,
+			'customer' => $this->billable->stripe_id,
 		]);
 
 		// Create the invoice on Stripe
-		$invoice = $this->client->invoices()->create($attributes);
+		$response = $this->client->invoices()->create($attributes);
 
 		// Attach the created invoice to the billable entity
-		$this->storeInvoice($invoice);
+		$invoice = $this->storeInvoice($response);
 
 		return $invoice;
 	}
@@ -116,7 +113,7 @@ class InvoiceGateway extends StripeGateway {
 	 *
 	 * @param  string  $id
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Api\Response
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
 	 */
 	public function update($id = null, array $attributes = [])
 	{
@@ -127,10 +124,10 @@ class InvoiceGateway extends StripeGateway {
 		$payload = array_merge($attributes, compact('id'));
 
 		// Update the invoice
-		$invoice = $this->client->invoices()->update($payload);
+		$response = $this->client->invoices()->update($payload);
 
 		// Update the invoice on storage
-		$this->storeInvoice($invoice);
+		$invoice = $this->storeInvoice($response);
 
 		return $invoice;
 	}
@@ -139,7 +136,7 @@ class InvoiceGateway extends StripeGateway {
 	 * Pays the given invoice.
 	 *
 	 * @param  string  $id
-	 * @return \Cartalyst\Stripe\Api\Response
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
 	 */
 	public function pay($id = null)
 	{
@@ -181,6 +178,9 @@ class InvoiceGateway extends StripeGateway {
 			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
 		}
 
+		// Instantiate a new Invoice Items Gateway
+		$gateway = new InvoiceItemsGateway($this->billable);
+
 		// Get all the entity invoices
 		$invoices = array_reverse($this->client->invoicesIterator([
 			'customer' => $entity->stripe_id,
@@ -189,29 +189,29 @@ class InvoiceGateway extends StripeGateway {
 		// Loop through the invoices
 		foreach ($invoices as $invoice)
 		{
-			$this->storeInvoice($invoice);
+			$this->storeInvoice($invoice, $gateway);
 		}
-	}
 
-	/**
-	 * Prepares the invoice item description.
-	 *
-	 * @param  string  $type
-	 * @param  array  $item
-	 * @return string
-	 */
-	protected function prepareInvoiceItemDescription($type, $item)
-	{
-		return $type === 'subscription' ? $item['plan']['name'] : $item['description'];
+		// Retrieve the upcoming invoice items
+		$upcomingInvoice = $this->client->invoices()->upcomingInvoice([
+			'customer' => $entity->stripe_id,
+		])->toArray();
+
+		// Loop through the invoices
+		foreach ($upcomingInvoice['lines']['data'] as $item)
+		{
+			$gateway->storeItem($item);
+		}
 	}
 
 	/**
 	 * Stores the invoice information on local storage.
 	 *
 	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
+	 * @param  \Cartalyst\Stripe\Billing\InvoiceItemsGateway  $gateway
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
 	 */
-	protected function storeInvoice($response)
+	protected function storeInvoice($response, $gateway)
 	{
 		// Get the entity object
 		$entity = $this->billable;
@@ -260,61 +260,10 @@ class InvoiceGateway extends StripeGateway {
 		// Loop through the invoice items
 		foreach ($response['lines']['data'] as $item)
 		{
-			$this->storeInvoiceItem($invoice, $item);
+			$gateway->storeItem($item, $invoice);
 		}
 
 		return $invoice;
-	}
-
-	/**
-	 * Stores the invoice item information on local storage.
-	 *
-	 * @param  \Cartalyst\Stripe\Billing\Models\IlluminateInvoice  $invoice
-	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
-	 */
-	protected function storeInvoiceItem(IlluminateInvoice $invoice, $response)
-	{
-		// Get the invoice item id
-		$stripeId = $response['id'];
-
-		// Find the invoice item on storage
-		$item = $invoice->items()->where('stripe_id', $stripeId)->first();
-
-		// Flag to know which event needs to be fired
-		$event = ! $item ? 'created' : 'updated';
-
-		// Get the invoice item type
-		$type = array_get($response, 'type', null);
-
-		// Prepare the payload
-		$payload = [
-			'stripe_id'    => $stripeId,
-			'currency'     => $response['currency'],
-			'type'         => $type,
-			'amount'       => $this->convertToDecimal($response['amount']),
-			'proration'    => (bool) $response['proration'],
-			'description'  => $this->prepareInvoiceItemDescription($type, $response),
-			'plan_id'      => array_get($response, 'plan.id', null),
-			'quantity'     => array_get($response, 'quantity', null),
-			'period_start' => $this->nullableTimestamp(array_get($response, 'period.start', null)),
-			'period_end'   => $this->nullableTimestamp(array_get($response, 'period.end', null)),
-		];
-
-		// Does the invoice item exist on storage?
-		if ( ! $item)
-		{
-			$invoice->items()->create($payload);
-		}
-		else
-		{
-			$item->update($payload);
-		}
-
-		// Fires the appropriate event
-		$this->fire("invoice.item.{$event}", [ $response, $item ]);
-
-		return $item;
 	}
 
 }

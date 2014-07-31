@@ -65,7 +65,7 @@ class CardGateway extends StripeGateway {
 	 *
 	 * @param  string  $token
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Api\Response
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCard
 	 */
 	public function create($token, array $attributes = [])
 	{
@@ -88,7 +88,8 @@ class CardGateway extends StripeGateway {
 			'customer' => $stripeId,
 		]));
 
-		// Get the Stripe customer
+		// Fetch the Stripe customer again, so that we
+		// have the customer with the most recent data.
 		$customer = $this->client->customers()->find([
 			'id' => $stripeId,
 		]);
@@ -106,16 +107,16 @@ class CardGateway extends StripeGateway {
 		}
 
 		// Attach the created card to the billable entity
-		$this->storeCard($response, $isDefault);
+		$card = $this->storeCard($response, $isDefault);
 
-		return $response;
+		return $card;
 	}
 
 	/**
 	 * Updates the card.
 	 *
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Api\Response
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCard
 	 */
 	public function update(array $attributes = [])
 	{
@@ -126,15 +127,15 @@ class CardGateway extends StripeGateway {
 		$response = $this->client->cards()->update($payload);
 
 		// Update the card on storage
-		$this->storeCard($response);
+		$card = $this->storeCard($response);
 
-		return $response;
+		return $card;
 	}
 
 	/**
 	 * Deletes the card.
 	 *
-	 * @return \Cartalyst\Stripe\Api\Response
+	 * @return bool
 	 */
 	public function delete()
 	{
@@ -149,12 +150,13 @@ class CardGateway extends StripeGateway {
 			'id' => $this->billable->stripe_id,
 		]);
 
+		// Update the default card on storage
 		$this->updateDefaultLocalCard($customer['default_card']);
 
 		// Fire the 'cartalyst.stripe.card.deleted' event
 		$this->fire('card.deleted', [ $response ]);
 
-		return $response;
+		return true;
 	}
 
 	/**
@@ -176,11 +178,13 @@ class CardGateway extends StripeGateway {
 	 */
 	public function setDefault()
 	{
+		// Update the customer
 		$this->client->customers()->update([
 			'id'           => $this->billable->stripe_id,
 			'default_card' => $this->card->stripe_id,
 		]);
 
+		// Update the default card on storage
 		$this->updateDefaultLocalCard($this->card->stripe_id);
 	}
 
@@ -206,7 +210,7 @@ class CardGateway extends StripeGateway {
 			'id' => $entity->stripe_id,
 		]);
 
-		// Get all the entity cards
+		// Get all the entity cards from Stripe
 		$cards = $this->client->cardsIterator([
 			'customer' => $entity->stripe_id,
 		]);
@@ -234,9 +238,7 @@ class CardGateway extends StripeGateway {
 		// Loop through the credit cards
 		foreach ($stripeCards as $card)
 		{
-			$isDefault = ($defaultCard === $card['id']);
-
-			$this->storeCard($card, $isDefault);
+			$this->storeCard($card, ($defaultCard === $card['id']));
 		}
 	}
 
@@ -257,7 +259,7 @@ class CardGateway extends StripeGateway {
 	/**
 	 * Updates the default card that is stored locally.
 	 *
-	 * @param  int  $id
+	 * @param  string  $id
 	 * @return void
 	 */
 	protected function updateDefaultLocalCard($id)
@@ -311,9 +313,7 @@ class CardGateway extends StripeGateway {
 		// Should we make this card the default card?
 		if ($default)
 		{
-			$entity->cards()->where('default', true)->update(['default' => false]);
-
-			$entity->cards()->where('stripe_id', $stripeId)->update(['default' => true]);
+			$this->updateDefaultLocalCard($stripeId);
 		}
 
 		// Fire the appropriate event
