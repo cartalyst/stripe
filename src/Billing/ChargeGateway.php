@@ -344,7 +344,7 @@ class ChargeGateway extends StripeGateway {
 	 *
 	 * @param  \Cartalyst\Stripe\Billing\Models\IlluminateCharge  $charge
 	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateRefund
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund
 	 */
 	protected function storeChargeRefund(IlluminateCharge $charge, $response)
 	{

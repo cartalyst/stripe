@@ -19,12 +19,12 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class IlluminateRefund extends Model {
+class IlluminateChargeRefund extends Model {
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public $table = 'refunds';
+	public $table = 'payment_refunds';
 
 	/**
 	 * {@inheritDoc}

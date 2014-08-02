@@ -54,7 +54,7 @@ class IlluminateCharge extends Model {
 	 *
 	 * @var string
 	 */
-	protected static $refundModel = 'Cartalyst\Stripe\Billing\Models\IlluminateRefund';
+	protected static $refundModel = 'Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund';
 
 	/**
 	 * Checks if the charge is partially refunded.
@@ -100,7 +100,7 @@ class IlluminateCharge extends Model {
 	/**
 	 * Returns all the refunds associated to this charge.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateRefund
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund
 	 */
 	public function refunds()
 	{

@@ -104,7 +104,7 @@ class CartalystStripeCreateTables extends Migration {
 			$table->engine = 'InnoDB';
 		});
 
-		Schema::create('refunds', function(Blueprint $table)
+		Schema::create('payment_refunds', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('payment_id')->unsigned();

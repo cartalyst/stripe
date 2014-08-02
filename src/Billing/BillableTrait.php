@@ -55,7 +55,7 @@ trait BillableTrait {
 	 *
 	 * @var string
 	 */
-	protected static $chargeRefundModel = 'Cartalyst\Stripe\Billing\Models\IlluminateRefund';
+	protected static $chargeRefundModel = 'Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund';
 
 	/**
 	 * The Eloquent invoice model.
