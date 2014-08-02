@@ -107,7 +107,7 @@ class Stripe {
 	 * Sets the Stripe API key.
 	 *
 	 * @param  string  $stripeKey
-	 * @return \Cartalyst\Stripe\Api\Stripe
+	 * @return $this
 	 */
 	public function setStripeKey($stripeKey)
 	{
@@ -130,7 +130,7 @@ class Stripe {
 	 * Sets the version to be used.
 	 *
 	 * @param  string  $version
-	 * @return \Cartalyst\Stripe\Api\Stripe
+	 * @return $this
 	 */
 	public function setVersion($version)
 	{
@@ -157,7 +157,7 @@ class Stripe {
 	 * Sets the user agent.
 	 *
 	 * @param  string  $userAgent
-	 * @return \Cartalyst\Stripe\Api\Stripe
+	 * @return $this
 	 */
 	public function setUserAgent($userAgent)
 	{
@@ -180,7 +180,7 @@ class Stripe {
 	 * Sets the manifests path.
 	 *
 	 * @param  string  $manifestPath
-	 * @return \Cartalyst\Stripe\Api\Stripe
+	 * @return $this
 	 */
 	public function setManifestPath($manifestPath)
 	{
@@ -203,7 +203,7 @@ class Stripe {
 	 * Sets the Guzzle client headers.
 	 *
 	 * @param  array  $headers
-	 * @return \Cartalyst\Stripe\Api\Stripe
+	 * @return $this
 	 */
 	public function setHeaders(array $headers = [])
 	{

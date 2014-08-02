@@ -205,7 +205,7 @@ class ChargeGateway extends StripeGateway {
 	/**
 	 * Disables the charge from being captured.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\ChargeGateway
+	 * @return $this
 	 */
 	public function disableCapture()
 	{
@@ -218,7 +218,7 @@ class ChargeGateway extends StripeGateway {
 	 * Sets the currency to be used upon a new charge.
 	 *
 	 * @param  string  $currency
-	 * @return \Cartalyst\Stripe\Billing\ChargeGateway
+	 * @return $this
 	 */
 	public function setCurrency($currency)
 	{
@@ -231,7 +231,7 @@ class ChargeGateway extends StripeGateway {
 	 * Sets the token that'll be used to create a new credit card.
 	 *
 	 * @param  string  $token
-	 * @return \Cartalyst\Stripe\Billing\ChargeGateway
+	 * @return $this
 	 */
 	public function setToken($token)
 	{

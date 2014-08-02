@@ -162,7 +162,7 @@ class CardGateway extends StripeGateway {
 	/**
 	 * Make this credit card the default one after creation.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\CardGateway
+	 * @return $this
 	 */
 	public function makeDefault()
 	{

@@ -268,7 +268,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * Sets the token for the new card.
 	 *
 	 * @param  string  $token
-	 * @return \Cartalyst\Stripe\Billing\SubscriptionGateway
+	 * @return $this
 	 */
 	public function setToken($token)
 	{
@@ -281,7 +281,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * The subscription plan name.
 	 *
 	 * @param  string  $plan
-	 * @return \Cartalyst\Stripe\Billing\SubscriptionGateway
+	 * @return $this
 	 */
 	public function onPlan($plan)
 	{
@@ -294,7 +294,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * The discount that'll be applied to the subscription.
 	 *
 	 * @param  string  $coupon
-	 * @return \Cartalyst\Stripe\Billing\SubscriptionGateway
+	 * @return $this
 	 */
 	public function withCoupon($coupon)
 	{
@@ -330,7 +330,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * The quantity that'll be applied to the subscription.
 	 *
 	 * @param  int  $quantity
-	 * @return \Cartalyst\Stripe\Billing\SubscriptionGateway
+	 * @return $this
 	 */
 	public function quantity($quantity)
 	{
@@ -343,7 +343,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * Increments the subscription quantity.
 	 *
 	 * @param  int  $amount
-	 * @return \Cartalyst\Stripe\Billing\SubscriptionGateway
+	 * @return $this
 	 */
 	public function increment($amount = 1)
 	{
@@ -356,7 +356,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * Decrements the subscription quantity.
 	 *
 	 * @param  int  $amount
-	 * @return \Cartalyst\Stripe\Billing\SubscriptionGateway
+	 * @return $this
 	 */
 	public function decrement($amount = 1)
 	{
@@ -369,7 +369,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * Updates the subscription quantity.
 	 *
 	 * @param  int  $quantity
-	 * @return \Cartalyst\Stripe\Billing\SubscriptionGateway
+	 * @return $this
 	 */
 	public function updateQuantity($quantity)
 	{
@@ -379,7 +379,7 @@ class SubscriptionGateway extends StripeGateway {
 	/**
 	 * Indicates that the plan change should be prorated.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\SubscriptionGateway
+	 * @return $this
 	 */
 	public function prorate()
 	{
@@ -391,7 +391,7 @@ class SubscriptionGateway extends StripeGateway {
 	/**
 	 * Indicates that the plan change should not be prorated.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\SubscriptionGateway
+	 * @return $this
 	 */
 	public function noProrate()
 	{
@@ -404,7 +404,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * Specify the endig date of the trial.
 	 *
 	 * @param  \Carbon\Carbon  $trialEnd
-	 * @return \Cartalyst\Stripe\Billing\SubscriptionGateway
+	 * @return $this
 	 */
 	public function trialFor(Carbon $trialEnd)
 	{
@@ -454,7 +454,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * Indicates that the subscription shouldn't
 	 * have any trial end period.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\SubscriptionGateway
+	 * @return $this
 	 */
 	public function skipTrial()
 	{
@@ -542,7 +542,7 @@ class SubscriptionGateway extends StripeGateway {
 	/**
 	 * Maintain the days left of the current trial (if applicable).
 	 *
-	 * @return \Cartalyst\Stripe\Billing\SubscriptionGateway
+	 * @return $this
 	 */
 	protected function maintainTrial()
 	{
