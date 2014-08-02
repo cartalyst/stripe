@@ -14,13 +14,25 @@ cartalyst.stripe.charge.refunded      | $entity, $response, $charge       | Even
 cartalyst.stripe.invoice.created      | $entity, $response, $invoice      | Event fired when a new invoice is attached to the entity.
 cartalyst.stripe.invoice.updated      | $entity, $response, $invoice      | Event fired when an existing invocie is updated.
 cartalyst.stripe.invoice.paid         | $entity, $response, $invoice      | Event fired when an existing invocie is paid.
-cartalyst.stripe.invoice.item.created | $entity, $response                | Event fired when a new invoice item is created.
-cartalyst.stripe.invoice.item.updated | $entity, $response                | Event fired when an existing invoice item is updated.
+cartalyst.stripe.invoice.item.created | $entity, $response, $item         | Event fired when a new invoice item is created.
+cartalyst.stripe.invoice.item.updated | $entity, $response, $item         | Event fired when an existing invoice item is updated.
 cartalyst.stripe.invoice.item.deleted | $entity, $response                | Event fired when an existing invoice item is deleted.
 cartalyst.stripe.subscription.created | $entity, $response, $subscription | Event fired when a new subscription is attached to the entity.
 cartalyst.stripe.subscription.updated | $entity, $response, $subscription | Event fired when an existing subscription is updated.
 cartalyst.stripe.subscription.updated | $entity, $response, $subscription | Event fired when an existing subscription is canceled.
 cartalyst.stripe.subscription.resumed | $entity, $response, $subscription | Event fired when an existing subscription is resumed.
+
+> **Note:** Please refer to the list below for the full event `parameter` object namespace.
+
+Parameter     | Response
+------------- | ----------------------------------------------------------------
+$entity       | Cartalyst\Stripe\Billing\BillingInterface
+$response     | Cartalyst\Stripe\Api\Response
+$card         | Cartalyst\Stripe\Billing\Models\IlluminateCard
+$charge       | Cartalyst\Stripe\Billing\Models\IlluminateCharge
+$invoice      | Cartalyst\Stripe\Billing\Models\IlluminateInvoice
+$item         | Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
+$subscription | Cartalyst\Stripe\Billing\Models\IlluminateSubscription
 
 #### Examples
 
