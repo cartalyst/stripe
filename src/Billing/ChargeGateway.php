@@ -123,9 +123,7 @@ class ChargeGateway extends StripeGateway {
 		$response = $this->client->charges()->create($payload);
 
 		// Attach the created charge to the billable entity
-		$charge = $this->storeCharge($response);
-
-		return $charge;
+		return $this->storeCharge($response);
 	}
 
 	/**
@@ -143,9 +141,7 @@ class ChargeGateway extends StripeGateway {
 		$response = $this->client->charges()->update($payload);
 
 		// Update the charge on storage
-		$charge = $this->storeCharge($response);
-
-		return $charge;
+		return $this->storeCharge($response);
 	}
 
 	/**
@@ -171,9 +167,7 @@ class ChargeGateway extends StripeGateway {
 		$response = $this->client->charges()->find($this->getPayload());
 
 		// Update the charge on storage
-		$charge = $this->storeCharge($response);
-
-		return $charge;
+		return $this->storeCharge($response);
 	}
 
 	/**

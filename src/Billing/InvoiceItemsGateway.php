@@ -48,9 +48,7 @@ class InvoiceItemsGateway extends StripeGateway {
 		$response = $this->client->invoiceItems()->create($attributes);
 
 		// Store the item on storage
-		$item = $this->storeItem($response);
-
-		return $item;
+		return $this->storeItem($response);
 	}
 
 	/**
@@ -69,9 +67,7 @@ class InvoiceItemsGateway extends StripeGateway {
 		$response = $this->client->invoiceItems()->update($payload);
 
 		// Store the item on storage
-		$item = $this->storeItem($response);
-
-		return $item;
+		return $this->storeItem($response);
 	}
 
 	/**

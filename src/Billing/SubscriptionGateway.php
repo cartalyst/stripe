@@ -153,9 +153,7 @@ class SubscriptionGateway extends StripeGateway {
 		$response = $this->client->subscriptions()->create($payload);
 
 		// Attach the created subscription to the billable entity
-		$subscription = $this->storeSubscription($response);
-
-		return $subscription;
+		return $this->storeSubscription($response);
 	}
 
 	/**
@@ -173,9 +171,7 @@ class SubscriptionGateway extends StripeGateway {
 		$response = $this->client->subscriptions()->update($payload);
 
 		// Update the subscription on storage
-		$subscription = $this->storeSubscription($response);
-
-		return $subscription;
+		return $this->storeSubscription($response);
 	}
 
 	/**

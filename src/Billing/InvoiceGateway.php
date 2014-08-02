@@ -103,9 +103,7 @@ class InvoiceGateway extends StripeGateway {
 		$response = $this->client->invoices()->create($attributes);
 
 		// Attach the created invoice to the billable entity
-		$invoice = $this->storeInvoice($response);
-
-		return $invoice;
+		return $this->storeInvoice($response);
 	}
 
 	/**
@@ -127,9 +125,7 @@ class InvoiceGateway extends StripeGateway {
 		$response = $this->client->invoices()->update($payload);
 
 		// Update the invoice on storage
-		$invoice = $this->storeInvoice($response);
-
-		return $invoice;
+		return $this->storeInvoice($response);
 	}
 
 	/**

@@ -107,9 +107,7 @@ class CardGateway extends StripeGateway {
 		}
 
 		// Attach the created card to the billable entity
-		$card = $this->storeCard($response, $isDefault);
-
-		return $card;
+		return $this->storeCard($response, $isDefault);
 	}
 
 	/**
@@ -127,9 +125,7 @@ class CardGateway extends StripeGateway {
 		$response = $this->client->cards()->update($payload);
 
 		// Update the card on storage
-		$card = $this->storeCard($response);
-
-		return $card;
+		return $this->storeCard($response);
 	}
 
 	/**
