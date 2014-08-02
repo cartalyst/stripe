@@ -20,15 +20,14 @@ class Card extends IlluminateCard {
 
 #### Models list
 
-Model Name      | Model full namespace path
---------------- | --------------------------------------------------------------
-Card            | Cartalyst\Stripe\Billing\Models\IlluminateCard
-Charge          | Cartalyst\Stripe\Billing\Models\IlluminateCharge
-ChargeRefund    | Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund
-Invoice         | Cartalyst\Stripe\Billing\Models\IlluminateInvoice
-InvoiceItem     | Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
-InvoiceMetadata | Cartalyst\Stripe\Billing\Models\IlluminateInvoiceMetadata
-Subscription    | Cartalyst\Stripe\Billing\Models\IlluminateSubscription
+Model Name   | Model full namespace path
+------------ | -----------------------------------------------------------------
+Card         | Cartalyst\Stripe\Billing\Models\IlluminateCard
+Charge       | Cartalyst\Stripe\Billing\Models\IlluminateCharge
+ChargeRefund | Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund
+Invoice      | Cartalyst\Stripe\Billing\Models\IlluminateInvoice
+InvoiceItem  | Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
+Subscription | Cartalyst\Stripe\Billing\Models\IlluminateSubscription
 
 #### Set the models
 
