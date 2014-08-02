@@ -93,6 +93,8 @@ class ChargeGateway extends StripeGateway {
 			array_get($attributes, 'customer', [])
 		);
 
+		array_forget($attributes, 'customer');
+
 		// Get the current default card identifier
 		$card = $customer['default_card'];
 
@@ -105,7 +107,7 @@ class ChargeGateway extends StripeGateway {
 				array_get($attributes, 'card', [])
 			);
 
-			$card = $card['id'];
+			$card = $card['stripe_id'];
 		}
 
 		// Prepare the payload
@@ -352,21 +354,21 @@ class ChargeGateway extends StripeGateway {
 	 */
 	protected function storeChargeRefund(IlluminateCharge $charge, $response)
 	{
-		// Get the transaction id
-		$transactionId = $response['balance_transaction'];
+		// Get the refund id
+		$stripeId = $response['id'];
 
 		// Find the refund on storage
-		$refund = $charge->refunds()->where('transaction_id', $transactionId)->first();
+		$refund = $charge->refunds()->where('stripe_id', $stripeId)->first();
 
 		// Flag to know which event needs to be fired
 		$event = ! $refund ? 'created' : 'updated';
 
 		// Prepare the payload
 		$payload = [
-			'transaction_id' => $transactionId,
-			'amount'         => $this->convertToDecimal($response['amount']),
-			'currency'       => $response['currency'],
-			'created_at'     => Carbon::createFromTimestamp($response['created']),
+			'stripe_id'  => $stripeId,
+			'amount'     => $this->convertToDecimal($response['amount']),
+			'currency'   => $response['currency'],
+			'created_at' => Carbon::createFromTimestamp($response['created']),
 		];
 
 		// Does the refund exists on storage?

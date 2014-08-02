@@ -17,6 +17,8 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Stripe\Billing\Models\IlluminateInvoice;
+
 class InvoiceItemsGateway extends StripeGateway {
 
 	/**
@@ -96,7 +98,7 @@ class InvoiceItemsGateway extends StripeGateway {
 	 * @param  \Cartalyst\Stripe\Billing\Models\IlluminateInvoice  $invoice
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
 	 */
-	public function storeItem($response, $invoice = null)
+	public function storeItem($response, IlluminateInvoice $invoice = null)
 	{
 		// Get the entity object
 		$entity = $this->billable;
@@ -104,13 +106,23 @@ class InvoiceItemsGateway extends StripeGateway {
 		// Get the invoice item id
 		$stripeId = $response['id'];
 
+		// Get the invocie id
+		$invoiceId = $invoice ? $invoice->id : 0;
+
 		// Get the invoice item type
 		$type = array_get($response, 'type', 'invoiceitem');
+
+		// Get the invoice item period start & period end
+		$periodStart = $this->nullableTimestamp(array_get($response, 'period.start', null));
+		$periodEnd = $this->nullableTimestamp(array_get($response, 'period.end', null));
 
 		// Find the invoice item on storage
 		$item = $entity->invoiceItems()
 			->where('stripe_id', $stripeId)
+			->where('invoice_id', $invoiceId)
 			->where('type', $type)
+			->where('period_start', $periodStart)
+			->where('period_end', $periodEnd)
 			->first();
 
 		// Flag to know which event needs to be fired
@@ -119,7 +131,7 @@ class InvoiceItemsGateway extends StripeGateway {
 		// Prepare the payload
 		$payload = [
 			'stripe_id'    => $stripeId,
-			'invoice_id'   => $invoice ? $invoice->id : 0,
+			'invoice_id'   => $invoiceId,
 			'currency'     => $response['currency'],
 			'type'         => $type,
 			'amount'       => $this->convertToDecimal($response['amount']),
@@ -127,8 +139,8 @@ class InvoiceItemsGateway extends StripeGateway {
 			'description'  => $this->prepareInvoiceItemDescription($type, $response),
 			'plan_id'      => array_get($response, 'plan.id', null),
 			'quantity'     => array_get($response, 'quantity', null),
-			'period_start' => $this->nullableTimestamp(array_get($response, 'period.start', null)),
-			'period_end'   => $this->nullableTimestamp(array_get($response, 'period.end', null)),
+			'period_start' => $periodStart,
+			'period_end'   => $periodEnd,
 		];
 
 		// Does the invoice item exist on storage?

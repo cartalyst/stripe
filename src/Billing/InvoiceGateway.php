@@ -178,9 +178,6 @@ class InvoiceGateway extends StripeGateway {
 			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
 		}
 
-		// Instantiate a new Invoice Items Gateway
-		$gateway = new InvoiceItemsGateway($this->billable);
-
 		// Get all the entity invoices
 		$invoices = array_reverse($this->client->invoicesIterator([
 			'customer' => $entity->stripe_id,
@@ -189,7 +186,7 @@ class InvoiceGateway extends StripeGateway {
 		// Loop through the invoices
 		foreach ($invoices as $invoice)
 		{
-			$this->storeInvoice($invoice, $gateway);
+			$this->storeInvoice($invoice);
 		}
 
 		// Retrieve the upcoming invoice items
@@ -200,7 +197,7 @@ class InvoiceGateway extends StripeGateway {
 		// Loop through the invoices
 		foreach ($upcomingInvoice['lines']['data'] as $item)
 		{
-			$gateway->storeItem($item);
+			$this->items()->storeItem($item);
 		}
 	}
 
@@ -208,10 +205,9 @@ class InvoiceGateway extends StripeGateway {
 	 * Stores the invoice information on local storage.
 	 *
 	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
-	 * @param  \Cartalyst\Stripe\Billing\InvoiceItemsGateway  $gateway
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
 	 */
-	protected function storeInvoice($response, $gateway)
+	protected function storeInvoice($response)
 	{
 		// Get the entity object
 		$entity = $this->billable;
@@ -260,7 +256,7 @@ class InvoiceGateway extends StripeGateway {
 		// Loop through the invoice items
 		foreach ($response['lines']['data'] as $item)
 		{
-			$gateway->storeItem($item, $invoice);
+			$this->items()->storeItem($item, $invoice);
 		}
 
 		return $invoice;

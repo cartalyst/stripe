@@ -32,8 +32,8 @@ class IlluminateRefund extends Model {
 	protected $fillable = [
 		'amount',
 		'currency',
+		'stripe_id',
 		'payment_id',
-		'transaction_id',
 	];
 
 	/**
