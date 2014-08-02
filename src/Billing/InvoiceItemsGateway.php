@@ -106,9 +106,6 @@ class InvoiceItemsGateway extends StripeGateway {
 		// Get the invoice item id
 		$stripeId = $response['id'];
 
-		// Get the invocie id
-		$invoiceId = $invoice ? $invoice->id : 0;
-
 		// Get the invoice item type
 		$type = array_get($response, 'type', 'invoiceitem');
 
@@ -119,7 +116,6 @@ class InvoiceItemsGateway extends StripeGateway {
 		// Find the invoice item on storage
 		$item = $entity->invoiceItems()
 			->where('stripe_id', $stripeId)
-			->where('invoice_id', $invoiceId)
 			->where('type', $type)
 			->where('period_start', $periodStart)
 			->where('period_end', $periodEnd)
@@ -131,7 +127,7 @@ class InvoiceItemsGateway extends StripeGateway {
 		// Prepare the payload
 		$payload = [
 			'stripe_id'    => $stripeId,
-			'invoice_id'   => $invoiceId,
+			'invoice_id'   => $invoice ? $invoice->id : 0,
 			'currency'     => $response['currency'],
 			'type'         => $type,
 			'amount'       => $this->convertToDecimal($response['amount']),
