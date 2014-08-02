@@ -73,8 +73,6 @@ $items = $invoice->items;
 echo $invoice['total'];
 ```
 
-> **Note:** The metadata table columns are configurable through the migration, but keep in mind that you might require to extend the invoice metadata model to include your own column names on the `$fillable` property.
-
 #### Sync data from Stripe
 
 Often you might have the need to sync the data from Stripe with your database, we have an easy way to achieve this.
