@@ -20,7 +20,7 @@
 return [
 
 	'name'        => 'Stripe',
-	'apiVersion'  => '2014-06-17',
+	'apiVersion'  => '2014-07-26',
 	'baseUrl'     => 'https://api.stripe.com',
 	'description' => 'Stripe is a payment system',
 	'operations'  => [],
