@@ -36,7 +36,7 @@ class Stripe {
 	 *
 	 * @var string
 	 */
-	protected $version = '2014-06-17';
+	protected $version = '2014-07-26';
 
 	/**
 	 * The user agent.
@@ -53,14 +53,7 @@ class Stripe {
 	protected $manifestPath;
 
 	/**
-	 * Holds the main manifest data.
-	 *
-	 * @var array
-	 */
-	protected $manifest;
-
-	/**
-	 * The Cached manifests data.
+	 * The cached manifests data.
 	 *
 	 * @var array
 	 */
@@ -282,8 +275,8 @@ class Stripe {
 		$dispatcher->addSubscriber(new ErrorResponsePlugin);
 
 		// Set the manifest payload into the Guzzle client
-		$manifest = $this->getManifestPayload($method);
-		$client->setDescription(ServiceDescription::factory($manifest));
+		$payload = $this->buildPayload($method);
+		$client->setDescription(ServiceDescription::factory($payload));
 
 		// Return the Guzzle client
 		return $client;
@@ -300,61 +293,54 @@ class Stripe {
 	}
 
 	/**
-	 * Returns the main manifest data.
+	 * Returns the given request manifest file path.
 	 *
-	 * @return array
-	 */
-	protected function getManifest()
-	{
-		if ( ! $this->manifest)
-		{
-			$this->manifest = require_once "{$this->getFullManifestPath()}/Manifest.php";
-		}
-
-		return $this->manifest;
-	}
-
-	/**
-	 * Returns the appropriate manifest for the current request.
-	 *
-	 * @param  string  $method
-	 * @return array
-	 */
-	protected function getManifestPayload($method)
-	{
-		$operations = $this->getRequestManifestPayload($method);
-
-		return array_merge($this->getManifest(), compact('operations'));
-	}
-
-	/**
-	 * Returns the current request manifest file path.
-	 *
-	 * @param  string  $method
+	 * @param  string  $file
 	 * @return string
 	 */
-	protected function getRequestManifestPath($method)
+	protected function getManifestFilePath($file)
 	{
-		$method = ucwords($method);
+		$file = ucwords($file);
 
-		return "{$this->getFullManifestPath()}/{$method}.php";
+		return "{$this->getFullManifestPath()}/{$file}.php";
 	}
 
 	/**
-	 * Returns the current request manifest payload.
+	 * Returns the current request payload.
 	 *
 	 * @param  string  $method
 	 * @return array
 	 */
-	protected function getRequestManifestPayload($method)
+	protected function buildPayload($method)
 	{
-		if ( ! $manifest = array_get($this->manifests, $method))
+		$manifest = $this->getRequestManifestPayload('manifest', false);
+
+		$operations = $this->getRequestManifestPayload($method);
+
+		return array_merge($manifest, compact('operations'));
+	}
+
+	/**
+	 * Returns the given file manifest data.
+	 *
+	 * @param  string  $file
+	 * @param  bool  $includeErrors
+	 * @return array
+	 */
+	protected function getRequestManifestPayload($file, $includeErrors = true)
+	{
+		$file = ucwords($file);
+
+		if ( ! $manifest = array_get($this->manifests, $file))
 		{
-			$errors = require $this->getRequestManifestPath('Errors');
+			if ($includeErrors)
+			{
+				$errors = $this->getRequestManifestPayload('errors', false);
+			}
 
-			$manifest = require_once $this->getRequestManifestPath($method);
+			$manifest = require_once $this->getManifestFilePath($file);
 
-			array_set($this->manifests, $method, $manifest);
+			array_set($this->manifests, $file, $manifest);
 		}
 
 		return $manifest;
@@ -363,12 +349,12 @@ class Stripe {
 	/**
 	 * Checks if the manifest file for the current request exists.
 	 *
-	 * @param  string  $method
+	 * @param  string  $file
 	 * @return bool
 	 */
-	protected function manifestExists($method)
+	protected function manifestExists($file)
 	{
-		return file_exists($this->getRequestManifestPath($method));
+		return file_exists($this->getManifestFilePath($file));
 	}
 
 }
