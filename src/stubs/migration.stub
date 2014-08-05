@@ -148,11 +148,11 @@ class CartalystStripeCreateTables extends Migration {
 	{
 		$tables = [
 			'cards',
-			'refunds',
 			'invoices',
 			'payments',
 			'invoice_items',
 			'subscriptions',
+			'payment_refunds'
 		];
 
 		foreach ($tables as $table)
