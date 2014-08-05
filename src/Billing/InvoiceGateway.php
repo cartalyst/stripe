@@ -18,6 +18,7 @@
  */
 
 use Carbon\Carbon;
+use Cartalyst\Stripe\Api\Exception\NotFoundException;
 use Cartalyst\Stripe\Billing\Models\IlluminateInvoice;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -185,15 +186,22 @@ class InvoiceGateway extends StripeGateway {
 			$this->storeInvoice($invoice);
 		}
 
-		// Retrieve the upcoming invoice items
-		$upcomingInvoice = $this->client->invoices()->upcomingInvoice([
-			'customer' => $entity->stripe_id,
-		])->toArray();
-
-		// Loop through the invoices
-		foreach ($upcomingInvoice['lines']['data'] as $item)
+		try
 		{
-			$this->items()->storeItem($item);
+			// Retrieve the upcoming invoice items
+			$upcomingInvoice = $this->client->invoices()->upcomingInvoice([
+				'customer' => $entity->stripe_id,
+			])->toArray();
+
+			// Loop through the invoices
+			foreach ($upcomingInvoice['lines']['data'] as $item)
+			{
+				$this->items()->storeItem($item);
+			}
+		}
+		catch (NotFoundException $e)
+		{
+
 		}
 	}
 
