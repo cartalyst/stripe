@@ -44,10 +44,10 @@ class WebhookController extends Controller {
 		// Check if the method exists
 		if (method_exists($this, $method))
 		{
-			// Store the 'previous_attributes'
-			$previous_attributes = array_get($payload, 'previous_attributes', []);
+			// Get the 'previous_attributes' data, if available
+			$previous_attributes = array_get($payload, 'data.previous_attributes', []);
 
-			// Merge in the 'previous_attributes' with the object data
+			// Merge in the 'previous_attributes' with the main object data
 			$payload = array_merge($payload['data']['object'], compact('previous_attributes'));
 
 			// Execute the method call
