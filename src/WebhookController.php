@@ -44,7 +44,14 @@ class WebhookController extends Controller {
 		// Check if the method exists
 		if (method_exists($this, $method))
 		{
-			return $this->{$method}($payload['data']['object']);
+			// Store the 'previous_attributes'
+			$previous_attributes = array_get($payload, 'previous_attributes', []);
+
+			// Merge in the 'previous_attributes' with the object data
+			$payload = array_merge($payload['data']['object'], compact('previous_attributes'));
+
+			// Execute the method call
+			return $this->{$method}($payload);
 		}
 
 		// Return a positive message for Stripe anyways
