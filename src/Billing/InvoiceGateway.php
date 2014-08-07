@@ -186,6 +186,9 @@ class InvoiceGateway extends StripeGateway {
 			$this->storeInvoice($invoice);
 		}
 
+		// Array that will hold the pending invoice items
+		$stripeItems = [];
+
 		try
 		{
 			// Retrieve the upcoming invoice items
@@ -197,11 +200,26 @@ class InvoiceGateway extends StripeGateway {
 			foreach ($upcomingInvoice['lines']['data'] as $item)
 			{
 				$this->items()->storeItem($item);
+
+				$stripeItems[$item['id']] = $item;
 			}
 		}
 		catch (NotFoundException $e)
 		{
 
+		}
+
+		// Loop through the current pending invoice items that are
+		// on storage and verify if they still exist on Stripe,
+		// if they do exist, we must need to delete them from
+		// storage, this is to make sure that the pending
+		// invoice items are completely in sync.
+		foreach ($entity->upcomingInvoice() as $item)
+		{
+			if ( ! array_get($stripeItems, $item->stripe_id))
+			{
+				$item->delete();
+			}
 		}
 	}
 
