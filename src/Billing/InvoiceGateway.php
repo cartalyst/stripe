@@ -211,7 +211,7 @@ class InvoiceGateway extends StripeGateway {
 
 		// Loop through the current pending invoice items that are
 		// on storage and verify if they still exist on Stripe,
-		// if they do exist, we must need to delete them from
+		// if they don't exist, we'll delete them from local
 		// storage, this is to make sure that the pending
 		// invoice items are completely in sync.
 		foreach ($entity->upcomingInvoice() as $item)
