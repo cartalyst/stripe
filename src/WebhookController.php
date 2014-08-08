@@ -96,8 +96,7 @@ class WebhookController extends Controller {
 	}
 
 	/**
-	 * Returns a Carbon object if the provided timestamp
-	 * is valid and returns null otherwise.
+	 * Converts the given timestamp into a Carbon object.
 	 *
 	 * @param  int  $timestamp
 	 * @return \Carbon\Carbon|null
