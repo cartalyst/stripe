@@ -99,3 +99,9 @@ $charge = Stripe::charges()->find([
 	'id' => 'ch_4ECWMVQp5SJKEx',
 ]);
 ```
+
+###### Using the alias
+
+```php
+$charge = Stripe::charge('ch_4ECWMVQp5SJKEx');
+```

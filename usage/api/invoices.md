@@ -96,6 +96,12 @@ $invoice = Stripe::invoices()->find([
 echo $invoice['paid'];
 ```
 
+###### Using the alias
+
+```php
+$charge = Stripe::invoice('in_4EgP02zb8qxsLq');
+```
+
 #### Retrieve an existing invoice line items
 
 When retrieving an invoice, you'll get a lines property containing the total count of line items and the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.

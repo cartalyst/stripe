@@ -121,6 +121,12 @@ $subscription = Stripe::subscriptions()->find([
 echo $subscription['id'];
 ```
 
+###### Using the alias
+
+```php
+$charge = Stripe::subscription('cus_4EBumIjyaKooft', 'sub_4ETjGeEPC5ai9J');
+```
+
 #### Delete a subscription discount
 
 Removes the currently applied discount on a subscription.
@@ -134,5 +140,5 @@ id       | true     | string | null    | The subscription unique identifier.
 $customer = Stripe::subscriptions()->deleteDiscount([
 	'customer' => 'cus_4EBumIjyaKooft',
 	'id'       => 'sub_4ETjGeEPC5ai9J',
-])->findArray();
+])->toArray();
 ```

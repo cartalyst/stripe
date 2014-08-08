@@ -57,6 +57,12 @@ $refund = Stripe::refunds()->find([
 ]);
 ```
 
+###### Using the alias
+
+```php
+$charge = Stripe::refund('ch_4ECWMVQp5SJKEx', 'txn_4IgdBGArAOeiQw');
+```
+
 #### Update an existing refund
 
 Updates the specified refund by setting the values of the parameters passed. Any parameters not provided will be left unchanged.

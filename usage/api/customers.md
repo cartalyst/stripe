@@ -100,6 +100,12 @@ $customer = Stripe::customers()->find([
 echo $customer['email'];
 ```
 
+###### Using the alias
+
+```php
+$charge = Stripe::customer('cus_4EBumIjyaKooft');
+```
+
 #### Delete a customer discount
 
 Removes the currently applied discount on a customer.
@@ -111,5 +117,5 @@ id  | true     | string | null    | The customer unique identifier.
 ```php
 $customer = Stripe::customers()->deleteDiscount([
 	'id' => 'cus_4EBumIjyaKooft',
-])->findArray();
+])->toArray();
 ```

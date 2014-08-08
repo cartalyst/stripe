@@ -99,3 +99,9 @@ $plan = Stripe::plans()->find([
 
 echo $plan['name'];
 ```
+
+###### Using the alias
+
+```php
+$charge = Stripe::plan('monthly');
+```

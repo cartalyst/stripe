@@ -11,7 +11,7 @@ Have a [read through the Installation Guide](#installation) and on how to [Integ
 ```php
 $customers = Stripe::customers()->all();
 
-foreach ($customers as $customer)
+foreach ($customers['data'] as $customer)
 {
 	var_dump($customer['email']);
 }

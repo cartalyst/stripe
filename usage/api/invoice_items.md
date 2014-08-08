@@ -97,3 +97,9 @@ $item = Stripe::invoiceItems()->find([
 
 echo $item['amount'];
 ```
+
+###### Using the alias
+
+```php
+$charge = Stripe::invoiceItem('ii_4Egr3tUtHjVEnm');
+```

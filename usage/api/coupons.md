@@ -78,3 +78,9 @@ $coupon = Stripe::coupons()->find([
 
 echo $coupon['percent_off'];
 ```
+
+###### Using the alias
+
+```php
+$charge = Stripe::coupon('50-PERCENT-OFF');
+```

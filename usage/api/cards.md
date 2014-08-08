@@ -126,3 +126,9 @@ $card = Stripe::cards()->find([
 
 echo $card['last4'];
 ```
+
+###### Using the alias
+
+```php
+$charge = Stripe::card('cus_4DArhxP7RAFBaB', 'card_4DmaB3muM8SNdZ');
+```
