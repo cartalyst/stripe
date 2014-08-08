@@ -41,7 +41,7 @@ interface BillableInterface {
 	public function cards();
 
 	/**
-	 * Returns a Stripe Card gateway.
+	 * Returns a Stripe Card gateway instance.
 	 *
 	 * @param  mixed  $card
 	 * @return \Cartalyst\Stripe\Billing\CardGateway
@@ -86,7 +86,7 @@ interface BillableInterface {
 	public function charges();
 
 	/**
-	 * Returns a Stripe Charge gateway.
+	 * Returns a Stripe Charge gateway instance.
 	 *
 	 * @param  mixed  $charge
 	 * @return \Cartalyst\Stripe\Billing\ChargeGateway
@@ -117,7 +117,7 @@ interface BillableInterface {
 	public function invoices();
 
 	/**
-	 * Returns a Stripe Invoice gateway.
+	 * Returns a Stripe Invoice gateway instance.
 	 *
 	 * @param  mixed  $invoice
 	 * @return \Cartalyst\Stripe\Billing\InvoiceGateway
@@ -162,7 +162,7 @@ interface BillableInterface {
 	public function subscriptions();
 
 	/**
-	 * Returns a Stripe Subscription gateway.
+	 * Returns a Stripe Subscription gateway instance.
 	 *
 	 * @param  mixed  $subscription
 	 * @return \Cartalyst\Stripe\Billing\SubscriptionGateway

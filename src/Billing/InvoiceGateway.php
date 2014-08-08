@@ -17,7 +17,6 @@
  * @link       http://cartalyst.com
  */
 
-use Carbon\Carbon;
 use Cartalyst\Stripe\Api\Exception\NotFoundException;
 use Cartalyst\Stripe\Billing\Models\IlluminateInvoice;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -257,7 +256,7 @@ class InvoiceGateway extends StripeGateway {
 			'closed'          => (bool) $response['closed'],
 			'paid'            => (bool) $response['paid'],
 			'metadata'        => $response['metadata'],
-			'created_at'      => Carbon::createFromTimestamp($response['date']),
+			'created_at'      => $this->nullableTimestamp($response['date']),
 			'period_start'    => $this->nullableTimestamp($response['period_start']),
 			'period_end'      => $this->nullableTimestamp($response['period_end']),
 		];

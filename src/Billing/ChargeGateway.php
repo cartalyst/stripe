@@ -17,7 +17,6 @@
  * @link       http://cartalyst.com
  */
 
-use Carbon\Carbon;
 use Cartalyst\Stripe\Billing\BillableInterface;
 use Cartalyst\Stripe\Billing\Models\IlluminateCharge;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -309,7 +308,7 @@ class ChargeGateway extends StripeGateway {
 			'captured'    => (bool) $response['captured'],
 			'refunded'    => (bool) $response['refunded'],
 			'failed'      => ($response['failure_message'] && $response['failure_code']),
-			'created_at'  => Carbon::createFromTimestamp($response['created']),
+			'created_at'  => $this->nullableTimestamp($response['created']),
 		];
 
 		// Does the charge exist on storage?
@@ -362,7 +361,7 @@ class ChargeGateway extends StripeGateway {
 			'stripe_id'  => $stripeId,
 			'amount'     => $this->convertToDecimal($response['amount']),
 			'currency'   => $response['currency'],
-			'created_at' => Carbon::createFromTimestamp($response['created']),
+			'created_at' => $this->nullableTimestamp($response['created']),
 		];
 
 		// Does the refund exists on storage?
