@@ -7,17 +7,21 @@ Listening to Stripe notification events (Webhooks) is incredible easy and you ca
 First create a new controller somewhere inside your application that extends our `Cartalyst\Stripe\WebhookController` controller.
 
 ```php
-<?php
+<?php namespace Acme\Controllers;
 
-class WebhookController extends Cartalyst\Stripe\WebhookController {
+use Cartalyst\Stripe\WebhookController as BaseWebhookController;
+
+class WebhookController extends BaseWebhookController {
 
 }
 ```
 
+> **Note:** The controller name and namespace is just for the example, you can name and place the controller where it fits best inside your application.
+
 Now you need to register a `post` route that points to your controller:
 
 ```php
-Route::post('webhook/stripe', 'WebhookController@handleWebhook');
+Route::post('webhook/stripe', 'Acme\Controllers\WebhookController@handleWebhook');
 ```
 
 > **Note:** The route URI `webhook/stripe` is just for the example, you can choose to use a different one.
@@ -145,3 +149,53 @@ transfer.created                     | handleTransferCreated                  | 
 transfer.updated                     | handleTransferUpdated                  | Occurs whenever the description or metadata of a transfer is updated.
 transfer.paid                        | handleTransferPaid                     | Occurs whenever a sent transfer is expected to be available in the destination bank account. If the transfer failed, a transfer.failed webhook will additionally be sent at a later time.
 transfer.failed                      | handleTransferFailed                   | Occurs whenever Stripe attempts to send a transfer and that transfer fails.
+
+### Testing Webhooks
+
+There are situations when we need to test our webhook controller while we're developing it and while pushing the changes to a staging server is a good pratice it's not always the fastest way to test our webhook controller and get the feedback of if it worked properly or not since we'll need to wait for Stripe.com to push the webhook event that will hit your server and you'll need to check either the server logs or Stripe.com Dashboard to see if the webhook was handled successfully.
+
+Below we'll give you two examples on how to test all events or a single event.
+
+#### Single Event
+
+Testing single events is a no brainer, you just need to know the Stripe Event Id.
+
+##### Example
+
+```php
+// Fetch the Event payload for the given event id
+$payload = Stripe::events()->find([
+	'id' => 'evt_4Y2WyIMZdxy9Pg',
+])->toArray();
+
+// Instantiate your Webhook Controller
+$controller = app('Acme\Controllers\WebhookController');
+
+// Pass in the payload to be handled
+$response = $controller->handleWebhook($payload);
+
+var_dump($response);
+```
+
+#### Multiple Events
+
+Testing multiple events is similar the single events, you just need to fetch all the events and loop through them, the rest of the logic is very similar.
+
+##### Example
+
+```php
+// Instantiate your Webhook Controller
+$controller = app('Acme\Controllers\WebhookController');
+
+// Fetch all the events
+$events = Stripe::events()->all();
+
+// Loop through the events
+foreach ($events['data'] as $payload)
+{
+	// Pass in the payload to be handled
+	$response = $controller->handleWebhook($payload);
+
+	var_dump($response);
+}
+```
