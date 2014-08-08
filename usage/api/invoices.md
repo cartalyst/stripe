@@ -19,7 +19,7 @@ subscription          | false    | string | null    | The subscription unique id
 
 ```php
 $invoice = Stripe::invoices()->create([
-	'customer' => 'cus_4EgOG1jXMEt7Ou',
+	'customer' => 'cus_4EBumIjyaKooft',
 ]);
 ```
 
@@ -139,7 +139,7 @@ subscription | false    | string | null    | The subscription unique identifier.
 
 ```php
 $invoice = Stripe::invoices()->upcomingInvoice([
-	'customer' => 'cus_4EgOG1jXMEt7Ou',
+	'customer' => 'cus_4EBumIjyaKooft',
 ]);
 
 foreach ($invoice['lines']['data'] as $item)

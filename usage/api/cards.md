@@ -19,7 +19,7 @@ card     | true     | string or array | null    | The card unique identifier.
 $cardToken = Input::get('stripeToken');
 
 $card = Stripe::cards()->create([
-	'customer' => 'cus_4DArhxP7RAFBaB',
+	'customer' => 'cus_4EBumIjyaKooft',
 	'card'     => $cardToken,
 ]);
 ```
@@ -28,7 +28,7 @@ $card = Stripe::cards()->create([
 
 ```php
 $card = Stripe::cards()->create([
-	'customer' => 'cus_4DArhxP7RAFBaB',
+	'customer' => 'cus_4EBumIjyaKooft',
 	'card'     => [
 		'number'    => '4242424242424242',
 		'exp_month' => 6,
@@ -59,7 +59,7 @@ name          | false    | string | null    | The card holder name.
 
 ```php
 $card = Stripe::cards()->update([
-	'customer'      => 'cus_4DArhxP7RAFBaB',
+	'customer'      => 'cus_4EBumIjyaKooft',
 	'id'            => 'card_4EBj4AslJlNXPs',
 	'name'          => 'John Doe',
 	'address_line1' => 'Example Street 1',
@@ -81,7 +81,7 @@ id       | true     | string | null    | The card unique identifier.
 
 ```php
 $card = Stripe::cards()->destroy([
-	'customer' => 'cus_4DArhxP7RAFBaB',
+	'customer' => 'cus_4EBumIjyaKooft',
 	'id'       => 'card_4EBi3uAIBFnKy4',
 ]);
 ```
@@ -100,7 +100,7 @@ starting_after | false    | string | null    | A cursor to be used in pagination
 
 ```php
 $cards = Stripe::cards()->all([
-	'customer' => 'cus_4DArhxP7RAFBaB',
+	'customer' => 'cus_4EBumIjyaKooft',
 ]);
 
 foreach ($cards['data'] as $card)
@@ -120,7 +120,7 @@ id       | true     | string | null    | The card unique identifier.
 
 ```php
 $card = Stripe::cards()->find([
-	'customer' => 'cus_4DArhxP7RAFBaB',
+	'customer' => 'cus_4EBumIjyaKooft',
 	'id'       => 'card_4DmaB3muM8SNdZ',
 ]);
 
@@ -130,5 +130,5 @@ echo $card['last4'];
 ###### Using the alias
 
 ```php
-$charge = Stripe::card('cus_4DArhxP7RAFBaB', 'card_4DmaB3muM8SNdZ');
+$charge = Stripe::card('cus_4EBumIjyaKooft', 'card_4DmaB3muM8SNdZ');
 ```

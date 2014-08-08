@@ -36,7 +36,7 @@ id  | true     | string | null    | The customer unique identifier.
 
 ```php
 $customer = Stripe::customers()->destroy([
-	'id' => 'cus_4EBxvk6aBPexFO',
+	'id' => 'cus_4EBumIjyaKooft',
 ]);
 ```
 

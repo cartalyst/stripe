@@ -18,7 +18,7 @@ metadata     | false    | array  | []      | A set of key/value pairs that you c
 
 ```php
 $item = Stripe::invoiceItems()->create([
-	'customer' => 'cus_4EgOG1jXMEt7Ou',
+	'customer' => 'cus_4EBumIjyaKooft',
 	'amount'   => 50.00,
 	'currency' => 'USD',
 ]);
