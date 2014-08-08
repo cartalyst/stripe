@@ -33,21 +33,23 @@ class CartalystStripeCreateTables extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('billable_column_id')->unsigned();
-			$table->string('stripe_id')->unique();
-			$table->smallInteger('last_four');
-			$table->tinyInteger('exp_month');
-			$table->smallInteger('exp_year');
+			$table->string('stripe_id');
+			$table->smallInteger('last_four')->unsigned();
+			$table->tinyInteger('exp_month')->unsigned();
+			$table->smallInteger('exp_year')->unsigned();
 			$table->boolean('default')->default(0);
 			$table->timestamps();
 
 			$table->engine = 'InnoDB';
+
+			$table->index(['billable_column_id', 'stripe_id']);
 		});
 
 		Schema::create('invoices', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('billable_column_id')->unsigned();
-			$table->string('stripe_id')->unique();
+			$table->string('stripe_id');
 			$table->string('subscription_id')->nullable();
 			$table->string('currency');
 			$table->string('description')->nullable();
@@ -55,7 +57,7 @@ class CartalystStripeCreateTables extends Migration {
 			$table->decimal('total', 15, 4);
 			$table->decimal('amount_due', 15, 4);
 			$table->boolean('attempted')->default(0);
-			$table->integer('attempt_count')->default(0);
+			$table->integer('attempt_count')->unsigned()->default(0);
 			$table->boolean('closed')->default(0);
 			$table->boolean('paid')->default(0);
 			$table->text('metadata');
@@ -64,6 +66,8 @@ class CartalystStripeCreateTables extends Migration {
 			$table->timestamp('period_end')->nullable();
 
 			$table->engine = 'InnoDB';
+
+			$table->index(['billable_column_id', 'stripe_id']);
 		});
 
 		Schema::create('invoice_items', function(Blueprint $table)
@@ -78,19 +82,21 @@ class CartalystStripeCreateTables extends Migration {
 			$table->boolean('proration')->default(0);
 			$table->string('description')->nullable();
 			$table->string('plan_id')->nullable();
-			$table->integer('quantity')->nullable();
+			$table->integer('quantity')->unsigned()->nullable();
 			$table->timestamps();
 			$table->timestamp('period_start')->nullable();
 			$table->timestamp('period_end')->nullable();
 
 			$table->engine = 'InnoDB';
+
+			$table->index(['billable_column_id', 'stripe_id']);
 		});
 
 		Schema::create('payments', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('billable_column_id')->unsigned();
-			$table->string('stripe_id')->unique();
+			$table->string('stripe_id');
 			$table->string('invoice_id')->nullable();
 			$table->string('currency');
 			$table->string('description')->nullable();
@@ -102,6 +108,8 @@ class CartalystStripeCreateTables extends Migration {
 			$table->timestamps();
 
 			$table->engine = 'InnoDB';
+
+			$table->index(['billable_column_id', 'stripe_id', 'invoice_id']);
 		});
 
 		Schema::create('payment_refunds', function(Blueprint $table)
@@ -114,13 +122,15 @@ class CartalystStripeCreateTables extends Migration {
 			$table->timestamps();
 
 			$table->engine = 'InnoDB';
+
+			$table->index(['payment_id', 'stripe_id']);
 		});
 
 		Schema::create('subscriptions', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('billable_column_id')->unsigned();
-			$table->string('stripe_id')->unique();
+			$table->string('stripe_id');
 			$table->string('plan_id', 25)->nullable();
 			$table->boolean('active')->default(0);
 			$table->timestamps();
@@ -131,6 +141,8 @@ class CartalystStripeCreateTables extends Migration {
 			$table->timestamp('trial_ends_at')->nullable();
 
 			$table->engine = 'InnoDB';
+
+			$table->index(['billable_column_id', 'stripe_id']);
 		});
 
 		Schema::table('billable_table', function(Blueprint $table)
