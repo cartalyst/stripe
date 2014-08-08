@@ -53,6 +53,8 @@ class WebhookControllerTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($_SERVER['__stripe_event_id'], 'foobar');
 
+		$this->assertEquals($_SERVER['__stripe_event_type'], 'foo.bar');
+
 		$this->assertEquals($response->getContent(), 'Handled');
 	}
 
@@ -65,6 +67,29 @@ class WebhookControllerTest extends PHPUnit_Framework_TestCase {
 		$response = $controller->handleWebhook();
 
 		$this->assertEquals($response->getContent(), null);
+	}
+
+	/** @test */
+	public function it_can_pass_the_payload_through_the_handle_webhook_method()
+	{
+		$payload = [
+			'type' => 'charge.succeeded',
+			'data' => [
+				'object' => [
+					'id' => 'foobar',
+				],
+			],
+		];
+
+		$controller = new WebhookControllerStub;
+		$response = $controller->handleWebhook($payload);
+
+		$this->assertEquals($_SERVER['__stripe_event_id'], 'foobar');
+
+		$this->assertEquals($_SERVER['__stripe_event_type'], 'foo.bar');
+
+		$this->assertEquals($response->getContent(), 'Handled');
+
 	}
 
 }

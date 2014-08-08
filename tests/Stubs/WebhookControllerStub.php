@@ -6,6 +6,8 @@ class WebhookControllerStub extends \Cartalyst\Stripe\WebhookController {
 	{
 		$_SERVER['__stripe_event_id'] = 'foobar';
 
+		$_SERVER['__stripe_event_type'] = 'foo.bar';
+
 		return $this->sendResponse('Handled');
 	}
 

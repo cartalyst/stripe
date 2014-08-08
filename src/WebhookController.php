@@ -28,12 +28,13 @@ class WebhookController extends Controller {
 	/**
 	 * Handles the Stripe webhook call.
 	 *
+	 * @param  array  $payload
 	 * @return mixed
 	 */
-	public function handleWebhook()
+	public function handleWebhook(array $payload = null)
 	{
 		// Get the request payload
-		$payload = $this->getJsonPayload();
+		$payload = $payload ?: $this->getJsonPayload();
 
 		// Get the webhook type
 		$type = $payload['type'];
