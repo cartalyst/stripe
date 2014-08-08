@@ -214,14 +214,55 @@ class Stripe {
 	 */
 	public function __call($method, array $arguments = [])
 	{
-		if (substr($method, -8) === 'Iterator')
+		if (str_singular($method) === $method)
 		{
-			$method = substr($method, 0, -8);
+			return $this->handleSingleRequest($method, $arguments);
+		}
 
+		elseif (substr($method, -8) === 'Iterator')
+		{
 			return $this->handleIteratorRequest($method, $arguments);
 		}
 
 		return $this->handleRequest($method);
+	}
+
+	/**
+	 * Handles a single request.
+	 *
+	 * @param  string  $method
+	 * @param  array  $arguments
+	 * @return \Guzzle\Service\Client
+	 * @throws \InvalidArgumentException
+	 */
+	protected function handleSingleRequest($method, array $arguments = [])
+	{
+		// Pluralize the method name
+		$pluralMethod = str_plural($method);
+
+		// Get the request manifest payload data
+		$manifest = $this->getRequestManifestPayload($pluralMethod);
+
+		// Validate the method
+		if ( ! $this->manifestExists($pluralMethod) || ! array_get($manifest, 'find'))
+		{
+			throw new InvalidArgumentException("Undefined method [{$method}] called.");
+		}
+
+		// Get the required parameters for the request
+		$required = array_where(array_get($manifest, 'find.parameters'), function($key, $value)
+		{
+			return $value['required'] === true;
+		});
+
+		// Prepare the arguments for the request
+		$arguments = array_combine(
+			array_keys($required),
+			count($required) === 1 ? (array) $arguments[0] : $arguments
+		);
+
+		// Execute the request
+		return $this->handleRequest($pluralMethod)->find($arguments);
 	}
 
 	/**
@@ -230,9 +271,12 @@ class Stripe {
 	 * @param  string  $method
 	 * @param  array  $arguments
 	 * @return \Cartalyst\Stripe\Api\ResourceIterator
+	 * @throws \InvalidArgumentException
 	 */
 	protected function handleIteratorRequest($method, array $arguments = [])
 	{
+		$method = substr($method, 0, -8);
+
 		$client = $this->handleRequest($method);
 
 		$command = $client->getCommand('all', array_get($arguments, 0, []));
