@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Tests\Stubs;
+<?php namespace Cartalyst\Stripe\Tests\Billing\Stubs;
 /**
  * Part of the Stripe package.
  *
@@ -17,15 +17,11 @@
  * @link       http://cartalyst.com
  */
 
-class WebhookControllerStub extends \Cartalyst\Stripe\WebhookController {
+use Cartalyst\Stripe\Billing\BillableTrait;
+use Cartalyst\Stripe\Billing\BillableInterface;
 
-	public function handleChargeSucceeded()
-	{
-		$_SERVER['__stripe_event_id'] = 'foobar';
+class BillableTraitStub implements BillableInterface {
 
-		$_SERVER['__stripe_event_type'] = 'foo.bar';
-
-		return $this->sendResponse('Handled');
-	}
+	use BillableTrait;
 
 }

@@ -49,6 +49,13 @@ interface BillableInterface {
 	public function card($card = null);
 
 	/**
+	 * Returns the Eloquent card model.
+	 *
+	 * @return string
+	 */
+	public static function getCardModel();
+
+	/**
 	 * Sets the Eloquent card model.
 	 *
 	 * @param  string  $model
@@ -92,6 +99,13 @@ interface BillableInterface {
 	 * @return \Cartalyst\Stripe\Billing\ChargeGateway
 	 */
 	public function charge($charge = null);
+
+	/**
+	 * Returns the Eloquent charge model.
+	 *
+	 * @return string
+	 */
+	public static function getChargeModel();
 
 	/**
 	 * Sets the Eloquent charge model.
@@ -139,12 +153,26 @@ interface BillableInterface {
 	public function upcomingInvoice();
 
 	/**
+	 * Returns the Eloquent invoice model.
+	 *
+	 * @return string
+	 */
+	public static function getInvoiceModel();
+
+	/**
 	 * Sets the Eloquent invoice model.
 	 *
 	 * @param  string  $model
 	 * @return void
 	 */
 	public static function setInvoiceModel($model);
+
+	/**
+	 * Returns the Eloquent invoice items model.
+	 *
+	 * @return string
+	 */
+	public static function getInvoiceItemModel();
 
 	/**
 	 * Sets the Eloquent invoice items model.
@@ -168,6 +196,13 @@ interface BillableInterface {
 	 * @return \Cartalyst\Stripe\Billing\SubscriptionGateway
 	 */
 	public function subscription($subscription = null);
+
+	/**
+	 * Returns the Eloquent subscription model.
+	 *
+	 * @return string
+	 */
+	public static function getSubscriptionModel();
 
 	/**
 	 * Sets the Eloquent subscription model.

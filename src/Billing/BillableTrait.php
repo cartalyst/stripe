@@ -91,7 +91,7 @@ trait BillableTrait {
 	 */
 	public function isBillable()
 	{
-		return $this->getStripeId();
+		return (bool) $this->getStripeId();
 	}
 
 	/**
@@ -108,6 +108,14 @@ trait BillableTrait {
 	public function card($card = null)
 	{
 		return new CardGateway($this, $card);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public static function getCardModel()
+	{
+		return static::$cardModel;
 	}
 
 	/**
@@ -159,6 +167,14 @@ trait BillableTrait {
 	public function charge($charge = null)
 	{
 		return new ChargeGateway($this, $charge);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public static function getChargeModel()
+	{
+		return static::$chargeModel;
 	}
 
 	/**
@@ -216,11 +232,27 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
+	public static function getInvoiceModel()
+	{
+		return static::$invoiceModel;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public static function setInvoiceModel($model)
 	{
 		static::$invoiceModel = $model;
 
 		forward_static_call_array([static::$chargeModel, 'setInvoiceModel'], [$model]);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public static function getInvoiceItemModel()
+	{
+		return static::$invoiceItemModel;
 	}
 
 	/**
@@ -247,6 +279,14 @@ trait BillableTrait {
 	public function subscription($subscription = null)
 	{
 		return new SubscriptionGateway($this, $subscription);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public static function getSubscriptionModel()
+	{
+		return static::$subscriptionModel;
 	}
 
 	/**
