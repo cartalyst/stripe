@@ -214,14 +214,14 @@ class Stripe {
 	 */
 	public function __call($method, array $arguments = [])
 	{
-		if (str_singular($method) === $method)
-		{
-			return $this->handleSingleRequest($method, $arguments);
-		}
-
-		elseif (substr($method, -8) === 'Iterator')
+		if (substr($method, -8) === 'Iterator')
 		{
 			return $this->handleIteratorRequest($method, $arguments);
+		}
+
+		elseif (str_singular($method) === $method)
+		{
+			return $this->handleSingleRequest($method, $arguments);
 		}
 
 		return $this->handleRequest($method);
