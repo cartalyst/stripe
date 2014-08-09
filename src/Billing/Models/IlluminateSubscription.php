@@ -101,7 +101,7 @@ class IlluminateSubscription extends Model {
 	 *
 	 * @return bool
 	 */
-	public function canceled()
+	public function isCanceled()
 	{
 		return (bool) $this->canceled_at;
 	}
@@ -111,7 +111,7 @@ class IlluminateSubscription extends Model {
 	 *
 	 * @return bool
 	 */
-	public function expired()
+	public function isExpired()
 	{
 		return ($this->active === false && $this->ended_at && ! $this->canceled_at);
 	}

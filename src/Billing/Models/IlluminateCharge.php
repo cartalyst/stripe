@@ -57,13 +57,87 @@ class IlluminateCharge extends Model {
 	protected static $refundModel = 'Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund';
 
 	/**
+	 * Get mutator for the "amount_refunded" attribute.
+	 *
+	 * @return float
+	 */
+	public function getAmountRefundedAttribute()
+	{
+		return $this->refunds()->sum('amount');
+	}
+
+	/**
+	 * Get mutator for the "captured" attribute.
+	 *
+	 * @param  string  $captured
+	 * @return bool
+	 */
+	public function getCapturedAttribute($captured)
+	{
+		return (bool) $captured;
+	}
+
+	/**
+	 * Get mutator for the "failed" attribute.
+	 *
+	 * @param  string  $failed
+	 * @return bool
+	 */
+	public function getFailedAttribute($failed)
+	{
+		return (bool) $failed;
+	}
+
+	/**
+	 * Get mutator for the "paid" attribute.
+	 *
+	 * @param  string  $paid
+	 * @return bool
+	 */
+	public function getPaidAttribute($paid)
+	{
+		return (bool) $paid;
+	}
+
+	/**
+	 * Get mutator for the "refunded" attribute.
+	 *
+	 * @param  string  $refunded
+	 * @return bool
+	 */
+	public function getRefundedAttribute($refunded)
+	{
+		return (bool) $refunded;
+	}
+
+	/**
+	 * Checks if the charge is fully refunded.
+	 *
+	 * @return bool
+	 */
+	public function isRefunded()
+	{
+		return ($this->refunded === true && $this->refunds->count());
+	}
+
+	/**
 	 * Checks if the charge is partially refunded.
 	 *
 	 * @return bool
 	 */
 	public function isPartialRefunded()
 	{
-		return ( ! $this->refunded && $this->refunds->count());
+		return ($this->refunded === false && $this->refunds->count());
+	}
+
+	/**
+	 * Checks if the charge is captured.
+	 *
+	 * @return bool
+	 */
+	public function isCaptured()
+	{
+		return $this->captured === true;
 	}
 
 	/**
@@ -73,7 +147,17 @@ class IlluminateCharge extends Model {
 	 */
 	public function canBeCaptured()
 	{
-		return ( ! $this->captured && ! $this->failed);
+		return ($this->captured === false && $this->failed === false);
+	}
+
+	/**
+	 * Checks if the charge is paid.
+	 *
+	 * @return bool
+	 */
+	public function isPaid()
+	{
+		return $this->paid === true;
 	}
 
 	/**
@@ -84,6 +168,16 @@ class IlluminateCharge extends Model {
 	public function invoice()
 	{
 		return $this->hasOne(static::$invoiceModel, 'stripe_id', 'invoice_id');
+	}
+
+	/**
+	 * Returns the Eloquent model to be used for the invoice relationship.
+	 *
+	 * @return string
+	 */
+	public static function getInvoiceModel()
+	{
+		return static::$invoiceModel;
 	}
 
 	/**
@@ -108,13 +202,13 @@ class IlluminateCharge extends Model {
 	}
 
 	/**
-	 * Get mutator for the "amount_refunded" attribute.
+	 * Returns the Eloquent model to be used for the refund relationship.
 	 *
-	 * @return float
+	 * @return string
 	 */
-	public function getAmountRefundedAttribute()
+	public static function getRefundModel()
 	{
-		return $this->refunds()->sum('amount');
+		return static::$refundModel;
 	}
 
 	/**

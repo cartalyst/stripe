@@ -112,7 +112,7 @@ class IlluminateSubscriptionTest extends PHPUnit_Framework_TestCase {
 
 		$subscription->save();
 
-		$this->assertTrue($subscription->canceled());
+		$this->assertTrue($subscription->isCanceled());
 	}
 
 	/** @test */
@@ -125,7 +125,7 @@ class IlluminateSubscriptionTest extends PHPUnit_Framework_TestCase {
 
 		$subscription->save();
 
-		$this->assertFalse($subscription->canceled());
+		$this->assertFalse($subscription->isCanceled());
 	}
 
 	/** @test */
@@ -140,7 +140,7 @@ class IlluminateSubscriptionTest extends PHPUnit_Framework_TestCase {
 
 		$subscription->save();
 
-		$this->assertTrue($subscription->expired());
+		$this->assertTrue($subscription->isExpired());
 	}
 
 	/** @test */
@@ -153,7 +153,7 @@ class IlluminateSubscriptionTest extends PHPUnit_Framework_TestCase {
 
 		$subscription->save();
 
-		$this->assertFalse($subscription->expired());
+		$this->assertFalse($subscription->isExpired());
 	}
 
 	protected function resolver(&$subscription)

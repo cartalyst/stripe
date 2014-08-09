@@ -54,6 +54,16 @@ class IlluminateChargeRefund extends Model {
 	}
 
 	/**
+	 * Returns the Eloquent model to be used for the charge relationship.
+	 *
+	 * @return string
+	 */
+	public static function getChargeModel()
+	{
+		return static::$chargeModel;
+	}
+
+	/**
 	 * Sets the Eloquent model to be used for the charge relationship.
 	 *
 	 * @param  string  $model

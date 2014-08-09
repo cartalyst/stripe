@@ -78,33 +78,47 @@ class IlluminateInvoice extends Model {
 	protected static $subscriptionModel = 'Cartalyst\Stripe\Billing\Models\IlluminateSubscription';
 
 	/**
-	 * Returns the charge that is associated to this invoice.
+	 * Get mutator for the "attempted" attribute.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
+	 * @param  string  $attempted
+	 * @return int
 	 */
-	public function charge()
+	public function getAttemptedAttribute($attempted)
 	{
-		return $this->belongsTo(static::$chargeModel, 'id');
+		return (int) $attempted;
 	}
 
 	/**
-	 * Returns all the items associated to this invoice.
+	 * Get mutator for the "attempt_count" attribute.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
+	 * @param  string  $attempt_count
+	 * @return int
 	 */
-	public function items()
+	public function getAttemptCountAttribute($attempt_count)
 	{
-		return $this->hasMany(static::$invoiceItemModel, 'invoice_id');
+		return (int) $attempt_count;
 	}
 
 	/**
-	 * Returns the subscription that is associated to this invoice.
+	 * Get mutator for the "closed" attribute.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
+	 * @param  string  $closed
+	 * @return bool
 	 */
-	public function subscription()
+	public function getClosedAttribute($closed)
 	{
-		return $this->belongsTo(static::$subscriptionModel, 'subscription_id');
+		return (bool) $closed;
+	}
+
+	/**
+	 * Get mutator for the "paid" attribute.
+	 *
+	 * @param  string  $paid
+	 * @return bool
+	 */
+	public function getPaidAttribute($paid)
+	{
+		return (bool) $paid;
 	}
 
 	/**
@@ -130,6 +144,46 @@ class IlluminateInvoice extends Model {
 	}
 
 	/**
+	 * Checks if the invoice is closed.
+	 *
+	 * @return bool
+	 */
+	public function isClosed()
+	{
+		return $this->closed === true;
+	}
+
+	/**
+	 * Checks if the invoice is paid.
+	 *
+	 * @return bool
+	 */
+	public function isPaid()
+	{
+		return $this->paid === true;
+	}
+
+	/**
+	 * Returns the charge that is associated to this invoice.
+	 *
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
+	 */
+	public function charge()
+	{
+		return $this->belongsTo(static::$chargeModel, 'id');
+	}
+
+	/**
+	 * Returns the Eloquent model to be used for the charge relationship.
+	 *
+	 * @return string
+	 */
+	public static function getChargeModel()
+	{
+		return static::$chargeModel;
+	}
+
+	/**
 	 * Sets the Eloquent model to be used for the charge relationship.
 	 *
 	 * @param  string  $model
@@ -141,6 +195,26 @@ class IlluminateInvoice extends Model {
 	}
 
 	/**
+	 * Returns all the items associated to this invoice.
+	 *
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
+	 */
+	public function items()
+	{
+		return $this->hasMany(static::$invoiceItemModel, 'invoice_id');
+	}
+
+	/**
+	 * Returns the Eloquent model to be used for the invoice items relationship.
+	 *
+	 * @return string
+	 */
+	public static function getInvoiceItemModel()
+	{
+		return static::$invoiceItemModel;
+	}
+
+	/**
 	 * Sets the Eloquent model to be used for the invoice items relationship.
 	 *
 	 * @param  string  $model
@@ -149,6 +223,26 @@ class IlluminateInvoice extends Model {
 	public static function setInvoiceItemModel($model)
 	{
 		static::$invoiceItemModel = $model;
+	}
+
+	/**
+	 * Returns the subscription that is associated to this invoice.
+	 *
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
+	 */
+	public function subscription()
+	{
+		return $this->belongsTo(static::$subscriptionModel, 'subscription_id');
+	}
+
+	/**
+	 * Returns the Eloquent model to be used for the subscription relationship.
+	 *
+	 * @return string
+	 */
+	public static function getSubscriptionModel()
+	{
+		return static::$subscriptionModel;
 	}
 
 	/**
