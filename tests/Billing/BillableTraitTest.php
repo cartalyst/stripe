@@ -53,7 +53,7 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse($billable->isBillable());
 
 		$billable = new BillableTraitStub;
-		$billable->stripe_id = 1;
+		$billable->stripe_id = 'foo';
 		$this->assertTrue($billable->isBillable());
 	}
 
