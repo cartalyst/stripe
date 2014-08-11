@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Tests\Billing;
+<?php namespace Cartalyst\Stripe\Tests\Billing\Models;
 /**
  * Part of the Stripe package.
  *
