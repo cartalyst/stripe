@@ -18,7 +18,6 @@
  */
 
 use Carbon\Carbon;
-use Cartalyst\Stripe\Billing\StripeGateway;
 use Cartalyst\Stripe\Billing\BillableInterface;
 use Cartalyst\Stripe\Billing\Models\IlluminateSubscription;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;

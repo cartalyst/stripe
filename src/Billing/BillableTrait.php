@@ -28,13 +28,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 trait BillableTrait {
 
 	/**
-	 * The Stripe gateway instance.
-	 *
-	 * @var \Cartalyst\Stripe\Billing\StripeGateway
-	 */
-	protected $gateway;
-
-	/**
 	 * The Stripe API instance.
 	 *
 	 * @var \Cartalyst\Stripe\Api\Stripe

@@ -17,7 +17,6 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Stripe\Billing\StripeGateway;
 use Cartalyst\Stripe\Billing\BillableInterface;
 use Cartalyst\Stripe\Billing\Models\IlluminateCard;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
