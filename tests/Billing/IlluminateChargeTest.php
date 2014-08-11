@@ -36,12 +36,13 @@ class IlluminateChargeTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function it_can_check_that_a_charge_is_refunded()
 	{
-		$refunds = m::mock('Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund');
+		$refunds = m::mock('Illuminate\Database\Eloquent\Relations\BelongsTo');
+		$refunds->shouldReceive('getResults')->once()->andReturn($refunds);
 		$refunds->shouldReceive('count')->once()->andReturn(2);
 
 		$charge = m::mock('Cartalyst\Stripe\Billing\Models\IlluminateCharge[refunds]');
 		$charge->shouldReceive('refunds')->andReturn($refunds);
-		#$charge->refunded = true;
+		$charge->refunded = true;
 
 		$this->assertTrue($charge->isRefunded());
 	}
@@ -49,7 +50,14 @@ class IlluminateChargeTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function it_can_check_that_a_charge_is_partially_refunded()
 	{
-		# $charge->isPartiallyRefunded()
+		$refunds = m::mock('Illuminate\Database\Eloquent\Relations\BelongsTo');
+		$refunds->shouldReceive('getResults')->once()->andReturn($refunds);
+		$refunds->shouldReceive('count')->once()->andReturn(2);
+
+		$charge = m::mock('Cartalyst\Stripe\Billing\Models\IlluminateCharge[refunds]');
+		$charge->shouldReceive('refunds')->andReturn($refunds);
+
+		$this->assertTrue($charge->isPartialRefunded());
 	}
 
 	/** @test */
