@@ -237,20 +237,34 @@ class Stripe {
 	 */
 	protected function handleSingleRequest($method, array $arguments = [])
 	{
+		// Check if we have any arguments
+		if (empty($arguments))
+		{
+			throw new InvalidArgumentException('Not enough arguments provided!');
+		}
+
 		// Pluralize the method name
 		$pluralMethod = str_plural($method);
+
+		// Prepare the exception
+		$exception = new InvalidArgumentException("Undefined method [{$method}] called.");
+
+		// Validate the method
+		if ( ! $this->manifestExists($pluralMethod))
+		{
+			throw $exception;
+		}
 
 		// Get the request manifest payload data
 		$manifest = $this->getRequestManifestPayload($pluralMethod);
 
-		// Validate the method
-		if ( ! $this->manifestExists($pluralMethod) || ! array_get($manifest, 'find'))
+		if ( ! $parameters = array_get($manifest, 'find'))
 		{
-			throw new InvalidArgumentException("Undefined method [{$method}] called.");
+			throw $exception;
 		}
 
 		// Get the required parameters for the request
-		$required = array_where(array_get($manifest, 'find.parameters'), function($key, $value)
+		$required = array_where(array_get($parameters, 'parameters'), function($key, $value)
 		{
 			return $value['required'] === true;
 		});
