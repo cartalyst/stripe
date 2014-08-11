@@ -53,14 +53,44 @@ if ($user->hasActiveCard())
 }
 ```
 
-###### Sync data from Stripe
+###### Syncronize data from Stripe
 
-Often you might have the need to sync the data from Stripe with your database, we have an easy way to achieve this.
+Often you might have the need to syncronize the data from Stripe with your database, we have an easy way to achieve this.
 
-This will sync up the cards, charges, invoices + invoice items and subscriptions.
+This will syncronize up the cards, charges, invoices and their invoice items, the pending invoice items and subscriptions.
 
 ```php
 $user = User::find(1);
 
 $user->syncWithStripe();
+```
+
+###### Attach a Stripe Customer to an Entity
+
+Attaching a Stripe Customer to an entity is not a very hard job but we've made it even easier.
+
+```php
+$customer = Stripe::customer('cus_4EBumIjyaKooft')->toArray();
+
+User::attachStripeCustomer($customer, function($data)
+{
+	return User::where('email', $data['email'])->first();
+});
+```
+
+The way this method works is very simple, you need to call the `attachStripeCustomer()` method pass as the first argument the `$customer` data and as the second argument a `Closure`, the `Closure` only accepts one argument and it's the `$customer` that you've passed as it will be useful when doing a search on your database.
+
+For the `Closure` response, make sure it returns a valid `entity` model like the example above.
+
+By default, the third parameter allows you to syncronize the Stripe Customer data for your entity, to disable this feature, just pass a boolean of `false`.
+
+###### Attach all the Stripe Customers to their entities
+
+Works almost exactly like the `attachStripeCustomer()` method, but it requires no `$customer` upfront as this method will fetch all the Stripe Customers and loop through them calling the `attachStripeCustomer()` method internally.
+
+```php
+User::attachStripeCustomers(function($data)
+{
+	return User::where('email', $data['email'])->first();
+});
 ```
