@@ -238,17 +238,16 @@ interface BillableInterface {
 	public function syncWithStripe();
 
 	/**
-	 * Attaches the Stripe Customer account to the entity that
-	 * will be returned from the Closure, it allows you to
-	 * syncronize the Stripe data for that entity by just
-	 * passing a boolean of true as the third parameter.
+	 * Attaches the Stripe Customer account to the entity,
+	 * it allows you to syncronize the Stripe data for
+	 * that entity by passing a boolean of true as
+	 * the third parameter.
 	 *
 	 * @param  array  $data
-	 * @param  \Closure  $callback
 	 * @param  bool  $sync
 	 * @return void
 	 */
-	public static function attachStripeCustomer(array $data, Closure $callback, $sync = true);
+	public function attachStripeCustomer(array $data, $sync = true);
 
 	/**
 	 * Attaches the Stripe Customers accounts to the entity that
@@ -260,7 +259,7 @@ interface BillableInterface {
 	 * @param  bool  $sync
 	 * @return void
 	 */
-	public static function attachStripeCustomers(Closure $callback, $sync = true);
+	public static function attachStripeCustomers($callback, $sync = true);
 
 	/**
 	 * Returns the Stripe API instance.

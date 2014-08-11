@@ -336,28 +336,24 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
-	public static function attachStripeCustomer(array $data, Closure $callback, $sync = true)
+	public function attachStripeCustomer(array $data, $sync = true)
 	{
-		// Do we have an entity?
-		if ($entity = $callback($data))
-		{
-			// Store the Stripe Customer Id
-			$entity->stripe_id = $data['id'];
-			$entity->save();
+		// Store the Stripe Customer Id
+		$this->stripe_id = $data['id'];
+		$this->save();
 
-			// Should we syncronize the data with Stripe?
-			if ($sync)
-			{
-				// Syncronize the data
-				$entity->syncWithStripe();
-			}
+		// Should we syncronize the data with Stripe?
+		if ($sync)
+		{
+			// Syncronize the data
+			$this->syncWithStripe();
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public static function attachStripeCustomers(Closure $callback, $sync = true)
+	public static function attachStripeCustomers($callback, $sync = true)
 	{
 		// Get all the Stripe Customers
 		$customers = static::getStripeClient()->customersIterator();
@@ -365,7 +361,8 @@ trait BillableTrait {
 		// Loop through the Stripe Customers
 		foreach ($customers as $customer)
 		{
-			static::attachStripeCustomer($customer, $callback, $sync);
+			$entity = $callback($customer);
+			$entity->attachStripeCustomer($customer, $sync);
 		}
 	}
 
