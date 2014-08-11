@@ -66,7 +66,10 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 		);
 	}
 
-	/** @test */
+	/**
+	 * @test
+	 * @runInSeparateProcess
+	 */
 	public function it_can_set_the_card_model()
 	{
 		$modelClassName = 'Cartalyst\Stripe\Tests\Billing\Stubs\CardModel';
@@ -81,7 +84,7 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function it_can_check_if_the_entity_has_any_active_card()
 	{
-		$mock = m::mock('BillableTraitStub');
+		$mock = m::mock('Cartalyst\Stripe\Tests\Billing\Stubs\BillableTraitStub');
 		$mock->shouldReceive('hasActiveCard')->once()->andReturn(true);
 
 		$this->assertTrue($mock->hasActiveCard());
@@ -90,7 +93,7 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function it_can_check_if_the_entity_doesnt_have_any_active_card()
 	{
-		$mock = m::mock('BillableTraitStub');
+		$mock = m::mock('Cartalyst\Stripe\Tests\Billing\Stubs\BillableTraitStub');
 		$mock->shouldReceive('hasActiveCard')->once()->andReturn(false);
 
 		$this->assertFalse($mock->hasActiveCard());
@@ -105,7 +108,10 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 		);
 	}
 
-	/** @test */
+	/**
+	 * @test
+	 * @runInSeparateProcess
+	 */
 	public function it_can_set_the_charge_model()
 	{
 		$modelClassName = 'Cartalyst\Stripe\Tests\Billing\Stubs\ChargeModel';
@@ -126,16 +132,21 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 		);
 	}
 
-	/** @test */
+	/**
+	 * @test
+	 * @runInSeparateProcess
+	 */
 	public function it_can_set_the_invoice_model()
 	{
 		$modelClassName = 'Cartalyst\Stripe\Tests\Billing\Stubs\InvoiceModel';
 
 		BillableTraitStub::setInvoiceModel($modelClassName);
 
-		$this->assertEquals($modelClassName, BillableTraitStub::getInvoiceModel());
+		$className = BillableTraitStub::getInvoiceModel();
 
-		$this->assertEquals('invoices', (new $modelClassName)->getTable());
+		$this->assertEquals($modelClassName, $className);
+
+		$this->assertEquals('invoices', (new $className)->getTable());
 	}
 
 	/** @test */
@@ -147,16 +158,21 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 		);
 	}
 
-	/** @test */
+	/**
+	 * @test
+	 * @runInSeparateProcess
+	 */
 	public function it_can_set_the_invoice_item_model()
 	{
 		$modelClassName = 'Cartalyst\Stripe\Tests\Billing\Stubs\InvoiceItemModel';
 
 		BillableTraitStub::setInvoiceItemModel($modelClassName);
 
-		$this->assertEquals($modelClassName, BillableTraitStub::getInvoiceItemModel());
+		$className = BillableTraitStub::getInvoiceItemModel();
 
-		$this->assertEquals('invoice_items', (new $modelClassName)->getTable());
+		$this->assertEquals($modelClassName, $className);
+
+		$this->assertEquals('invoice_items', (new $className)->getTable());
 	}
 
 	/** @test */
@@ -168,22 +184,27 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 		);
 	}
 
-	/** @test */
+	/**
+	 * @test
+	 * @runInSeparateProcess
+	 */
 	public function it_can_set_the_subscription_model()
 	{
 		$modelClassName = 'Cartalyst\Stripe\Tests\Billing\Stubs\SubscriptionModel';
 
 		BillableTraitStub::setSubscriptionModel($modelClassName);
 
-		$this->assertEquals($modelClassName, BillableTraitStub::getSubscriptionModel());
+		$className = BillableTraitStub::getSubscriptionModel();
 
-		$this->assertEquals('subscriptions', (new $modelClassName)->getTable());
+		$this->assertEquals($modelClassName, $className);
+
+		$this->assertEquals('subscriptions', (new $className)->getTable());
 	}
 
 	/** @test */
 	public function it_can_check_if_the_entity_is_subscribed()
 	{
-		$mock = m::mock('BillableTraitStub');
+		$mock = m::mock('Cartalyst\Stripe\Tests\Billing\Stubs\BillableTraitStub');
 		$mock->shouldReceive('isSubscribed')->once()->andReturn(true);
 
 		$this->assertTrue($mock->isSubscribed());
@@ -192,22 +213,25 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function it_can_check_if_the_entity_is_not_subscribed()
 	{
-		$mock = m::mock('BillableTraitStub');
+		$mock = m::mock('Cartalyst\Stripe\Tests\Billing\Stubs\BillableTraitStub');
 		$mock->shouldReceive('isSubscribed')->once()->andReturn(false);
 
 		$this->assertFalse($mock->isSubscribed());
 	}
 
+	/** @test */
 	public function it_can_apply_a_coupon_on_the_entity()
 	{
 
 	}
 
+	/** @test */
 	public function it_can_sync_with_stripe()
 	{
 
 	}
 
+	/** @test */
 	public function it_can_get_the_stripe_api_client()
 	{
 
