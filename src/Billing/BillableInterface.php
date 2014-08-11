@@ -259,7 +259,7 @@ interface BillableInterface {
 	 * @param  bool  $sync
 	 * @return void
 	 */
-	public static function attachStripeCustomers($callback, $sync = true);
+	public static function attachStripeCustomers(Closure $callback, $sync = true);
 
 	/**
 	 * Returns the Stripe API instance.

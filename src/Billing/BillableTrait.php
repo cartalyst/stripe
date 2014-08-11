@@ -353,7 +353,7 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
-	public static function attachStripeCustomers($callback, $sync = true)
+	public static function attachStripeCustomers(Closure $callback, $sync = true)
 	{
 		// Get all the Stripe Customers
 		$customers = static::getStripeClient()->customersIterator();
