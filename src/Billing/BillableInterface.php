@@ -17,6 +17,8 @@
  * @link       http://cartalyst.com
  */
 
+use Closure;
+
 interface BillableInterface {
 
 	/**
@@ -234,6 +236,19 @@ interface BillableInterface {
 	 * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
 	 */
 	public function syncWithStripe();
+
+	/**
+	 * Attaches a Stripe Customer account to the entity that
+	 * will be returned from the Closure, it allows you to
+	 * syncronize the Stripe data for that entity by just
+	 * passing a boolean of true as the third parameter.
+	 *
+	 * @param  array  $data
+	 * @param  \Closure  $callback
+	 * @param  bool  $sync
+	 * @return bool
+	 */
+	public static function attachStripeAccount(array $data, Closure $callback, $sync = true);
 
 	/**
 	 * Returns the Stripe API instance.

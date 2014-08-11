@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use Closure;
 use Illuminate\Support\Facades\App;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -333,6 +334,31 @@ trait BillableTrait {
 		$this->invoice()->syncWithStripe();
 
 		$this->subscription()->syncWithStripe();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public static function attachStripeAccount(array $data, Closure $callback, $sync = true)
+	{
+		// Do we have an entity?
+		if ($entity = $callback($data))
+		{
+			// Store the Stripe Customer Id
+			$entity->stripe_id = $data['id'];
+			$entity->save();
+
+			// Should we syncronize the data with Stripe?
+			if ($sync)
+			{
+				// Syncronize the data
+				$entity->syncWithStripe();
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
