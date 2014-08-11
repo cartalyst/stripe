@@ -37,4 +37,25 @@ class IlluminateCard extends Model {
 		'stripe_id',
 	];
 
+	/**
+	 * Get mutator for the "default" attribute.
+	 *
+	 * @param  string  $default
+	 * @return bool
+	 */
+	public function getDefaultAttribute($default)
+	{
+		return (int) $default;
+	}
+
+	/**
+	 * Checks if the credit card is the default card.
+	 *
+	 * @return bool
+	 */
+	public function isDefault()
+	{
+		return (bool) $this->default;
+	}
+
 }

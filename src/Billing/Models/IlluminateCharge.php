@@ -131,7 +131,7 @@ class IlluminateCharge extends Model {
 	}
 
 	/**
-	 * Checks if the charge is captured.
+	 * Checks if the charge has been captured.
 	 *
 	 * @return bool
 	 */
@@ -151,7 +151,7 @@ class IlluminateCharge extends Model {
 	}
 
 	/**
-	 * Checks if the charge is paid.
+	 * Checks if the charge has been paid.
 	 *
 	 * @return bool
 	 */
