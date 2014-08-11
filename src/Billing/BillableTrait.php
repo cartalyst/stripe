@@ -19,6 +19,10 @@
 
 use Closure;
 use Illuminate\Support\Facades\App;
+use Cartalyst\Stripe\Billing\Gateways\CardGateway;
+use Cartalyst\Stripe\Billing\Gateways\ChargeGateway;
+use Cartalyst\Stripe\Billing\Gateways\InvoiceGateway;
+use Cartalyst\Stripe\Billing\Gateways\SubscriptionGateway;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 trait BillableTrait {
@@ -336,6 +340,9 @@ trait BillableTrait {
 		$this->subscription()->syncWithStripe();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public static function attachStripeCustomer(array $data, Closure $callback, $sync = true)
 	{
 		// Do we have an entity?

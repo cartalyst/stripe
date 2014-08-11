@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Billing;
+<?php namespace Cartalyst\Stripe\Billing\Gateways;
 /**
  * Part of the Stripe package.
  *
@@ -17,6 +17,8 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Stripe\Billing\StripeGateway;
+use Cartalyst\Stripe\Billing\BillableInterface;
 use Cartalyst\Stripe\Billing\Models\IlluminateInvoice;
 
 class InvoiceItemsGateway extends StripeGateway {

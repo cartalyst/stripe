@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Billing;
+<?php namespace Cartalyst\Stripe\Billing\Gateways;
 /**
  * Part of the Stripe package.
  *
@@ -17,8 +17,11 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Stripe\Billing\StripeGateway;
+use Cartalyst\Stripe\Billing\BillableInterface;
 use Cartalyst\Stripe\Api\Exception\NotFoundException;
 use Cartalyst\Stripe\Billing\Models\IlluminateInvoice;
+use Cartalyst\Stripe\Billing\Gateways\InvoiceItemsGateway;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class InvoiceGateway extends StripeGateway {
@@ -33,7 +36,7 @@ class InvoiceGateway extends StripeGateway {
 	/**
 	 * The Invoice Items gateway instance.
 	 *
-	 * @var \Cartalyst\Stripe\Billing\InvoiceItemsGateway
+	 * @var \Cartalyst\Stripe\Billing\Gateways\InvoiceItemsGateway
 	 */
 	protected $invoiceItems;
 
