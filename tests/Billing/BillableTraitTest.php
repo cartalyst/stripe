@@ -19,8 +19,6 @@
 
 use Mockery as m;
 use PHPUnit_Framework_TestCase;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Facade;
 use Cartalyst\Stripe\Tests\Billing\Stubs\BillableTraitStub;
 
 class BillableTraitTest extends PHPUnit_Framework_TestCase {
@@ -33,8 +31,6 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	public function tearDown()
 	{
 		m::close();
-
-		Facade::clearResolvedInstances();
 	}
 
 	/** @test */
@@ -77,8 +73,6 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function it_can_get_the_card_gateway()
 	{
-		App::shouldReceive('make')->once();
-
 		$entity = new BillableTraitStub;
 
 		$this->assertInstanceOf(
@@ -228,8 +222,6 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function it_can_get_the_invoice_gateway()
 	{
-		App::shouldReceive('make')->once();
-
 		$entity = new BillableTraitStub;
 
 		$this->assertInstanceOf(
@@ -241,8 +233,6 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function it_can_get_the_invoice_items_gateway()
 	{
-		App::shouldReceive('make')->twice();
-
 		$entity = new BillableTraitStub;
 
 		$this->assertInstanceOf(
@@ -327,8 +317,6 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function it_can_get_the_subscription_gateway()
 	{
-		App::shouldReceive('make')->once();
-
 		$entity = new BillableTraitStub;
 
 		$this->assertInstanceOf(

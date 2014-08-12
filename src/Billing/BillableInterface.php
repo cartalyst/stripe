@@ -18,6 +18,7 @@
  */
 
 use Closure;
+use Cartalyst\Stripe\Api\Stripe;
 
 interface BillableInterface {
 
@@ -274,5 +275,13 @@ interface BillableInterface {
 	 * @return \Cartalyst\Stripe\Api\Stripe
 	 */
 	public static function getStripeClient();
+
+	/**
+	 * Sets the Stripe API instance.
+	 *
+	 * @param  \Cartalyst\Stripe\Api\Stripe  $stripe
+	 * @return void
+	 */
+	public static function setStripeClient(Stripe $stripe);
 
 }

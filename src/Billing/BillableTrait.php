@@ -18,7 +18,7 @@
  */
 
 use Closure;
-use Illuminate\Support\Facades\App;
+use Cartalyst\Stripe\Api\Stripe;
 use Cartalyst\Stripe\Billing\Gateways\CardGateway;
 use Cartalyst\Stripe\Billing\Gateways\ChargeGateway;
 use Cartalyst\Stripe\Billing\Gateways\InvoiceGateway;
@@ -379,7 +379,15 @@ trait BillableTrait {
 	 */
 	public static function getStripeClient()
 	{
-		return static::$stripeClient ?: App::make('stripe');
+		return static::$stripeClient;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public static function setStripeClient(Stripe $stripe)
+	{
+		static::$stripeClient = $stripe;
 	}
 
 }
