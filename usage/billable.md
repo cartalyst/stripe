@@ -72,17 +72,17 @@ Attaching a Stripe Customer to an entity is not a very hard job but we've made i
 ```php
 $customer = Stripe::customer('cus_4EBumIjyaKooft')->toArray();
 
-User::attachStripeCustomer($customer, function($data)
-{
-	return User::where('email', $data['email'])->first();
-});
+$entity = User::where('email', $data['email'])->first();
+$entity->attachStripeCustomer($customer);
 ```
 
-The way this method works is very simple, you need to call the `attachStripeCustomer()` method pass as the first argument the `$customer` data and as the second argument a `Closure`, the `Closure` only accepts one argument and it's the `$customer` that you've passed as it will be useful when doing a search on your database.
+The way this method works is very simple, you need to call the `attachStripeCustomer()` method on your entity and pass as the first argument the `$customer` data.
 
-For the `Closure` response, make sure it returns a valid `entity` model like the example above.
+By default, the second parameter allows you to syncronize the Stripe Customer data for your entity, to disable this feature, just pass a boolean of `false`.
 
-By default, the third parameter allows you to syncronize the Stripe Customer data for your entity, to disable this feature, just pass a boolean of `false`.
+```php
+$entity->attachStripeCustomer($customer, false);
+```
 
 ###### Attach all the Stripe Customers to their entities
 
