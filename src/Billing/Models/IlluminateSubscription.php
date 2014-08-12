@@ -86,11 +86,9 @@ class IlluminateSubscription extends Model {
 	 */
 	public function onGracePeriod()
 	{
-		$canceledAt = $this->canceled_at;
-
-		if ($canceledAt && ! $this->ended_at)
+		if ($this->canceled_at && ! $this->ended_at)
 		{
-			return Carbon::today()->lt(Carbon::instance($canceledAt));
+			return Carbon::today()->lt(Carbon::instance($this->period_ends_at));
 		}
 
 		return false;
