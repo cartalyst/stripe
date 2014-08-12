@@ -219,7 +219,7 @@ class Stripe {
 			return $this->handleIteratorRequest($method, $arguments);
 		}
 
-		elseif (str_singular($method) === $method)
+		elseif (str_singular($method) === $method && $this->manifestExists(str_plural($method)))
 		{
 			return $this->handleSingleRequest($method, $arguments);
 		}
@@ -246,21 +246,12 @@ class Stripe {
 		// Pluralize the method name
 		$pluralMethod = str_plural($method);
 
-		// Prepare the exception
-		$exception = new InvalidArgumentException("Undefined method [{$method}] called.");
-
-		// Validate the method
-		if ( ! $this->manifestExists($pluralMethod))
-		{
-			throw $exception;
-		}
-
 		// Get the request manifest payload data
 		$manifest = $this->getRequestManifestPayload($pluralMethod);
 
 		if ( ! $parameters = array_get($manifest, 'find'))
 		{
-			throw $exception;
+			throw new InvalidArgumentException("Undefined method [{$method}] called.");;
 		}
 
 		// Get the required parameters for the request
