@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Tests\Billing;
+<?php namespace Cartalyst\Stripe\Tests\Billing\Stubs;
 /**
  * Part of the Stripe package.
  *
@@ -17,25 +17,8 @@
  * @link       http://cartalyst.com
  */
 
-use Mockery as m;
-use PHPUnit_Framework_TestCase;
+use Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund;
 
-class StripeGatewayTest extends PHPUnit_Framework_TestCase {
-
-	/**
-	 * Close mockery.
-	 *
-	 * @return void
-	 */
-	public function tearDown()
-	{
-		m::close();
-	}
-
-	/** @test */
-	public function one()
-	{
-
-	}
+class ChargeRefundModel extends IlluminateChargeRefund {
 
 }

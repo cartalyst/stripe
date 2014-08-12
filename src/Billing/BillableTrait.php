@@ -188,6 +188,14 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
+	public static function getChargeRefundModel()
+	{
+		return static::$chargeRefundModel;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public static function setChargeRefundModel($model)
 	{
 		static::$chargeRefundModel = $model;

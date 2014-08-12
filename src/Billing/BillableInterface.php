@@ -118,6 +118,13 @@ interface BillableInterface {
 	public static function setChargeModel($model);
 
 	/**
+	 * Returns the Eloquent charge refund model.
+	 *
+	 * @return string
+	 */
+	public static function getChargeRefundModel();
+
+	/**
 	 * Sets the Eloquent charge refund model.
 	 *
 	 * @param  string  $model

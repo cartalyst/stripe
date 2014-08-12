@@ -19,6 +19,8 @@
 
 use Mockery as m;
 use PHPUnit_Framework_TestCase;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Facade;
 use Cartalyst\Stripe\Tests\Billing\Stubs\BillableTraitStub;
 
 class BillableTraitTest extends PHPUnit_Framework_TestCase {
@@ -31,6 +33,8 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	public function tearDown()
 	{
 		m::close();
+
+		Facade::clearResolvedInstances();
 	}
 
 	/** @test */
@@ -58,6 +62,32 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/** @test */
+	public function it_can_get_the_cards_relationship()
+	{
+		$entity = new BillableTraitStub;
+
+		$this->resolver($entity);
+
+		$this->assertInstanceOf(
+			'Illuminate\Database\Eloquent\Relations\HasMany',
+			$entity->cards()
+		);
+	}
+
+	/** @test */
+	public function it_can_get_the_card_gateway()
+	{
+		App::shouldReceive('make')->once();
+
+		$entity = new BillableTraitStub;
+
+		$this->assertInstanceOf(
+			'Cartalyst\Stripe\Billing\Gateways\CardGateway',
+			$entity->card()
+		);
+	}
+
+	/** @test */
 	public function it_can_get_the_card_model()
 	{
 		$this->assertEquals(
@@ -76,9 +106,11 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 
 		BillableTraitStub::setCardModel($modelClassName);
 
-		$this->assertEquals($modelClassName, BillableTraitStub::getCardModel());
+		$className = BillableTraitStub::getCardModel();
 
-		$this->assertEquals('cards', (new $modelClassName)->getTable());
+		$this->assertEquals($modelClassName, $className);
+
+		$this->assertEquals('cards', (new $className)->getTable());
 	}
 
 	/** @test */
@@ -100,6 +132,35 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/** @test */
+	public function it_can_get_the_default_card()
+	{
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
+
+	/** @test */
+	public function it_can_update_the_default_card()
+	{
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
+
+	/** @test */
+	public function it_can_get_the_charges_relationship()
+	{
+		$entity = new BillableTraitStub;
+
+		$this->resolver($entity);
+
+		$this->assertInstanceOf(
+			'Illuminate\Database\Eloquent\Relations\HasMany',
+			$entity->charges()
+		);
+	}
+
+	/** @test */
 	public function it_can_get_the_charge_model()
 	{
 		$this->assertEquals(
@@ -118,9 +179,84 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 
 		BillableTraitStub::setChargeModel($modelClassName);
 
-		$this->assertEquals($modelClassName, BillableTraitStub::getChargeModel());
+		$className = BillableTraitStub::getChargeModel();
 
-		$this->assertEquals('payments', (new $modelClassName)->getTable());
+		$this->assertEquals($modelClassName, $className);
+
+		$this->assertEquals('payments', (new $className)->getTable());
+	}
+
+	/** @test */
+	public function it_can_get_the_charge_refund_model()
+	{
+		$this->assertEquals(
+			'Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund',
+			BillableTraitStub::getChargeRefundModel()
+		);
+	}
+
+	/**
+	 * @test
+	 * @runInSeparateProcess
+	 */
+	public function it_can_set_the_charge_refund_model()
+	{
+		$modelClassName = 'Cartalyst\Stripe\Tests\Billing\Stubs\ChargeRefundModel';
+
+		BillableTraitStub::setChargeRefundModel($modelClassName);
+
+		$className = BillableTraitStub::getChargeRefundModel();
+
+		$this->assertEquals($modelClassName, $className);
+
+		$this->assertEquals('payment_refunds', (new $className)->getTable());
+	}
+
+	/** @test */
+	public function it_can_get_the_invoices_relationship()
+	{
+		$entity = new BillableTraitStub;
+
+		$this->resolver($entity);
+
+		$this->assertInstanceOf(
+			'Illuminate\Database\Eloquent\Relations\HasMany',
+			$entity->invoices()
+		);
+	}
+
+	/** @test */
+	public function it_can_get_the_invoice_gateway()
+	{
+		App::shouldReceive('make')->once();
+
+		$entity = new BillableTraitStub;
+
+		$this->assertInstanceOf(
+			'Cartalyst\Stripe\Billing\Gateways\InvoiceGateway',
+			$entity->invoice()
+		);
+	}
+
+	/** @test */
+	public function it_can_get_the_invoice_items_gateway()
+	{
+		App::shouldReceive('make')->twice();
+
+		$entity = new BillableTraitStub;
+
+		$this->assertInstanceOf(
+			'Cartalyst\Stripe\Billing\Gateways\InvoiceItemsGateway',
+			$entity->invoice()->items()
+		);
+	}
+
+	/** @test */
+	public function it_can_get_the_upcoming_invoice_items()
+	{
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
 	}
 
 	/** @test */
@@ -176,6 +312,32 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/** @test */
+	public function it_can_get_the_subscriptions_relationship()
+	{
+		$entity = new BillableTraitStub;
+
+		$this->resolver($entity);
+
+		$this->assertInstanceOf(
+			'Illuminate\Database\Eloquent\Relations\HasMany',
+			$entity->subscriptions()
+		);
+	}
+
+	/** @test */
+	public function it_can_get_the_subscription_gateway()
+	{
+		App::shouldReceive('make')->once();
+
+		$entity = new BillableTraitStub;
+
+		$this->assertInstanceOf(
+			'Cartalyst\Stripe\Billing\Gateways\SubscriptionGateway',
+			$entity->subscription()
+		);
+	}
+
+	/** @test */
 	public function it_can_get_the_subscription_model()
 	{
 		$this->assertEquals(
@@ -222,19 +384,36 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function it_can_apply_a_coupon_on_the_entity()
 	{
-
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
 	}
 
 	/** @test */
 	public function it_can_sync_with_stripe()
 	{
-
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
 	}
 
 	/** @test */
 	public function it_can_get_the_stripe_api_client()
 	{
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
 
+	protected function resolver(&$entity)
+	{
+		$entity->setConnectionResolver($resolver = m::mock('Illuminate\Database\ConnectionResolverInterface'));
+		$resolver->shouldReceive('connection')->andReturn(m::mock('Illuminate\Database\Connection'));
+		$entity->getConnection()->shouldReceive('getQueryGrammar')->andReturn(m::mock('Illuminate\Database\Query\Grammars\Grammar'));
+		$entity->getConnection()->shouldReceive('getPostProcessor')->andReturn($processor = m::mock('Illuminate\Database\Query\Processors\Processor'));
+		$entity->getConnection()->getQueryGrammar()->shouldReceive('getDateFormat')->andReturn('Y-m-d H:i:s');
+		$entity->getConnection()->getQueryGrammar()->shouldReceive('compileInsertGetId');
+		$processor->shouldReceive('processInsertGetId')->andReturn(1);
 	}
 
 }

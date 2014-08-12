@@ -17,10 +17,11 @@
  * @link       http://cartalyst.com
  */
 
+use Illuminate\Database\Eloquent\Model;
 use Cartalyst\Stripe\Billing\BillableTrait;
 use Cartalyst\Stripe\Billing\BillableInterface;
 
-class BillableTraitStub implements BillableInterface {
+class BillableTraitStub extends Model implements BillableInterface {
 
 	use BillableTrait;
 

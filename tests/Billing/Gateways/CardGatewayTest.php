@@ -33,9 +33,51 @@ class CardGatewayTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/** @test */
-	public function one()
+	public function it_can_create_a_new_card()
 	{
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
 
+	/** @test */
+	public function it_can_update_a_card()
+	{
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
+
+	/** @test */
+	public function it_can_delete_a_card()
+	{
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
+
+	/** @test */
+	public function it_can_make_an_existing_card_the_default_card()
+	{
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
+
+	/** @test */
+	public function it_can_set_a_new_card_the_default_card()
+	{
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
+
+	/** @test */
+	public function it_can_syncronize_the_entity_cards_with_stripe()
+	{
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
 	}
 
 }
