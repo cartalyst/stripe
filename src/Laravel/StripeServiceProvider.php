@@ -30,7 +30,7 @@ class StripeServiceProvider extends ServiceProvider {
 	{
 		$this->registerStripe();
 
-		$this->setBillableEntityStripeClient();
+		$this->setStripeClientOnBillableEntity();
 
 		$this->app['command.stripe.migrator'] = $this->app->share(function($app)
 		{
@@ -59,12 +59,16 @@ class StripeServiceProvider extends ServiceProvider {
 		});
 	}
 
-	protected function setBillableEntityStripeClient()
+	/**
+	 * Sets the Stripe API client on the billable entity.
+	 *
+	 * @return void
+	 */
+	protected function setStripeClientOnBillableEntity()
 	{
 		$model = $this->app['config']->get('services.stripe.model');
 
-		$entity = new $model;
-		$entity->setStripeClient($this->app['stripe']);
+		$model::setStripeClient($this->app['stripe']);
 	}
 
 }
