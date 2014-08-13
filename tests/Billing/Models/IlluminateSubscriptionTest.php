@@ -79,7 +79,7 @@ class IlluminateSubscriptionTest extends PHPUnit_Framework_TestCase {
 	{
 		$subscription = new IlluminateSubscription;
 		$subscription->canceled_at = time();
-		$subscription->ended_at = null;
+		$subscription->period_ends_at = time();
 
 		$this->resolver($subscription);
 
@@ -93,7 +93,7 @@ class IlluminateSubscriptionTest extends PHPUnit_Framework_TestCase {
 	{
 		$subscription = new IlluminateSubscription;
 		$subscription->canceled_at = null;
-		$subscription->ended_at = time();
+		$subscription->period_ends_at = time();
 
 		$this->resolver($subscription);
 
