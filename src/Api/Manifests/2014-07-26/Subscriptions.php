@@ -86,15 +86,15 @@ return [
 		'errorResponses' => $errors,
 		'parameters'     => [
 
-			'id' => [
-				'description' => 'The subscription unique identifier.',
+			'customer' => [
+				'description' => 'The customer unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
 			],
 
-			'customer' => [
-				'description' => 'The customer unique identifier.',
+			'id' => [
+				'description' => 'The subscription unique identifier.',
 				'location'    => 'uri',
 				'type'        => 'string',
 				'required'    => true,
