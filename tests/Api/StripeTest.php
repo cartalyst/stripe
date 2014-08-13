@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Tests;
+<?php namespace Cartalyst\Stripe\Tests\Api;
 /**
  * Part of the Stripe package.
  *
@@ -23,7 +23,7 @@ use Cartalyst\Stripe\Api\Stripe;
 class StripeTest extends PHPUnit_Framework_TestCase {
 
 	/**
-	 * The Stripe client.
+	 * The Stripe API client instance.
 	 *
 	 * @var \Cartalyst\Stripe\Api\Stripe
 	 */
@@ -122,6 +122,21 @@ class StripeTest extends PHPUnit_Framework_TestCase {
 		];
 
 		$this->assertEquals($headers, $expected);
+	}
+
+	public function check_a_single_api_request()
+	{
+		# $this->stripe->customer(:customerId);
+	}
+
+	public function check_a_iterator_api_request()
+	{
+		# $this->stripe->customersIterator();
+	}
+
+	public function check_a_normal_api_request()
+	{
+		# $this->stripe->customers()->all();
 	}
 
 }
