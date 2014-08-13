@@ -240,10 +240,11 @@ interface BillableInterface {
 	/**
 	 * Syncronizes the Stripe data with the local data.
 	 *
+	 * @param  array  $arguments
 	 * @return void
 	 * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
 	 */
-	public function syncWithStripe();
+	public function syncWithStripe(array $arguments = []);
 
 	/**
 	 * Attaches the Stripe Customer account to the entity,

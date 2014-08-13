@@ -187,10 +187,12 @@ class CardGateway extends StripeGateway {
 	/**
 	 * Syncronizes the Stripe cards data with the local data.
 	 *
+	 * @param  array  $arguments
+	 * @param  \Closure  $callback
 	 * @return void
 	 * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
 	 */
-	public function syncWithStripe()
+	public function syncWithStripe(array $arguments = [], Closure $callback = null)
 	{
 		// Get the entity object
 		$entity = $this->billable;
@@ -206,10 +208,27 @@ class CardGateway extends StripeGateway {
 			'id' => $entity->stripe_id,
 		]);
 
-		// Get all the entity cards from Stripe
-		$cards = $this->client->cardsIterator([
+		// Prepare the expand array
+		$expand = array_get($arguments, 'expand', []);
+		foreach ($expand as $key => $value)
+		{
+			$expand[$key] = "data.{$value}";
+		}
+		array_set($arguments, 'expand', $expand);
+
+		// Prepare the payload
+		$payload = array_merge($arguments, [
 			'customer' => $entity->stripe_id,
 		]);
+
+		// Remove the "callback" from the arguments, this is passed
+		// through the main syncWithStripe method, so we remove it
+		// here anyways so that we can have a proper payload.
+		$callback = array_get($payload, 'callback', $callback);
+		array_forget($payload, 'callback');
+
+		// Get all the entity cards from Stripe
+		$cards = $this->client->cardsIterator($payload);
 
 		$stripeCards = [];
 

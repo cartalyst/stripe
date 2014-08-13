@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use Closure;
 use Cartalyst\Stripe\Billing\BillableInterface;
 use Cartalyst\Stripe\Api\Exception\NotFoundException;
 use Cartalyst\Stripe\Billing\Models\IlluminateInvoice;
@@ -162,10 +163,12 @@ class InvoiceGateway extends StripeGateway {
 	/**
 	 * Syncronizes the Stripe invoices data with the local data.
 	 *
+	 * @param  array  $arguments
+	 * @param  \Closure  $callback
 	 * @return void
 	 * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
 	 */
-	public function syncWithStripe()
+	public function syncWithStripe(array $arguments = [], Closure $callback = null)
 	{
 		// Get the entity object
 		$entity = $this->billable;
@@ -176,15 +179,32 @@ class InvoiceGateway extends StripeGateway {
 			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
 		}
 
-		// Get all the entity invoices
-		$invoices = array_reverse($this->client->invoicesIterator([
+		// Prepare the expand array
+		$expand = array_get($arguments, 'expand', []);
+		foreach ($expand as $key => $value)
+		{
+			$expand[$key] = "data.{$value}";
+		}
+		array_set($arguments, 'expand', $expand);
+
+		// Prepare the payload
+		$payload = array_merge($arguments, [
 			'customer' => $entity->stripe_id,
-		])->toArray());
+		]);
+
+		// Remove the "callback" from the arguments, this is passed
+		// through the main syncWithStripe method, so we remove it
+		// here anyways so that we can have a proper payload.
+		$callback = array_get($payload, 'callback', $callback);
+		array_forget($payload, 'callback');
+
+		// Get all the entity invoices
+		$invoices = array_reverse($this->client->invoicesIterator($payload)->toArray());
 
 		// Loop through the invoices
 		foreach ($invoices as $invoice)
 		{
-			$this->storeInvoice($invoice);
+			$this->storeInvoice($invoice, $callback);
 		}
 
 		// Array that will hold the pending invoice items
@@ -228,9 +248,10 @@ class InvoiceGateway extends StripeGateway {
 	 * Stores the invoice information on local storage.
 	 *
 	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
+	 * @param  \Closure  $callback
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
 	 */
-	protected function storeInvoice($response)
+	protected function storeInvoice($response, Closure $callback = null)
 	{
 		// Get the entity object
 		$entity = $this->billable;
@@ -271,6 +292,11 @@ class InvoiceGateway extends StripeGateway {
 		else
 		{
 			$invoice->update($payload);
+		}
+
+		if ($callback)
+		{
+			$callback($response, $invoice);
 		}
 
 		// Fires the appropriate event

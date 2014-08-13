@@ -325,20 +325,28 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function syncWithStripe()
+	public function syncWithStripe(array $arguments = [])
 	{
 		if ( ! $this->isBillable())
 		{
 			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
 		}
 
-		$this->card()->syncWithStripe();
+		$this->card()->syncWithStripe(
+			array_get($arguments, 'charge', [])
+		);
 
-		$this->charge()->syncWithStripe();
+		$this->charge()->syncWithStripe(
+			array_get($arguments, 'card', [])
+		);
 
-		$this->invoice()->syncWithStripe();
+		$this->invoice()->syncWithStripe(
+			array_get($arguments, 'invoice', [])
+		);
 
-		$this->subscription()->syncWithStripe();
+		$this->subscription()->syncWithStripe(
+			array_get($arguments, 'subscription', [])
+		);
 	}
 
 	/**
