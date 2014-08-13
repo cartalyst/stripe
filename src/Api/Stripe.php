@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use Guzzle\Common\Event;
 use Guzzle\Service\Client;
 use InvalidArgumentException;
 use Guzzle\Service\Description\ServiceDescription;
@@ -322,6 +323,16 @@ class Stripe {
 
 		// Register the error response plugin for our custom exceptions
 		$dispatcher->addSubscriber(new ErrorResponsePlugin);
+
+		// Listen to the "command.after_prepare" event fired by Guzzle
+		$dispatcher->addListener('command.after_prepare', function(Event $event)
+		{
+			$command = $event['command'];
+
+			$request = $command->getRequest();
+
+			$request->getQuery()->setAggregator(new QueryAggregator());
+		});
 
 		// Set the manifest payload into the Guzzle client
 		$payload = $this->buildPayload($method);
