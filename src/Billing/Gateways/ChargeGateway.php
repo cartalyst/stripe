@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use Closure;
 use Cartalyst\Stripe\Billing\BillableInterface;
 use Cartalyst\Stripe\Billing\Models\IlluminateCharge;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -279,7 +280,7 @@ class ChargeGateway extends StripeGateway {
 		// Loop through the charges
 		foreach ($charges as $charge)
 		{
-			$this->storeCharge($charge);
+			$this->storeCharge($charge, $callback);
 		}
 	}
 
@@ -300,9 +301,10 @@ class ChargeGateway extends StripeGateway {
 	 * Stores the charge information on local storage.
 	 *
 	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
+	 * @param  \Closure  $callback
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
 	 */
-	protected function storeCharge($response)
+	protected function storeCharge($response, Closure $callback = null)
 	{
 		// Get the entity object
 		$entity = $this->billable;
@@ -338,6 +340,11 @@ class ChargeGateway extends StripeGateway {
 		else
 		{
 			$charge->update($payload);
+		}
+
+		if ($callback)
+		{
+			$callback($response, $charge);
 		}
 
 		// Fires the appropriate event

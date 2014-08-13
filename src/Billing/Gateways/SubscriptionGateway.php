@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use Closure;
 use Carbon\Carbon;
 use Cartalyst\Stripe\Billing\BillableInterface;
 use Cartalyst\Stripe\Billing\Models\IlluminateSubscription;
@@ -551,7 +552,7 @@ class SubscriptionGateway extends StripeGateway {
 		// Loop through the Stripe subscriptions
 		foreach ($stripeSubscriptions as $subscription)
 		{
-			$this->storeSubscription($subscription);
+			$this->storeSubscription($subscription, [], $callback);
 		}
 	}
 
@@ -631,9 +632,10 @@ class SubscriptionGateway extends StripeGateway {
 	 *
 	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
 	 * @param  array  $attributes
+	 * @param  \Closure  $callback
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
 	 */
-	protected function storeSubscription($response, array $attributes = [])
+	protected function storeSubscription($response, array $attributes = [], Closure $callback = null)
 	{
 		// Get the entity object
 		$entity = $this->billable;
@@ -666,6 +668,11 @@ class SubscriptionGateway extends StripeGateway {
 		else
 		{
 			$subscription->update($payload);
+		}
+
+		if ($callback)
+		{
+			$callback($response, $subscription);
 		}
 
 		// Fires the appropriate event

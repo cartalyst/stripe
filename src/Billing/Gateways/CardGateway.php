@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use Closure;
 use Cartalyst\Stripe\Billing\BillableInterface;
 use Cartalyst\Stripe\Billing\Models\IlluminateCard;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -253,7 +254,7 @@ class CardGateway extends StripeGateway {
 		// Loop through the credit cards
 		foreach ($stripeCards as $card)
 		{
-			$this->storeCard($card, ($defaultCard === $card['id']));
+			$this->storeCard($card, ($defaultCard === $card['id']), $callback);
 		}
 	}
 
@@ -291,9 +292,10 @@ class CardGateway extends StripeGateway {
 	 *
 	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
 	 * @param  bool  $default
+	 * @param  \Closure  $callback
 	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCard
 	 */
-	protected function storeCard($response, $default = false)
+	protected function storeCard($response, $default = false, Closure $callback = null)
 	{
 		// Get the entity object
 		$entity = $this->billable;
@@ -329,6 +331,11 @@ class CardGateway extends StripeGateway {
 		if ($default)
 		{
 			$this->updateDefaultLocalCard($stripeId);
+		}
+
+		if ($callback)
+		{
+			$callback($response, $card);
 		}
 
 		// Fire the appropriate event
