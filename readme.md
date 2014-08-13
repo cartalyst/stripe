@@ -16,7 +16,7 @@ Package history and capabilities.
 
 #### xx-May-14 - v1.0.0
 
-#### API
+##### API
 
 - Charges
 	- Create a new charge
@@ -124,7 +124,7 @@ Package history and capabilities.
 	- Create a new bank account token
 	- Retrieve an existing token
 
-#### Billable entities
+##### Billable entities
 
 - Can check if the entity is ready to be billable.
 - Can apply a coupon to the entity.
