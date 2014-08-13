@@ -145,10 +145,7 @@ trait BillableTrait {
 	 */
 	public function updateDefaultCard($token)
 	{
-		return $this->getStripeClient()->customers()->update([
-			'id'   => $this->getStripeId(),
-			'card' => $token,
-		]);
+		return $this->card()->makeDefault()->create($token);
 	}
 
 	/**
