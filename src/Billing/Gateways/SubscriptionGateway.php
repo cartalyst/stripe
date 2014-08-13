@@ -537,7 +537,7 @@ class SubscriptionGateway extends StripeGateway {
 		// to make sure that expired subscriptions are in sync.
 		foreach ($entity->subscriptions as $subscription)
 		{
-			if ( ! array_get($stripeSubscriptions, $subscription->stripe_id) && ! $subscription->expired())
+			if ( ! array_get($stripeSubscriptions, $subscription->stripe_id) && ! $subscription->isExpired())
 			{
 				$subscription->update([
 					'active'        => 0,
