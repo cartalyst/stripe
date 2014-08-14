@@ -19,10 +19,7 @@
 
 use Closure;
 use Cartalyst\Stripe\Api\Stripe;
-use Cartalyst\Stripe\Billing\Gateways\CardGateway;
-use Cartalyst\Stripe\Billing\Gateways\ChargeGateway;
-use Cartalyst\Stripe\Billing\Gateways\InvoiceGateway;
-use Cartalyst\Stripe\Billing\Gateways\SubscriptionGateway;
+use Cartalyst\Stripe\Billing\Gateways;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 trait BillableTrait {
@@ -105,7 +102,7 @@ trait BillableTrait {
 	 */
 	public function card($card = null)
 	{
-		return new CardGateway($this, $card);
+		return new Gateways\CardGateway($this, $card);
 	}
 
 	/**
@@ -161,7 +158,7 @@ trait BillableTrait {
 	 */
 	public function charge($charge = null)
 	{
-		return new ChargeGateway($this, $charge);
+		return new Gateways\ChargeGateway($this, $charge);
 	}
 
 	/**
@@ -213,7 +210,7 @@ trait BillableTrait {
 	 */
 	public function invoice($invoice = null)
 	{
-		return new InvoiceGateway($this, $invoice);
+		return new Gateways\InvoiceGateway($this, $invoice);
 	}
 
 	/**
@@ -281,7 +278,7 @@ trait BillableTrait {
 	 */
 	public function subscription($subscription = null)
 	{
-		return new SubscriptionGateway($this, $subscription);
+		return new Gateways\SubscriptionGateway($this, $subscription);
 	}
 
 	/**

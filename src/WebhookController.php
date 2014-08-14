@@ -18,9 +18,8 @@
  */
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class WebhookController extends Controller {
@@ -79,7 +78,7 @@ class WebhookController extends Controller {
 	 */
 	protected function getBillable($stripeId)
 	{
-		$model = Config::get('services.stripe.model');
+		$model = Facades\Config::get('services.stripe.model');
 
 		$class = '\\'.ltrim($model, '\\');
 
@@ -93,7 +92,7 @@ class WebhookController extends Controller {
 	 */
 	protected function getJsonPayload()
 	{
-		return (array) json_decode(Request::getContent(), true);
+		return (array) json_decode(Facades\Request::getContent(), true);
 	}
 
 	/**
