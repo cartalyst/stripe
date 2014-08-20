@@ -19,6 +19,7 @@
 
 use Closure;
 use Cartalyst\Stripe\Api\Stripe;
+use Cartalyst\Stripe\Api\Response;
 use Cartalyst\Stripe\Billing\Gateways;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -346,10 +347,10 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function attachStripeCustomer(array $data, $sync = true)
+	public function attachStripeCustomer(Response $customer, $sync = true)
 	{
 		// Store the Stripe Customer Id
-		$this->stripe_id = $data['id'];
+		$this->stripe_id = $customer['id'];
 		$this->save();
 
 		// Should we syncronize the data with Stripe?
