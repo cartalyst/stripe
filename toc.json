@@ -24,6 +24,7 @@
 		"api/pagination",
 		"api/exceptions",
 		"billable",
+		"billable/attaching",
 		"billable/cards",
 		"billable/charges",
 		"billable/invoices",
