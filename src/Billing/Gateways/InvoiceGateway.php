@@ -267,21 +267,23 @@ class InvoiceGateway extends StripeGateway {
 
 		// Prepare the payload
 		$payload = [
-			'stripe_id'       => $stripeId,
-			'subscription_id' => $response['subscription'],
-			'currency'        => $response['currency'],
-			'description'     => $response['description'],
-			'subtotal'        => $this->convertToDecimal($response['subtotal']),
-			'total'           => $this->convertToDecimal($response['total']),
-			'amount_due'      => $this->convertToDecimal($response['amount_due']),
-			'attempted'       => (bool) $response['attempted'],
-			'attempt_count'   => $response['attempt_count'],
-			'closed'          => (bool) $response['closed'],
-			'paid'            => (bool) $response['paid'],
-			'metadata'        => $response['metadata'],
-			'created_at'      => $this->nullableTimestamp($response['date']),
-			'period_start'    => $this->nullableTimestamp($response['period_start']),
-			'period_end'      => $this->nullableTimestamp($response['period_end']),
+			'stripe_id'            => $stripeId,
+			'subscription_id'      => $response['subscription'],
+			'currency'             => $response['currency'],
+			'description'          => $response['description'],
+			'subtotal'             => $this->convertToDecimal($response['subtotal']),
+			'total'                => $this->convertToDecimal($response['total']),
+			'application_fee'      => $this->nullableTimestamp($response['application_fee']),
+			'amount_due'           => $this->convertToDecimal($response['amount_due']),
+			'attempted'            => (bool) $response['attempted'],
+			'attempt_count'        => $response['attempt_count'],
+			'closed'               => (bool) $response['closed'],
+			'paid'                 => (bool) $response['paid'],
+			'metadata'             => $response['metadata'],
+			'created_at'           => $this->nullableTimestamp($response['date']),
+			'period_start'         => $this->nullableTimestamp($response['period_start']),
+			'period_end'           => $this->nullableTimestamp($response['period_end']),
+			'next_payment_attempt' => $this->nullableTimestamp($response['next_payment_attempt']),
 		];
 
 		// Does the invoice exist on storage?

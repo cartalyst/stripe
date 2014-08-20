@@ -657,6 +657,7 @@ class SubscriptionGateway extends StripeGateway {
 			'period_starts_at' => $this->nullableTimestamp($response['current_period_start']),
 			'period_ends_at'   => $this->nullableTimestamp($response['current_period_end']),
 			'canceled_at'      => $this->nullableTimestamp($response['canceled_at']),
+			'trial_starts_at'  => $this->nullableTimestamp($response['trial_start']),
 			'trial_ends_at'    => $this->nullableTimestamp($response['trial_end']),
 		], $attributes);
 

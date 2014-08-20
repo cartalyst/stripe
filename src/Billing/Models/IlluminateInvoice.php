@@ -45,7 +45,9 @@ class IlluminateInvoice extends Model {
 		'description',
 		'period_start',
 		'attempt_count',
+		'application_fee',
 		'subscription_id',
+		'next_payment_attempt',
 	];
 
 	/**
@@ -54,6 +56,7 @@ class IlluminateInvoice extends Model {
 	protected $dates = [
 		'period_end',
 		'period_start',
+		'next_payment_attempt',
 	];
 
 	/**

@@ -30,8 +30,11 @@ class IlluminateCard extends Model {
 	 * {@inheritDoc}
 	 */
 	protected $fillable = [
+		'brand',
 		'default',
+		'funding',
 		'exp_year',
+		'cvc_check',
 		'exp_month',
 		'last_four',
 		'stripe_id',

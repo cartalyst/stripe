@@ -312,6 +312,9 @@ class CardGateway extends StripeGateway {
 		// Prepare the payload
 		$payload = [
 			'stripe_id' => $stripeId,
+			'brand'     => $response['brand'],
+			'funding'   => $response['funding'],
+			'cvc_check' => $response['cvc_check'],
 			'last_four' => $response['last4'],
 			'exp_month' => $response['exp_month'],
 			'exp_year'  => $response['exp_year'],

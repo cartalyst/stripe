@@ -34,6 +34,9 @@ class CartalystStripeCreateTables extends Migration {
 			$table->increments('id');
 			$table->integer('billable_column_id')->unsigned();
 			$table->string('stripe_id');
+			$table->string('brand', 20);
+			$table->string('funding', 10);
+			$table->string('cvc_check', 10);
 			$table->smallInteger('last_four')->unsigned();
 			$table->tinyInteger('exp_month')->unsigned();
 			$table->smallInteger('exp_year')->unsigned();
@@ -55,6 +58,7 @@ class CartalystStripeCreateTables extends Migration {
 			$table->string('description')->nullable();
 			$table->decimal('subtotal', 15, 4);
 			$table->decimal('total', 15, 4);
+			$table->decimal('application_fee', 15, 4);
 			$table->decimal('amount_due', 15, 4);
 			$table->boolean('attempted')->default(0);
 			$table->integer('attempt_count')->unsigned()->default(0);
@@ -64,6 +68,7 @@ class CartalystStripeCreateTables extends Migration {
 			$table->timestamps();
 			$table->timestamp('period_start')->nullable();
 			$table->timestamp('period_end')->nullable();
+			$table->timestamp('next_payment_attempt')->nullable();
 
 			$table->engine = 'InnoDB';
 
@@ -138,6 +143,7 @@ class CartalystStripeCreateTables extends Migration {
 			$table->timestamp('period_ends_at')->nullable();
 			$table->timestamp('ended_at')->nullable();
 			$table->timestamp('canceled_at')->nullable();
+			$table->timestamp('trial_starts_at')->nullable();
 			$table->timestamp('trial_ends_at')->nullable();
 
 			$table->engine = 'InnoDB';
