@@ -20,12 +20,12 @@
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 
-class StripeMigratorCommand extends Command {
+class StripeMigrationCommand extends Command {
 
 	/**
 	 * {@inheritDoc}
 	 */
-	protected $name = 'stripe:migrator';
+	protected $name = 'stripe:migration';
 
 	/**
 	 * {@inheritDoc}
