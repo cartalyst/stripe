@@ -27,10 +27,10 @@ class WebhookController extends Controller {
 	/**
 	 * Handles the Stripe webhook call.
 	 *
-	 * @param  array  $payload
+	 * @param  array|\Cartalyst\Stripe\Api\Response  $payload
 	 * @return mixed
 	 */
-	public function handleWebhook(array $payload = null)
+	public function handleWebhook($payload = null)
 	{
 		// Get the request payload
 		$payload = $payload ?: $this->getJsonPayload();
