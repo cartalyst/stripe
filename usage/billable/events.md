@@ -1,6 +1,6 @@
 ### Events
 
-On this section we have a list of all the events fired by the Stripe package that you can listen for.
+On this section we have a list of all the events fired by the Stripe package that you can listen for on your application.
 
 Event                                 | Parameters                        | Description
 ------------------------------------- | --------------------------------- | --------------------------------------------

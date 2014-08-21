@@ -4,6 +4,8 @@ A dispute occurs when a customer questions your charge with their bank or credit
 
 #### Close a dispute
 
+##### Arguments
+
 Key    | Required | Type   | Default | Description
 ------ | -------- | ------ | ------- | -----------------------------------------
 charge | true     | string | null    | The charge unique identifier.
@@ -15,6 +17,8 @@ $dispute = Stripe::disputes()->close([
 ```
 
 #### Update a dispute
+
+##### Arguments
 
 Key      | Required | Type   | Default | Description
 -------- | -------- | ------ | ------- | ---------------------------------------

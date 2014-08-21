@@ -6,6 +6,8 @@ A subscription plan contains the pricing information for different products and 
 
 You can create plans easily via the [plan management](https://dashboard.stripe.com/plans) page of the Stripe dashboard. Plan creation is also accessible via the API if you need to create plans on the fly.
 
+##### Arguments
+
 Key                   | Required | Type   | Default | Description
 --------------------- | -------- | ------ | ------- | --------------------------
 id                    | true     | string | null    | The plan unique identifier.
@@ -35,6 +37,8 @@ echo $plan['id'];
 
 You can delete plans via the [plan management](https://dashboard.stripe.com/plans) page of the Stripe dashboard. However, deleting a plan does not affect any current subscribers to the plan; it merely means that new subscribers can't be added to that plan. You can also delete plans via the API.
 
+##### Arguments
+
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------
 id  | true     | string | null    | The plan unique identifier.
@@ -48,6 +52,8 @@ $plan = Stripe::plans()->destroy([
 #### Update a plan
 
 Updates the name of a plan. Other plan details (price, interval, etc.) are, by design, not editable.
+
+##### Arguments
 
 Key                   | Required | Type   | Default | Description
 --------------------- | -------- | ------ | ------- | --------------------------
@@ -69,6 +75,8 @@ echo $plan['name'];
 
 Returns a list of your plans.
 
+##### Arguments
+
 Key            | Required | Type   | Default | Description
 -------------- | -------- | ------ | ------- | ---------------------------------
 ending_before  | false    | string | null    | A cursor to be used in pagination.
@@ -87,6 +95,8 @@ foreach ($plans['data'] as $plan)
 #### Retrieve an existing plan
 
 Retrieves the plan with the given ID.
+
+##### Arguments
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------

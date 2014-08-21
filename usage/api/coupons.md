@@ -8,6 +8,8 @@ You can create coupons easily via the [coupon management](https://dashboard.stri
 
 A coupon has either a `percent_off` or an `amount_off` and `currency`. If you set an `amount_off`, that amount will be subtracted from any invoice's subtotal. For example, an invoice with a subtotal of $10 will have a final total of $0 if a coupon with an `amount_off` of 2000 is applied to it and an invoice with a subtotal of $30 will have a final total of $10 if a coupon with an `amount_off` of 2000 is applied to it.
 
+##### Arguments
+
 Key                | Required | Type   | Default | Description
 ------------------ | -------- | ------ | ------- | -----------------------------
 id                 | false    | string | null    | The coupon unique identifier, if not provided a random string will be generated.
@@ -34,6 +36,8 @@ echo $coupon['id'];
 
 You can delete coupons via the [coupon management](https://dashboard.stripe.com/coupons) page of the Stripe dashboard. However, deleting a coupon does not affect any customers who have already applied the coupon; it means that new customers can't redeem the coupon. You can also delete coupons via the API.
 
+##### Arguments
+
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------
 id  | true     | string | null    | The coupon unique identifier.
@@ -47,6 +51,8 @@ $coupon = Stripe::coupons()->destroy([
 #### Retrieve all the existing coupons
 
 Returns a list of your coupons.
+
+##### Arguments
 
 Key            | Required | Type   | Default | Description
 -------------- | -------- | ------ | ------- | ---------------------------------
@@ -66,6 +72,8 @@ foreach ($coupons['data'] as $coupon)
 #### Retrieve an existing coupon
 
 Retrieves the coupon with the given ID.
+
+##### Arguments
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------

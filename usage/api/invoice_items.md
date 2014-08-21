@@ -6,6 +6,8 @@ Sometimes you want to add a charge or credit to a customer but only actually cha
 
 Adds an arbitrary charge or credit to the customer's upcoming invoice.
 
+##### Arguments
+
 Key          | Required | Type   | Default | Description
 ------------ | -------- | ------ | ------- | -----------------------------------
 customer     | true     | string | null    | The customer unique identifier.
@@ -30,6 +32,8 @@ echo $item['id'];
 
 Updates the amount or description of an invoice item on an upcoming invoice. Updating an invoice item is only possible before the invoice it's attached to is closed.
 
+##### Arguments
+
 Key         | Required | Type   | Default | Description
 ----------- | -------- | ------ | ------- | ------------------------------------
 id          | true     | string | null    | The invoice item unique identifier.
@@ -51,6 +55,8 @@ $item = Stripe::invoiceItems()->update([
 
 Removes an invoice item from the upcoming invoice. Removing an invoice item is only possible before the invoice it's attached to is closed.
 
+##### Arguments
+
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------
 id  | true     | string | null    | The invoice item unique identifier.
@@ -64,6 +70,8 @@ Stripe::invoiceItems()->destroy([
 #### Retrieve all invoice items
 
 Returns a list of your invoice items. Invoice Items are returned sorted by creation date, with the most recently created invoice items appearing first.
+
+##### Arguments
 
 Key            | Required | Type   | Default | Description
 -------------- | -------- | ------ | ------- | ---------------------------------
@@ -85,6 +93,8 @@ foreach ($items['data'] as $item)
 #### Retrieve an invoice item
 
 Retrieves the invoice item with the given ID.
+
+##### Arguments
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------

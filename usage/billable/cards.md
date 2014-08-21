@@ -19,9 +19,7 @@ $token = Input::get('stripeToken');
 
 $user = User::find(1);
 
-$user
-	->card()
-	->create($token);
+$user->card()->create($token);
 ```
 
 ###### Attaching and setting it as default
@@ -33,10 +31,7 @@ $token = Input::get('stripeToken');
 
 $user = User::find(1);
 
-$user
-	->card()
-	->makeDefault()
-	->create($token);
+$user->card()->makeDefault()->create($token);
 ```
 
 #### Updating credit cards
@@ -50,9 +45,7 @@ $attributes = [
 	'name' => 'John Doe',
 ];
 
-$user
-	->card(10)
-	->update($attributes);
+$user->card(10)->update($attributes);
 ```
 
 ###### Setting an existing credit card the default credit card.
@@ -60,9 +53,7 @@ $user
 ```php
 $user = User::find(1);
 
-$user
-	->card(10)
-	->setDefault();
+$user->card(10)->setDefault();
 ```
 
 #### Deleting credit cards
@@ -70,9 +61,7 @@ $user
 ```php
 $user = User::find(1);
 
-$user
-	->card(10)
-	->delete();
+$user->card(10)->delete();
 ```
 
 #### Get the entity default Credit Card
@@ -113,9 +102,7 @@ Often you might have the need to sync the data from Stripe with your database, w
 ```php
 $user = User::find(1);
 
-$user
-	->card()
-	->syncWithStripe();
+$user->card()->syncWithStripe();
 ```
 
 > **Note:** You can pass a card id `integer` or a `Cartalyst\Stripe\Billing\Models\IlluminateCard` object through the `card()` method.

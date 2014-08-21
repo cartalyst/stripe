@@ -8,6 +8,8 @@ If you need to invoice your customer outside the regular billing cycle, you can 
 
 Once you create the invoice, it'll be picked up and paid automatically, though you can choose to [pay it right away](#pay-an-existing-invoice).
 
+##### Arguments
+
 Key                   | Required | Type   | Default | Description
 --------------------- | -------- | ------ | ------- | --------------------------
 customer              | true     | string | null    | The customer unique identifier.
@@ -26,6 +28,8 @@ $invoice = Stripe::invoices()->create([
 #### Update an invoice
 
 Until an invoice is paid, it is marked as open (closed=false). If you'd like to stop Stripe from automatically attempting payment on an invoice or would simply like to close the invoice out as no longer owed by the customer, you can update the closed parameter.
+
+##### Arguments
 
 Key                   | Required | Type   | Default | Description
 --------------------- | -------- | ------ | ------- | --------------------------
@@ -49,6 +53,8 @@ $invoice = Stripe::invoices()->update([
 
 Stripe automatically creates and then attempts to pay invoices for customers on subscriptions. We'll also retry unpaid invoices according to your [retry settings](https://dashboard.stripe.com/account/recurring). However, if you'd like to attempt to collect payment on an invoice out of the normal retry schedule or for some other reason, you can do so.
 
+##### Arguments
+
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------
 id  | true     | string | null    | The invoice unique identifier.
@@ -62,6 +68,8 @@ $invoice = Stripe::invoices()->pay([
 #### Retrieve all the existing invoices
 
 You can list all invoices, or list the invoices for a specific customer. The invoices are returned sorted by creation date, with the most recently created invoices appearing first.
+
+##### Arguments
 
 Key            | Required | Type   | Default | Description
 -------------- | -------- | ------ | ------- | ---------------------------------
@@ -84,6 +92,8 @@ foreach ($invoices['data'] as $invoice)
 
 Retrieves the invoice with the given ID.
 
+##### Arguments
+
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------
 id  | true     | string | null    | The invoice unique identifier.
@@ -105,6 +115,8 @@ $charge = Stripe::invoice('in_4EgP02zb8qxsLq');
 #### Retrieve an existing invoice line items
 
 When retrieving an invoice, you'll get a lines property containing the total count of line items and the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.
+
+##### Arguments
 
 Key            | Required | Type   | Default | Description
 -------------- | -------- | ------ | ------- | ---------------------------------
@@ -131,6 +143,8 @@ foreach ($lines['data'] as $line)
 At any time, you can preview the upcoming invoice for a customer. This will show you all the charges that are pending, including subscription renewal charges, invoice item charges, etc. It will also show you any discount that is applicable to the customer.
 
 Note that when you are viewing an upcoming invoice, you are simply viewing a preview -- the invoice has not yet been created. As such, the upcoming invoice will not show up in invoice listing calls, and you cannot use the API to pay or edit the invoice. If you want to change the amount that your customer will be billed, you can add, remove, or update pending invoice items, or update the customer's discount.
+
+##### Arguments
 
 Key          | Required | Type   | Default | Description
 ------------ | -------- | ------ | ------- | -----------------------------------

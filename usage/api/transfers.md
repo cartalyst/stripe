@@ -4,6 +4,8 @@ When Stripe sends you money or you initiate a transfer to a third party recipien
 
 #### Create a new transfer
 
+##### Arguments
+
 Key                   | Required | Type   | Default | Description
 --------------------- | -------- | ------ | ------- | --------------------------
 amount                | true     | number | null    | A positive amount for the transaction.
@@ -27,6 +29,8 @@ echo $transfer['id'];
 
 #### Update a transfer
 
+##### Arguments
+
 Key         | Required | Type    | Default | Description
 ----------- | -------- | ------- | ------- | -----------------------------------
 id          | true     | string  | null    | The transfer unique identifier.
@@ -44,6 +48,8 @@ echo $transfer['description'];
 
 #### Cancel a transfer
 
+##### Arguments
+
 Key | Required | Type    | Default | Description
 --- | -------- | ------- | ------- | -------------------------------------------
 id  | true     | string  | null    | The transfer unique identifier.
@@ -55,6 +61,8 @@ $transfer = Stripe::transfers()->cancel([
 ```
 
 #### Retrieve all the existing transfers
+
+##### Arguments
 
 Key            | Required | Type   | Default | Description
 -------------- | -------- | ------ | ------- | ---------------------------------
@@ -76,6 +84,8 @@ foreach ($transfers['data'] as $transfer)
 ```
 
 #### Retrieve an existing transfer
+
+##### Arguments
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------

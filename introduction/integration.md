@@ -42,7 +42,7 @@ To use this feature please follow the next steps:
 
 Now you need to migrate your database, but before doing that, you'll need to generate a migration that suits your billable table and to do this you just need to run the following command:
 
-	php artisan stripe:migrator users
+	php artisan stripe:migration users
 
 > **Note:** Replace `users` with the billable entity table name.
 

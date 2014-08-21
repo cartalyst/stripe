@@ -6,6 +6,8 @@ Subscriptions allow you to charge a customer's card on a recurring basis. A subs
 
 Creates a new subscription on an existing customer.
 
+##### Arguments
+
 Key                     | Required | Type            | Default | Description
 ----------------------- | -------- | --------------- | ------- | ---------------
 customer                | true     | string          | null    | The customer unique identifier that this subscription belongs to.
@@ -31,6 +33,8 @@ echo $subscription['id'];
 Cancels a customer's subscription. If you set the `at_period_end` parameter to true, the subscription will remain active until the end of the period, at which point it will be canceled and not renewed. By default, the subscription is terminated immediately. In either case, the customer will not be charged again for the subscription. Note, however, that any pending invoice items that you've created will still be charged for at the end of the period unless manually deleted. If you've set the subscription to cancel at period end, any pending prorations will also be left in place and collected at the end of the period, but if the subscription is set to cancel immediately, pending prorations will be removed.
 
 By default, all unpaid invoices for the customer will be closed upon subscription cancellation. We do this in order to prevent unexpected payment retries once the customer has canceled a subscription. However, you can reopen the invoices manually after subscription cancellation to have us proceed with automatic retries, or you could even re-attempt payment yourself on all unpaid invoices before allowing the customer to cancel the subscription at all.
+
+##### Arguments
 
 Key           | Required | Type   | Default | Description
 ------------- | -------- | ------ | ------- | ----------------------------------
@@ -59,6 +63,8 @@ $subscription = Stripe::subscriptions()->cancel([
 
 Updates an existing subscription on a customer to match the specified parameters. When changing plans or quantities, we will optionally prorate the price we charge next month to make up for any price changes.
 
+##### Arguments
+
 Key                     | Required | Type            | Default | Description
 ----------------------- | -------- | --------------- | ------- | ---------------
 customer                | true     | string          | null    | The customer unique identifier that this subscription belongs to.
@@ -85,6 +91,8 @@ $subscription = Stripe::subscriptions()->update([
 
 You can see a list of the customer's active subscriptions. Note that the 10 most recent active subscriptions are always available by default on the customer object. If you need more than those 10, you can use the limit and `starting_after` parameters to page through additional subscriptions.
 
+##### Arguments
+
 Key            | Required | Type    | Default | Description
 -------------- | -------- | ------- | ------- | --------------------------------
 customer       | true     | string  | null    | The customer unique identifier that this subscription belongs to.
@@ -106,6 +114,8 @@ foreach ($subscriptions['data'] as $subscription)
 #### Retrieve a subscription of a customer
 
 Retrieves the details of an existing customer subscription.
+
+##### Arguments
 
 Key      | Required | Type   | Default | Description
 -------- | -------- | ------ | ------- | ---------------------------------------
@@ -130,6 +140,8 @@ $charge = Stripe::subscription('cus_4EBumIjyaKooft', 'sub_4ETjGeEPC5ai9J');
 #### Delete a subscription discount
 
 Removes the currently applied discount on a subscription.
+
+##### Arguments
 
 Key      | Required | Type   | Default | Description
 -------- | -------- | ------ | ------- | ---------------------------------------

@@ -6,6 +6,8 @@ Customer objects allow you to perform recurring charges and track multiple charg
 
 Creates a new customer object.
 
+##### Arguments
+
 Key             | Required | Type            | Default | Description
 --------------- | -------- | --------------- | ------- | -----------------------
 account_balance | false    | number          | null    | A positive amount that is the starting account balance for your customer.
@@ -30,6 +32,8 @@ echo $customer['id'];
 
 Permanently deletes a customer. It cannot be undone. Also immediately cancels any active subscriptions on the customer.
 
+##### Arguments
+
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------
 id  | true     | string | null    | The customer unique identifier.
@@ -43,6 +47,8 @@ $customer = Stripe::customers()->destroy([
 #### Update a customer
 
 Updates the specified customer by setting the values of the parameters passed.
+
+##### Arguments
 
 Key             | Required | Type            | Default | Description
 --------------- | -------- | --------------- | ------- | -----------------------
@@ -68,6 +74,8 @@ echo $customer['email'];
 
 Returns a list of your customers. The customers are returned sorted by creation date, with the most recently created customers appearing first.
 
+##### Arguments
+
 Key             | Required | Type            | Default | Description
 --------------- | -------- | --------------- | ------- | -----------------------
 created         | false    | string or array | null    | A filter based on the "created" field. Can be an exact UTC timestamp, or an hash.
@@ -87,6 +95,8 @@ foreach ($customers['data'] as $customer)
 #### Retrieve a customer
 
 Retrieves the details of an existing customer.
+
+##### Arguments
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------
@@ -109,6 +119,8 @@ $charge = Stripe::customer('cus_4EBumIjyaKooft');
 #### Delete a customer discount
 
 Removes the currently applied discount on a customer.
+
+##### Arguments
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------

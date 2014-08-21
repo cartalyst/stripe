@@ -4,6 +4,8 @@ Events are our way of letting you know about something interesting that has just
 
 #### Retrieve all the events
 
+##### Arguments
+
 Key            | Required | Type   | Default | Description
 -------------- | -------- | ------ | ------- | ---------------------------------
 created        | false    | string | null    | A filter on the list based on the object created field.
@@ -22,6 +24,8 @@ foreach ($events['data'] as $event)
 ```
 
 #### Retrieve an event
+
+##### Arguments
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------

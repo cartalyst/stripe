@@ -6,6 +6,8 @@ Refund objects allow you to refund a charge that has previously been created but
 
 Creating a new refund will refund a charge that has previously been created but not yet refunded. Funds will be refunded to the credit or debit card that was originally charged. The fees you were originally charged are also refunded.
 
+##### Arguments
+
 Key                    | Required | Type   | Default | Description
 ---------------------- | -------- | ------ | ------- | -------------------------
 charge                 | true     | string | null    | The charge unique identifier.
@@ -22,6 +24,8 @@ $charge = Stripe::refunds()->create([
 #### Retrieve all refunds of a charge
 
 You can see a list of the refunds belonging to a specific charge.
+
+##### Arguments
 
 Key            | Required | Type   | Default | Description
 -------------- | -------- | ------ | ------- | ---------------------------------
@@ -45,6 +49,8 @@ foreach ($refunds['data'] as $refund)
 
 By default, you can see the 10 most recent refunds stored on a charge directly on the charge object, but you can also retrieve details about a specific refund stored on the charge.
 
+##### Arguments
+
 Key    | Required | Type   | Default | Description
 ------ | -------- | ------ | ------- | -----------------------------------------
 charge | true     | string | null    | The charge unique identifier.
@@ -66,6 +72,8 @@ $charge = Stripe::refund('ch_4ECWMVQp5SJKEx', 'txn_4IgdBGArAOeiQw');
 #### Update an existing refund
 
 Updates the specified refund by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
+
+##### Arguments
 
 Key      | Required | Type   | Default | Description
 -------- | -------- | ------ | ------- | ---------------------------------------

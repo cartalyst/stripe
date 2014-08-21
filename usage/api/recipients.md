@@ -4,6 +4,8 @@ With recipient objects, you can transfer money from your Stripe account to a thi
 
 #### Create a new recipient
 
+##### Arguments
+
 Key          | Required | Type            | Default | Description
 ------------ | -------- | --------------- | ------- | --------------------------
 name         | true     | string          | null    | The recipient's full, legal name.
@@ -23,6 +25,8 @@ $recipient = Stripe::recipients()->create([
 ```
 
 #### Update a recipient
+
+##### Arguments
 
 Key          | Required | Type            | Default | Description
 ------------ | -------- | --------------- | ------- | --------------------------
@@ -45,6 +49,8 @@ $recipient = Stripe::recipients()->update([
 
 #### Delete a recipient
 
+##### Arguments
+
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------
 id  | true     | string | null    | The recipient unique identifier.
@@ -56,6 +62,8 @@ $recipient = Stripe::recipients()->destroy([
 ```
 
 #### Retrieve all the recipients
+
+##### Arguments
 
 Key            | Required | Type   | Default | Description
 -------------- | -------- | ------ | ------- | ---------------------------------
@@ -74,6 +82,8 @@ foreach ($recipients['data'] as $recipient)
 ```
 
 #### Retrieve a recipient
+
+##### Arguments
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------

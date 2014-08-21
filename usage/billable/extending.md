@@ -2,7 +2,7 @@
 
 Extending the default models is very easy, we provide handy methods you can utilise with your Entity model.
 
-Firstly you create your model(s) and this model needs to extend the model you want to "override", here how to do it:
+Firstly you create your model(s) and this model needs to extend the model you want to "override", here's an example of how to do it:
 
 ```php
 <?php
@@ -33,42 +33,54 @@ Subscription | Cartalyst\Stripe\Billing\Models\IlluminateSubscription
 
 Now that you've the model(s) created, it's time to set them, this is recommended to be done the earlier as you can on your application.
 
-This can be done where you see it's more appropriate on your application, as an example, you can do this on the `app/filters.php` file, this is to ensure you only require to apply this change once per request!
+This can be done where you see it's more appropriate on your application, as an example, you can do this on the `app/filters.php` file, this is to ensure you only apply this change once per request!
 
-###### Change the Card model
+###### $entity->setCardModel()
+
+This method will change the card model on the entity.
 
 ```php
-app('User')->setCardModel('Acme\Models\Card');
+User::setCardModel('Acme\Models\Card');
 ```
 
-###### Change the Charge model
+###### $entity->setChargeModel()
+
+This methid will change the charge model on the entity.
 
 ```php
-app('User')->setChargeModel('Acme\Models\Charge');
+User::setChargeModel('Acme\Models\Charge');
 ```
 
-###### Change the Charge Refunds model
+###### $entity->setChargeRefundModel()
+
+This method will change the charge refunds model on the entity.
 
 ```php
-app('User')->setChargeRefundModel('Acme\Models\ChargeRefund');
+User::setChargeRefundModel('Acme\Models\ChargeRefund');
 ```
 
-###### Change the Invoice model
+###### $entity->setInvoiceModel()
+
+This method will change the invoice model on the entity.
 
 ```php
-app('User')->setInvoiceModel('Acme\Models\Invoice');
+User::setInvoiceModel('Acme\Models\Invoice');
 ```
 
-###### Change the Invoice Items model
+###### $entity->setInvoiceItemModel()
+
+This method will change the invoice items model on the entity.
 
 ```php
-app('User')->setInvoiceItemModel('Acme\Models\InvoiceItem');
+User::setInvoiceItemModel('Acme\Models\InvoiceItem');
 ```
 
-###### Change the Subscription model
+###### $entity->setSubscriptionModel()
+
+This method will change the subscription model on the entity.
 
 ```php
-app('User')->setSubscriptionModel('Acme\Models\Subscription');
+User::setSubscriptionModel('Acme\Models\Subscription');
 ```
 
 > **Note:** The `User` model we're using for these examples, is the model you've applied the Billable Trait!

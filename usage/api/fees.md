@@ -4,6 +4,8 @@ When you collect a transaction fee on top of a charge made for your user (using 
 
 #### Refund an application fee
 
+##### Arguments
+
 Key    | Required | Type   | Default | Description
 ------ | -------- | ------ | ------- | -----------------------------------------
 id     | true     | string | null    | The application fee unique identifier.
@@ -16,6 +18,8 @@ $fee = Stripe::fees()->refund([
 ```
 
 #### Retrieve all the application fees
+
+##### Arguments
 
 Key            | Required | Type   | Default | Description
 -------------- | -------- | ------ | ------- | ---------------------------------
@@ -35,6 +39,8 @@ foreach ($fees['data'] as $fee)
 ```
 
 #### Retrieve an existing fee
+
+##### Arguments
 
 Key | Required | Type   | Default | Description
 --- | -------- | ------ | ------- | --------------------------------------------

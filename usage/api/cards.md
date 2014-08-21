@@ -8,12 +8,14 @@ When you create a new credit card, you must specify a customer to create it on.
 
 Creating a new credit card will not change the card owner's existing default credit card. If the card's owner has no default credit card, the added credit card will become the default.
 
+##### Arguments
+
 Key      | Required | Type            | Default | Description
 -------- | -------- | --------------- | ------- | ------------------------------
 customer | true     | string          | null    | The customer unique identifier.
 card     | true     | string or array | null    | The card unique identifier.
 
-###### Through the Stripe.js Token (recommended)
+##### Through the Stripe.js Token (recommended)
 
 ```php
 $cardToken = Input::get('stripeToken');
@@ -24,7 +26,7 @@ $card = Stripe::cards()->create([
 ]);
 ```
 
-###### Manually
+##### Manually
 
 ```php
 $card = Stripe::cards()->create([
@@ -44,6 +46,8 @@ If you need to update only some card details, like the billing address or expira
 
 When you update a card, Stripe will automatically validate the card.
 
+##### Arguments
+
 Key           | Required | Type   | Default | Description
 ------------- | -------- | ------ | ------- | ----------------------------------
 customer      | true     | string | null    | The customer unique identifier.
@@ -56,6 +60,8 @@ address_zip   | false    | string | null    | The card holder address zip code.
 exp_month     | false    | string | null    | The card expiration month.
 exp_year      | false    | string | null    | The card expiration year.
 name          | false    | string | null    | The card holder name.
+
+##### Example
 
 ```php
 $card = Stripe::cards()->update([
@@ -74,10 +80,14 @@ If you delete a card that is currently the default card on a customer, the most 
 
 If you delete the last remaining card on a customer, the default_card attribute on the card's owner will become null.
 
+##### Arguments
+
 Key      | Required | Type   | Default | Description
 -------- | -------- | ------ | ------- | ---------------------------------------
 customer | true     | string | null    | The customer unique identifier.
 id       | true     | string | null    | The card unique identifier.
+
+##### Example
 
 ```php
 $card = Stripe::cards()->destroy([
@@ -90,6 +100,8 @@ $card = Stripe::cards()->destroy([
 
 You can see a list of the cards belonging to a customer.
 
+##### Arguments
+
 Key            | Required | Type   | Default | Description
 -------------- | -------- | ------ | ------- | ---------------------------------
 customer       | true     | string | null    | The customer unique identifier.
@@ -97,6 +109,8 @@ id             | true     | string | null    | The customer unique identifier.
 ending_before  | false    | string | null    | A cursor to be used in pagination.
 limit          | false    | int    | 10      | A limit on the number of objects to be returned.
 starting_after | false    | string | null    | A cursor to be used in pagination.
+
+##### Example
 
 ```php
 $cards = Stripe::cards()->all([
@@ -113,10 +127,14 @@ foreach ($cards['data'] as $card)
 
 Retrieves the details of an existing credit card.
 
+##### Arguments
+
 Key      | Required | Type   | Default | Description
 -------- | -------- | ------ | ------- | ---------------------------------------
 customer | true     | string | null    | The customer unique identifier.
 id       | true     | string | null    | The card unique identifier.
+
+##### Example
 
 ```php
 $card = Stripe::cards()->find([
