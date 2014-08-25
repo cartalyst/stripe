@@ -53,14 +53,14 @@ interface BillableInterface {
 	public function card($card = null);
 
 	/**
-	 * Returns the Eloquent card model.
+	 * Returns the Eloquent card model name.
 	 *
 	 * @return string
 	 */
 	public static function getCardModel();
 
 	/**
-	 * Sets the Eloquent card model.
+	 * Sets the Eloquent card model name.
 	 *
 	 * @param  string  $model
 	 * @return void
@@ -105,14 +105,14 @@ interface BillableInterface {
 	public function charge($charge = null);
 
 	/**
-	 * Returns the Eloquent charge model.
+	 * Returns the Eloquent charge model name.
 	 *
 	 * @return string
 	 */
 	public static function getChargeModel();
 
 	/**
-	 * Sets the Eloquent charge model.
+	 * Sets the Eloquent charge model name.
 	 *
 	 * @param  string  $model
 	 * @return void
@@ -120,14 +120,14 @@ interface BillableInterface {
 	public static function setChargeModel($model);
 
 	/**
-	 * Returns the Eloquent charge refund model.
+	 * Returns the Eloquent charge refund model name.
 	 *
 	 * @return string
 	 */
 	public static function getChargeRefundModel();
 
 	/**
-	 * Sets the Eloquent charge refund model.
+	 * Sets the Eloquent charge refund model name.
 	 *
 	 * @param  string  $model
 	 * @return void
@@ -164,14 +164,14 @@ interface BillableInterface {
 	public function upcomingInvoice();
 
 	/**
-	 * Returns the Eloquent invoice model.
+	 * Returns the Eloquent invoice model name.
 	 *
 	 * @return string
 	 */
 	public static function getInvoiceModel();
 
 	/**
-	 * Sets the Eloquent invoice model.
+	 * Sets the Eloquent invoice model name.
 	 *
 	 * @param  string  $model
 	 * @return void
@@ -179,14 +179,14 @@ interface BillableInterface {
 	public static function setInvoiceModel($model);
 
 	/**
-	 * Returns the Eloquent invoice items model.
+	 * Returns the Eloquent invoice items model name.
 	 *
 	 * @return string
 	 */
 	public static function getInvoiceItemModel();
 
 	/**
-	 * Sets the Eloquent invoice items model.
+	 * Sets the Eloquent invoice items model name.
 	 *
 	 * @param  string  $model
 	 * @return void
@@ -209,14 +209,14 @@ interface BillableInterface {
 	public function subscription($subscription = null);
 
 	/**
-	 * Returns the Eloquent subscription model.
+	 * Returns the Eloquent subscription model name.
 	 *
 	 * @return string
 	 */
 	public static function getSubscriptionModel();
 
 	/**
-	 * Sets the Eloquent subscription model.
+	 * Sets the Eloquent subscription model name.
 	 *
 	 * @param  string  $model
 	 * @return void

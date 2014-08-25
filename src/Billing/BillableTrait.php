@@ -33,42 +33,42 @@ trait BillableTrait {
 	protected static $stripeClient;
 
 	/**
-	 * The Eloquent card model.
+	 * The Eloquent card model name.
 	 *
 	 * @var string
 	 */
 	protected static $cardModel = 'Cartalyst\Stripe\Billing\Models\IlluminateCard';
 
 	/**
-	 * The Eloquent charge model.
+	 * The Eloquent charge model name.
 	 *
 	 * @var string
 	 */
 	protected static $chargeModel = 'Cartalyst\Stripe\Billing\Models\IlluminateCharge';
 
 	/**
-	 * The Eloquent charge refund model.
+	 * The Eloquent charge refund model name.
 	 *
 	 * @var string
 	 */
 	protected static $chargeRefundModel = 'Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund';
 
 	/**
-	 * The Eloquent invoice model.
+	 * The Eloquent invoice model name.
 	 *
 	 * @var string
 	 */
 	protected static $invoiceModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoice';
 
 	/**
-	 * The Eloquent invoice item model.
+	 * The Eloquent invoice item model name.
 	 *
 	 * @var string
 	 */
 	protected static $invoiceItemModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem';
 
 	/**
-	 * The Eloquent subscription model.
+	 * The Eloquent subscription model name.
 	 *
 	 * @var string
 	 */
