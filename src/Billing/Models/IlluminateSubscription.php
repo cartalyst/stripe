@@ -70,9 +70,7 @@ class IlluminateSubscription extends Model {
 	 */
 	public function onTrialPeriod()
 	{
-		$endsAt = $this->period_ends_at;
-
-		if ($endsAt && $this->trial_ends_at)
+		if ($endsAt = $this->trial_ends_at)
 		{
 			return Carbon::today()->lt(Carbon::instance($endsAt));
 		}
