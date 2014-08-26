@@ -58,7 +58,7 @@ class CartalystStripeCreateTables extends Migration {
 			$table->string('description')->nullable();
 			$table->decimal('subtotal', 15, 4);
 			$table->decimal('total', 15, 4);
-			$table->decimal('application_fee', 15, 4);
+			$table->decimal('application_fee', 15, 4)->nullable();
 			$table->decimal('amount_due', 15, 4);
 			$table->boolean('attempted')->default(0);
 			$table->integer('attempt_count')->unsigned()->default(0);
