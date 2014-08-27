@@ -65,6 +65,13 @@ return [
 				'required'    => false,
 			],
 
+			'object_id' => [
+				'description' => 'The object that this event belongs to.',
+				'location'    => 'query',
+				'type'        => 'string',
+				'required'    => false,
+			],
+
 			'expand' => [
 				'description' => 'Allows to expand properties.',
 				'location'    => 'query',

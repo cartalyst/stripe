@@ -544,18 +544,16 @@ class SubscriptionGateway extends StripeGateway {
 
 		// Get all the 'customer.subscription.created'
 		// events for this stripe customer.
-		$events = $this->client->events()->all([
-			//'customer' => $entity->stripe_id,
-			'type'     => 'customer.subscription.created',
-		])['data'];
+		$events = array_reverse($this->client->eventsIterator([
+			'object_id' => $entity->stripe_id,
+			'type'      => 'customer.subscription.created',
+		])->toArray());
 
 		$subscriptionsFromEvents = [];
 
-		foreach (array_reverse($events) as $event)
+		foreach ($events as $event)
 		{
 			$subscription = array_get($event, 'data.object');
-
-			if ($subscription['customer'] != $entity->stripe_id) continue;
 
 			$subscriptionsFromEvents[$subscription['id']] = $subscription;
 		}
