@@ -344,7 +344,7 @@ class ChargeGateway extends StripeGateway {
 
 		if ($callback)
 		{
-			$callback($response, $charge);
+			call_user_func($callback, $response, $charge);
 		}
 
 		// Fires the appropriate event

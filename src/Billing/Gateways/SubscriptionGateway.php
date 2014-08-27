@@ -699,7 +699,7 @@ class SubscriptionGateway extends StripeGateway {
 
 		if ($callback)
 		{
-			$callback($response, $subscription);
+			call_user_func($callback, $response, $subscription);
 		}
 
 		// Fires the appropriate event

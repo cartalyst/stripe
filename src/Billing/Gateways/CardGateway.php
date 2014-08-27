@@ -338,7 +338,7 @@ class CardGateway extends StripeGateway {
 
 		if ($callback)
 		{
-			$callback($response, $card);
+			call_user_func($callback, $response, $card);
 		}
 
 		// Fire the appropriate event

@@ -298,7 +298,7 @@ class InvoiceGateway extends StripeGateway {
 
 		if ($callback)
 		{
-			$callback($response, $invoice);
+			call_user_func($callback, $response, $invoice);
 		}
 
 		// Fires the appropriate event
