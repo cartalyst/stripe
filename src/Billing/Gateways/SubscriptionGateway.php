@@ -229,19 +229,26 @@ class SubscriptionGateway extends StripeGateway {
 		// Disable the event dispatcher
 		$this->disableEventDispatcher();
 
-		// Update the subscription on Stripe
-		$response = $this->noProrate()->update([
-			'plan' => $this->subscription->plan_id,
+		// Check if we should maintain the subscription trial period
+		if ( ! $this->trialEnd && ! $this->skipTrial)
+		{
+			$this->maintainTrial();
+		}
+
+		// Prepare the payload
+		$payload = $this->getPayload([
+			'plan'      => $this->subscription->plan_id,
+			'trial_end' => $this->getTrialEndDate(),
 		]);
 
-		// Prepare the data for the subscription cancelation
-		$data = [
-			'ended_at'    => null,
-			'canceled_at' => null,
-		];
+		// Update the subscription on Stripe
+		$response = $this->client->subscriptions()->update($payload);
 
 		// Update the subscription on storage
-		$subscription = $this->storeSubscription($response, $data);
+		$subscription = $this->storeSubscription($response, [
+			'ended_at'    => null,
+			'canceled_at' => null,
+		]);
 
 		// Enable the event dispatcher
 		$this->enableEventDispatcher();
