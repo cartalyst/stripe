@@ -475,16 +475,19 @@ class SubscriptionGateway extends StripeGateway {
 	 */
 	public function swap()
 	{
+		// Check if we should maintain the subscription trial period
 		if ( ! $this->trialEnd && ! $this->skipTrial)
 		{
 			$this->maintainTrial();
 		}
 
+		// Update the subscription on Stripe
 		$subscription = $this->update([
 			'plan'      => $this->plan,
 			'trial_end' => $this->getTrialEndDate(),
 		]);
 
+		// Update the subscription on storage
 		$this->storeSubscription($subscription, [
 			'plan_id'       => $this->plan,
 			'trial_ends_at' => $this->trialEnd,
@@ -539,10 +542,11 @@ class SubscriptionGateway extends StripeGateway {
 			$subscriptions[$subscription['id']] = $subscription;
 		}
 
-		//
+		// Get all the 'customer.subscription.created'
+		// events for this stripe customer.
 		$events = $this->client->events()->all([
 			'customer' => $entity->stripe_id,
-			'type'   => 'customer.subscription.created',
+			'type'     => 'customer.subscription.created',
 		])['data'];
 
 		$subscriptionsFromEvents = [];
