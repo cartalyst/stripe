@@ -96,7 +96,7 @@ class StripeTableCommand extends Command {
 	 */
 	protected function generateMigrations($fromVersion)
 	{
-		foreach ($this->getMigrations($fromVersion) as $version => $path)
+		foreach ($this->getMigrationsFromVersion($fromVersion) as $version => $path)
 		{
 			$this->generateMigration($path);
 		}
@@ -136,12 +136,25 @@ class StripeTableCommand extends Command {
 	}
 
 	/**
-	 * Returns all the available migrations based on the given criteria.
+	 * Returns all the migrations from the given version.
 	 *
 	 * @param  string  $fromVersion
 	 * @return array
 	 */
-	protected function getMigrations($fromVersion = null)
+	protected function getMigrationsFromVersion($fromVersion)
+	{
+		return array_where($this->getMigrations(), function($key, $value) use ($fromVersion)
+		{
+			return version_compare($fromVersion, $key) === 1 ? false : true;
+		});
+	}
+
+	/**
+	 * Returns all the package migrations.
+	 *
+	 * @return array
+	 */
+	protected function getMigrations()
 	{
 		$migrations = [];
 
@@ -156,10 +169,7 @@ class StripeTableCommand extends Command {
 			$migrations[$version] = $name;
 		}
 
-		return array_where($migrations, function($key, $value) use ($fromVersion)
-		{
-			return version_compare($fromVersion, $key) === 1 ? false : true;
-		});
+		return $migrations;
 	}
 
 }
