@@ -47,8 +47,6 @@ class StripeTableCommand extends Command {
 	{
 		$fromVersion = $this->argument('from_version');
 
-		$toVersion = $this->argument('to_version');
-
 		if ( ! version_compare($this->currentVersion, $fromVersion, '>='))
 		{
 			return $this->error(
@@ -56,14 +54,7 @@ class StripeTableCommand extends Command {
 			);
 		}
 
-		if ($fromVersion && $toVersion && version_compare($toVersion, $fromVersion, '<'))
-		{
-			return $this->error(
-				"The version you want to upgrade to is lower than the version you want to upgrade from."
-			);
-		}
-
-		$this->generateMigrations($fromVersion, $toVersion);
+		$this->generateMigrations($fromVersion);
 
 		$this->info('Migrations successfully created!');
 
@@ -101,14 +92,11 @@ class StripeTableCommand extends Command {
 	 * Generates all the migrations from the stubs.
 	 *
 	 * @param  string  $fromVersion
-	 * @param  string  $toVersion
 	 * @return void
 	 */
-	protected function generateMigrations($fromVersion, $toVersion)
+	protected function generateMigrations($fromVersion)
 	{
-		$migrations = $this->getMigrations($fromVersion, $toVersion);
-
-		foreach ($migrations as $version => $path)
+		foreach ($this->getMigrations($fromVersion) as $version => $path)
 		{
 			$this->generateMigration($path);
 		}
@@ -151,10 +139,9 @@ class StripeTableCommand extends Command {
 	 * Returns all the available migrations based on the given criteria.
 	 *
 	 * @param  string  $fromVersion
-	 * @param  string  $toVersion
 	 * @return array
 	 */
-	protected function getMigrations($fromVersion = null, $toVersion = null)
+	protected function getMigrations($fromVersion = null)
 	{
 		$migrations = [];
 
@@ -169,16 +156,10 @@ class StripeTableCommand extends Command {
 			$migrations[$version] = $name;
 		}
 
-		if ($fromVersion)
+		return array_where($migrations, function($key, $value) use ($fromVersion)
 		{
-			# implement the fromVersion => toVersion only migrations
-			$migrations = array_where($migrations, function($key, $value) use ($fromVersion, $toVersion)
-			{
-				return version_compare($fromVersion, $key) === 1 ? false : true;
-			});
-		}
-
-		return $migrations;
+			return version_compare($fromVersion, $key) === 1 ? false : true;
+		});
 	}
 
 }
