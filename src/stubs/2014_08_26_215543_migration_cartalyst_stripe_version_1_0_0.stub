@@ -20,7 +20,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CartalystStripeCreateTables extends Migration {
+class MigrationCartalystVersion1_0_0 extends Migration {
 
 	/**
 	 * Run the migrations.
