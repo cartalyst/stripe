@@ -49,7 +49,6 @@ class StripeTableCommand extends Command {
 
 		$toVersion = $this->argument('to_version');
 
-		//
 		if ( ! version_compare($this->currentVersion, $fromVersion, '>='))
 		{
 			return $this->error(
@@ -57,7 +56,6 @@ class StripeTableCommand extends Command {
 			);
 		}
 
-		//
 		if ($fromVersion && $toVersion && version_compare($toVersion, $fromVersion, '<'))
 		{
 			return $this->error(
@@ -65,61 +63,11 @@ class StripeTableCommand extends Command {
 			);
 		}
 
-		// Get all the migration files
-		$migrations = $this->getAllMigrationStubs($fromVersion, $toVersion);
+		$this->generateMigrations($fromVersion, $toVersion);
 
-		if ($fromVersion && $toVersion)
-		{
-			# generate from the given version to the given version
-		}
-		elseif ($fromVersion && ! $toVersion)
-		{
-			# generate from the given version
-		}
-		else
-		{
-			# generate all migrations
-		}
+		$this->info('Migrations successfully created!');
 
-		// $fullPath = $this->createBaseMigration();
-
-		// file_put_contents($fullPath, $this->getMigrationStubContents());
-
-		// $this->info('Migration successfully created!');
-
-		// $this->call('dump-autoload');
-	}
-
-	/**
-	 * Create a base migration file for the reminders.
-	 *
-	 * @return string
-	 */
-	protected function createBaseMigration()
-	{
-		$name = 'cartalyst_stripe_create_tables';
-
-		$path = $this->laravel['path'].'/database/migrations';
-
-		return $this->laravel['migration.creator']->create($name, $path);
-	}
-
-	/**
-	 * Returns the contents of the migration stub.
-	 *
-	 * @return string
-	 */
-	protected function getMigrationStubContents()
-	{
-		$contents = file_get_contents(__DIR__.'/stubs/migration.stub');
-
-		$tableName = $this->argument('table');
-
-		$search = [ 'billable_table', 'billable_column' ];
-
-		$replace = [ $tableName, str_singular($tableName) ];
-
-		return str_replace($search, $replace, $contents);
+		$this->call('dump-autoload');
 	}
 
 	/**
@@ -131,14 +79,82 @@ class StripeTableCommand extends Command {
 
 			[ 'table', InputArgument::REQUIRED, 'The name of your billable table.' ],
 
-			[ 'from_version', InputArgument::OPTIONAL, '' ],
+			[ 'from_version', InputArgument::OPTIONAL, 'The version you want to upgrade from.' ],
 
-			[ 'to_version', InputArgument::OPTIONAL, '' ],
+			[ 'to_version', InputArgument::OPTIONAL, 'The version you want to upgrade to.' ],
 
 		];
 	}
 
-	protected function getAllMigrationStubs($fromVersion = null, $toVersion = null)
+	/**
+	 * Returns the full migration path.
+	 *
+	 * @param  string  $path
+	 * @return string
+	 */
+	protected function getPath($path)
+	{
+		return $this->laravel['path']."/database/migrations/{$path}.php";
+	}
+
+	/**
+	 * Generates all the migrations from the stubs.
+	 *
+	 * @param  string  $fromVersion
+	 * @param  string  $toVersion
+	 * @return void
+	 */
+	protected function generateMigrations($fromVersion, $toVersion)
+	{
+		$migrations = $this->getMigrations($fromVersion, $toVersion);
+
+		foreach ($migrations as $version => $path)
+		{
+			$this->generateMigration($path);
+		}
+	}
+
+	/**
+	 * Generate a single migration from the given stub path.
+	 *
+	 * @param  string  $path
+	 * @return void
+	 */
+	protected function generateMigration($path)
+	{
+		$this->laravel['files']->put(
+			$this->getPath($path),
+			$this->getMigrationStubContents($path)
+		);
+	}
+
+	/**
+	 * Returns the contents of the migration stub.
+	 *
+	 * @param  string  $path
+	 * @return string
+	 */
+	protected function getMigrationStubContents($path)
+	{
+		$contents = file_get_contents(__DIR__."/stubs/{$path}.stub");
+
+		$tableName = $this->argument('table');
+
+		$search = [ 'billable_table', 'billable_column' ];
+
+		$replace = [ $tableName, str_singular($tableName) ];
+
+		return str_replace($search, $replace, $contents);
+	}
+
+	/**
+	 * Returns all the available migrations based on the given criteria.
+	 *
+	 * @param  string  $fromVersion
+	 * @param  string  $toVersion
+	 * @return array
+	 */
+	protected function getMigrations($fromVersion = null, $toVersion = null)
 	{
 		$migrations = [];
 
@@ -148,11 +164,14 @@ class StripeTableCommand extends Command {
 
 			$version = str_replace('_', '.', $matches[0]);
 
-			$migrations[$version] = $file->getRealPath();
+			$name = str_replace('.stub', null, $file->getRelativePathname());
+
+			$migrations[$version] = $name;
 		}
 
 		if ($fromVersion)
 		{
+			# implement the fromVersion => toVersion only migrations
 			$migrations = array_where($migrations, function($key, $value) use ($fromVersion, $toVersion)
 			{
 				return version_compare($fromVersion, $key) === 1 ? false : true;

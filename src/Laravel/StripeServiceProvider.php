@@ -19,7 +19,7 @@
 
 use Cartalyst\Stripe\Api\Stripe;
 use Illuminate\Support\ServiceProvider;
-use Cartalyst\Stripe\StripeMigrationCommand;
+use Cartalyst\Stripe\StripeTableCommand;
 
 class StripeServiceProvider extends ServiceProvider {
 
@@ -32,12 +32,12 @@ class StripeServiceProvider extends ServiceProvider {
 
 		$this->setStripeClientOnBillableEntity();
 
-		$this->app['command.stripe.migration'] = $this->app->share(function($app)
+		$this->app['command.stripe.table'] = $this->app->share(function($app)
 		{
-			return new StripeMigrationCommand;
+			return new StripeTableCommand;
 		});
 
-		$this->commands('command.stripe.migration');
+		$this->commands('command.stripe.table');
 	}
 
 	/**
