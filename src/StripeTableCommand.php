@@ -72,8 +72,6 @@ class StripeTableCommand extends Command {
 
 			[ 'from_version', InputArgument::OPTIONAL, 'The version you want to upgrade from.' ],
 
-			[ 'to_version', InputArgument::OPTIONAL, 'The version you want to upgrade to.' ],
-
 		];
 	}
 
