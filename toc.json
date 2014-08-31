@@ -25,6 +25,7 @@
 		"api/exceptions",
 		"billable",
 		"billable/attaching",
+		"billable/sync",
 		"billable/cards",
 		"billable/charges",
 		"billable/invoices",
