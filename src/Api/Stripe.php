@@ -92,7 +92,7 @@ class Stripe {
 	 *
 	 * @return string
 	 */
-	public function getStripeKey()
+	public function getApiKey()
 	{
 		return $this->apiKey;
 	}
@@ -312,7 +312,7 @@ class Stripe {
 
 		// Set the authentication
 		$client->setDefaultOption('auth', [
-			$this->getStripeKey(), null,
+			$this->getApiKey(), null,
 		]);
 
 		// Set the headers

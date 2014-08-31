@@ -42,15 +42,15 @@ class StripeTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function it_can_retrieve_the_api_key()
 	{
-		$this->assertEquals('stripe-api-key', $this->stripe->getStripeKey());
+		$this->assertEquals('stripe-api-key', $this->stripe->getApiKey());
 	}
 
 	/** @test */
 	public function it_can_set_the_api_key()
 	{
-		$this->stripe->setStripeKey('my-stripe-key');
+		$this->stripe->setApiKey('my-stripe-key');
 
-		$this->assertEquals('my-stripe-key', $this->stripe->getStripeKey());
+		$this->assertEquals('my-stripe-key', $this->stripe->getApiKey());
 	}
 
 	/** @test */
