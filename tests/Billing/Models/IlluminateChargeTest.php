@@ -34,6 +34,70 @@ class IlluminateChargeTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/** @test */
+	public function it_can_return_the_total_amount_refunded()
+	{
+		$charge = m::mock('Cartalyst\Stripe\Billing\Models\IlluminateCharge');
+		$charge->shouldReceive('getAttribute')->once()->andReturn(67.99);
+		$charge->shouldReceive('refunds')->andReturn(
+			m::mock('Illuminate\Database\Eloquent\Relations\BelongsTo')
+		);
+
+		$this->assertEquals(67.99, $charge->amount_refunded);
+	}
+
+	/** @test */
+	public function it_can_return_a_boolean_instead_of_a_string_for_the_captured_attribute()
+	{
+		$charge = new IlluminateCharge;
+		$charge->captured = '1';
+
+		$this->resolver($charge);
+
+		$charge->save();
+
+		$this->assertEquals(true, $charge->captured);
+	}
+
+	/** @test */
+	public function it_can_return_a_boolean_instead_of_a_string_for_the_failed_attribute()
+	{
+		$charge = new IlluminateCharge;
+		$charge->failed = '1';
+
+		$this->resolver($charge);
+
+		$charge->save();
+
+		$this->assertEquals(true, $charge->failed);
+	}
+
+	/** @test */
+	public function it_can_return_a_boolean_instead_of_a_string_for_the_paid_attribute()
+	{
+		$charge = new IlluminateCharge;
+		$charge->paid = '1';
+
+		$this->resolver($charge);
+
+		$charge->save();
+
+		$this->assertEquals(true, $charge->paid);
+	}
+
+	/** @test */
+	public function it_can_return_a_boolean_instead_of_a_string_for_the_refunded_attribute()
+	{
+		$charge = new IlluminateCharge;
+		$charge->refunded = '1';
+
+		$this->resolver($charge);
+
+		$charge->save();
+
+		$this->assertEquals(true, $charge->refunded);
+	}
+
+	/** @test */
 	public function it_can_check_that_a_charge_is_refunded()
 	{
 		$refunds = m::mock('Illuminate\Database\Eloquent\Relations\BelongsTo');

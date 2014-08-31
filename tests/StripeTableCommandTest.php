@@ -36,22 +36,22 @@ class StripeTableCommandTest extends PHPUnit_Framework_TestCase {
 	{
 		$cmd = m::mock("Cartalyst\Stripe\StripeTableCommand[argument, send]");
 
-		$cmd
-			->shouldReceive('argument')
-			->with('table')
-			->andReturn('users');
+		// $cmd
+		// 	->shouldReceive('argument')
+		// 	->with('table')
+		// 	->andReturn('users');
 
-		$cmd
-			->shouldReceive('argument')
-			->with('from_version')
-			->andReturn(null);
+		// $cmd
+		// 	->shouldReceive('argument')
+		// 	->with('from_version')
+		// 	->andReturn(null);
 
-		$cmd
-			->shouldReceive('argument')
-			->with('to_version')
-			->andReturn(null);
+		// $cmd
+		// 	->shouldReceive('argument')
+		// 	->with('to_version')
+		// 	->andReturn(null);
 
-		$cmd->fire();
+		// $cmd->fire();
 	}
 
 }

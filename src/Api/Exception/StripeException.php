@@ -17,12 +17,13 @@
  * @link       http://cartalyst.com
  */
 
+use Exception;
 use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
 use Guzzle\Service\Command\CommandInterface;
 use Guzzle\Plugin\ErrorResponse\ErrorResponseExceptionInterface;
 
-class StripeException extends \Exception implements ErrorResponseExceptionInterface {
+class StripeException extends Exception implements ErrorResponseExceptionInterface {
 
 	/**
 	 * The Guzzle request.
