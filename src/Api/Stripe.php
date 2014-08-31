@@ -30,7 +30,7 @@ class Stripe {
 	 *
 	 * @var string
 	 */
-	protected $stripeKey;
+	protected $apiKey;
 
 	/**
 	 * The Stripe API version.
@@ -70,15 +70,15 @@ class Stripe {
 	/**
 	 * Constructor.
 	 *
-	 * @param  string  $stripeKey
+	 * @param  string  $apiKey
 	 * @param  string  $version
 	 * @param  string  $manifestPath
 	 * @return void
 	 */
-	public function __construct($stripeKey, $version = null, $manifestPath = null)
+	public function __construct($apiKey, $version = null, $manifestPath = null)
 	{
 		// Set the Stripe API key for authentication
-		$this->setApiKey($stripeKey);
+		$this->setApiKey($apiKey);
 
 		// Set the version
 		$this->setVersion($version ?: $this->version);
@@ -94,18 +94,18 @@ class Stripe {
 	 */
 	public function getStripeKey()
 	{
-		return $this->stripeKey;
+		return $this->apiKey;
 	}
 
 	/**
 	 * Sets the Stripe API key.
 	 *
-	 * @param  string  $stripeKey
+	 * @param  string  $apiKey
 	 * @return $this
 	 */
-	public function setApiKey($stripeKey)
+	public function setApiKey($apiKey)
 	{
-		$this->stripeKey = $stripeKey;
+		$this->apiKey = $apiKey;
 
 		return $this;
 	}
