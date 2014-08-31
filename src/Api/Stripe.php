@@ -78,7 +78,7 @@ class Stripe {
 	public function __construct($stripeKey, $version = null, $manifestPath = null)
 	{
 		// Set the Stripe API key for authentication
-		$this->setStripeKey($stripeKey);
+		$this->setApiKey($stripeKey);
 
 		// Set the version
 		$this->setVersion($version ?: $this->version);
@@ -103,7 +103,7 @@ class Stripe {
 	 * @param  string  $stripeKey
 	 * @return $this
 	 */
-	public function setStripeKey($stripeKey)
+	public function setApiKey($stripeKey)
 	{
 		$this->stripeKey = $stripeKey;
 
