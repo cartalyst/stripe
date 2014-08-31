@@ -75,6 +75,13 @@ trait BillableTrait {
 	protected static $subscriptionModel = 'Cartalyst\Stripe\Billing\Models\IlluminateSubscription';
 
 	/**
+	 * The attaching and synchronization errors.
+	 *
+	 * @var array
+	 */
+	protected static $syncErrors = [];
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public function getStripeId()
@@ -354,10 +361,7 @@ trait BillableTrait {
 
 		foreach ($customers as $customer)
 		{
-			if ($entity = $callback($customer))
-			{
-				$entity->syncWithStripe();
-			}
+			static::executeSyncCallback($customer, $callback);
 		}
 	}
 
@@ -389,10 +393,7 @@ trait BillableTrait {
 		// Loop through the Stripe Customers
 		foreach ($customers as $customer)
 		{
-			if ($entity = $callback($customer))
-			{
-				$entity->attachStripeCustomer($customer, $sync);
-			}
+			static::executeSyncCallback($customer, $callback);
 		}
 	}
 
@@ -410,6 +411,32 @@ trait BillableTrait {
 	public static function setStripeClient(Stripe $stripe)
 	{
 		static::$stripeClient = $stripe;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public static function getSyncErrors()
+	{
+		return static::$syncErrors;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public static function executeSyncCallback($customer, Closure $callback)
+	{
+		$entity = $callback($customer);
+
+		if ($entity instanceof BillableInterface)
+		{
+			$entity->syncWithStripe();
+		}
+		else
+		{
+			static::$syncErrors[] = "The billable entity for the customer [{$customer['id']}] wasn't returned!";
+		}
+
 	}
 
 }

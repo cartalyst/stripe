@@ -294,4 +294,22 @@ interface BillableInterface {
 	 */
 	public static function setStripeClient(Stripe $stripe);
 
+	/**
+	 * Returns an array with all the errors that were found
+	 * when executing the attaching or synchronization of
+	 * the billable entities using the batch methods.
+	 *
+	 * @return array
+	 */
+	public static function getSyncErrors();
+
+	/**
+	 *
+	 *
+	 * @param  array|\Cartalyst\Stripe\Api\Response  $customer
+	 * @param  \Closure  $callback
+	 * @return void
+	 */
+	public static function executeSyncCallback($customer, Closure $callback);
+
 }
