@@ -49,13 +49,13 @@ class StripeServiceProvider extends ServiceProvider {
 	{
 		$this->app['stripe'] = $this->app->share(function($app)
 		{
-			$stripeKey = $app['config']->get('services.stripe.secret');
+			$apiKey = $app['config']->get('services.stripe.secret');
 
 			$version = $app['config']->get('services.stripe.version');
 
 			$manifestPath = $app['config']->get('services.stripe.manifestPath');
 
-			return new Stripe($stripeKey, $version, $manifestPath);
+			return new Stripe($apiKey, $version, $manifestPath);
 		});
 	}
 
