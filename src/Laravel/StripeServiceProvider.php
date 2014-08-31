@@ -36,12 +36,12 @@ class StripeServiceProvider extends ServiceProvider {
 	}
 
 	/**
-     * {@inheritDoc}
-     */
-    public function provides()
-    {
-        return ['stripe'];
-    }
+	 * {@inheritDoc}
+	 */
+	public function provides()
+	{
+		return ['stripe'];
+	}
 
 	/**
 	 * Register Stripe.
