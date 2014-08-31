@@ -248,6 +248,14 @@ interface BillableInterface {
 	public function syncWithStripe(array $arguments = []);
 
 	/**
+	 * Syncronizes all the Stripe customers with the local data.
+	 *
+	 * @param  \Closure  $callback
+	 * @return void
+	 */
+	public static function syncStripeCustomers(Closure $callback);
+
+	/**
 	 * Attaches the Stripe Customer account to the entity,
 	 * it allows you to syncronize the Stripe data for
 	 * that entity by passing a boolean of true as

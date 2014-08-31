@@ -347,6 +347,23 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
+	public static function syncStripeCustomers(Closure $callback)
+	{
+		// Get all the Stripe Customers
+		$customers = static::getStripeClient()->customersIterator();
+
+		foreach ($customers as $customer)
+		{
+			if ($entity = $callback($customer))
+			{
+				$entity->syncWithStripe();
+			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function attachStripeCustomer(Response $customer, $sync = true)
 	{
 		// Store the Stripe Customer Id
@@ -372,8 +389,10 @@ trait BillableTrait {
 		// Loop through the Stripe Customers
 		foreach ($customers as $customer)
 		{
-			$entity = $callback($customer);
-			$entity->attachStripeCustomer($customer, $sync);
+			if ($entity = $callback($customer))
+			{
+				$entity->attachStripeCustomer($customer, $sync);
+			}
 		}
 	}
 
