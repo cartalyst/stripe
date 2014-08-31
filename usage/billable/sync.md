@@ -1,4 +1,4 @@
-## Synchronization
+### Synchronization
 
 #### Synchronize all the entities
 
@@ -7,6 +7,7 @@ User::syncStripeCustomers(function($customer)
 {
 	return User::where('stripe_id', $customer['id'])->first();
 });
+```
 
 #### Synchronize a single entity
 
