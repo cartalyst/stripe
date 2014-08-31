@@ -30,15 +30,18 @@ class StripeServiceProvider extends ServiceProvider {
 	{
 		$this->registerStripe();
 
+		$this->registerTableCommand();
+
 		$this->setStripeClientOnBillableEntity();
-
-		$this->app['command.stripe.table'] = $this->app->share(function($app)
-		{
-			return new StripeTableCommand;
-		});
-
-		$this->commands('command.stripe.table');
 	}
+
+	/**
+     * {@inheritDoc}
+     */
+    public function provides()
+    {
+        return ['stripe'];
+    }
 
 	/**
 	 * Register Stripe.
@@ -57,6 +60,23 @@ class StripeServiceProvider extends ServiceProvider {
 
 			return new Stripe($apiKey, $version, $manifestPath);
 		});
+
+		$this->app->alias('stripe', 'Cartalyst\Stripe\Api\Stripe');
+	}
+
+	/**
+	 * Registers the Stripe table command.
+	 *
+	 * @return void
+	 */
+	protected function registerTableCommand()
+	{
+		$this->app['command.stripe.table'] = $this->app->share(function($app)
+		{
+			return new StripeTableCommand;
+		});
+
+		$this->commands('command.stripe.table');
 	}
 
 	/**
