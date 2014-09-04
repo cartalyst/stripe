@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Api;
+<?php namespace Cartalyst\Stripe\Api\Models;
 /**
  * Part of the Stripe package.
  *
@@ -17,11 +17,9 @@
  * @link       http://cartalyst.com
  */
 
-use Illuminate\Support\Collection;
 use Guzzle\Service\Command\OperationCommand;
-use Guzzle\Service\Command\ResponseClassInterface;
 
-class Response extends Collection implements ResponseClassInterface {
+trait GuzzleCommandTrait {
 
 	/**
 	 * Create a response model object from a completed command.
@@ -32,17 +30,6 @@ class Response extends Collection implements ResponseClassInterface {
 	public static function fromCommand(OperationCommand $command)
 	{
 		return new self($command->getResponse()->json());
-	}
-
-	/**
-	 * Returns the given key value from the collection.
-	 *
-	 * @param  mixed  $key
-	 * @return mixed
-	 */
-	public function __get($key)
-	{
-		return $this->get($key, null);
 	}
 
 }

@@ -24,7 +24,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/charges/{charge}/dispute/close',
 		'summary'        => 'Closes a dispute.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -51,7 +51,7 @@ return [
 		'httpMethod'     => 'DELETE',
 		'uri'            => '/v1/charges/{charge}/dispute',
 		'summary'        => 'Updates a dispute.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 

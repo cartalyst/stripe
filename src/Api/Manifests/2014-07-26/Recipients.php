@@ -24,7 +24,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/recipients',
 		'summary'        => 'Returns a list of existing recipients.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -77,7 +77,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/recipients/{id}',
 		'summary'        => 'Returns the details of an existing recipient.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -104,7 +104,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/recipients',
 		'summary'        => 'Creates a new recipient.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -181,7 +181,7 @@ return [
 		'httpMethod'     => 'DELETE',
 		'uri'            => '/v1/recipients/{id}',
 		'summary'        => 'Deletes an existing recipient.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -208,7 +208,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/recipients/{id}',
 		'summary'        => 'Updates an existing recipient.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 

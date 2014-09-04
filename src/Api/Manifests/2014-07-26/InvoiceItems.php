@@ -24,7 +24,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/invoiceitems',
 		'summary'        => 'Returns all the existing invoice items.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -88,7 +88,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/invoiceitems/{id}',
 		'summary'        => 'Returns an existing invoice item.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -115,7 +115,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/invoiceitems',
 		'summary'        => 'Creates a new invoice item.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -187,7 +187,7 @@ return [
 		'httpMethod'     => 'DELETE',
 		'uri'            => '/v1/invoiceitems/{id}',
 		'summary'        => 'Deletes an existing invoice item.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -214,7 +214,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/invoiceitems/{id}',
 		'summary'        => 'Updates an existing invoice item.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 

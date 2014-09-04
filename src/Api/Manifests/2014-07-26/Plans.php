@@ -24,7 +24,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/plans',
 		'summary'        => 'Returns all the existing plans.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -74,7 +74,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/plans/{id}',
 		'summary'        => 'Returns an existing plan.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -101,7 +101,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/plans',
 		'summary'        => 'Creates a new plan.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -188,7 +188,7 @@ return [
 		'httpMethod'     => 'DELETE',
 		'uri'            => '/v1/plans/{id}',
 		'summary'        => 'Deletes an existing plan.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -215,7 +215,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/plans/{id}',
 		'summary'        => 'Updates an existing plan.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 

@@ -24,7 +24,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/charges/{charge}/refunds',
 		'summary'        => 'Returns a list of all the refunds of a charge.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -67,7 +67,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/charges/{charge}/refunds/{id}',
 		'summary'        => 'Returns the given refund.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -94,7 +94,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/charges/{charge}/refunds',
 		'summary'        => 'Refunds the specified charge.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -148,7 +148,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/charges/{charge}/refunds/{id}',
 		'summary'        => 'Updates the given refund.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
