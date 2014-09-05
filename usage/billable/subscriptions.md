@@ -190,7 +190,7 @@ if ($subscription->onTrialPeriod())
 To determine if the subscription is marked as canceled, you may use the `canceled` method:
 
 ```php
-if ($subscription->canceled())
+if ($subscription->isCanceled())
 {
 	//
 }
@@ -199,7 +199,7 @@ if ($subscription->canceled())
 To determine if the subscription has expired, you may use the `expired` method:
 
 ```php
-if ($subscription->expired())
+if ($subscription->isExpired())
 {
 	//
 }
