@@ -29,7 +29,14 @@ trait GuzzleCommandTrait {
 	 */
 	public static function fromCommand(OperationCommand $command)
 	{
-		return new self($command->getResponse()->json());
+		// Initialize the collection
+		$collection = new self($command->getResponse()->json());
+
+		// Set the Stripe API client on the collection
+		$collection->setApiClient($command->getClient()->getApiClient());
+
+		// Return the collection
+		return $collection;
 	}
 
 }

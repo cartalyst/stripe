@@ -305,7 +305,11 @@ class Stripe {
 		}
 
 		// Initialize the Guzzle client
-		$client = new Client;
+		$client = new GuzzleClient;
+
+		// Set our own stripe api client for internal
+		// usage within our api models.
+		$client->setApiClient($this);
 
 		// Set the client user agent
 		$client->setUserAgent($this->getUserAgent(), true);

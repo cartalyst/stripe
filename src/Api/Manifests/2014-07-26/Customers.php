@@ -24,7 +24,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/customers',
 		'summary'        => 'Returns all the existing customers.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Customer',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -81,7 +81,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/customers/{id}',
 		'summary'        => 'Returns an existing customer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Customer',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -108,7 +108,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/customers',
 		'summary'        => 'Creates a new customer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Customer',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -194,7 +194,7 @@ return [
 		'httpMethod'     => 'DELETE',
 		'uri'            => '/v1/customers/{id}',
 		'summary'        => 'Deletes an existing customer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Customer',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -221,7 +221,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/customers/{id}',
 		'summary'        => 'Updates an existing customer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Customer',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -300,7 +300,7 @@ return [
 		'httpMethod'     => 'DELETE',
 		'uri'            => '/v1/customers/{id}/discount',
 		'summary'        => 'Deletes an existing customer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Customer',
 		'errorResponses' => $errors,
 		'parameters'     => [
 

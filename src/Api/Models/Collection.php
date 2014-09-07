@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Stripe\Api\Stripe;
 use Illuminate\Support\Collection as BaseCollection;
 
 class Collection extends BaseCollection {
@@ -28,6 +29,34 @@ class Collection extends BaseCollection {
 	 * @var array
 	 */
 	protected $collections = [];
+
+	/**
+	 * The Stripe API client instance.
+	 *
+	 * @var \Cartalyst\Stripe\Api\Stripe
+	 */
+	protected $apiClient;
+
+	/**
+	 * Returns the Stripe API client instance.
+	 *
+	 * @return \Cartalyst\Stripe\Api\Stripe
+	 */
+	public function getApiClient()
+	{
+		return $this->apiClient;
+	}
+
+	/**
+	 * Sets the Stripe API client instance.
+	 *
+	 * @param \Cartalyst\Stripe\Api\Stripe  $client
+	 * @return void
+	 */
+	public function setApiClient(Stripe $client)
+	{
+		$this->apiClient = $client;
+	}
 
 	/**
 	 * Returns the given key value from the collection.
