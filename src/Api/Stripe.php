@@ -220,12 +220,22 @@ class Stripe {
 			return $this->handleIteratorRequest($method, $arguments);
 		}
 
-		elseif (str_singular($method) === $method && $this->manifestExists(str_plural($method)))
+		elseif ($this->isSingleRequest($method))
 		{
 			return $this->handleSingleRequest($method, $arguments);
 		}
 
 		return $this->handleRequest($method);
+	}
+
+	/**
+	 * Determines if the request is a single request.
+	 *
+	 * @return bool
+	 */
+	protected function isSingleRequest($method)
+	{
+		return (str_singular($method) === $method && $this->manifestExists(str_plural($method)));
 	}
 
 	/**
@@ -281,9 +291,7 @@ class Stripe {
 	 */
 	protected function handleIteratorRequest($method, array $arguments = [])
 	{
-		$method = substr($method, 0, -8);
-
-		$client = $this->handleRequest($method);
+		$client = $this->handleRequest(substr($method, 0, -8));
 
 		$command = $client->getCommand('all', array_get($arguments, 0, []));
 
@@ -305,7 +313,11 @@ class Stripe {
 		}
 
 		// Initialize the Guzzle client
-		$client = new Client;
+		$client = new GuzzleClient;
+
+		// Set our own stripe api client for internal
+		// usage within our api models.
+		$client->setApiClient($this);
 
 		// Set the client user agent
 		$client->setUserAgent($this->getUserAgent(), true);
@@ -327,16 +339,15 @@ class Stripe {
 		// Listen to the "command.after_prepare" event fired by Guzzle
 		$dispatcher->addListener('command.after_prepare', function(Event $event)
 		{
-			$command = $event['command'];
-
-			$request = $command->getRequest();
+			$request = $event['command']->getRequest();
 
 			$request->getQuery()->setAggregator(new QueryAggregator());
 		});
 
 		// Set the manifest payload into the Guzzle client
-		$payload = $this->buildPayload($method);
-		$client->setDescription(ServiceDescription::factory($payload));
+		$client->setDescription(ServiceDescription::factory(
+			$this->buildPayload($method)
+		));
 
 		// Return the Guzzle client
 		return $client;
@@ -349,7 +360,7 @@ class Stripe {
 	 */
 	protected function getFullManifestPath()
 	{
-		return "{$this->getManifestPath()}/{$this->getVersion()}";
+		return $this->getManifestPath().'/'.$this->getVersion();
 	}
 
 	/**
@@ -360,9 +371,7 @@ class Stripe {
 	 */
 	protected function getManifestFilePath($file)
 	{
-		$file = ucwords($file);
-
-		return "{$this->getFullManifestPath()}/{$file}.php";
+		return $this->getFullManifestPath().'/'.ucwords($file).'.php';
 	}
 
 	/**
@@ -373,9 +382,9 @@ class Stripe {
 	 */
 	protected function buildPayload($method)
 	{
-		$manifest = $this->getRequestManifestPayload('manifest', false);
-
 		$operations = $this->getRequestManifestPayload($method);
+
+		$manifest = $this->getRequestManifestPayload('manifest', false);
 
 		return array_merge($manifest, compact('operations'));
 	}

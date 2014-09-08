@@ -47,7 +47,7 @@ class StripeTableCommand extends Command {
 	{
 		$fromVersion = $this->argument('from_version');
 
-		if ( ! version_compare($this->currentVersion, $fromVersion, '>='))
+		if ( ! version_compare($this->currentVersion, $fromVersion, '>'))
 		{
 			return $this->error(
 				"The version you want to upgrade from is higher than the current available version."
