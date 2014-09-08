@@ -24,7 +24,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/customers/{customer}/subscriptions',
 		'summary'        => 'Returns all the active subscriptions of an existing customer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Subscription',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -81,7 +81,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/customers/{customer}/subscriptions/{id}',
 		'summary'        => 'Returns a subscription from an existing customer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Subscription',
 		'errorResponses' => $errors,
 		'errorResponses' => $errors,
 		'parameters'     => [
@@ -116,7 +116,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/customers/{customer}/subscriptions',
 		'summary'        => 'Creates a new subscription on an existing customer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Subscription',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -192,7 +192,7 @@ return [
 		'httpMethod'     => 'DELETE',
 		'uri'            => '/v1/customers/{customer}/subscriptions/{id}',
 		'summary'        => 'Deletes an existing customer subscription.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Subscription',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -236,7 +236,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/customers/{customer}/subscriptions/{id}',
 		'summary'        => 'Updates an existing customer subscription.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Subscription',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -329,7 +329,7 @@ return [
 		'httpMethod'     => 'DELETE',
 		'uri'            => '/v1/customers/{customer}/subscriptions/{id}/discount',
 		'summary'        => 'Deletes an existing customer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Subscription',
 		'errorResponses' => $errors,
 		'parameters'     => [
 

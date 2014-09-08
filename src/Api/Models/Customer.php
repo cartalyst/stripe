@@ -1,4 +1,4 @@
-<?php
+<?php namespace Cartalyst\Stripe\Api\Models;
 /**
  * Part of the Stripe package.
  *
@@ -17,16 +17,23 @@
  * @link       http://cartalyst.com
  */
 
-return [
+use Carbon\Carbon;
+use Guzzle\Service\Command\ResponseClassInterface;
 
-	'details' => [
+class Customer extends Collection implements ResponseClassInterface {
 
-		'httpMethod'     => 'GET',
-		'uri'            => '/v1/account',
-		'summary'        => 'Returns the details of the account.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
-		'errorResponses' => $errors,
+	use GuzzleCommandTrait;
 
-	],
+	/**
+	 * Returns all the customer charges.
+	 *
+	 * @return array
+	 */
+	public function chargesAttribute()
+	{
+		return $this->getApiClient()->chargesIterator([
+			'customer' => $this->id,
+		])->toArray();
+	}
 
-];
+}

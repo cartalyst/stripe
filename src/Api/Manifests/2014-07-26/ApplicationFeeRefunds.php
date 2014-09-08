@@ -24,7 +24,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/application_fees/{fee_id}/refunds',
 		'summary'        => 'Returns a list of refunds that belongs to an application fee.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -74,7 +74,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/application_fees/{fee_id}/refunds/{id}',
 		'summary'        => 'Returns the details about an application fee refund',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -108,7 +108,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/application_fees/{fee_id}/refunds',
 		'summary'        => 'Refunds an application fee that has previously been collected but not yet refunded.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -145,7 +145,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/application_fees/{fee_id}/refunds/{id}',
 		'summary'        => 'Updates an application fee refund.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 

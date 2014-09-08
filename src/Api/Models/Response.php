@@ -1,4 +1,4 @@
-<?php
+<?php namespace Cartalyst\Stripe\Api\Models;
 /**
  * Part of the Stripe package.
  *
@@ -17,16 +17,10 @@
  * @link       http://cartalyst.com
  */
 
-return [
+use Guzzle\Service\Command\ResponseClassInterface;
 
-	'details' => [
+class Response extends Collection implements ResponseClassInterface {
 
-		'httpMethod'     => 'GET',
-		'uri'            => '/v1/account',
-		'summary'        => 'Returns the details of the account.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
-		'errorResponses' => $errors,
+	use GuzzleCommandTrait;
 
-	],
-
-];
+}

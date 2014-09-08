@@ -1,4 +1,4 @@
-<?php
+<?php namespace Cartalyst\Stripe\Api\Models;
 /**
  * Part of the Stripe package.
  *
@@ -17,16 +17,21 @@
  * @link       http://cartalyst.com
  */
 
-return [
+use Carbon\Carbon;
+use Guzzle\Service\Command\ResponseClassInterface;
 
-	'details' => [
+class Card extends Collection implements ResponseClassInterface {
 
-		'httpMethod'     => 'GET',
-		'uri'            => '/v1/account',
-		'summary'        => 'Returns the details of the account.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
-		'errorResponses' => $errors,
+	use GuzzleCommandTrait;
 
-	],
+	/**
+	 * Checks if the card has expired.
+	 *
+	 * @return bool
+	 */
+	public function hasExpired()
+	{
+		return Carbon::createFromDate($this->exp_year, $this->exp_month) < Carbon::now();
+	}
 
-];
+}

@@ -24,7 +24,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/application_fees',
 		'summary'        => 'Returns details about all application fees that your account has collected.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -88,7 +88,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/application_fees/{id}',
 		'summary'        => 'Returns the details about an application fee that your account has collected.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 

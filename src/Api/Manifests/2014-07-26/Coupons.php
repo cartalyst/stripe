@@ -24,7 +24,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/coupons',
 		'summary'        => 'Returns a list of coupons that were previously created.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -74,7 +74,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/coupons/{id}',
 		'summary'        => 'Returns the details of an existing coupon.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -101,7 +101,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/coupons',
 		'summary'        => 'Creates a new coupon.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -188,7 +188,7 @@ return [
 		'httpMethod'     => 'DELETE',
 		'uri'            => '/v1/coupons/{id}',
 		'summary'        => 'Deletes an existing coupon.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
 		'errorResponses' => $errors,
 		'parameters'     => [
 

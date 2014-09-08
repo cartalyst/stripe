@@ -24,7 +24,7 @@ return [
 		'httpMethod'     => 'GET',
 		'uri'            => '/v1/customers/{customer}/cards',
 		'summary'        => 'Returns a list of cards that belongs to the given customer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Card',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -82,7 +82,7 @@ return [
 		'uri'            => '/v1/customers/{customer}/cards/{id}',
 		'summary'        => 'Returns a card from an existing customer.',
 		'summary'        => 'Returns the details of a card that belongs to the given customer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Card',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -116,7 +116,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/customers/{customer}/cards',
 		'summary'        => 'Creates a new card on the given customer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Card',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -150,7 +150,7 @@ return [
 		'httpMethod'     => 'DELETE',
 		'uri'            => '/v1/customers/{customer}/cards/{id}',
 		'summary'        => 'Deletes a card from the given customer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Card',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
@@ -184,7 +184,7 @@ return [
 		'httpMethod'     => 'POST',
 		'uri'            => '/v1/customers/{customer}/cards/{id}',
 		'summary'        => 'Updates a card from the given customer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Response',
+		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Card',
 		'errorResponses' => $errors,
 		'parameters'     => [
 
