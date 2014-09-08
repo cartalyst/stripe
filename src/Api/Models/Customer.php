@@ -17,7 +17,6 @@
  * @link       http://cartalyst.com
  */
 
-use Carbon\Carbon;
 use Guzzle\Service\Command\ResponseClassInterface;
 
 class Customer extends Collection implements ResponseClassInterface {

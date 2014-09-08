@@ -18,7 +18,6 @@
  */
 
 use Guzzle\Common\Event;
-use Guzzle\Service\Client;
 use InvalidArgumentException;
 use Guzzle\Service\Description\ServiceDescription;
 use Guzzle\Plugin\ErrorResponse\ErrorResponsePlugin;
