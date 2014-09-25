@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use InvalidArgumentException;
 use Cartalyst\Stripe\Api\Stripe;
 use Illuminate\Support\ServiceProvider;
 use Cartalyst\Stripe\StripeTableCommand;
@@ -86,9 +87,19 @@ class StripeServiceProvider extends ServiceProvider {
 	 */
 	protected function setStripeClientOnBillableEntity()
 	{
-		$model = $this->app['config']->get('services.stripe.model');
+		$entities = array_unique(
+			(array) $this->app['config']->get('services.stripe.model')
+		);
 
-		$model::setStripeClient($this->app['stripe']);
+		if (empty($entities))
+		{
+			throw new InvalidArgumentException('The "stripe.model" entry is missing on the "services" configuration file.');
+		}
+
+		foreach ($entities as $entity)
+		{
+			$entity::setStripeClient($this->app['stripe']);
+		}
 	}
 
 }
