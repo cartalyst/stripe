@@ -19,8 +19,8 @@
 
 use Closure;
 use Cartalyst\Stripe\Api\Stripe;
-use Cartalyst\Stripe\Api\Response;
 use Cartalyst\Stripe\Billing\Gateways;
+use Cartalyst\Stripe\Api\Models\Customer;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 trait BillableTrait {
@@ -368,7 +368,7 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function attachStripeCustomer(Response $customer, $sync = true)
+	public function attachStripeCustomer(Customer $customer, $sync = true)
 	{
 		// Store the Stripe Customer Id
 		$this->stripe_id = $customer['id'];

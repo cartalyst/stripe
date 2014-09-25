@@ -19,7 +19,7 @@
 
 use Closure;
 use Cartalyst\Stripe\Api\Stripe;
-use Cartalyst\Stripe\Api\Response;
+use Cartalyst\Stripe\Api\Models\Customer;
 
 interface BillableInterface {
 
@@ -261,11 +261,11 @@ interface BillableInterface {
 	 * that entity by passing a boolean of true as
 	 * the third parameter.
 	 *
-	 * @param  \Cartalyst\Stripe\Api\Response  $customer
+	 * @param  \Cartalyst\Stripe\Api\Models\Customer  $customer
 	 * @param  bool  $sync
 	 * @return void
 	 */
-	public function attachStripeCustomer(Response $customer, $sync = true);
+	public function attachStripeCustomer(Customer $customer, $sync = true);
 
 	/**
 	 * Attaches the Stripe Customers accounts to the entity that
@@ -306,7 +306,7 @@ interface BillableInterface {
 	/**
 	 *
 	 *
-	 * @param  array|\Cartalyst\Stripe\Api\Response  $customer
+	 * @param  array|\Cartalyst\Stripe\Api\Models\Customer  $customer
 	 * @param  \Closure  $callback
 	 * @return void
 	 */
