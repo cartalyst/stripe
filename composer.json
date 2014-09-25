@@ -37,12 +37,12 @@
 	"require": {
 		"php": ">=5.4.0",
 		"guzzle/guzzle": "3.9.*",
-		"illuminate/support": "~4.2"
+		"illuminate/support": "~4.1"
 	},
 	"require-dev": {
-		"illuminate/console": "~4.2",
-		"illuminate/database": "~4.2",
-		"illuminate/routing": "~4.2",
+		"illuminate/console": "~4.1",
+		"illuminate/database": "~4.1",
+		"illuminate/routing": "~4.1",
 		"mockery/mockery": "~0.9",
 		"phpunit/phpunit": "~4.0"
 	},
