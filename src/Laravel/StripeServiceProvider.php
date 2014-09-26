@@ -21,6 +21,7 @@ use InvalidArgumentException;
 use Cartalyst\Stripe\Api\Stripe;
 use Illuminate\Support\ServiceProvider;
 use Cartalyst\Stripe\StripeTableCommand;
+use Cartalyst\Stripe\Billing\BillableInterface;
 
 class StripeServiceProvider extends ServiceProvider {
 
@@ -87,17 +88,17 @@ class StripeServiceProvider extends ServiceProvider {
 	 */
 	protected function setStripeClientOnBillableEntity()
 	{
-		$entities = array_unique(
+		$entities = array_filter(array_unique(
 			(array) $this->app['config']->get('services.stripe.model')
-		);
-
-		if (empty($entities))
-		{
-			throw new InvalidArgumentException('The "stripe.model" entry is missing on the "services" configuration file.');
-		}
+		));
 
 		foreach ($entities as $entity)
 		{
+			if ( ! $this->app[$entity] instanceof BillableInterface)
+			{
+				throw new InvalidArgumentException("The '{$entity}' model needs to implement the 'Cartalyst\Stripe\Billing\BillableInterface' interface.");
+			}
+
 			$entity::setStripeClient($this->app['stripe']);
 		}
 	}
