@@ -141,6 +141,13 @@ return [
 				'required'    => false,
 			],
 
+			'billing_cycle_anchor' => [
+				'description' => 'UTC integer timestamp that defines the date of the recurring billing cycle.',
+				'location'    => 'query',
+				'type'        => ['integer', 'string'],
+				'required'    => false
+			],
+
 			'trial_end' => [
 				'description' => 'UTC integer timestamp representing the end of the trial period the customer will get before being charged for the first time.',
 				'location'    => 'query',
@@ -268,14 +275,11 @@ return [
 				'required'    => false,
 			],
 
-			'prorate' => [
-				'description' => 'Flag telling us whether to prorate switching plans during a billing cycle.',
+			'billing_cycle_anchor' => [
+				'description' => 'UTC integer timestamp that defines the date of the recurring billing cycle.',
 				'location'    => 'query',
-				'type'        => 'boolean',
-				'required'    => false,
-				'filters'     => [
-					'Cartalyst\Stripe\Api\Filters\Boolean::convert',
-				],
+				'type'        => ['integer', 'string'],
+				'required'    => false
 			],
 
 			'trial_end' => [
@@ -304,6 +308,16 @@ return [
 				'location'    => 'query',
 				'type'        => 'string',
 				'required'    => false,
+			],
+
+			'prorate' => [
+				'description' => 'Flag telling us whether to prorate switching plans during a billing cycle.',
+				'location'    => 'query',
+				'type'        => 'boolean',
+				'required'    => false,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Boolean::convert',
+				],
 			],
 
 			'metadata' => [

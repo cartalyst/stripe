@@ -65,6 +65,16 @@ return [
 				'required'    => false,
 			],
 
+			'proration' => [
+				'description' => 'Flag to return prorated items or not.',
+				'location'    => 'query',
+				'type'        => 'boolean',
+				'required'    => false,
+				'filters'     => [
+					'Cartalyst\Stripe\Api\Filters\Boolean::convert',
+				],
+			],
+
 			'expand' => [
 				'description' => 'Allows to expand properties.',
 				'location'    => 'query',

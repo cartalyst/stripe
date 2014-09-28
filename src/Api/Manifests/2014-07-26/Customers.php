@@ -174,7 +174,7 @@ return [
 			'trial_end' => [
 				'description' => 'UTC integer timestamp representing the end of the trial period the customer will get before being charged for the first time.',
 				'location'    => 'query',
-				'type'        => 'integer',
+				'type'        => ['integer', 'string'],
 				'required'    => false,
 			],
 

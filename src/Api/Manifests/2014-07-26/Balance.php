@@ -106,9 +106,9 @@ return [
 					'refund',
 					'transfer',
 					'adjustment',
+					'fee_refund',
 					'application_fee',
 					'transfer_failure',
-					'application_fee_refund',
 				],
 			],
 
