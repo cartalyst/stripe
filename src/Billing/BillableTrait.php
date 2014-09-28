@@ -75,13 +75,6 @@ trait BillableTrait {
 	protected static $subscriptionModel = 'Cartalyst\Stripe\Billing\Models\IlluminateSubscription';
 
 	/**
-	 * The attaching and synchronization errors.
-	 *
-	 * @var array
-	 */
-	protected static $syncErrors = [];
-
-	/**
 	 * {@inheritDoc}
 	 */
 	public function getStripeId()
@@ -361,7 +354,11 @@ trait BillableTrait {
 
 		foreach ($customers as $customer)
 		{
-			static::executeSyncCallback($customer, $callback);
+			// Get this customer entity object
+			$entity = static::determineCallableEntity($customer, $callback);
+
+			// Synchronize the entity with Stripe
+			$entity->syncWithStripe();
 		}
 	}
 
@@ -374,10 +371,9 @@ trait BillableTrait {
 		$this->stripe_id = $customer['id'];
 		$this->save();
 
-		// Should we syncronize the data with Stripe?
+		// Should we synchronize the entity with Stripe?
 		if ($sync)
 		{
-			// Syncronize the data
 			$this->syncWithStripe();
 		}
 	}
@@ -394,16 +390,15 @@ trait BillableTrait {
 		foreach ($customers as $customer)
 		{
 			// Get this customer entity object
-			$entity = call_user_func($callback, $customer);
+			$entity = static::determineCallableEntity($customer, $callback);
 
 			// Store the Stripe Customer Id
 			$entity->stripe_id = $customer['id'];
 			$entity->save();
 
-			// Should we syncronize the data with Stripe?
+			// Should we synchronize the entity with Stripe?
 			if ($sync)
 			{
-				// Syncronize the data
 				$entity->syncWithStripe();
 			}
 		}
@@ -426,29 +421,20 @@ trait BillableTrait {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Returns the callable entity object.
+	 *
+	 * @param  array|\Cartalyst\Stripe\Api\Models\Customer  $customer
+	 * @param  \Closure  $callback
+	 * @return \Cartalyst\Stripe\Billing\BillableInterface
+	 * @throws \InvalidArgumentException
 	 */
-	public static function getSyncErrors()
-	{
-		return static::$syncErrors;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public static function executeSyncCallback($customer, Closure $callback)
+	protected static function determineCallableEntity($customer, Closure $callback)
 	{
 		$entity = call_user_func($callback, $customer);
 
-		if ($entity instanceof BillableInterface)
-		{
-			$entity->syncWithStripe();
-		}
-		else
-		{
-			static::$syncErrors[] = "The billable entity for the customer [{$customer['id']}] wasn't returned!";
-		}
+		if ($entity instanceof BillableInterface) return $entity;
 
+		throw new \InvalidArgumentException("The billable entity for the customer [{$customer['id']}] wasn't returned!");
 	}
 
 }
