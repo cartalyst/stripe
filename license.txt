@@ -4,9 +4,9 @@ All rights reserved.
 
 This license is a legal agreement between you and Cartalyst LLC for the use of
 any package (all versions) Software (the "Software"). By downloading any version
-of the Software you agree to be bound by the terms and conditions of this
-license. Cartalyst LLC reserves the right to alter this agreement at any time,
-for any reason, without notice.
+ of the Software you agree to be bound by the terms and conditions of this
+ license. Cartalyst LLC reserves the right to alter this agreement at any time,
+ for any reason, without notice.
 
 You may alter, modify, or extend the Software for your own use or for use in an
 integral part of your product or service, or commission a third-party to perform

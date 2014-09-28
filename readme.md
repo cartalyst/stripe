@@ -14,7 +14,7 @@ The package was inspired in the Laravel Cashier by Taylor Otwell.
 
 Package history and capabilities.
 
-#### xx-May-14 - v1.0.0
+#### xx-xx-14 - v1.0.0
 
 ##### API
 
@@ -167,21 +167,17 @@ Package history and capabilities.
 - Can check if the entity has any active subscriptions.
 - Can syncronize all the entity active subscriptions from Stripe to storage.
 
-## Requirements
-
-- PHP >=5.4
-
 ## Installation
 
 Stripe is installable with Composer. Read further information on how to install.
 
-[Installation Guide](https://cartalyst.com/manual/stripe#installation)
+[Installation Guide](https://cartalyst.com/manual/stripe/1.0#installation)
 
 ## Documentation
 
 Refer to the following guide on how to use the Stripe package.
 
-[Documentation](https://cartalyst.com/manual/stripe)
+[Documentation](https://cartalyst.com/manual/stripe/1.0)
 
 ## Versioning
 
