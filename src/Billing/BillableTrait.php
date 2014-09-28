@@ -393,7 +393,19 @@ trait BillableTrait {
 		// Loop through the Stripe Customers
 		foreach ($customers as $customer)
 		{
-			static::executeSyncCallback($customer, $callback);
+			// Get this customer entity object
+			$entity = call_user_func($callback, $customer);
+
+			// Store the Stripe Customer Id
+			$entity->stripe_id = $customer['id'];
+			$entity->save();
+
+			// Should we syncronize the data with Stripe?
+			if ($sync)
+			{
+				// Syncronize the data
+				$entity->syncWithStripe();
+			}
 		}
 	}
 
@@ -426,7 +438,7 @@ trait BillableTrait {
 	 */
 	public static function executeSyncCallback($customer, Closure $callback)
 	{
-		$entity = $callback($customer);
+		$entity = call_user_func($callback, $customer);
 
 		if ($entity instanceof BillableInterface)
 		{
