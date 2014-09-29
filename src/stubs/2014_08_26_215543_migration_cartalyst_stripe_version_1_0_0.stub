@@ -37,7 +37,7 @@ class MigrationCartalystStripeVersion100 extends Migration {
 			$table->string('brand', 20);
 			$table->string('funding', 10);
 			$table->string('cvc_check', 10);
-			$table->char('last_four', 4)->unsigned();
+			$table->char('last_four', 4);
 			$table->tinyInteger('exp_month')->unsigned();
 			$table->smallInteger('exp_year')->unsigned();
 			$table->boolean('default')->default(0);
