@@ -34,19 +34,9 @@ return [
 
 #### Billing
 
-The Stripe package comes with billing functionality that you can attach to any entity.
+The Stripe package comes with billing functionality that you can attach to a single entity or multiple entities.
 
 To use this feature please follow the next steps:
-
-###### Migrations
-
-Now you need to migrate your database, but before doing that, you'll need to generate a migration that suits your billable table and to do this you just need to run the following command:
-
-	php artisan stripe:migration users
-
-> **Note:** Replace `users` with the billable entity table name.
-
-Now that the migration file is created you just need to run `php artisan migrate` to create the tables on your database.
 
 ###### Model setup
 
@@ -76,4 +66,32 @@ return [
 ];
 ```
 
-> **Note:** If your model is under a namespace, please provide the full namespace, ex: `'Acme\Models\User'`.
+If you want to attach multiple models, just define an `array` instead of a `string`:
+
+```php
+return [
+
+	'stripe' => [
+		'secret' => 'your-stripe-key-here',
+		'model'  => [
+			'User',
+			'OtherModel',
+		]
+	],
+
+];
+```
+
+> **Note:** If a model is under a namespace, please provide the full namespace, ex: `'Acme\Models\User'`.
+
+###### Migrations
+
+Now you need to migrate your database, but before doing that, you'll need to generate a migration that suits your billable table and to do this you just need to run the following command:
+
+	php artisan stripe:table users
+
+> **Note:** Replace `users` with the billable entity table name.
+
+Now that the migration file is created you just need to run `php artisan migrate` to create the tables on your database.
+
+> **Note:** If you have multiple models setup on the `app/config/services.php` file, please repeat this step for each model.
