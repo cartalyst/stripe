@@ -20,8 +20,8 @@
 use InvalidArgumentException;
 use Cartalyst\Stripe\Api\Stripe;
 use Illuminate\Support\ServiceProvider;
-use Cartalyst\Stripe\StripeTableCommand;
 use Cartalyst\Stripe\Billing\BillableInterface;
+use Cartalyst\Stripe\Console\StripeTableCommand;
 
 class StripeServiceProvider extends ServiceProvider {
 
