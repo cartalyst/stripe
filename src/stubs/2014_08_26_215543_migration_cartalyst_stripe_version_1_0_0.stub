@@ -173,10 +173,7 @@ class MigrationCartalystStripeVersion100 extends Migration {
 			'payment_refunds'
 		];
 
-		foreach ($tables as $table)
-		{
-			Schema::drop($table);
-		}
+		foreach ($tables as $table) Schema::drop($table);
 
 		Schema::table('billable_table', function(Blueprint $table)
 		{
