@@ -82,6 +82,7 @@ class WebhookControllerTest extends PHPUnit_Framework_TestCase {
 		];
 
 		$controller = new WebhookControllerStub;
+
 		$response = $controller->handleWebhook($payload);
 
 		$this->assertEquals($_SERVER['__stripe_event_id'], 'foobar');
@@ -89,7 +90,23 @@ class WebhookControllerTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($_SERVER['__stripe_event_type'], 'foo.bar');
 
 		$this->assertEquals($response->getContent(), 'Handled');
+	}
 
+	/** @test */
+	public function it_can_get_a_proper_timestamp()
+	{
+		$payload = [
+			'type' => 'dummy.event',
+			'data' => [
+				'object' => [
+					'id' => 'foobar',
+				],
+			],
+		];
+
+		$controller = new WebhookControllerStub;
+
+		$controller->handleWebhook($payload);
 	}
 
 }

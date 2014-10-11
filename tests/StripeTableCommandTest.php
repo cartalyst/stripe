@@ -34,7 +34,7 @@ class StripeTableCommandTest extends PHPUnit_Framework_TestCase {
 
 	public function testFoo()
 	{
-		$cmd = m::mock("Cartalyst\Stripe\StripeTableCommand[argument, send]");
+		$cmd = m::mock("Cartalyst\Stripe\Console\StripeTableCommand[argument, send]");
 
 		// $cmd
 		// 	->shouldReceive('argument')

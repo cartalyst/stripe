@@ -28,4 +28,9 @@ class WebhookControllerStub extends \Cartalyst\Stripe\WebhookController {
 		return $this->sendResponse('Handled');
 	}
 
+	public function handleDummyEvent()
+	{
+		$this->nullableTimestamp(123);
+	}
+
 }
