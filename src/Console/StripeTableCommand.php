@@ -122,7 +122,7 @@ class StripeTableCommand extends Command {
 	 */
 	protected function getMigrationStubContents($path)
 	{
-		$contents = file_get_contents(__DIR__."/stubs/{$path}.stub");
+		$contents = file_get_contents(__DIR__."/../stubs/{$path}.stub");
 
 		$tableName = $this->argument('table');
 
@@ -156,7 +156,7 @@ class StripeTableCommand extends Command {
 	{
 		$migrations = [];
 
-		foreach ((new Finder)->files()->in(__DIR__.'/stubs') as $file)
+		foreach ((new Finder)->files()->in(__DIR__.'/../stubs') as $file)
 		{
 			preg_match('/([0-9]\_[0-9]\_)\w/', $file->getFileName(), $matches);
 
