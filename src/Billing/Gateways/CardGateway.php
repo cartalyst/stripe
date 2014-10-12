@@ -331,15 +331,9 @@ class CardGateway extends StripeGateway {
 		}
 
 		// Should we make this card the default card?
-		if ($default)
-		{
-			$this->updateDefaultLocalCard($stripeId);
-		}
+		if ($default) $this->updateDefaultLocalCard($stripeId);
 
-		if ($callback)
-		{
-			call_user_func($callback, $response, $card);
-		}
+		if ($callback) call_user_func($callback, $response, $card);
 
 		// Fire the appropriate event
 		$this->fire("card.{$event}", [ $response, $card ]);

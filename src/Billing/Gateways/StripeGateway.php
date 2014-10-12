@@ -151,7 +151,7 @@ abstract class StripeGateway {
 
 		$entity = $this->billable;
 
-		$data = array_merge([$entity], $data);
+		$data = array_merge([ $entity ], $data);
 
 		$dispatcher = $entity->getEventDispatcher();
 

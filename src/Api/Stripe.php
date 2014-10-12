@@ -127,11 +127,9 @@ class Stripe {
 	 */
 	public function setVersion($version)
 	{
-		$this->version = $version;
+		$this->version = (string) $version;
 
-		$this->setHeaders([
-			'Stripe-Version' => (string) $version,
-		]);
+		$this->setHeaders([ 'Stripe-Version' => $this->version ]);
 
 		return $this;
 	}
@@ -253,19 +251,17 @@ class Stripe {
 			throw new InvalidArgumentException('Not enough arguments provided!');
 		}
 
-		// Pluralize the method name
-		$pluralMethod = str_plural($method);
-
 		// Get the request manifest payload data
-		$manifest = $this->getRequestManifestPayload($pluralMethod);
+		$manifest = $this->getManifestPayload(str_plural($method));
 
-		if ( ! $parameters = array_get($manifest, 'find'))
+		// Get the 'find' method parameters from the manifest
+		if ( ! $method = array_get($manifest, 'find'))
 		{
 			throw new InvalidArgumentException("Undefined method [{$method}] called.");;
 		}
 
 		// Get the required parameters for the request
-		$required = array_where(array_get($parameters, 'parameters'), function($key, $value)
+		$required = array_where(array_get($method, 'parameters', []), function($key, $value)
 		{
 			return $value['required'] === true;
 		});
@@ -286,7 +282,6 @@ class Stripe {
 	 * @param  string  $method
 	 * @param  array  $arguments
 	 * @return \Cartalyst\Stripe\Api\ResourceIterator
-	 * @throws \InvalidArgumentException
 	 */
 	protected function handleIteratorRequest($method, array $arguments = [])
 	{
@@ -322,9 +317,7 @@ class Stripe {
 		$client->setUserAgent($this->getUserAgent(), true);
 
 		// Set the authentication
-		$client->setDefaultOption('auth', [
-			$this->getApiKey(), null,
-		]);
+		$client->setDefaultOption('auth', [ $this->getApiKey(), null ]);
 
 		// Set the headers
 		$client->setDefaultOption('headers', $this->getHeaders());
@@ -381,9 +374,9 @@ class Stripe {
 	 */
 	protected function buildPayload($method)
 	{
-		$operations = $this->getRequestManifestPayload($method);
+		$operations = $this->getManifestPayload($method);
 
-		$manifest = $this->getRequestManifestPayload('manifest', false);
+		$manifest = $this->getManifestPayload('manifest', false);
 
 		return array_merge($manifest, compact('operations'));
 	}
@@ -395,7 +388,7 @@ class Stripe {
 	 * @param  bool  $includeErrors
 	 * @return array
 	 */
-	protected function getRequestManifestPayload($file, $includeErrors = true)
+	protected function getManifestPayload($file, $includeErrors = true)
 	{
 		$file = ucwords($file);
 
@@ -403,7 +396,7 @@ class Stripe {
 		{
 			if ($includeErrors)
 			{
-				$errors = $this->getRequestManifestPayload('errors', false);
+				$errors = $this->getManifestPayload('errors', false);
 			}
 
 			$manifest = require_once $this->getManifestFilePath($file);

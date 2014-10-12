@@ -177,7 +177,7 @@ trait BillableTrait {
 	{
 		static::$chargeModel = $model;
 
-		forward_static_call_array([static::$chargeRefundModel, 'setChargeModel'], [$model]);
+		forward_static_call_array([ static::$chargeRefundModel, 'setChargeModel' ], [ $model ]);
 	}
 
 	/**
@@ -195,7 +195,7 @@ trait BillableTrait {
 	{
 		static::$chargeRefundModel = $model;
 
-		forward_static_call_array([static::$chargeModel, 'setRefundModel'], [$model]);
+		forward_static_call_array([ static::$chargeModel, 'setRefundModel' ], [ $model ]);
 	}
 
 	/**
@@ -245,7 +245,7 @@ trait BillableTrait {
 	{
 		static::$invoiceModel = $model;
 
-		forward_static_call_array([static::$chargeModel, 'setInvoiceModel'], [$model]);
+		forward_static_call_array([ static::$chargeModel, 'setInvoiceModel' ], [ $model ]);
 	}
 
 	/**
@@ -263,7 +263,7 @@ trait BillableTrait {
 	{
 		static::$invoiceItemModel = $model;
 
-		forward_static_call_array([static::$invoiceModel, 'setInvoiceItemModel'], [$model]);
+		forward_static_call_array([ static::$invoiceModel, 'setInvoiceItemModel' ], [ $model ]);
 	}
 
 	/**
@@ -372,10 +372,7 @@ trait BillableTrait {
 		$this->save();
 
 		// Should we synchronize the entity with Stripe?
-		if ($sync)
-		{
-			$this->syncWithStripe();
-		}
+		if ($sync) $this->syncWithStripe();
 	}
 
 	/**
@@ -397,10 +394,7 @@ trait BillableTrait {
 			$entity->save();
 
 			// Should we synchronize the entity with Stripe?
-			if ($sync)
-			{
-				$entity->syncWithStripe();
-			}
+			if ($sync) $entity->syncWithStripe();
 		}
 	}
 
