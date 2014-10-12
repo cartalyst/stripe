@@ -199,11 +199,11 @@ class ChargeGateway extends StripeGateway {
 	}
 
 	/**
-	 * Disables the charge from being captured.
+	 * Sets the charge to be captured later.
 	 *
 	 * @return $this
 	 */
-	public function disableCapture()
+	public function captureLater()
 	{
 		$this->capture = false;
 
