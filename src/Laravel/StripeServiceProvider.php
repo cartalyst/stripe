@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use Exception;
 use InvalidArgumentException;
 use Cartalyst\Stripe\Api\Stripe;
 use Illuminate\Support\ServiceProvider;
@@ -94,6 +95,11 @@ class StripeServiceProvider extends ServiceProvider {
 
 		foreach ($entities as $entity)
 		{
+			if ( ! class_exists($entity))
+			{
+				throw new Exception("The '{$entity}' model was not found or doesn't exist!");
+			}
+
 			if ( ! $this->app[$entity] instanceof BillableInterface)
 			{
 				throw new InvalidArgumentException("The '{$entity}' model needs to implement the 'Cartalyst\Stripe\Billing\BillableInterface' interface.");
