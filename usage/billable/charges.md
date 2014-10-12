@@ -58,7 +58,7 @@ $amount = 150.95;
 
 $user
 	->charge()
-	->disableCapture()
+	->captureLater()
 	->create($amount, [
 		'description' => 'Purchased Book!',
 	]);
