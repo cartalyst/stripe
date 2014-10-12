@@ -24,7 +24,7 @@ use Cartalyst\Stripe\Api\Models\Customer;
 interface BillableInterface {
 
 	/**
-	 * Returns the entity Stripe ID.
+	 * Returns the entity Stripe customer ID.
 	 *
 	 * @return string
 	 */
@@ -256,10 +256,9 @@ interface BillableInterface {
 	public static function syncStripeCustomers(Closure $callback);
 
 	/**
-	 * Attaches the Stripe Customer account to the entity,
-	 * it allows you to syncronize the Stripe data for
-	 * that entity by passing a boolean of true as
-	 * the third parameter.
+	 * Attaches the Stripe Customer account to the entity, it allows
+	 * you to syncronize the Stripe data for that entity by passing
+	 * by passing a boolean of true as the second parameter.
 	 *
 	 * @param  \Cartalyst\Stripe\Api\Models\Customer  $customer
 	 * @param  bool  $sync
@@ -268,10 +267,10 @@ interface BillableInterface {
 	public function attachStripeCustomer(Customer $customer, $sync = true);
 
 	/**
-	 * Attaches the Stripe Customers accounts to the entity that
-	 * will be returned from the Closure, it allows you to
-	 * syncronize the Stripe data for that entity by just
-	 * passing a boolean of true as the third parameter.
+	 * Attaches the Stripe Customers accounts to the entity that will be
+	 * eturned from the given callback, it allows you to syncronize the
+	 * Stripe data for that entity by just passing a boolean of true
+	 * as the second parameter.
 	 *
 	 * @param  \Closure  $callback
 	 * @param  bool  $sync
