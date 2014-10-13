@@ -40,7 +40,7 @@ To use this feature please follow the next steps:
 
 ###### Model setup
 
-Add the `BillableTrait` to your Eloquent model and make sure the model implements the `BillableInterface`:
+Add the `Cartalyst\Stripe\Billing\BillableTrait` to your Eloquent model and make sure that the model implements the `Cartalyst\Stripe\Billing\BillableInterface`:
 
 ```php
 use Cartalyst\Stripe\Billing\BillableTrait;
@@ -81,6 +81,10 @@ return [
 
 ];
 ```
+
+As a reminder, all models should implement the `Cartalyst\Stripe\Billing\BillableInterface` otherwise you'll receive an `InvalidArgumentException` exception.
+
+The same applies to when you define a model that doesn't exist, in that situation you'll receive an `Exception` warning that the model wasn't found or doesn't exist.
 
 > **Note:** If a model is under a namespace, please provide the full namespace, ex: `'Acme\Models\User'`.
 

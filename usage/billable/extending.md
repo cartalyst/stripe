@@ -2,7 +2,7 @@
 
 Extending the default models is very easy, we provide handy methods you can utilise with your Entity model.
 
-Firstly you create your model(s) and this model needs to extend the model you want to "override", here's an example of how to do it:
+Firstly you create your model(s) and this model needs to extend the model you want to "override", here's an example on how to do it:
 
 ```php
 <?php
@@ -11,7 +11,9 @@ use Cartalyst\Stripe\Billing\Models\IlluminateCard;
 
 class Card extends IlluminateCard {
 
-	// you can apply any new methods/logic here
+	// You can create any new methods here or if
+	// required, you can override any existing
+	// method to apply your custom features.
 
 }
 ```
@@ -31,9 +33,11 @@ Subscription | Cartalyst\Stripe\Billing\Models\IlluminateSubscription
 
 #### Set the models
 
-Now that you've the model(s) created, it's time to set them, this is recommended to be done the earlier as you can on your application.
+Now that you've the model(s) created, it's time to set them.
 
 This can be done where you see it's more appropriate on your application, as an example, you can do this on the `app/filters.php` file, this is to ensure you only apply this change once per request!
+
+> **Note:** We recommended that this should be done the earlier as you can on your application.
 
 ###### $entity->setCardModel()
 
@@ -45,7 +49,7 @@ User::setCardModel('Acme\Models\Card');
 
 ###### $entity->setChargeModel()
 
-This methid will change the charge model on the entity.
+This method will change the charge model on the entity.
 
 ```php
 User::setChargeModel('Acme\Models\Charge');
