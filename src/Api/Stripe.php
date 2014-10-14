@@ -273,7 +273,7 @@ class Stripe {
 		);
 
 		// Execute the request
-		return $this->handleRequest($pluralMethod)->find($arguments);
+		return $this->handleRequest(str_plural($method))->find($arguments);
 	}
 
 	/**
