@@ -251,8 +251,11 @@ class Stripe {
 			throw new InvalidArgumentException('Not enough arguments provided!');
 		}
 
+		// Get the pluralized method name
+		$pluralMethod = str_plural($method);
+
 		// Get the request manifest payload data
-		$manifest = $this->getManifestPayload(str_plural($method));
+		$manifest = $this->getManifestPayload($pluralMethod);
 
 		// Get the 'find' method parameters from the manifest
 		if ( ! $method = array_get($manifest, 'find'))
@@ -273,7 +276,7 @@ class Stripe {
 		);
 
 		// Execute the request
-		return $this->handleRequest(str_plural($method))->find($arguments);
+		return $this->handleRequest($pluralMethod)->find($arguments);
 	}
 
 	/**
