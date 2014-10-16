@@ -279,7 +279,7 @@ class InvoiceGateway extends StripeGateway {
 			'attempt_count'        => $response['attempt_count'],
 			'closed'               => (bool) $response['closed'],
 			'paid'                 => (bool) $response['paid'],
-			'metadata'             => $response['metadata'],
+			'metadata'             => json_encode($response['metadata']),
 			'created_at'           => $this->nullableTimestamp($response['date']),
 			'period_start'         => $this->nullableTimestamp($response['period_start']),
 			'period_end'           => $this->nullableTimestamp($response['period_end']),

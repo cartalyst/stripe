@@ -136,17 +136,6 @@ class IlluminateInvoice extends Model {
 	}
 
 	/**
-	 * Set mutator for the "metadata" attribute.
-	 *
-	 * @param  array  $metadata
-	 * @return void
-	 */
-	public function setMetadataAttribute(array $metadata)
-	{
-		$this->attributes['metadata'] = json_encode($metadata);
-	}
-
-	/**
 	 * Checks if the invoice is closed.
 	 *
 	 * @return bool
