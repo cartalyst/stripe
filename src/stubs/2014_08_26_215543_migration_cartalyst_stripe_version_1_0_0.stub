@@ -46,7 +46,7 @@ class MigrationCartalystStripeVersion100 extends Migration {
 
 			$table->engine = 'InnoDB';
 
-			$table->index(['billable_column_id', 'stripe_id']);
+			$table->index(['billable_type', 'billable_id', 'stripe_id']);
 		});
 
 		Schema::create('invoices', function(Blueprint $table)
@@ -74,7 +74,7 @@ class MigrationCartalystStripeVersion100 extends Migration {
 
 			$table->engine = 'InnoDB';
 
-			$table->index(['billable_column_id', 'stripe_id']);
+			$table->index(['billable_type', 'billable_id', 'stripe_id']);
 		});
 
 		Schema::create('invoice_items', function(Blueprint $table)
@@ -97,7 +97,7 @@ class MigrationCartalystStripeVersion100 extends Migration {
 
 			$table->engine = 'InnoDB';
 
-			$table->index(['billable_column_id', 'stripe_id']);
+			$table->index(['billable_type', 'billable_id', 'stripe_id']);
 		});
 
 		Schema::create('payments', function(Blueprint $table)
@@ -153,7 +153,7 @@ class MigrationCartalystStripeVersion100 extends Migration {
 
 			$table->engine = 'InnoDB';
 
-			$table->index(['billable_column_id', 'stripe_id']);
+			$table->index(['billable_type', 'billable_id', 'stripe_id']);
 		});
 
 		{{billable_tables_up}}
