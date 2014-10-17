@@ -122,15 +122,16 @@ class StripeTableCommand extends Command {
 	 */
 	protected function getMigrationStubContents($path)
 	{
-		$contents = file_get_contents(__DIR__."/../stubs/{$path}.stub");
+		$tables = array_filter(array_map('trim', explode(',', $this->argument('table'))));
 
-		$tableName = $this->argument('table');
+		$search = [ '{{billable_tables_up}}', '{{billable_tables_down}}' ];
 
-		$search = [ 'billable_table', 'billable_column' ];
+		$replace = [
+			$this->prepareBillableStub($tables, 'up'),
+			$this->prepareBillableStub($tables, 'down')
+		];
 
-		$replace = [ $tableName, str_singular($tableName) ];
-
-		return str_replace($search, $replace, $contents);
+		return str_replace($search, $replace, $this->getStubContents($path));
 	}
 
 	/**
@@ -160,14 +161,51 @@ class StripeTableCommand extends Command {
 		{
 			preg_match('/([0-9]\_[0-9]\_)\w/', $file->getFileName(), $matches);
 
-			$version = str_replace('_', '.', $matches[0]);
+			if (count($matches))
+			{
+				$version = str_replace('_', '.', $matches[0]);
 
-			$name = str_replace('.stub', null, $file->getRelativePathname());
+				$name = str_replace('.stub', null, $file->getRelativePathname());
 
-			$migrations[$version] = $name;
+				$migrations[$version] = $name;
+			}
 		}
 
 		return $migrations;
+	}
+
+	/**
+	 * Prepares the billable tables.
+	 *
+	 * @param  array  $tables
+	 * @param  string  $type
+	 * @return string
+	 */
+	protected function prepareBillableStub(array $tables, $type)
+	{
+		$contents = implode("\n\t\t", preg_split("/((\r?\n)|(\r\n?))/",
+			$this->getStubContents("billable_table_{$type}")
+		));
+
+		$content = array_map(function($table) use ($contents)
+		{
+			return str_replace('billable_table', $table, $contents);
+		}, $tables);
+
+		return preg_replace(
+			"/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n\n", rtrim(implode("\n\t\t", $content), "\n\t\t")
+		);
+	}
+
+	/**
+	 * Returns the given stub file contents.
+	 *
+	 * @param  string  $stub
+	 * @return string
+	 */
+	protected function getStubContents($stub)
+	{
+		return file_get_contents(__DIR__."/../stubs/{$stub}.stub");
 	}
 
 }

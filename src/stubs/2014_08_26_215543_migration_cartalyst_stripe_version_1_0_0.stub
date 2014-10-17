@@ -32,7 +32,8 @@ class MigrationCartalystStripeVersion100 extends Migration {
 		Schema::create('cards', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('billable_column_id')->unsigned();
+			$table->string('billable_type');
+			$table->integer('billable_id')->unsigned();
 			$table->string('stripe_id');
 			$table->string('brand', 20);
 			$table->string('funding', 10);
@@ -51,7 +52,8 @@ class MigrationCartalystStripeVersion100 extends Migration {
 		Schema::create('invoices', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('billable_column_id')->unsigned();
+			$table->string('billable_type');
+			$table->integer('billable_id')->unsigned();
 			$table->string('stripe_id');
 			$table->string('subscription_id')->nullable();
 			$table->string('currency');
@@ -78,7 +80,8 @@ class MigrationCartalystStripeVersion100 extends Migration {
 		Schema::create('invoice_items', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('billable_column_id')->unsigned();
+			$table->string('billable_type');
+			$table->integer('billable_id')->unsigned();
 			$table->string('stripe_id');
 			$table->integer('invoice_id');
 			$table->string('currency');
@@ -100,7 +103,8 @@ class MigrationCartalystStripeVersion100 extends Migration {
 		Schema::create('payments', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('billable_column_id')->unsigned();
+			$table->string('billable_type');
+			$table->integer('billable_id')->unsigned();
 			$table->string('stripe_id');
 			$table->string('invoice_id')->nullable();
 			$table->string('currency');
@@ -134,7 +138,8 @@ class MigrationCartalystStripeVersion100 extends Migration {
 		Schema::create('subscriptions', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('billable_column_id')->unsigned();
+			$table->string('billable_type');
+			$table->integer('billable_id')->unsigned();
 			$table->string('stripe_id');
 			$table->string('plan_id', 25)->nullable();
 			$table->boolean('active')->default(0);
@@ -151,10 +156,7 @@ class MigrationCartalystStripeVersion100 extends Migration {
 			$table->index(['billable_column_id', 'stripe_id']);
 		});
 
-		Schema::table('billable_table', function(Blueprint $table)
-		{
-			$table->string('stripe_id')->nullable()->unique();
-		});
+		{{billable_tables_up}}
 	}
 
 	/**
@@ -175,10 +177,7 @@ class MigrationCartalystStripeVersion100 extends Migration {
 
 		foreach ($tables as $table) Schema::drop($table);
 
-		Schema::table('billable_table', function(Blueprint $table)
-		{
-			$table->dropColumn('stripe_id');
-		});
+		{{billable_tables_down}}
 	}
 
 }

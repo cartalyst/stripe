@@ -95,7 +95,7 @@ trait BillableTrait {
 	 */
 	public function cards()
 	{
-		return $this->hasMany(static::$cardModel);
+		return $this->morphMany(static::$cardModel, 'billable');
 	}
 
 	/**
@@ -151,7 +151,7 @@ trait BillableTrait {
 	 */
 	public function charges()
 	{
-		return $this->hasMany(static::$chargeModel);
+		return $this->morphMany(static::$chargeModel, 'billable');
 	}
 
 	/**
@@ -203,7 +203,7 @@ trait BillableTrait {
 	 */
 	public function invoices()
 	{
-		return $this->hasMany(static::$invoiceModel);
+		return $this->morphMany(static::$invoiceModel, 'billable');
 	}
 
 	/**
@@ -219,7 +219,7 @@ trait BillableTrait {
 	 */
 	public function invoiceItems()
 	{
-		return $this->hasMany(static::$invoiceItemModel);
+		return $this->morphMany(static::$invoiceItemModel, 'billable');
 	}
 
 	/**
@@ -271,7 +271,7 @@ trait BillableTrait {
 	 */
 	public function subscriptions()
 	{
-		return $this->hasMany(static::$subscriptionModel);
+		return $this->morphMany(static::$subscriptionModel, 'billable');
 	}
 
 	/**
