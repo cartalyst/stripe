@@ -51,4 +51,14 @@ class IlluminateInvoiceItem extends Model {
 		'period_start',
 	];
 
+	/**
+	 * Returns the polymorphic relationship.
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+	 */
+	public function billable()
+	{
+		return $this->morphTo();
+	}
+
 }

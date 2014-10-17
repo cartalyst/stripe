@@ -54,6 +54,16 @@ class IlluminateSubscription extends Model {
 	];
 
 	/**
+	 * Returns the polymorphic relationship.
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+	 */
+	public function billable()
+	{
+		return $this->morphTo();
+	}
+
+	/**
 	 * Get mutator for the "active" attribute
 	 *
 	 * @return bool

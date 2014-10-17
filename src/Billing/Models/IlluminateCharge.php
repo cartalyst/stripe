@@ -57,6 +57,16 @@ class IlluminateCharge extends Model {
 	protected static $refundModel = 'Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund';
 
 	/**
+	 * Returns the polymorphic relationship.
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+	 */
+	public function billable()
+	{
+		return $this->morphTo();
+	}
+
+	/**
 	 * Get mutator for the "amount_refunded" attribute.
 	 *
 	 * @return float

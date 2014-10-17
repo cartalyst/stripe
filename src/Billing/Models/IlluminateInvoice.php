@@ -81,6 +81,16 @@ class IlluminateInvoice extends Model {
 	protected static $subscriptionModel = 'Cartalyst\Stripe\Billing\Models\IlluminateSubscription';
 
 	/**
+	 * Returns the polymorphic relationship.
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+	 */
+	public function billable()
+	{
+		return $this->morphTo();
+	}
+
+	/**
 	 * Get mutator for the "attempted" attribute.
 	 *
 	 * @param  string  $attempted
