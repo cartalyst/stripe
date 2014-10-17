@@ -118,7 +118,7 @@ class MigrationCartalystStripeVersion100 extends Migration {
 
 			$table->engine = 'InnoDB';
 
-			$table->index(['billable_column_id', 'stripe_id', 'invoice_id']);
+			$table->index(['billable_type', 'billable_id', 'stripe_id', 'invoice_id']);
 		});
 
 		Schema::create('payment_refunds', function(Blueprint $table)
