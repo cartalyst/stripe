@@ -323,7 +323,9 @@ class CardGateway extends StripeGateway {
 		// Does the card exist on storage?
 		if ( ! $card)
 		{
-			$card = $entity->cards()->create($payload);
+			$model = $entity::getCardModel();
+
+			$card = $entity->cards()->save(new $model($payload));
 		}
 		else
 		{

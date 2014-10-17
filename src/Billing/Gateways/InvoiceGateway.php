@@ -289,7 +289,9 @@ class InvoiceGateway extends StripeGateway {
 		// Does the invoice exist on storage?
 		if ( ! $invoice)
 		{
-			$invoice = $entity->invoices()->create($payload);
+			$model = $entity::getInvoiceModel();
+
+			$invoice = $entity->invoices()->save(new $model($payload));
 		}
 		else
 		{

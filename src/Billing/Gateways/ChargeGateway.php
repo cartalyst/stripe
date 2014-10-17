@@ -335,7 +335,9 @@ class ChargeGateway extends StripeGateway {
 		// Does the charge exist on storage?
 		if ( ! $charge)
 		{
-			$charge = $entity->charges()->create($payload);
+			$model = $entity::getChargeModel();
+
+			$charge = $entity->charges()->save(new $model($payload));
 		}
 		else
 		{

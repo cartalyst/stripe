@@ -690,7 +690,9 @@ class SubscriptionGateway extends StripeGateway {
 		// Does the subscription exist on storage?
 		if ( ! $subscription)
 		{
-			$subscription = $entity->subscriptions()->create($payload);
+			$model = $entity::getSubscriptionModel();
+
+			$subscription = $entity->subscriptions()->save(new $model($payload));
 		}
 		else
 		{
