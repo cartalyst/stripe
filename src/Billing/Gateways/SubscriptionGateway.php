@@ -552,6 +552,14 @@ class SubscriptionGateway extends StripeGateway {
 		{
 			$subscription = array_get($event, 'data.object');
 
+			// Before 2014-01-31, Stripe only allowed one subscription per
+			// customer, therefore the subscription didn't had an id.
+			// To solve the issue, we'll use the Event id instead.
+			if ( ! isset($subscription['id']))
+			{
+				$subscription['id'] = str_replace('evt', 'sub', $event['id']);
+			}
+
 			$active = array_key_exists($subscription['id'], $subscriptions);
 
 			$this->storeSubscription($subscription, compact('active'));
@@ -659,6 +667,8 @@ class SubscriptionGateway extends StripeGateway {
 			'stripe_id'        => $stripeId,
 			'plan_id'          => $this->plan ?: $response['plan']['id'],
 			'active'           => true,
+			'created_at'       => $this->nullableTimestamp($response['start']),
+			'updated_at'       => $this->nullableTimestamp($response['start']),
 			'period_starts_at' => $this->nullableTimestamp($response['current_period_start']),
 			'period_ends_at'   => $this->nullableTimestamp($response['current_period_end']),
 			'ended_at'         => $endedAt,

@@ -35,6 +35,8 @@ class IlluminateSubscription extends Model {
 		'plan_id',
 		'ended_at',
 		'stripe_id',
+		'created_at',
+		'updated_at',
 		'canceled_at',
 		'trial_ends_at',
 		'period_ends_at',
@@ -47,6 +49,8 @@ class IlluminateSubscription extends Model {
 	 */
 	protected $dates = [
 		'ended_at',
+		'created_at',
+		'updated_at',
 		'canceled_at',
 		'trial_ends_at',
 		'period_ends_at',
