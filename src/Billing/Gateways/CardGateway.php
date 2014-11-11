@@ -225,8 +225,7 @@ class CardGateway extends StripeGateway {
 		// Remove the "callback" from the arguments, this is passed
 		// through the main syncWithStripe method, so we remove it
 		// here anyways so that we can have a proper payload.
-		$callback = array_get($payload, 'callback', $callback);
-		array_forget($payload, 'callback');
+		$callback = array_pull($payload, 'callback', $callback);
 
 		// Get all the entity cards from Stripe
 		$cards = $this->client->cardsIterator($payload);

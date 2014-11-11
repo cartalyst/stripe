@@ -531,54 +531,30 @@ class SubscriptionGateway extends StripeGateway {
 		// Remove the "callback" from the arguments, this is passed
 		// through the main syncWithStripe method, so we remove it
 		// here anyways so that we can have a proper payload.
-		$callback = array_get($payload, 'callback', $callback);
-		array_forget($payload, 'callback');
+		$callback = array_pull($payload, 'callback', $callback);
 
-		// Get all the current entity subscriptions
-		$subscriptions = [];
-
+		// Get all the active subscriptions
 		foreach ($this->client->subscriptionsIterator($payload) as $subscription)
 		{
-			$subscriptions[$subscription['id']] = $subscription;
+			$this->storeSubscription($subscription);
 		}
 
-		// Get all the 'customer.subscription.created'
-		// events for this stripe customer.
+		// Get the entity subscriptions from storage
+		$subscriptions = $entity->subscriptions()->lists('stripe_id');
+
+		// Get all the expired subscriptions
 		$events = array_reverse($this->client->eventsIterator([
 			'object_id' => $entity->stripe_id,
-			'type'      => 'customer.subscription.created',
+			'type'      => 'customer.subscription.deleted',
 		])->toArray());
-
-		$subscriptionsFromEvents = [];
 
 		foreach ($events as $event)
 		{
 			$subscription = array_get($event, 'data.object');
 
-			$subscriptionsFromEvents[$subscription['id']] = $subscription;
-		}
-
-		// Loop through the current entity subscriptions, this is
-		// to make sure that expired subscriptions are in sync.
-		foreach ($entity->subscriptions as $subscription)
-		{
-			if ( ! array_get($subscriptions, $subscription->stripe_id) && ! $subscription->isExpired())
-			{
-				$subscription->update([
-					'active'        => false,
-					'ended_at'      => Carbon::now(),
-					'canceled_at'   => null,
-					'trial_ends_at' => null,
-				]);
-			}
-		}
-
-		// Loop through the Stripe subscriptions
-		foreach ($subscriptionsFromEvents as $subscription)
-		{
 			$active = array_key_exists($subscription['id'], $subscriptions);
 
-			$subscription = $this->storeSubscription($subscription, compact('active'));
+			$this->storeSubscription($subscription, compact('active'));
 		}
 	}
 
@@ -672,8 +648,8 @@ class SubscriptionGateway extends StripeGateway {
 		// Find the subscription on storage
 		$subscription = $entity->subscriptions()->where('stripe_id', $stripeId)->first();
 
-		// Flag to know which event needs to be fired
-		$event = ! $subscription ? 'created' : 'updated';
+		// Get the ended date of this subscription
+		$endedAt = $this->nullableTimestamp($response['ended_at']);
 
 		// Prepare the payload
 		$payload = array_merge([
@@ -682,9 +658,10 @@ class SubscriptionGateway extends StripeGateway {
 			'active'           => true,
 			'period_starts_at' => $this->nullableTimestamp($response['current_period_start']),
 			'period_ends_at'   => $this->nullableTimestamp($response['current_period_end']),
-			'canceled_at'      => $this->nullableTimestamp($response['canceled_at']),
-			'trial_starts_at'  => $this->nullableTimestamp($response['trial_start']),
-			'trial_ends_at'    => $this->nullableTimestamp($response['trial_end']),
+			'ended_at'         => $endedAt,
+			'canceled_at'      => $this->nullableTimestamp( ! $endedAt ? $response['canceled_at'] : null),
+			'trial_starts_at'  => $this->nullableTimestamp( ! $endedAt ? $response['trial_start'] : null),
+			'trial_ends_at'    => $this->nullableTimestamp( ! $endedAt ? $response['trial_end'] : null),
 		], $attributes);
 
 		// Does the subscription exist on storage?
@@ -703,6 +680,9 @@ class SubscriptionGateway extends StripeGateway {
 		{
 			call_user_func($callback, $response, $subscription);
 		}
+
+		// Flag to know which event needs to be fired
+		$event = ! $subscription ? 'created' : 'updated';
 
 		// Fires the appropriate event
 		$this->fire("subscription.{$event}", [ $response, $subscription ]);

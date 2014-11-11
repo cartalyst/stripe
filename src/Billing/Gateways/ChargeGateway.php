@@ -90,10 +90,8 @@ class ChargeGateway extends StripeGateway {
 		// will belong to this billable entity.
 		$customer = $this->findOrCreate(
 			$entity->stripe_id,
-			array_get($attributes, 'customer', [])
+			array_pull($attributes, 'customer', [])
 		);
-
-		array_forget($attributes, 'customer');
 
 		// Get the current default card identifier
 		$card = $customer['default_card'];
@@ -271,8 +269,7 @@ class ChargeGateway extends StripeGateway {
 		// Remove the "callback" from the arguments, this is passed
 		// through the main syncWithStripe method, so we remove it
 		// here anyways so that we can have a proper payload.
-		$callback = array_get($payload, 'callback', $callback);
-		array_forget($payload, 'callback');
+		$callback = array_pull($payload, 'callback', $callback);
 
 		// Get all the entity charges
 		$charges = array_reverse($this->client->chargesIterator($payload)->toArray());

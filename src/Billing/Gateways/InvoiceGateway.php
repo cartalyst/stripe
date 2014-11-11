@@ -88,8 +88,7 @@ class InvoiceGateway extends StripeGateway {
 		);
 
 		// Get the invoice items for this invoice
-		$items = array_get($attributes, 'items', []);
-		array_forget($attributes, 'items');
+		$items = array_pull($attributes, 'items', []);
 
 		// Loop through the items and lazily create them
 		foreach ($items as $item)
@@ -195,8 +194,7 @@ class InvoiceGateway extends StripeGateway {
 		// Remove the "callback" from the arguments, this is passed
 		// through the main syncWithStripe method, so we remove it
 		// here anyways so that we can have a proper payload.
-		$callback = array_get($payload, 'callback', $callback);
-		array_forget($payload, 'callback');
+		$callback = array_pull($payload, 'callback', $callback);
 
 		// Get all the entity invoices
 		$invoices = array_reverse($this->client->invoicesIterator($payload)->toArray());
