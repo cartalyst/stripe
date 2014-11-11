@@ -648,6 +648,9 @@ class SubscriptionGateway extends StripeGateway {
 		// Find the subscription on storage
 		$subscription = $entity->subscriptions()->where('stripe_id', $stripeId)->first();
 
+		// Flag to know which event needs to be fired
+		$event = ! $subscription ? 'created' : 'updated';
+
 		// Get the ended date of this subscription
 		$endedAt = $this->nullableTimestamp($response['ended_at']);
 
@@ -680,9 +683,6 @@ class SubscriptionGateway extends StripeGateway {
 		{
 			call_user_func($callback, $response, $subscription);
 		}
-
-		// Flag to know which event needs to be fired
-		$event = ! $subscription ? 'created' : 'updated';
 
 		// Fires the appropriate event
 		$this->fire("subscription.{$event}", [ $response, $subscription ]);
