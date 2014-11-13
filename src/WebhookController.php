@@ -35,11 +35,8 @@ class WebhookController extends Controller {
 		// Get the request payload
 		$payload = $payload ?: $this->getJsonPayload();
 
-		// Get the webhook type
-		$type = $payload['type'];
-
 		// Make sure we have a proper method name
-		$method = 'handle'.studly_case(str_replace('.', '_', $type));
+		$method = 'handle'.studly_case(str_replace('.', '_', $payload['type']));
 
 		// Check if the method exists
 		if (method_exists($this, $method))
@@ -47,11 +44,10 @@ class WebhookController extends Controller {
 			// Get the 'previous_attributes' data, if available
 			$previous_attributes = array_get($payload, 'data.previous_attributes', []);
 
-			// Merge in the 'previous_attributes' with the main object data
-			$payload = array_merge($payload['data']['object'], compact('previous_attributes'));
-
 			// Execute the method call
-			return $this->{$method}($payload);
+			return $this->{$method}(
+				array_merge($payload['data']['object'], compact('previous_attributes'))
+			);
 		}
 
 		// Return a positive message for Stripe anyways
