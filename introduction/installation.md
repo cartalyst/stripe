@@ -6,7 +6,7 @@ The best and easiest way to install the Stripe package is with [Composer](http:/
 
 Open your `composer.json` file and add the following to the `require` array:
 
-	"cartalyst/stripe": "1.0.*"
+	"cartalyst/stripe": "0.1.*"
 
 Add the following lines after the `require` array on your `composer.json` file:
 
@@ -16,10 +16,6 @@ Add the following lines after the `require` array on your `composer.json` file:
 			"url": "https://packages.cartalyst.com"
 		}
 	]
-
-Since the package is not yet marked as stable, you'll need to set the minimum stability to `dev` on your `composer.json` file:
-
-	"minimum-stability": "dev"
 
 > **Note:** Make sure that after the required changes your `composer.json` file is valid by running `composer validate`.
 
