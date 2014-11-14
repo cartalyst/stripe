@@ -482,18 +482,10 @@ class SubscriptionGateway extends StripeGateway {
 		}
 
 		// Update the subscription on Stripe
-		$subscription = $this->update([
+		return $this->update([
 			'plan'      => $this->plan,
 			'trial_end' => $this->getTrialEndDate(),
 		]);
-
-		// Update the subscription on storage
-		$this->storeSubscription($subscription, [
-			'plan_id'       => $this->plan,
-			'trial_ends_at' => $this->trialEnd,
-		]);
-
-		return $subscription;
 	}
 
 	/**
