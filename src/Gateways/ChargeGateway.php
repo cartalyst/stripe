@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Billing\Gateways;
+<?php namespace Cartalyst\Stripe\Gateways;
 /**
  * Part of the Stripe package.
  *
@@ -18,16 +18,15 @@
  */
 
 use Closure;
-use Cartalyst\Stripe\Billing\BillableInterface;
-use Cartalyst\Stripe\Billing\Models\IlluminateCharge;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Cartalyst\Stripe\BillableInterface;
+use Cartalyst\Stripe\Models\IlluminateCharge;
 
-class ChargeGateway extends StripeGateway {
+class ChargeGateway extends AbstractGateway {
 
 	/**
 	 * The Eloquent charge object.
 	 *
-	 * @var \Cartalyst\Stripe\Billing\Models\IlluminateCharge
+	 * @var \Cartalyst\Stripe\Models\IlluminateCharge
 	 */
 	protected $charge;
 
@@ -55,18 +54,15 @@ class ChargeGateway extends StripeGateway {
 	/**
 	 * Constructor.
 	 *
-	 * @param  \Cartalyst\Stripe\Billing\BillableInterface  $billable
-	 * @param  mixed  $charge
+	 * @param  \Cartalyst\Stripe\BillableInterface  $billable
+	 * @param  mixed  $id
 	 * @return void
 	 */
-	public function __construct(BillableInterface $billable, $charge = null)
+	public function __construct(BillableInterface $billable, $id = null)
 	{
 		parent::__construct($billable);
 
-		if (is_numeric($charge))
-		{
-			$charge = $this->billable->charges->find($charge);
-		}
+		$charge = $this->billable->charges()->getModel()->find($id);
 
 		if ($charge instanceof IlluminateCharge)
 		{
@@ -79,17 +75,13 @@ class ChargeGateway extends StripeGateway {
 	 *
 	 * @param  int  $amount
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
+	 * @return \Cartalyst\Stripe\Models\IlluminateCharge
 	 */
 	public function create($amount, array $attributes = [])
 	{
-		// Get the entity object
-		$entity = $this->billable;
-
 		// Find or Create the Stripe customer that
 		// will belong to this billable entity.
 		$customer = $this->findOrCreate(
-			$entity->stripe_id,
 			array_pull($attributes, 'customer', [])
 		);
 
@@ -100,22 +92,22 @@ class ChargeGateway extends StripeGateway {
 		// attach the credit card to the Stripe customer.
 		if ($this->token)
 		{
-			$card = $entity->card()->makeDefault()->create(
+			$card = $this->billable->card()->makeDefault()->create(
 				$this->token,
-				array_get($attributes, 'card', [])
+				array_pull($attributes, 'card', [])
 			);
 
 			$card = $card['stripe_id'];
 		}
 
 		// Prepare the payload
-		$payload = array_merge([
-			'customer' => $entity->stripe_id,
+		$payload = array_merge($attributes, [
+			'customer' => $this->billable->stripe_id,
 			'capture'  => $this->capture,
 			'currency' => $this->currency,
 			'amount'   => $amount,
 			'card'     => $card,
-		], $attributes);
+		]);
 
 		// Create the charge on Stripe
 		$response = $this->client->charges()->create($payload);
@@ -128,10 +120,13 @@ class ChargeGateway extends StripeGateway {
 	 * Updates the charge.
 	 *
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
+	 * @return \Cartalyst\Stripe\Models\IlluminateCharge
 	 */
 	public function update(array $attributes = [])
 	{
+		// Check if a valid charge was selected
+		$this->checkChargeIsValid();
+
 		// Prepare the payload
 		$payload = $this->getPayload($attributes);
 
@@ -146,10 +141,13 @@ class ChargeGateway extends StripeGateway {
 	 * Refunds the charge.
 	 *
 	 * @param  int  $amount
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
+	 * @return \Cartalyst\Stripe\Models\IlluminateCharge
 	 */
 	public function refund($amount = null)
 	{
+		// Check if a valid charge was selected
+		$this->checkChargeIsValid();
+
 		// Prepare the payload
 		$payload = array_filter(array_merge([
 			'charge' => $this->charge->stripe_id,
@@ -162,7 +160,9 @@ class ChargeGateway extends StripeGateway {
 		$this->storeChargeRefund($this->charge, $refund);
 
 		// Get the updated charge
-		$response = $this->client->charges()->find($this->getPayload());
+		$response = $this->client->charges()->find(
+			$this->getPayload()
+		);
 
 		// Update the charge on storage
 		return $this->storeCharge($response);
@@ -171,15 +171,17 @@ class ChargeGateway extends StripeGateway {
 	/**
 	 * Captures the charge.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
+	 * @return \Cartalyst\Stripe\Models\IlluminateCharge
 	 */
 	public function capture()
 	{
-		// Prepare the payload
-		$payload = $this->getPayload();
+		// Check if a valid charge was selected
+		$this->checkChargeIsValid();
 
 		// Capture the charge on Stripe
-		$response = $this->client->charges()->capture($payload);
+		$response = $this->client->charges()->capture(
+			$this->getPayload()
+		);
 
 		// Disable the event dispatcher
 		$this->disableEventDispatcher();
@@ -244,14 +246,8 @@ class ChargeGateway extends StripeGateway {
 	 */
 	public function syncWithStripe(array $arguments = [], Closure $callback = null)
 	{
-		// Get the entity object
-		$entity = $this->billable;
-
 		// Check if the entity is a stripe customer
-		if ( ! $entity->isBillable())
-		{
-			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
-		}
+		$this->checkEntityIsBillable();
 
 		// Prepare the expand array
 		$expand = array_get($arguments, 'expand', []);
@@ -263,7 +259,7 @@ class ChargeGateway extends StripeGateway {
 
 		// Prepare the payload
 		$payload = array_merge($arguments, [
-			'customer' => $entity->stripe_id,
+			'customer' => $this->billable->stripe_id,
 		]);
 
 		// Remove the "callback" from the arguments, this is passed
@@ -299,7 +295,7 @@ class ChargeGateway extends StripeGateway {
 	 *
 	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
 	 * @param  \Closure  $callback
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
+	 * @return \Cartalyst\Stripe\Models\IlluminateCharge
 	 */
 	protected function storeCharge($response, Closure $callback = null)
 	{
@@ -366,9 +362,9 @@ class ChargeGateway extends StripeGateway {
 	/**
 	 * Stores the charge refund information on local storage.
 	 *
-	 * @param  \Cartalyst\Stripe\Billing\Models\IlluminateCharge  $charge
+	 * @param  \Cartalyst\Stripe\Models\IlluminateCharge  $charge
 	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund
+	 * @return \Cartalyst\Stripe\Models\IlluminateChargeRefund
 	 */
 	protected function storeChargeRefund(IlluminateCharge $charge, $response)
 	{
@@ -403,6 +399,24 @@ class ChargeGateway extends StripeGateway {
 		$this->fire("charge.refund.{$event}", [ $response, $refund ]);
 
 		return $refund;
+	}
+
+	/**
+	 * Checks if a valid charge was selected.
+	 *
+	 * @return void
+	 * @throws \RuntimeException
+	 */
+	protected function checkChargeIsValid()
+	{
+		if ( ! $this->charge)
+		{
+			$method = debug_backtrace()[1]['function'];
+
+			throw new \RuntimeException(
+				"Calling the '{$method}' method on an invalid or non existing charge is not allowed!"
+			);
+		}
 	}
 
 }

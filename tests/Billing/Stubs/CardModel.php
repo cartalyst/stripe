@@ -17,7 +17,7 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Stripe\Billing\Models\IlluminateCard;
+use Cartalyst\Stripe\Models\IlluminateCard;
 
 class CardModel extends IlluminateCard {
 

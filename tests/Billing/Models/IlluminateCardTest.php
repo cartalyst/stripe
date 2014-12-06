@@ -19,7 +19,7 @@
 
 use Mockery as m;
 use PHPUnit_Framework_TestCase;
-use Cartalyst\Stripe\Billing\Models\IlluminateCard;
+use Cartalyst\Stripe\Models\IlluminateCard;
 
 class IlluminateCardTest extends PHPUnit_Framework_TestCase {
 

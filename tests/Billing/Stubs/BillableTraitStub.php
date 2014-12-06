@@ -18,8 +18,8 @@
  */
 
 use Illuminate\Database\Eloquent\Model;
-use Cartalyst\Stripe\Billing\BillableTrait;
-use Cartalyst\Stripe\Billing\BillableInterface;
+use Cartalyst\Stripe\BillableTrait;
+use Cartalyst\Stripe\BillableInterface;
 
 class BillableTraitStub extends Model implements BillableInterface {
 

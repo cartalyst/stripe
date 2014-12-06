@@ -19,7 +19,7 @@
 
 use Mockery as m;
 use PHPUnit_Framework_TestCase;
-use Cartalyst\Stripe\Billing\Models\IlluminateCharge;
+use Cartalyst\Stripe\Models\IlluminateCharge;
 
 class IlluminateChargeTest extends PHPUnit_Framework_TestCase {
 
@@ -36,7 +36,7 @@ class IlluminateChargeTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function it_can_return_the_total_amount_refunded()
 	{
-		$charge = m::mock('Cartalyst\Stripe\Billing\Models\IlluminateCharge');
+		$charge = m::mock('Cartalyst\Stripe\Models\IlluminateCharge');
 		$charge->shouldReceive('getAttribute')->once()->andReturn(67.99);
 		$charge->shouldReceive('refunds')->andReturn(
 			m::mock('Illuminate\Database\Eloquent\Relations\BelongsTo')
@@ -104,7 +104,7 @@ class IlluminateChargeTest extends PHPUnit_Framework_TestCase {
 		$refunds->shouldReceive('getResults')->once()->andReturn($refunds);
 		$refunds->shouldReceive('count')->once()->andReturn(2);
 
-		$charge = m::mock('Cartalyst\Stripe\Billing\Models\IlluminateCharge[refunds]');
+		$charge = m::mock('Cartalyst\Stripe\Models\IlluminateCharge[refunds]');
 		$charge->shouldReceive('refunds')->andReturn($refunds);
 		$charge->refunded = true;
 
@@ -118,7 +118,7 @@ class IlluminateChargeTest extends PHPUnit_Framework_TestCase {
 		$refunds->shouldReceive('getResults')->once()->andReturn($refunds);
 		$refunds->shouldReceive('count')->once()->andReturn(2);
 
-		$charge = m::mock('Cartalyst\Stripe\Billing\Models\IlluminateCharge[refunds]');
+		$charge = m::mock('Cartalyst\Stripe\Models\IlluminateCharge[refunds]');
 		$charge->shouldReceive('refunds')->andReturn($refunds);
 
 		$this->assertTrue($charge->isPartialRefunded());
@@ -205,7 +205,7 @@ class IlluminateChargeTest extends PHPUnit_Framework_TestCase {
 	public function it_can_get_the_invoice_model()
 	{
 		$this->assertEquals(
-			'Cartalyst\Stripe\Billing\Models\IlluminateInvoice',
+			'Cartalyst\Stripe\Models\IlluminateInvoice',
 			IlluminateCharge::getInvoiceModel()
 		);
 	}
@@ -239,7 +239,7 @@ class IlluminateChargeTest extends PHPUnit_Framework_TestCase {
 	public function it_can_get_the_refund_model()
 	{
 		$this->assertEquals(
-			'Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund',
+			'Cartalyst\Stripe\Models\IlluminateChargeRefund',
 			IlluminateCharge::getRefundModel()
 		);
 	}

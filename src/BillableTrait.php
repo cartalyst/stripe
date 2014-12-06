@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Billing;
+<?php namespace Cartalyst\Stripe;
 /**
  * Part of the Stripe package.
  *
@@ -19,8 +19,9 @@
 
 use Closure;
 use Cartalyst\Stripe\Api\Stripe;
-use Cartalyst\Stripe\Billing\Gateways;
+use Cartalyst\Stripe\Gateways;
 use Cartalyst\Stripe\Api\Models\Customer;
+use Cartalyst\Stripe\Api\Exception\NotFoundException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 trait BillableTrait {
@@ -37,57 +38,88 @@ trait BillableTrait {
 	 *
 	 * @var string
 	 */
-	protected static $cardModel = 'Cartalyst\Stripe\Billing\Models\IlluminateCard';
+	protected static $cardModel = 'Cartalyst\Stripe\Models\IlluminateCard';
 
 	/**
 	 * The Eloquent charge model name.
 	 *
 	 * @var string
 	 */
-	protected static $chargeModel = 'Cartalyst\Stripe\Billing\Models\IlluminateCharge';
+	protected static $chargeModel = 'Cartalyst\Stripe\Models\IlluminateCharge';
 
 	/**
 	 * The Eloquent charge refund model name.
 	 *
 	 * @var string
 	 */
-	protected static $chargeRefundModel = 'Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund';
+	protected static $chargeRefundModel = 'Cartalyst\Stripe\Models\IlluminateChargeRefund';
+
+ 	/**
+	 * The Eloquent discount model name.
+	 *
+	 * @var string
+	 */
+	protected static $discountModel = 'Cartalyst\Stripe\Models\IlluminateDiscount';
 
 	/**
 	 * The Eloquent invoice model name.
 	 *
 	 * @var string
 	 */
-	protected static $invoiceModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoice';
+	protected static $invoiceModel = 'Cartalyst\Stripe\Models\IlluminateInvoice';
 
 	/**
 	 * The Eloquent invoice item model name.
 	 *
 	 * @var string
 	 */
-	protected static $invoiceItemModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem';
+	protected static $invoiceItemModel = 'Cartalyst\Stripe\Models\IlluminateInvoiceItem';
 
 	/**
 	 * The Eloquent subscription model name.
 	 *
 	 * @var string
 	 */
-	protected static $subscriptionModel = 'Cartalyst\Stripe\Billing\Models\IlluminateSubscription';
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getStripeId()
-	{
-		return $this->stripe_id;
-	}
+	protected static $subscriptionModel = 'Cartalyst\Stripe\Models\IlluminateSubscription';
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function isBillable()
 	{
-		return (bool) $this->getStripeId();
+		return (bool) $this->stripe_id;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function createStripeCustomer(array $attributes = [])
+	{
+		return (new Gateways\CustomerGateway($this))->create($attributes);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function updateStripeCustomer(array $attributes = [])
+	{
+		return (new Gateways\CustomerGateway($this))->update($attributes);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function deleteStripeCustomer()
+	{
+		return (new Gateways\CustomerGateway($this))->delete();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function findOrCreateStripeCustomer(array $attributes = [])
+	{
+		return (new Gateways\CustomerGateway($this))->findOrCreate($attributes);
 	}
 
 	/**
@@ -141,9 +173,21 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function updateDefaultCard($token)
+	public function updateDefaultCard($token, array $attributes = [])
 	{
-		return $this->card()->makeDefault()->create($token);
+		if ($defaultCard = $this->getDefaultCard())
+		{
+			try
+			{
+				$this->card($defaultCard)->delete();
+			}
+			catch (NotFoundException $e)
+			{
+
+			}
+		}
+
+		return $this->card()->makeDefault()->create($token, $attributes);
 	}
 
 	/**
@@ -196,6 +240,48 @@ trait BillableTrait {
 		static::$chargeRefundModel = $model;
 
 		forward_static_call_array([ static::$chargeModel, 'setRefundModel' ], [ $model ]);
+	}
+
+	/**
+ 	 * {@inheritDoc}
+ 	 */
+	public function discounts()
+	{
+		return $this->morphMany(static::$discountModel, 'discountable');
+	}
+
+	/**
+ 	 * {@inheritDoc}
+ 	 */
+	public function discount($discount)
+	{
+		return new Gateways\DiscountGateway($this, $discount);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function hasActiveDiscount()
+	{
+		$discount = $this->discounts()->activeDiscount();
+
+		return $discount ? $discount->isValid() : false;
+	}
+
+	/**
+ 	 * {@inheritDoc}
+ 	 */
+	public static function getDiscountModel()
+	{
+		return static::$discountModel;
+	}
+
+	/**
+ 	 * {@inheritDoc}
+ 	 */
+	public static function setDiscountModel($model)
+	{
+		static::$discountModel = $model;
 	}
 
 	/**
@@ -309,58 +395,102 @@ trait BillableTrait {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function applyCoupon($coupon)
-	{
-		return $this->getStripeClient()->customers()->update([
-			'id'     => $this->getStripeId(),
-			'coupon' => $coupon,
-		]);
-	}
+	// public function syncWithStripe(array $arguments = [])
+	// {
+	// 	$this->card()->syncWithStripe(
+	// 		array_get($arguments, 'charge', [])
+	// 	);
+
+	// 	$this->charge()->syncWithStripe(
+	// 		array_get($arguments, 'card', [])
+	// 	);
+
+	// 	$this->invoice()->syncWithStripe(
+	// 		array_get($arguments, 'invoice', [])
+	// 	);
+
+	// 	$this->subscription()->syncWithStripe(
+	// 		array_get($arguments, 'subscription', [])
+	// 	);
+
+
+	// 	return true;
+
+
+	// 	# sync this customer discount
+
+	// 	$customer = $this->getStripeClient()->customer($this->stripe_id)->toArray();
+
+	// 	$discount = $customer['discount'];
+
+	// 	# store the coupon
+
+	// 	$_coupon = $discount['coupon'];
+
+	// 	$coupon = \DB::table('stripe_coupons')->where('stripe_id', $_coupon['id'])->first();
+
+	// 	$payload = [
+	// 		'stripe_id'          => $_coupon['id'],
+	// 		'duration'           => $_coupon['duration'],
+	// 		'amount_off'         => $_coupon['amount_off'],
+	// 		'percent_off'        => $_coupon['percent_off'],
+	// 		'currency'           => $_coupon['currency'],
+	// 		'duration_in_months' => $_coupon['duration_in_months'],
+	// 		'max_redemptions'    => $_coupon['max_redemptions'],
+	// 		'redeem_by'          => $_coupon['redeem_by'],
+	// 		'times_redeemed'     => $_coupon['times_redeemed'],
+	// 		'valid'              => (bool) $_coupon['valid'],
+	// 		// 'metadata'        => $_coupon['metadata'],
+	// 	];
+
+	// 	if ( ! $coupon)
+	// 	{
+	// 		$coupon = \DB::table('stripe_coupons')->insert($payload);
+	// 	}
+	// 	else
+	// 	{
+	// 		$coupon = \DB::table('stripe_coupons')->where('stripe_id', $_coupon['id'])->update($payload);
+	// 	}
+
+	// 	$coupon = \DB::table('stripe_coupons')->where('stripe_id', $_coupon['id'])->first();
+
+	// 	$payload = [
+	// 		'discount_id' => $coupon->id,
+	// 		'starts_at' => $discount['start'] ? \Carbon\Carbon::createFromTimestamp($discount['start']) : null,
+	// 		'ends_at'   => $discount['end'] ? \Carbon\Carbon::createFromTimestamp($discount['end']) : null,
+	// 	];
+
+	// 	$discount = $this->discounts()->where('discount_id', $coupon->id)->first();
+
+	// 	if ( ! $discount)
+	// 	{
+	// 		$model = $this->getDiscountModel();
+
+	// 		$discount = $this->discounts()->save(new $model($payload));
+	// 	}
+	// 	else
+	// 	{
+	// 		$discount->update($payload);
+	// 	}
+	// }
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function syncWithStripe(array $arguments = [])
-	{
-		if ( ! $this->isBillable())
-		{
-			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
-		}
+	// public static function syncStripeCustomers(Closure $callback)
+	// {
+	// 	// Get all the Stripe Customers
+	// 	$customers = static::getStripeClient()->customersIterator();
 
-		$this->card()->syncWithStripe(
-			array_get($arguments, 'charge', [])
-		);
+	// 	foreach ($customers as $customer)
+	// 	{
+	// 		// Get this customer entity object
+	// 		$entity = static::determineCallableEntity($customer, $callback);
 
-		$this->charge()->syncWithStripe(
-			array_get($arguments, 'card', [])
-		);
-
-		$this->invoice()->syncWithStripe(
-			array_get($arguments, 'invoice', [])
-		);
-
-		$this->subscription()->syncWithStripe(
-			array_get($arguments, 'subscription', [])
-		);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public static function syncStripeCustomers(Closure $callback)
-	{
-		// Get all the Stripe Customers
-		$customers = static::getStripeClient()->customersIterator();
-
-		foreach ($customers as $customer)
-		{
-			// Get this customer entity object
-			$entity = static::determineCallableEntity($customer, $callback);
-
-			// Synchronize the entity with Stripe
-			$entity->syncWithStripe();
-		}
-	}
+	// 		// Synchronize the entity with Stripe
+	// 		$entity->syncWithStripe();
+	// 	}
+	// }
 
 	/**
 	 * {@inheritDoc}
@@ -372,12 +502,14 @@ trait BillableTrait {
 		$this->save();
 
 		// Should we synchronize the entity with Stripe?
-		if ($sync) $this->syncWithStripe();
+		//if ($sync) $this->syncWithStripe();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	# most likely to remove this as well, the attachStripeCustomer can
+	# stay as it's kinda usefull
 	public static function attachStripeCustomers(Closure $callback, $sync = true)
 	{
 		// Get all the Stripe Customers
@@ -419,7 +551,7 @@ trait BillableTrait {
 	 *
 	 * @param  array|\Cartalyst\Stripe\Api\Models\Customer  $customer
 	 * @param  \Closure  $callback
-	 * @return \Cartalyst\Stripe\Billing\BillableInterface
+	 * @return \Cartalyst\Stripe\BillableInterface
 	 * @throws \InvalidArgumentException
 	 */
 	protected static function determineCallableEntity($customer, Closure $callback)
@@ -428,7 +560,9 @@ trait BillableTrait {
 
 		if ($entity instanceof BillableInterface) return $entity;
 
-		throw new \InvalidArgumentException("The billable entity for the customer [{$customer['id']}] wasn't returned!");
+		throw new \InvalidArgumentException(
+			"The billable entity for the customer [{$customer['id']}] wasn't properly returned!"
+		);
 	}
 
 }

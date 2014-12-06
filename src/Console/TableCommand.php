@@ -21,7 +21,7 @@ use Illuminate\Console\Command;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Console\Input\InputArgument;
 
-class StripeTableCommand extends Command {
+class TableCommand extends Command {
 
 	/**
 	 * {@inheritDoc}
@@ -122,7 +122,11 @@ class StripeTableCommand extends Command {
 	 */
 	protected function getMigrationStubContents($path)
 	{
-		$tables = array_filter(array_map('trim', explode(',', $this->argument('table'))));
+		$tables = array_unique(
+			array_filter(
+				array_map('trim', explode(',', $this->argument('table')))
+			)
+		);
 
 		$search = [ '{{billable_tables_up}}', '{{billable_tables_down}}' ];
 

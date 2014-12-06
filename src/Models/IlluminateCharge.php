@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Billing\Models;
+<?php namespace Cartalyst\Stripe\Models;
 /**
  * Part of the Stripe package.
  *
@@ -17,14 +17,12 @@
  * @link       http://cartalyst.com
  */
 
-use Illuminate\Database\Eloquent\Model;
-
-class IlluminateCharge extends Model {
+class IlluminateCharge extends IlluminateModel {
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public $table = 'payments';
+	public $table = 'stripe_payments';
 
 	/**
 	 * {@inheritDoc}
@@ -47,27 +45,17 @@ class IlluminateCharge extends Model {
 	 *
 	 * @var string
 	 */
-	protected static $invoiceModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoice';
+	protected static $invoiceModel = 'Cartalyst\Stripe\Models\IlluminateInvoice';
 
 	/**
 	 * The Eloquent refund model.
 	 *
 	 * @var string
 	 */
-	protected static $refundModel = 'Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund';
+	protected static $refundModel = 'Cartalyst\Stripe\Models\IlluminateChargeRefund';
 
 	/**
-	 * Returns the polymorphic relationship.
-	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-	 */
-	public function billable()
-	{
-		return $this->morphTo();
-	}
-
-	/**
-	 * Get mutator for the "amount_refunded" attribute.
+	 * Accessor for the "amount_refunded" attribute.
 	 *
 	 * @return float
 	 */
@@ -77,7 +65,7 @@ class IlluminateCharge extends Model {
 	}
 
 	/**
-	 * Get mutator for the "captured" attribute.
+	 * Accessor for the "captured" attribute.
 	 *
 	 * @param  string  $captured
 	 * @return bool
@@ -88,7 +76,7 @@ class IlluminateCharge extends Model {
 	}
 
 	/**
-	 * Get mutator for the "failed" attribute.
+	 * Accessor for the "failed" attribute.
 	 *
 	 * @param  string  $failed
 	 * @return bool
@@ -99,7 +87,7 @@ class IlluminateCharge extends Model {
 	}
 
 	/**
-	 * Get mutator for the "paid" attribute.
+	 * Accessor for the "paid" attribute.
 	 *
 	 * @param  string  $paid
 	 * @return bool
@@ -110,7 +98,7 @@ class IlluminateCharge extends Model {
 	}
 
 	/**
-	 * Get mutator for the "refunded" attribute.
+	 * Accessor for the "refunded" attribute.
 	 *
 	 * @param  string  $refunded
 	 * @return bool
@@ -118,26 +106,6 @@ class IlluminateCharge extends Model {
 	public function getRefundedAttribute($refunded)
 	{
 		return (bool) $refunded;
-	}
-
-	/**
-	 * Checks if the charge is fully refunded.
-	 *
-	 * @return bool
-	 */
-	public function isRefunded()
-	{
-		return ($this->refunded === true && $this->refunds->count());
-	}
-
-	/**
-	 * Checks if the charge is partially refunded.
-	 *
-	 * @return bool
-	 */
-	public function isPartialRefunded()
-	{
-		return ($this->refunded === false && $this->refunds->count());
 	}
 
 	/**
@@ -151,16 +119,6 @@ class IlluminateCharge extends Model {
 	}
 
 	/**
-	 * Checks if the charge can be captured.
-	 *
-	 * @return bool
-	 */
-	public function canBeCaptured()
-	{
-		return ($this->captured === false && $this->failed === false);
-	}
-
-	/**
 	 * Checks if the charge has been paid.
 	 *
 	 * @return bool
@@ -171,9 +129,39 @@ class IlluminateCharge extends Model {
 	}
 
 	/**
+	 * Checks if the charge is partially refunded.
+	 *
+	 * @return bool
+	 */
+	public function isPartialRefunded()
+	{
+		return ($this->refunded === false && $this->refunds->count());
+	}
+
+	/**
+	 * Checks if the charge is fully refunded.
+	 *
+	 * @return bool
+	 */
+	public function isRefunded()
+	{
+		return ($this->refunded === true && $this->refunds->count());
+	}
+
+	/**
+	 * Checks if the charge can be captured.
+	 *
+	 * @return bool
+	 */
+	public function canBeCaptured()
+	{
+		return ($this->captured === false && $this->failed === false);
+	}
+
+	/**
 	 * Returns the invoice associated to this charge.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
+	 * @return \Cartalyst\Stripe\Models\IlluminateInvoice
 	 */
 	public function invoice()
 	{
@@ -204,7 +192,7 @@ class IlluminateCharge extends Model {
 	/**
 	 * Returns all the refunds associated to this charge.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund
+	 * @return \Cartalyst\Stripe\Models\IlluminateChargeRefund
 	 */
 	public function refunds()
 	{

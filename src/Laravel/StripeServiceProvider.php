@@ -18,11 +18,11 @@
  */
 
 use Exception;
+use Cartalyst\Stripe\Console;
 use InvalidArgumentException;
 use Cartalyst\Stripe\Api\Stripe;
 use Illuminate\Support\ServiceProvider;
-use Cartalyst\Stripe\Billing\BillableInterface;
-use Cartalyst\Stripe\Console\StripeTableCommand;
+use Cartalyst\Stripe\BillableInterface;
 
 class StripeServiceProvider extends ServiceProvider {
 
@@ -43,25 +43,27 @@ class StripeServiceProvider extends ServiceProvider {
 	 */
 	public function provides()
 	{
-		return ['stripe'];
+		return [
+			'stripe',
+		];
 	}
 
 	/**
-	 * Register Stripe.
+	 * Register the Stripe API class.
 	 *
 	 * @return void
 	 */
 	protected function registerStripe()
 	{
-		$this->app['stripe'] = $this->app->share(function($app)
+		$this->app->bindShared('stripe', function($app)
 		{
-			$apiKey = $app['config']->get('services.stripe.secret');
+			$config = $app['config']->get('services.stripe');
 
-			$version = $app['config']->get('services.stripe.version');
-
-			$manifestPath = $app['config']->get('services.stripe.manifestPath');
-
-			return new Stripe($apiKey, $version, $manifestPath);
+			return new Stripe(
+				array_get($config, 'secret'),
+				array_get($config, 'version'),
+				array_get($config, 'manifest_path')
+			);
 		});
 
 		$this->app->alias('stripe', 'Cartalyst\Stripe\Api\Stripe');
@@ -74,9 +76,9 @@ class StripeServiceProvider extends ServiceProvider {
 	 */
 	protected function registerTableCommand()
 	{
-		$this->app['command.stripe.table'] = $this->app->share(function($app)
+		$this->app->bindShared('command.stripe.table', function($app)
 		{
-			return new StripeTableCommand;
+			return new Console\TableCommand;
 		});
 
 		$this->commands('command.stripe.table');
@@ -97,12 +99,16 @@ class StripeServiceProvider extends ServiceProvider {
 		{
 			if ( ! class_exists($entity))
 			{
-				throw new Exception("The '{$entity}' model was not found or doesn't exist!");
+				throw new Exception(
+					"The '{$entity}' model was not found or doesn't exist!"
+				);
 			}
 
 			if ( ! $this->app[$entity] instanceof BillableInterface)
 			{
-				throw new InvalidArgumentException("The '{$entity}' model needs to implement the 'Cartalyst\Stripe\Billing\BillableInterface' interface.");
+				throw new InvalidArgumentException(
+					"The '{$entity}' model needs to implement the 'Cartalyst\Stripe\BillableInterface' interface."
+				);
 			}
 
 			$entity::setStripeClient($this->app['stripe']);

@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe;
+<?php namespace Cartalyst\Stripe\Laravel;
 /**
  * Part of the Stripe package.
  *

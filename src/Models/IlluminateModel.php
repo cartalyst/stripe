@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Billing\Models;
+<?php namespace Cartalyst\Stripe\Models;
 /**
  * Part of the Stripe package.
  *
@@ -18,38 +18,9 @@
  */
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
-class IlluminateInvoiceItem extends Model {
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public $table = 'invoice_items';
-
-	/**
-	 * {@inheritDoc}
-	 */
-	protected $fillable = [
-		'type',
-		'amount',
-		'plan_id',
-		'quantity',
-		'currency',
-		'proration',
-		'stripe_id',
-		'invoice_id',
-		'period_end',
-		'description',
-		'period_start',
-	];
-
-	/**
-	 * {@inheritDoc}
-	 */
-	protected $dates = [
-		'period_end',
-		'period_start',
-	];
+class IlluminateModel extends Model {
 
 	/**
 	 * Returns the polymorphic relationship.
@@ -59,6 +30,29 @@ class IlluminateInvoiceItem extends Model {
 	public function billable()
 	{
 		return $this->morphTo();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public static function find($id, $columns = ['*'])
+	{
+		if (is_array($id) && empty($id)) return new Collection;
+
+		$instance = new static;
+
+		if ($id instanceof $instance) return $id;
+
+		$instance
+			->newQuery()
+			->whereNested(function($query) use ($id, $instance)
+			{
+				$query
+					->orWhere('stripe_id', $id)
+					->orWhere($instance->getKeyName(), (int) $id);
+			});
+
+		return $instance->first($columns);
 	}
 
 }

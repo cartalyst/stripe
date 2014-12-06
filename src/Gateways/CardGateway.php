@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Billing\Gateways;
+<?php namespace Cartalyst\Stripe\Gateways;
 /**
  * Part of the Stripe package.
  *
@@ -18,16 +18,15 @@
  */
 
 use Closure;
-use Cartalyst\Stripe\Billing\BillableInterface;
-use Cartalyst\Stripe\Billing\Models\IlluminateCard;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Cartalyst\Stripe\BillableInterface;
+use Cartalyst\Stripe\Models\IlluminateCard;
 
-class CardGateway extends StripeGateway {
+class CardGateway extends AbstractGateway {
 
 	/**
 	 * The Eloquent card object.
 	 *
-	 * @var \Cartalyst\Stripe\Billing\Models\IlluminateCard
+	 * @var \Cartalyst\Stripe\Models\IlluminateCard
 	 */
 	protected $card;
 
@@ -42,18 +41,15 @@ class CardGateway extends StripeGateway {
 	/**
 	 * Constructor.
 	 *
-	 * @param  \Cartalyst\Stripe\Billing\BillableInterface  $billable
-	 * @param  mixed  $card
+	 * @param  \Cartalyst\Stripe\BillableInterface  $billable
+	 * @param  mixed  $id
 	 * @return void
 	 */
-	public function __construct(BillableInterface $billable, $card = null)
+	public function __construct(BillableInterface $billable, $id = null)
 	{
 		parent::__construct($billable);
 
-		if (is_numeric($card))
-		{
-			$card = $this->billable->cards->find($card);
-		}
+		$card = $this->billable->cards()->getModel()->find($id);
 
 		if ($card instanceof IlluminateCard)
 		{
@@ -66,34 +62,28 @@ class CardGateway extends StripeGateway {
 	 *
 	 * @param  string  $token
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCard
+	 * @return \Cartalyst\Stripe\Models\IlluminateCard
 	 */
 	public function create($token, array $attributes = [])
 	{
-		// Get the entity object
-		$entity = $this->billable;
-
 		// Find or Create the Stripe customer that
 		// will belong to this billable entity.
-		$customer = $this->findOrCreate(
-			$entity->stripe_id,
-			array_get($attributes, 'customer', [])
+		$this->findOrCreateCustomer(
+			array_pull($attributes, 'customer', [])
 		);
 
 		// Get the entity stripe id
-		$stripeId = $entity->stripe_id;
+		$stripeId = $this->billable->stripe_id;
 
 		// Create the card on Stripe
-		$response = $this->client->cards()->create(array_merge($attributes, [
+		$response = $this->client->cards()->create([
 			'card'     => $token,
 			'customer' => $stripeId,
-		]));
+		]);
 
 		// Fetch the Stripe customer again, so that we
 		// have the customer with the most recent data.
-		$customer = $this->client->customers()->find([
-			'id' => $stripeId,
-		]);
+		$customer = $this->client->customers()->find([ 'id' => $stripeId ]);
 
 		// Is this the default credit card?
 		$isDefault = ($this->default || $customer['default_card'] === $response['id']);
@@ -115,15 +105,26 @@ class CardGateway extends StripeGateway {
 	 * Updates the card.
 	 *
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCard
+	 * @return \Cartalyst\Stripe\Models\IlluminateCard
 	 */
 	public function update(array $attributes = [])
 	{
-		// Prepare the payload
-		$payload = $this->getPayload($attributes);
+		// Check if a valid card was selected
+		$this->checkCardIsValid();
 
 		// Update the card on Stripe
-		$response = $this->client->cards()->update($payload);
+		$response = $this->client->cards()->update(
+			$this->getPayload($attributes)
+		);
+
+		// Should we make the card the default?
+		if ($this->default)
+		{
+			$this->client->customers()->update([
+				'id'           => $this->billable->stripe_id,
+				'default_card' => $response['id'],
+			]);
+		}
 
 		// Update the card on storage
 		return $this->storeCard($response);
@@ -136,10 +137,15 @@ class CardGateway extends StripeGateway {
 	 */
 	public function delete()
 	{
-		// Delete the card on Stripe
-		$response = $this->client->cards()->destroy($this->getPayload());
+		// Check if a valid card was selected
+		$this->checkCardIsValid();
 
-		// Delete the card locally
+		// Delete the card on Stripe
+		$response = $this->client->cards()->destroy(
+			$this->getPayload()
+		);
+
+		// Delete the card from storage
 		$this->card->delete();
 
 		// Get the Stripe customer
@@ -157,7 +163,7 @@ class CardGateway extends StripeGateway {
 	}
 
 	/**
-	 * Make this credit card the default one after creation.
+	 * Make this credit card the default after creating or updating the card.
 	 *
 	 * @return $this
 	 */
@@ -175,6 +181,9 @@ class CardGateway extends StripeGateway {
 	 */
 	public function setDefault()
 	{
+		// Check if a valid card was selected
+		$this->checkCardIsValid();
+
 		// Update the customer
 		$this->client->customers()->update([
 			'id'           => $this->billable->stripe_id,
@@ -195,18 +204,12 @@ class CardGateway extends StripeGateway {
 	 */
 	public function syncWithStripe(array $arguments = [], Closure $callback = null)
 	{
-		// Get the entity object
-		$entity = $this->billable;
-
 		// Check if the entity is a stripe customer
-		if ( ! $entity->isBillable())
-		{
-			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
-		}
+		$this->checkEntityIsBillable();
 
 		// Get the entity stripe customer object
 		$customer = $this->client->customers()->find([
-			'id' => $entity->stripe_id,
+			'id' => $this->billable->stripe_id,
 		]);
 
 		// Prepare the expand array
@@ -219,7 +222,7 @@ class CardGateway extends StripeGateway {
 
 		// Prepare the payload
 		$payload = array_merge($arguments, [
-			'customer' => $entity->stripe_id,
+			'customer' => $this->billable->stripe_id,
 		]);
 
 		// Remove the "callback" from the arguments, this is passed
@@ -230,30 +233,22 @@ class CardGateway extends StripeGateway {
 		// Get all the entity cards from Stripe
 		$cards = $this->client->cardsIterator($payload);
 
-		$stripeCards = [];
-
-		foreach ($cards as $card)
-		{
-			$stripeCards[$card['id']] = $card;
-		}
-
-		// Loop through the current entity cards, this is to
-		// make sure that non existing cards gets removed.
-		foreach ($entity->cards as $card)
-		{
-			if ( ! array_get($stripeCards, $card->stripe_id))
-			{
-				$card->delete();
-			}
-		}
-
-		// Hold the entity current default credit card
-		$defaultCard = $customer['default_card'];
+		// Determine the credit cards that needs to be removed
+		$cardsToDelete = array_diff(
+			$this->billable->cards->lists('stripe_id'),
+			array_pluck($cards->toArray(), 'id')
+		);
 
 		// Loop through the credit cards
-		foreach ($stripeCards as $card)
+		foreach ($cards as $card)
 		{
-			$this->storeCard($card, ($defaultCard === $card['id']), $callback);
+			$this->storeCard($card, ($customer['default_card'] === $card['id']), $callback);
+		}
+
+		// Delete the old cards
+		foreach ($cardsToDelete as $id)
+		{
+			$this->billable->cards()->whereStripeId($id)->first()->delete();
 		}
 	}
 
@@ -283,7 +278,7 @@ class CardGateway extends StripeGateway {
 
 		$entity->cards()->where('default', true)->update(['default' => false]);
 
-		$entity->cards()->where('stripe_id', $id)->update(['default' => true]);
+		$entity->cards()->whereStripeId($id)->update(['default' => true]);
 	}
 
 	/**
@@ -292,39 +287,39 @@ class CardGateway extends StripeGateway {
 	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
 	 * @param  bool  $default
 	 * @param  \Closure  $callback
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCard
+	 * @return \Cartalyst\Stripe\Models\IlluminateCard
 	 */
 	protected function storeCard($response, $default = false, Closure $callback = null)
 	{
-		// Get the entity object
-		$entity = $this->billable;
-
 		// Get the card id
 		$stripeId = $response['id'];
 
 		// Find the card on storage
-		$card = $entity->cards()->where('stripe_id', $stripeId)->first();
+		$card = $this->billable->cards()->whereStripeId($stripeId)->first();
 
 		// Flag to know which event needs to be fired
 		$event = ! $card ? 'created' : 'updated';
 
 		// Prepare the payload
 		$payload = [
-			'stripe_id' => $stripeId,
-			'brand'     => $response['brand'],
-			'funding'   => $response['funding'],
-			'cvc_check' => $response['cvc_check'],
-			'last_four' => $response['last4'],
-			'exp_month' => $response['exp_month'],
-			'exp_year'  => $response['exp_year'],
+			'stripe_id'   => $stripeId,
+			'brand'       => $response['brand'],
+			'funding'     => $response['funding'],
+			'cvc_check'   => $response['cvc_check'],
+			'last_four'   => $response['last4'],
+			'exp_month'   => $response['exp_month'],
+			'exp_year'    => $response['exp_year'],
+			'fingerprint' => $response['fingerprint'],
 		];
 
 		// Does the card exist on storage?
 		if ( ! $card)
 		{
-			$model = $entity::getCardModel();
+			$model = $this->billable->getCardModel();
 
-			$card = $entity->cards()->save(new $model($payload));
+			$card = $this->billable->cards()->save(
+				new $model($payload)
+			);
 		}
 		else
 		{
@@ -334,12 +329,31 @@ class CardGateway extends StripeGateway {
 		// Should we make this card the default card?
 		if ($default) $this->updateDefaultLocalCard($stripeId);
 
-		if ($callback) call_user_func($callback, $response, $card);
+		// Handle the callback
+		$this->handleCallback($callback, $response, $card);
 
 		// Fire the appropriate event
 		$this->fire("card.{$event}", [ $response, $card ]);
 
 		return $card;
+	}
+
+	/**
+	 * Checks if a valid card was selected.
+	 *
+	 * @return void
+	 * @throws \RuntimeException
+	 */
+	protected function checkCardIsValid()
+	{
+		if ( ! $this->card)
+		{
+			$method = debug_backtrace()[1]['function'];
+
+			throw new \RuntimeException(
+				"Calling the '{$method}' method on an invalid or non existing card is not allowed!"
+			);
+		}
 	}
 
 }

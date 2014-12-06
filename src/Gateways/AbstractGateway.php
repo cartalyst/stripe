@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Billing\Gateways;
+<?php namespace Cartalyst\Stripe\Gateways;
 /**
  * Part of the Stripe package.
  *
@@ -17,16 +17,18 @@
  * @link       http://cartalyst.com
  */
 
+use Closure;
 use Carbon\Carbon;
-use Cartalyst\Stripe\Billing\BillableInterface;
-use Cartalyst\Stripe\Api\Exception\NotFoundException;
+use Illuminate\Database\Eloquent\Model;
+use Cartalyst\Stripe\BillableInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-abstract class StripeGateway {
+abstract class AbstractGateway {
 
 	/**
 	 * The billable entity.
 	 *
-	 * @var \Cartalyst\Stripe\Billing\BillableInterface
+	 * @var \Cartalyst\Stripe\BillableInterface
 	 */
 	protected $billable;
 
@@ -47,40 +49,14 @@ abstract class StripeGateway {
 	/**
 	 * Constructor.
 	 *
-	 * @param  \Cartalyst\Stripe\Billing\BillableInterface  $billable
+	 * @param  \Cartalyst\Stripe\BillableInterface  $billable
 	 * @return void
 	 */
-	public function __construct(BillableInterface $billable)
+	public function __construct(BillableInterface $billable = null)
 	{
 		$this->billable = $billable;
 
 		$this->client = $this->getStripeClient();
-	}
-
-	/**
-	 * Finds or creates a new Stripe customer.
-	 *
-	 * @param  int  $id
-	 * @param  array  $attributes
-	 * @return array
-	 */
-	protected function findOrCreate($id, array $attributes = [])
-	{
-		try
-		{
-			$customer = $this->client->customers()->find([
-				'id' => (string) $id,
-			]);
-		}
-		catch (NotFoundException $e)
-		{
-			$customer = $this->client->customers()->create($attributes);
-
-			$this->billable->stripe_id = $customer['id'];
-			$this->billable->save();
-		}
-
-		return $customer;
 	}
 
 	/**
@@ -104,7 +80,10 @@ abstract class StripeGateway {
 	 */
 	protected function getStripeClient()
 	{
-		return $this->client ?: $this->billable->getStripeClient();
+		if ($this->billable)
+		{
+			return $this->client ?: $this->billable->getStripeClient();
+		}
 	}
 
 	/**
@@ -156,6 +135,35 @@ abstract class StripeGateway {
 		$dispatcher = $entity->getEventDispatcher();
 
 		$dispatcher->fire("cartalyst.stripe.{$event}", $data);
+	}
+
+	/**
+	 * Handles the callback.
+	 *
+	 * @param  \Closure  $callback
+	 * @param  \Cartalyst\Stripe\Api\Models\Collection|array  $response
+	 * @param  \Illuminate\Database\Eloquent\Model  $object
+	 * @return void
+	 */
+	protected function handleCallback(Closure $callback = null, $response, Model $object)
+	{
+		if ($callback) call_user_func($callback, $response, $object);
+	}
+
+	/**
+	 * Checks if the entity is a Stripe customer or not.
+	 *
+	 * @return void
+	 * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+	 */
+	protected function checkEntityIsBillable()
+	{
+		if ( ! $this->billable->isBillable())
+		{
+			throw new BadRequestHttpException(
+				"The entity isn't a Stripe Customer!"
+			);
+		}
 	}
 
 }

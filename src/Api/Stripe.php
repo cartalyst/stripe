@@ -212,7 +212,7 @@ class Stripe {
 	 */
 	public function __call($method, array $arguments = [])
 	{
-		if (substr($method, -8) === 'Iterator')
+		if ($this->isIteratorRequest($method))
 		{
 			return $this->handleIteratorRequest($method, $arguments);
 		}
@@ -223,6 +223,32 @@ class Stripe {
 		}
 
 		return $this->handleRequest($method);
+	}
+
+	/**
+	 * Determines if the request is an iterator request.
+	 *
+	 * @return bool
+	 */
+	protected function isIteratorRequest($method)
+	{
+		return substr($method, -8) === 'Iterator';
+	}
+
+	/**
+	 * Handles an iterator request.
+	 *
+	 * @param  string  $method
+	 * @param  array  $arguments
+	 * @return \Cartalyst\Stripe\Api\ResourceIterator
+	 */
+	protected function handleIteratorRequest($method, array $arguments)
+	{
+		$client = $this->handleRequest(substr($method, 0, -8));
+
+		$command = $client->getCommand('all', array_get($arguments, 0, []));
+
+		return new ResourceIterator($command, array_get($arguments, 1, []));
 	}
 
 	/**
@@ -243,7 +269,7 @@ class Stripe {
 	 * @return \Guzzle\Service\Client
 	 * @throws \InvalidArgumentException
 	 */
-	protected function handleSingleRequest($method, array $arguments = [])
+	protected function handleSingleRequest($method, array $arguments)
 	{
 		// Check if we have any arguments
 		if (empty($arguments))
@@ -277,22 +303,6 @@ class Stripe {
 
 		// Execute the request
 		return $this->handleRequest($pluralMethod)->find($arguments);
-	}
-
-	/**
-	 * Handles an iterator request.
-	 *
-	 * @param  string  $method
-	 * @param  array  $arguments
-	 * @return \Cartalyst\Stripe\Api\ResourceIterator
-	 */
-	protected function handleIteratorRequest($method, array $arguments = [])
-	{
-		$client = $this->handleRequest(substr($method, 0, -8));
-
-		$command = $client->getCommand('all', array_get($arguments, 0, []));
-
-		return new ResourceIterator($command, array_get($arguments, 1, []));
 	}
 
 	/**

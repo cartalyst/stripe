@@ -18,9 +18,13 @@
  */
 
 use Cartalyst\Stripe\Api\Stripe;
-use Illuminate\Support\Collection as BaseCollection;
 
-class Collection extends BaseCollection {
+class Collection extends \Illuminate\Support\Collection {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	protected $items;
 
 	/**
 	 * List of API response properties that'll be

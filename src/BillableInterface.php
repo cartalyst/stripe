@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Billing;
+<?php namespace Cartalyst\Stripe;
 /**
  * Part of the Stripe package.
  *
@@ -24,13 +24,6 @@ use Cartalyst\Stripe\Api\Models\Customer;
 interface BillableInterface {
 
 	/**
-	 * Returns the entity Stripe customer ID.
-	 *
-	 * @return string
-	 */
-	public function getStripeId();
-
-	/**
 	 * Determines if the entity is a Stripe customer.
 	 *
 	 * @return bool
@@ -38,9 +31,40 @@ interface BillableInterface {
 	public function isBillable();
 
 	/**
+	 * Creates a Stripe customer that will be attached to the entity.
+	 *
+	 * @param  array  $attributes
+	 * @return \Cartalyst\Stripe\Api\Models\Customer
+	 */
+	public function createStripeCustomer(array $attributes = []);
+
+	/**
+	 * Updates the entity Stripe customer.
+	 *
+	 * @param  array  $attributes
+	 * @return \Cartalyst\Stripe\Api\Models\Customer
+	 */
+	public function updateStripeCustomer(array $attributes = []);
+
+	/**
+	 * Deletes the entity Stripe customer and all it's relevant data from storage.
+	 *
+	 * @return bool
+	 */
+	public function deleteStripeCustomer();
+
+	/**
+	 * Finds or creates a Stripe customer that is attached to the entity.
+	 *
+	 * @param  array  $attributes
+	 * @return \Cartalyst\Stripe\Api\Models\Customer
+	 */
+	public function findOrCreateStripeCustomer(array $attributes = []);
+
+	/**
 	 * Returns the entity Eloquent card model object.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCard
+	 * @return \Cartalyst\Stripe\Models\IlluminateCard
 	 */
 	public function cards();
 
@@ -48,7 +72,7 @@ interface BillableInterface {
 	 * Returns a Stripe Card gateway instance.
 	 *
 	 * @param  mixed  $card
-	 * @return \Cartalyst\Stripe\Billing\CardGateway
+	 * @return \Cartalyst\Stripe\Gateways\CardGateway
 	 */
 	public function card($card = null);
 
@@ -77,7 +101,7 @@ interface BillableInterface {
 	/**
 	 * Returns the entity default card.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCard
+	 * @return \Cartalyst\Stripe\Models\IlluminateCard
 	 */
 	public function getDefaultCard();
 
@@ -85,14 +109,15 @@ interface BillableInterface {
 	 * Updates the default credit card attached to the entity.
 	 *
 	 * @param  string  $token
+	 * @param  array  $attributes
 	 * @return array
 	 */
-	public function updateDefaultCard($token);
+	public function updateDefaultCard($token, array $attributes = []);
 
 	/**
 	 * Returns the entity Eloquent charge model object.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
+	 * @return \Cartalyst\Stripe\Models\IlluminateCharge
 	 */
 	public function charges();
 
@@ -100,7 +125,7 @@ interface BillableInterface {
 	 * Returns a Stripe Charge gateway instance.
 	 *
 	 * @param  mixed  $charge
-	 * @return \Cartalyst\Stripe\Billing\ChargeGateway
+	 * @return \Cartalyst\Stripe\Gateways\ChargeGateway
 	 */
 	public function charge($charge = null);
 
@@ -134,10 +159,17 @@ interface BillableInterface {
 	 */
 	public static function setChargeRefundModel($model);
 
+ 	/**
+	 * Returns the entity Eloquent discount model object.
+	 *
+	 * @return \Cartalyst\Stripe\Models\IlluminateDiscount
+	 */
+	public function discounts();
+
 	/**
 	 * Returns the entity Eloquent invoice model object.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
+	 * @return \Cartalyst\Stripe\Models\IlluminateInvoice
 	 */
 	public function invoices();
 
@@ -145,14 +177,14 @@ interface BillableInterface {
 	 * Returns a Stripe Invoice gateway instance.
 	 *
 	 * @param  mixed  $invoice
-	 * @return \Cartalyst\Stripe\Billing\InvoiceGateway
+	 * @return \Cartalyst\Stripe\Gateways\InvoiceGateway
 	 */
 	public function invoice($invoice = null);
 
 	/**
 	 * Returns the entity Eloquent invoice items model object.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
+	 * @return \Cartalyst\Stripe\Models\IlluminateInvoiceItem
 	 */
 	public function invoiceItems();
 
@@ -196,7 +228,7 @@ interface BillableInterface {
 	/**
 	 * Returns the entity Eloquent subscription model object.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
+	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
 	public function subscriptions();
 
@@ -204,7 +236,7 @@ interface BillableInterface {
 	 * Returns a Stripe Subscription gateway instance.
 	 *
 	 * @param  mixed  $subscription
-	 * @return \Cartalyst\Stripe\Billing\SubscriptionGateway
+	 * @return \Cartalyst\Stripe\Gateways\SubscriptionGateway
 	 */
 	public function subscription($subscription = null);
 
@@ -231,21 +263,13 @@ interface BillableInterface {
 	public function isSubscribed();
 
 	/**
-	 * Applies a coupon to the entity.
-	 *
-	 * @param  string  $coupon
-	 * @return array
-	 */
-	public function applyCoupon($coupon);
-
-	/**
 	 * Syncronizes the Stripe data with the local data.
 	 *
 	 * @param  array  $arguments
 	 * @return void
 	 * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
 	 */
-	public function syncWithStripe(array $arguments = []);
+	// public function syncWithStripe(array $arguments = []);
 
 	/**
 	 * Syncronizes all the Stripe customers with the local data.
@@ -253,7 +277,7 @@ interface BillableInterface {
 	 * @param  \Closure  $callback
 	 * @return void
 	 */
-	public static function syncStripeCustomers(Closure $callback);
+	// public static function syncStripeCustomers(Closure $callback);
 
 	/**
 	 * Attaches the Stripe Customer account to the entity, it allows
@@ -268,7 +292,7 @@ interface BillableInterface {
 
 	/**
 	 * Attaches the Stripe Customers accounts to the entity that will be
-	 * eturned from the given callback, it allows you to syncronize the
+	 * returned from the given callback, allowing you to syncronize the
 	 * Stripe data for that entity by just passing a boolean of true
 	 * as the second parameter.
 	 *

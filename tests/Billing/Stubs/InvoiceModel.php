@@ -17,7 +17,7 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Stripe\Billing\Models\IlluminateInvoice;
+use Cartalyst\Stripe\Models\IlluminateInvoice;
 
 class InvoiceModel extends IlluminateInvoice {
 

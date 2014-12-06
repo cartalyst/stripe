@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Billing\Models;
+<?php namespace Cartalyst\Stripe\Models;
 /**
  * Part of the Stripe package.
  *
@@ -17,14 +17,12 @@
  * @link       http://cartalyst.com
  */
 
-use Illuminate\Database\Eloquent\Model;
-
-class IlluminateInvoice extends Model {
+class IlluminateInvoice extends IlluminateModel {
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public $table = 'invoices';
+	public $table = 'stripe_invoices';
 
 	/**
 	 * {@inheritDoc}
@@ -64,34 +62,24 @@ class IlluminateInvoice extends Model {
 	 *
 	 * @var string
 	 */
-	protected static $chargeModel = 'Cartalyst\Stripe\Billing\Models\IlluminateCharge';
+	protected static $chargeModel = 'Cartalyst\Stripe\Models\IlluminateCharge';
 
 	/**
 	 * The Eloquent invoice items model.
 	 *
 	 * @var string
 	 */
-	protected static $invoiceItemModel = 'Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem';
+	protected static $invoiceItemModel = 'Cartalyst\Stripe\Models\IlluminateInvoiceItem';
 
 	/**
 	 * The Eloquent subscription model.
 	 *
 	 * @var string
 	 */
-	protected static $subscriptionModel = 'Cartalyst\Stripe\Billing\Models\IlluminateSubscription';
+	protected static $subscriptionModel = 'Cartalyst\Stripe\Models\IlluminateSubscription';
 
 	/**
-	 * Returns the polymorphic relationship.
-	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-	 */
-	public function billable()
-	{
-		return $this->morphTo();
-	}
-
-	/**
-	 * Get mutator for the "attempted" attribute.
+	 * Accessor for the "attempted" attribute.
 	 *
 	 * @param  string  $attempted
 	 * @return int
@@ -102,7 +90,7 @@ class IlluminateInvoice extends Model {
 	}
 
 	/**
-	 * Get mutator for the "attempt_count" attribute.
+	 * Accessor for the "attempt_count" attribute.
 	 *
 	 * @param  string  $attempt_count
 	 * @return int
@@ -113,7 +101,7 @@ class IlluminateInvoice extends Model {
 	}
 
 	/**
-	 * Get mutator for the "closed" attribute.
+	 * Accessor for the "closed" attribute.
 	 *
 	 * @param  string  $closed
 	 * @return bool
@@ -124,7 +112,7 @@ class IlluminateInvoice extends Model {
 	}
 
 	/**
-	 * Get mutator for the "paid" attribute.
+	 * Accessor for the "paid" attribute.
 	 *
 	 * @param  string  $paid
 	 * @return bool
@@ -135,7 +123,7 @@ class IlluminateInvoice extends Model {
 	}
 
 	/**
-	 * Get mutator for the "metadata" attribute.
+	 * Accessor for the "metadata" attribute.
 	 *
 	 * @param  string  $metadata
 	 * @return array
@@ -168,7 +156,7 @@ class IlluminateInvoice extends Model {
 	/**
 	 * Returns the charge that is associated to this invoice.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateCharge
+	 * @return \Cartalyst\Stripe\Models\IlluminateCharge
 	 */
 	public function charge()
 	{
@@ -199,7 +187,7 @@ class IlluminateInvoice extends Model {
 	/**
 	 * Returns all the items associated to this invoice.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
+	 * @return \Cartalyst\Stripe\Models\IlluminateInvoiceItem
 	 */
 	public function items()
 	{
@@ -230,7 +218,7 @@ class IlluminateInvoice extends Model {
 	/**
 	 * Returns the subscription that is associated to this invoice.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
+	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
 	public function subscription()
 	{

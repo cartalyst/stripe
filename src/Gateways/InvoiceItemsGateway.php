@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Billing\Gateways;
+<?php namespace Cartalyst\Stripe\Gateways;
 /**
  * Part of the Stripe package.
  *
@@ -17,16 +17,16 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Stripe\Billing\BillableInterface;
-use Cartalyst\Stripe\Billing\Models\IlluminateInvoice;
+use Cartalyst\Stripe\BillableInterface;
+use Cartalyst\Stripe\Models\IlluminateInvoice;
 
-class InvoiceItemsGateway extends StripeGateway {
+class InvoiceItemsGateway extends AbstractGateway {
 
 	/**
 	 * Creates a new invoice item on the entity.
 	 *
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
+	 * @return \Cartalyst\Stripe\Models\IlluminateInvoiceItem
 	 */
 	public function create(array $attributes = [])
 	{
@@ -35,8 +35,7 @@ class InvoiceItemsGateway extends StripeGateway {
 
 		// Find or Create the Stripe customer that
 		// will belong to this billable entity.
-		$customer = $this->findOrCreate(
-			$entity->stripe_id,
+		$customer = $this->findOrCreateCustomer(
 			array_get($attributes, 'customer', [])
 		);
 
@@ -57,7 +56,7 @@ class InvoiceItemsGateway extends StripeGateway {
 	 *
 	 * @param  string  $id
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
+	 * @return \Cartalyst\Stripe\Models\IlluminateInvoiceItem
 	 */
 	public function update($id, array $attributes = [])
 	{
@@ -92,8 +91,8 @@ class InvoiceItemsGateway extends StripeGateway {
 	 * Stores the invoice item information on local storage.
 	 *
 	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
-	 * @param  \Cartalyst\Stripe\Billing\Models\IlluminateInvoice  $invoice
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem
+	 * @param  \Cartalyst\Stripe\Models\IlluminateInvoice  $invoice
+	 * @return \Cartalyst\Stripe\Models\IlluminateInvoiceItem
 	 */
 	public function storeItem($response, IlluminateInvoice $invoice = null)
 	{
@@ -130,7 +129,7 @@ class InvoiceItemsGateway extends StripeGateway {
 			'amount'       => $this->convertToDecimal($response['amount']),
 			'proration'    => (bool) $response['proration'],
 			'description'  => $this->prepareInvoiceItemDescription($type, $response),
-			'plan_id'      => array_get($response, 'plan.id', null),
+			'plan'         => array_get($response, 'plan.id', null),
 			'quantity'     => array_get($response, 'quantity', null),
 			'period_start' => $periodStart,
 			'period_end'   => $periodEnd,

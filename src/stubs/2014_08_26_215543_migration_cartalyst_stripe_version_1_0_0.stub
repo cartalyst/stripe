@@ -29,12 +29,13 @@ class MigrationCartalystStripeVersion100 extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('cards', function(Blueprint $table)
+		Schema::create('stripe_cards', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('billable_type');
-			$table->integer('billable_id')->unsigned();
-			$table->string('stripe_id');
+			$table->string('billable_type')->index();
+			$table->integer('billable_id')->index()->unsigned();
+			$table->string('stripe_id')->index();
+			$table->string('fingerprint');
 			$table->string('brand', 20);
 			$table->string('funding', 10);
 			$table->string('cvc_check', 10);
@@ -45,16 +46,53 @@ class MigrationCartalystStripeVersion100 extends Migration {
 			$table->timestamps();
 
 			$table->engine = 'InnoDB';
-
-			$table->index(['billable_type', 'billable_id', 'stripe_id']);
 		});
 
-		Schema::create('invoices', function(Blueprint $table)
+		// Schema::create('stripe_coupons', function(Blueprint $table)
+		// {
+		// 	$table->increments('id');
+		// 	$table->string('stripe_id')->index();
+		// 	$table->enum('duration', [ 'forever', 'once', 'repeating' ])->default('once');
+		// 	$table->integer('amount_off')->nullable()->unsigned();
+		// 	$table->integer('percent_off')->nullable()->unsigned();
+		// 	$table->string('currency')->nullable();
+		// 	$table->integer('duration_in_months')->nullable()->unsigned();
+		// 	$table->integer('max_redemptions')->nullable()->unsigned();
+		// 	$table->timestamp('redeem_by')->nullable()->nullable();
+		// 	$table->integer('times_redeemed')->unsigned();
+		// 	$table->boolean('valid')->default(0);
+		// 	$table->text('metadata');
+		// 	$table->timestamps();
+		// 	$table->softDeletes();
+
+		// 	$table->engine = 'InnoDB';
+		// });
+
+		# probably instead of having a stripe_coupons table, we can have the table
+		# for the future sync commands, but, for each discount, we store the
+		# relevant data on a json format, this way we can still access
+		# the coupon information when required, even when the coupon
+		# has been deleted.
+		Schema::create('stripe_discounts', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('billable_type');
-			$table->integer('billable_id')->unsigned();
-			$table->string('stripe_id');
+			$table->string('discountable_type')->index();
+			$table->integer('discountable_id')->index()->unsigned();
+			//$table->integer('coupon_id');
+			$table->text('coupon');
+			$table->timestamps();
+			$table->timestamp('starts_at')->nullable();
+			$table->timestamp('ends_at')->nullable();
+
+			$table->engine = 'InnoDB';
+ 		});
+
+		Schema::create('stripe_invoices', function(Blueprint $table)
+		{
+			$table->increments('id');
+			$table->string('billable_type')->index();
+			$table->integer('billable_id')->index()->unsigned();
+			$table->string('stripe_id')->index();
 			$table->string('subscription_id')->nullable();
 			$table->string('currency');
 			$table->string('description')->nullable();
@@ -73,40 +111,36 @@ class MigrationCartalystStripeVersion100 extends Migration {
 			$table->timestamp('next_payment_attempt')->nullable();
 
 			$table->engine = 'InnoDB';
-
-			$table->index(['billable_type', 'billable_id', 'stripe_id']);
 		});
 
-		Schema::create('invoice_items', function(Blueprint $table)
+		Schema::create('stripe_invoice_items', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('billable_type');
-			$table->integer('billable_id')->unsigned();
-			$table->string('stripe_id');
+			$table->string('billable_type')->index();
+			$table->integer('billable_id')->index()->unsigned();
+			$table->string('stripe_id')->index();
 			$table->integer('invoice_id');
 			$table->string('currency');
 			$table->string('type')->nullable();
 			$table->decimal('amount', 15, 4);
 			$table->boolean('proration')->default(0);
 			$table->string('description')->nullable();
-			$table->string('plan_id')->nullable();
+			$table->string('plan')->nullable();
 			$table->integer('quantity')->unsigned()->nullable();
 			$table->timestamps();
 			$table->timestamp('period_start')->nullable();
 			$table->timestamp('period_end')->nullable();
 
 			$table->engine = 'InnoDB';
-
-			$table->index(['billable_type', 'billable_id', 'stripe_id']);
 		});
 
-		Schema::create('payments', function(Blueprint $table)
+		Schema::create('stripe_payments', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('billable_type');
-			$table->integer('billable_id')->unsigned();
-			$table->string('stripe_id');
-			$table->string('invoice_id')->nullable();
+			$table->string('billable_type')->index();
+			$table->integer('billable_id')->index()->unsigned();
+			$table->string('stripe_id')->index();
+			$table->string('invoice_id')->index()->nullable();
 			$table->string('currency');
 			$table->string('description')->nullable();
 			$table->decimal('amount', 15, 4);
@@ -117,30 +151,26 @@ class MigrationCartalystStripeVersion100 extends Migration {
 			$table->timestamps();
 
 			$table->engine = 'InnoDB';
-
-			$table->index(['billable_type', 'billable_id', 'stripe_id', 'invoice_id']);
 		});
 
-		Schema::create('payment_refunds', function(Blueprint $table)
+		Schema::create('stripe_payment_refunds', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('payment_id')->unsigned();
-			$table->string('stripe_id');
+			$table->integer('payment_id')->index()->unsigned();
+			$table->string('stripe_id')->index();
 			$table->string('currency');
 			$table->decimal('amount', 15, 4);
 			$table->timestamps();
 
 			$table->engine = 'InnoDB';
-
-			$table->index(['payment_id', 'stripe_id']);
 		});
 
-		Schema::create('subscriptions', function(Blueprint $table)
+		Schema::create('stripe_subscriptions', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('billable_type');
-			$table->integer('billable_id')->unsigned();
-			$table->string('stripe_id');
+			$table->string('billable_type')->index();
+			$table->integer('billable_id')->index()->unsigned();
+			$table->string('stripe_id')->index();
 			$table->string('plan_id', 25)->nullable();
 			$table->boolean('active')->default(0);
 			$table->timestamps();
@@ -152,8 +182,6 @@ class MigrationCartalystStripeVersion100 extends Migration {
 			$table->timestamp('trial_ends_at')->nullable();
 
 			$table->engine = 'InnoDB';
-
-			$table->index(['billable_type', 'billable_id', 'stripe_id']);
 		});
 
 		{{billable_tables_up}}
@@ -167,12 +195,14 @@ class MigrationCartalystStripeVersion100 extends Migration {
 	public function down()
 	{
 		$tables = [
-			'cards',
-			'invoices',
-			'payments',
-			'invoice_items',
-			'subscriptions',
-			'payment_refunds'
+			'stripe_cards',
+			'stripe_coupons',
+			'stripe_invoices',
+			'stripe_payments',
+			'stripe_discounts',
+			'stripe_invoice_items',
+			'stripe_subscriptions',
+			'stripe_payment_refunds'
 		];
 
 		foreach ($tables as $table) Schema::drop($table);

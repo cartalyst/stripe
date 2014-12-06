@@ -19,7 +19,7 @@
 
 use Mockery as m;
 use PHPUnit_Framework_TestCase;
-use Cartalyst\Stripe\Billing\Models\IlluminateInvoice;
+use Cartalyst\Stripe\Models\IlluminateInvoice;
 
 class IlluminateInvoiceTest extends PHPUnit_Framework_TestCase {
 
@@ -92,7 +92,7 @@ class IlluminateInvoiceTest extends PHPUnit_Framework_TestCase {
 	public function it_can_get_the_charge_model()
 	{
 		$this->assertEquals(
-			'Cartalyst\Stripe\Billing\Models\IlluminateCharge',
+			'Cartalyst\Stripe\Models\IlluminateCharge',
 			IlluminateInvoice::getChargeModel()
 		);
 	}
@@ -126,7 +126,7 @@ class IlluminateInvoiceTest extends PHPUnit_Framework_TestCase {
 	public function it_can_get_the_invoice_item_model()
 	{
 		$this->assertEquals(
-			'Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem',
+			'Cartalyst\Stripe\Models\IlluminateInvoiceItem',
 			IlluminateInvoice::getInvoiceItemModel()
 		);
 	}
@@ -160,7 +160,7 @@ class IlluminateInvoiceTest extends PHPUnit_Framework_TestCase {
 	public function it_can_get_the_subscription_model()
 	{
 		$this->assertEquals(
-			'Cartalyst\Stripe\Billing\Models\IlluminateSubscription',
+			'Cartalyst\Stripe\Models\IlluminateSubscription',
 			IlluminateInvoice::getSubscriptionModel()
 		);
 	}

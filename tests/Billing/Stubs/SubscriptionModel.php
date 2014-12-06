@@ -17,7 +17,7 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Stripe\Billing\Models\IlluminateSubscription;
+use Cartalyst\Stripe\Models\IlluminateSubscription;
 
 class SubscriptionModel extends IlluminateSubscription {
 

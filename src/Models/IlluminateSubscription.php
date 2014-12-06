@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Billing\Models;
+<?php namespace Cartalyst\Stripe\Models;
 /**
  * Part of the Stripe package.
  *
@@ -18,14 +18,13 @@
  */
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 
-class IlluminateSubscription extends Model {
+class IlluminateSubscription extends IlluminateModel {
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public $table = 'subscriptions';
+	public $table = 'stripe_subscriptions';
 
 	/**
 	 * {@inheritDoc}
@@ -58,17 +57,7 @@ class IlluminateSubscription extends Model {
 	];
 
 	/**
-	 * Returns the polymorphic relationship.
-	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-	 */
-	public function billable()
-	{
-		return $this->morphTo();
-	}
-
-	/**
-	 * Get mutator for the "active" attribute
+	 * Accessor for the "active" attribute
 	 *
 	 * @return bool
 	 */

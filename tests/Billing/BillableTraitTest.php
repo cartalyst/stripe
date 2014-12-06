@@ -76,7 +76,7 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 		$entity = new BillableTraitStub;
 
 		$this->assertInstanceOf(
-			'Cartalyst\Stripe\Billing\Gateways\CardGateway',
+			'Cartalyst\Stripe\Gateways\CardGateway',
 			$entity->card()
 		);
 	}
@@ -85,7 +85,7 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	public function it_can_get_the_card_model()
 	{
 		$this->assertEquals(
-			'Cartalyst\Stripe\Billing\Models\IlluminateCard',
+			'Cartalyst\Stripe\Models\IlluminateCard',
 			BillableTraitStub::getCardModel()
 		);
 	}
@@ -158,7 +158,7 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	public function it_can_get_the_charge_model()
 	{
 		$this->assertEquals(
-			'Cartalyst\Stripe\Billing\Models\IlluminateCharge',
+			'Cartalyst\Stripe\Models\IlluminateCharge',
 			BillableTraitStub::getChargeModel()
 		);
 	}
@@ -184,7 +184,7 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	public function it_can_get_the_charge_refund_model()
 	{
 		$this->assertEquals(
-			'Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund',
+			'Cartalyst\Stripe\Models\IlluminateChargeRefund',
 			BillableTraitStub::getChargeRefundModel()
 		);
 	}
@@ -225,7 +225,7 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 		$entity = new BillableTraitStub;
 
 		$this->assertInstanceOf(
-			'Cartalyst\Stripe\Billing\Gateways\InvoiceGateway',
+			'Cartalyst\Stripe\Gateways\InvoiceGateway',
 			$entity->invoice()
 		);
 	}
@@ -236,7 +236,7 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 		$entity = new BillableTraitStub;
 
 		$this->assertInstanceOf(
-			'Cartalyst\Stripe\Billing\Gateways\InvoiceItemsGateway',
+			'Cartalyst\Stripe\Gateways\InvoiceItemsGateway',
 			$entity->invoice()->items()
 		);
 	}
@@ -253,7 +253,7 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	public function it_can_get_the_invoice_model()
 	{
 		$this->assertEquals(
-			'Cartalyst\Stripe\Billing\Models\IlluminateInvoice',
+			'Cartalyst\Stripe\Models\IlluminateInvoice',
 			BillableTraitStub::getInvoiceModel()
 		);
 	}
@@ -279,7 +279,7 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	public function it_can_get_the_invoice_items_model()
 	{
 		$this->assertEquals(
-			'Cartalyst\Stripe\Billing\Models\IlluminateInvoiceItem',
+			'Cartalyst\Stripe\Models\IlluminateInvoiceItem',
 			BillableTraitStub::getInvoiceItemModel()
 		);
 	}
@@ -320,7 +320,7 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 		$entity = new BillableTraitStub;
 
 		$this->assertInstanceOf(
-			'Cartalyst\Stripe\Billing\Gateways\SubscriptionGateway',
+			'Cartalyst\Stripe\Gateways\SubscriptionGateway',
 			$entity->subscription()
 		);
 	}
@@ -329,7 +329,7 @@ class BillableTraitTest extends PHPUnit_Framework_TestCase {
 	public function it_can_get_the_subscription_model()
 	{
 		$this->assertEquals(
-			'Cartalyst\Stripe\Billing\Models\IlluminateSubscription',
+			'Cartalyst\Stripe\Models\IlluminateSubscription',
 			BillableTraitStub::getSubscriptionModel()
 		);
 	}

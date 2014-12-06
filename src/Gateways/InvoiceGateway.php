@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Billing\Gateways;
+<?php namespace Cartalyst\Stripe\Gateways;
 /**
  * Part of the Stripe package.
  *
@@ -18,43 +18,39 @@
  */
 
 use Closure;
-use Cartalyst\Stripe\Billing\BillableInterface;
+use Cartalyst\Stripe\BillableInterface;
 use Cartalyst\Stripe\Api\Exception\NotFoundException;
-use Cartalyst\Stripe\Billing\Models\IlluminateInvoice;
-use Cartalyst\Stripe\Billing\Gateways\InvoiceItemsGateway;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Cartalyst\Stripe\Models\IlluminateInvoice;
+use Cartalyst\Stripe\Gateways\InvoiceItemsGateway;
 
-class InvoiceGateway extends StripeGateway {
+class InvoiceGateway extends AbstractGateway {
 
 	/**
 	 * The Eloquent invoice object.
 	 *
-	 * @var \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
+	 * @var \Cartalyst\Stripe\Models\IlluminateInvoice
 	 */
 	protected $invoice;
 
 	/**
 	 * The Invoice Items gateway instance.
 	 *
-	 * @var \Cartalyst\Stripe\Billing\Gateways\InvoiceItemsGateway
+	 * @var \Cartalyst\Stripe\Gateways\InvoiceItemsGateway
 	 */
 	protected $invoiceItems;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param  \Cartalyst\Stripe\Billing\BillableInterface  $billable
-	 * @param  mixed  $invoice
+	 * @param  \Cartalyst\Stripe\BillableInterface  $billable
+	 * @param  mixed  $id
 	 * @return void
 	 */
-	public function __construct(BillableInterface $billable, $invoice = null)
+	public function __construct(BillableInterface $billable, $id = null)
 	{
 		parent::__construct($billable);
 
-		if (is_numeric($invoice))
-		{
-			$invoice = $this->billable->invoices->find($invoice);
-		}
+		$invoice = $this->billable->invoices()->getModel()->find($id);
 
 		if ($invoice instanceof IlluminateInvoice)
 		{
@@ -65,7 +61,7 @@ class InvoiceGateway extends StripeGateway {
 	/**
 	 * Returns the Invoice Items gateway instance.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\InvoiceItemsGateway
+	 * @return \Cartalyst\Stripe\InvoiceItemsGateway
 	 */
 	public function items()
 	{
@@ -76,14 +72,13 @@ class InvoiceGateway extends StripeGateway {
 	 * Creates a new invoice on the entity.
 	 *
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
+	 * @return \Cartalyst\Stripe\Models\IlluminateInvoice
 	 */
 	public function create(array $attributes = [])
 	{
 		// Find or Create the Stripe customer that
 		// will belong to this billable entity.
-		$customer = $this->findOrCreate(
-			$this->billable->stripe_id,
+		$customer = $this->findOrCreateCustomer(
 			array_get($attributes, 'customer', [])
 		);
 
@@ -113,7 +108,7 @@ class InvoiceGateway extends StripeGateway {
 	 *
 	 * @param  string  $id
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
+	 * @return \Cartalyst\Stripe\Models\IlluminateInvoice
 	 */
 	public function update($id = null, array $attributes = [])
 	{
@@ -134,7 +129,7 @@ class InvoiceGateway extends StripeGateway {
 	 * Pays the given invoice.
 	 *
 	 * @param  string  $id
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
+	 * @return \Cartalyst\Stripe\Models\IlluminateInvoice
 	 */
 	public function pay($id = null)
 	{
@@ -169,14 +164,8 @@ class InvoiceGateway extends StripeGateway {
 	 */
 	public function syncWithStripe(array $arguments = [], Closure $callback = null)
 	{
-		// Get the entity object
-		$entity = $this->billable;
-
 		// Check if the entity is a stripe customer
-		if ( ! $entity->isBillable())
-		{
-			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
-		}
+		$this->checkEntityIsBillable();
 
 		// Prepare the expand array
 		$expand = array_get($arguments, 'expand', []);
@@ -188,7 +177,7 @@ class InvoiceGateway extends StripeGateway {
 
 		// Prepare the payload
 		$payload = array_merge($arguments, [
-			'customer' => $entity->stripe_id,
+			'customer' => $this->billable->stripe_id,
 		]);
 
 		// Remove the "callback" from the arguments, this is passed
@@ -212,7 +201,7 @@ class InvoiceGateway extends StripeGateway {
 		{
 			// Retrieve the upcoming invoice items
 			$upcomingInvoice = $this->client->invoices()->upcomingInvoice([
-				'customer' => $entity->stripe_id,
+				'customer' => $this->billable->stripe_id,
 			])->toArray();
 
 			// Loop through the invoices
@@ -232,8 +221,8 @@ class InvoiceGateway extends StripeGateway {
 		// on storage and verify if they still exist on Stripe,
 		// if they don't exist, we'll delete them from local
 		// storage, this is to make sure that the pending
-		// invoice items are completely in sync.
-		foreach ($entity->upcomingInvoice() as $item)
+		// invoice items are completely synchronized.
+		foreach ($this->billable->upcomingInvoice() as $item)
 		{
 			if ( ! array_get($stripeItems, $item->stripe_id))
 			{
@@ -247,18 +236,15 @@ class InvoiceGateway extends StripeGateway {
 	 *
 	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
 	 * @param  \Closure  $callback
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateInvoice
+	 * @return \Cartalyst\Stripe\Models\IlluminateInvoice
 	 */
 	protected function storeInvoice($response, Closure $callback = null)
 	{
-		// Get the entity object
-		$entity = $this->billable;
-
 		// Get the invoice id
 		$stripeId = $response['id'];
 
 		// Find the invoice on storage
-		$invoice = $entity->invoices()->where('stripe_id', $stripeId)->first();
+		$invoice = $this->billable->invoices()->where('stripe_id', $stripeId)->first();
 
 		// Flag to know which event needs to be fired
 		$event = ! $invoice ? 'created' : 'updated';
@@ -287,9 +273,9 @@ class InvoiceGateway extends StripeGateway {
 		// Does the invoice exist on storage?
 		if ( ! $invoice)
 		{
-			$model = $entity::getInvoiceModel();
+			$model = $this->billable->getInvoiceModel();
 
-			$invoice = $entity->invoices()->save(new $model($payload));
+			$invoice = $this->billable->invoices()->save(new $model($payload));
 		}
 		else
 		{

@@ -17,7 +17,7 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Stripe\Billing\Models\IlluminateCharge;
+use Cartalyst\Stripe\Models\IlluminateCharge;
 
 class ChargeModel extends IlluminateCharge {
 

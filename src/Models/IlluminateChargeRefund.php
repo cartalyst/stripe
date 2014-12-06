@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Billing\Models;
+<?php namespace Cartalyst\Stripe\Models;
 /**
  * Part of the Stripe package.
  *
@@ -24,7 +24,7 @@ class IlluminateChargeRefund extends Model {
 	/**
 	 * {@inheritDoc}
 	 */
-	public $table = 'payment_refunds';
+	public $table = 'stripe_payment_refunds';
 
 	/**
 	 * {@inheritDoc}
@@ -41,12 +41,12 @@ class IlluminateChargeRefund extends Model {
 	 *
 	 * @var string
 	 */
-	protected static $chargeModel = 'Cartalyst\Stripe\Billing\Models\IlluminateCharge';
+	protected static $chargeModel = 'Cartalyst\Stripe\Models\IlluminateCharge';
 
 	/**
 	 * Returns the charge associated to this refund.
 	 *
-	 * @return \Carbon\Stripe\Billing\Models\IlluminateCharge
+	 * @return \Carbon\Stripe\Models\IlluminateCharge
 	 */
 	public function charge()
 	{

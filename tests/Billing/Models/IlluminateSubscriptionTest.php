@@ -19,7 +19,7 @@
 
 use Mockery as m;
 use PHPUnit_Framework_TestCase;
-use Cartalyst\Stripe\Billing\Models\IlluminateSubscription;
+use Cartalyst\Stripe\Models\IlluminateSubscription;
 
 class IlluminateSubscriptionTest extends PHPUnit_Framework_TestCase {
 

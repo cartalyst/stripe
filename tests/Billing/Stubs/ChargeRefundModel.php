@@ -17,7 +17,7 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund;
+use Cartalyst\Stripe\Models\IlluminateChargeRefund;
 
 class ChargeRefundModel extends IlluminateChargeRefund {
 

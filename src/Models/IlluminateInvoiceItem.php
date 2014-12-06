@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Billing\Models;
+<?php namespace Cartalyst\Stripe\Models;
 /**
  * Part of the Stripe package.
  *
@@ -19,25 +19,36 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class IlluminateCard extends Model {
+class IlluminateInvoiceItem extends Model {
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public $table = 'cards';
+	public $table = 'stripe_invoice_items';
 
 	/**
 	 * {@inheritDoc}
 	 */
 	protected $fillable = [
-		'brand',
-		'default',
-		'funding',
-		'exp_year',
-		'cvc_check',
-		'exp_month',
-		'last_four',
+		'type',
+		'amount',
+		'plan_id',
+		'quantity',
+		'currency',
+		'proration',
 		'stripe_id',
+		'invoice_id',
+		'period_end',
+		'description',
+		'period_start',
+	];
+
+	/**
+	 * {@inheritDoc}
+	 */
+	protected $dates = [
+		'period_end',
+		'period_start',
 	];
 
 	/**
@@ -48,27 +59,6 @@ class IlluminateCard extends Model {
 	public function billable()
 	{
 		return $this->morphTo();
-	}
-
-	/**
-	 * Get mutator for the "default" attribute.
-	 *
-	 * @param  string  $default
-	 * @return bool
-	 */
-	public function getDefaultAttribute($default)
-	{
-		return (int) $default;
-	}
-
-	/**
-	 * Checks if the credit card is the default card.
-	 *
-	 * @return bool
-	 */
-	public function isDefault()
-	{
-		return (bool) $this->default;
 	}
 
 }

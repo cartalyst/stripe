@@ -19,7 +19,7 @@
 
 use Mockery as m;
 use PHPUnit_Framework_TestCase;
-use Cartalyst\Stripe\Billing\Models\IlluminateChargeRefund;
+use Cartalyst\Stripe\Models\IlluminateChargeRefund;
 
 class IlluminateChargeRefundTest extends PHPUnit_Framework_TestCase {
 
@@ -53,7 +53,7 @@ class IlluminateChargeRefundTest extends PHPUnit_Framework_TestCase {
 	public function it_can_get_the_refund_model()
 	{
 		$this->assertEquals(
-			'Cartalyst\Stripe\Billing\Models\IlluminateCharge',
+			'Cartalyst\Stripe\Models\IlluminateCharge',
 			IlluminateChargeRefund::getChargeModel()
 		);
 	}

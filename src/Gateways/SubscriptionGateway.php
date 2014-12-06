@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Stripe\Billing\Gateways;
+<?php namespace Cartalyst\Stripe\Gateways;
 /**
  * Part of the Stripe package.
  *
@@ -19,11 +19,10 @@
 
 use Closure;
 use Carbon\Carbon;
-use Cartalyst\Stripe\Billing\BillableInterface;
-use Cartalyst\Stripe\Billing\Models\IlluminateSubscription;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Cartalyst\Stripe\BillableInterface;
+use Cartalyst\Stripe\Models\IlluminateSubscription;
 
-class SubscriptionGateway extends StripeGateway {
+class SubscriptionGateway extends AbstractGateway {
 
 	/**
 	 * The subscription plan name.
@@ -33,14 +32,14 @@ class SubscriptionGateway extends StripeGateway {
 	protected $plan;
 
 	/**
-	 * The coupon that will be applied
+	 * The coupon that will be applied on the subscription.
 	 *
 	 * @var string
 	 */
 	protected $coupon;
 
 	/**
-	 * Indicates the quantity of the subscription.
+	 * Indicates the subscription quantity.
 	 *
 	 * @var int
 	 */
@@ -70,7 +69,7 @@ class SubscriptionGateway extends StripeGateway {
 	/**
 	 * The Eloquent subscription object.
 	 *
-	 * @var \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
+	 * @var \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
 	protected $subscription;
 
@@ -84,18 +83,15 @@ class SubscriptionGateway extends StripeGateway {
 	/**
 	 * Constructor.
 	 *
-	 * @param  \Cartalyst\Stripe\Billing\BillableInterface  $billable
-	 * @param  mixed  $subscription
+	 * @param  \Cartalyst\Stripe\BillableInterface  $billable
+	 * @param  mixed  $id
 	 * @return void
 	 */
-	public function __construct(BillableInterface $billable, $subscription = null)
+	public function __construct(BillableInterface $billable, $id = null)
 	{
 		parent::__construct($billable);
 
-		if (is_numeric($subscription))
-		{
-			$subscription = $this->billable->subscriptions->find($subscription);
-		}
+		$subscription = $this->billable->subscriptions()->getModel()->find($id);
 
 		if ($subscription instanceof IlluminateSubscription)
 		{
@@ -110,40 +106,37 @@ class SubscriptionGateway extends StripeGateway {
 	 */
 	public function find()
 	{
-		return $this->client->subscriptions()->find($this->getPayload());
+		return $this->client->subscriptions()->find(
+			$this->getPayload()
+		);
 	}
 
 	/**
 	 * Creates a new subscription on the entity.
 	 *
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
+	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
 	public function create(array $attributes = [])
 	{
-		// Get the entity object
-		$entity = $this->billable;
-
-		// Find or Create the Stripe customer that
-		// will belong to this billable entity.
-		$customer = $this->findOrCreate(
-			$entity->stripe_id,
+		// Fetch this entity Stripe customer
+		$this->findOrCreateCustomer(
 			array_get($attributes, 'customer', [])
 		);
 
 		// If a stripe token is provided, we'll use it and
-		// attach the credit card to the Stripe customer.
+		// attach the credit card to the Stripe customer,
+		// it will makes it the default credit card.
 		if ($token = $this->token)
 		{
-			$entity->card()->makeDefault()->create(
-				$token,
-				array_get($attributes, 'card', [])
-			);
+			$card = array_pull($attributes, 'card', []);
+
+			$this->billable->card()->makeDefault()->create($token, $card);
 		}
 
 		// Prepare the payload
 		$payload = array_merge($attributes, [
-			'customer'  => $entity->stripe_id,
+			'customer'  => $this->billable->stripe_id,
 			'plan'      => $this->plan,
 			'coupon'    => $this->coupon,
 			'prorate'   => $this->prorate,
@@ -162,10 +155,13 @@ class SubscriptionGateway extends StripeGateway {
 	 * Updates the subscription.
 	 *
 	 * @param  array  $attributes
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
+	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
 	public function update(array $attributes = [])
 	{
+		// Check if a valid subscription is selected
+		$this->checkSubscriptionIsValid();
+
 		// Prepare the payload
 		$payload = $this->getPayload($attributes);
 
@@ -180,10 +176,13 @@ class SubscriptionGateway extends StripeGateway {
 	 * Cancels the subscription.
 	 *
 	 * @param  bool  $atPeriodEnd
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
+	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
 	public function cancel($atPeriodEnd = false)
 	{
+		// Check if a valid subscription is selected
+		$this->checkSubscriptionIsValid();
+
 		// Prepare the payload
 		$payload = $this->getPayload([ 'at_period_end' => $atPeriodEnd ]);
 
@@ -222,10 +221,13 @@ class SubscriptionGateway extends StripeGateway {
 	/**
 	 * Resumes the subscription.
 	 *
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
+	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
 	public function resume()
 	{
+		// Check if a valid subscription is selected
+		$this->checkSubscriptionIsValid();
+
 		// Disable the event dispatcher
 		$this->disableEventDispatcher();
 
@@ -262,7 +264,7 @@ class SubscriptionGateway extends StripeGateway {
 	/**
 	 * Cancels the subscription at the end of the period.
 	 *
-	 * @return \Cartalyst\Stripe\Api\Response
+	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
 	public function cancelAtEndOfPeriod()
 	{
@@ -312,7 +314,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * Applies a discount to the subscription.
 	 *
 	 * @param  string  $coupon
-	 * @return array
+	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
 	public function applyCoupon($coupon)
 	{
@@ -326,9 +328,12 @@ class SubscriptionGateway extends StripeGateway {
 	 */
 	public function removeCoupon()
 	{
-		$payload = $this->getPayload();
+		// Check if a valid subscription is selected
+		$this->checkSubscriptionIsValid();
 
-		return $this->client->subscriptions()->deleteDiscount($payload);
+		return $this->client->subscriptions()->deleteDiscount(
+			$this->getPayload()
+		);
 	}
 
 	/**
@@ -348,7 +353,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * Increments the subscription quantity.
 	 *
 	 * @param  int  $amount
-	 * @return $this
+	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
 	public function increment($amount = 1)
 	{
@@ -361,7 +366,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * Decrements the subscription quantity.
 	 *
 	 * @param  int  $amount
-	 * @return $this
+	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
 	public function decrement($amount = 1)
 	{
@@ -374,7 +379,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * Updates the subscription quantity.
 	 *
 	 * @param  int  $quantity
-	 * @return $this
+	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
 	public function updateQuantity($quantity)
 	{
@@ -422,7 +427,7 @@ class SubscriptionGateway extends StripeGateway {
 	 * Sets the trial period of the subscription.
 	 *
 	 * @param  \Carbon\Carbon  $period
-	 * @return array
+	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
 	public function setTrialPeriod(Carbon $period)
 	{
@@ -440,7 +445,7 @@ class SubscriptionGateway extends StripeGateway {
 	/**
 	 * Removes the trial period of the subscription.
 	 *
-	 * @return array
+	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
 	public function removeTrialPeriod()
 	{
@@ -471,9 +476,10 @@ class SubscriptionGateway extends StripeGateway {
 	/**
 	 * Swap the billable entity to a new plan.
 	 *
-	 * @return array
+	 * @param  string  $plan
+	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
-	public function swap()
+	public function swap($plan)
 	{
 		// Check if we should maintain the subscription trial period
 		if ( ! $this->trialEnd && ! $this->skipTrial)
@@ -483,7 +489,7 @@ class SubscriptionGateway extends StripeGateway {
 
 		// Update the subscription on Stripe
 		return $this->update([
-			'plan'      => $this->plan,
+			'plan'      => $plan,
 			'trial_end' => $this->getTrialEndDate(),
 		]);
 	}
@@ -498,14 +504,8 @@ class SubscriptionGateway extends StripeGateway {
 	 */
 	public function syncWithStripe(array $arguments = [], Closure $callback = null)
 	{
-		// Get the entity object
-		$entity = $this->billable;
-
 		// Check if the entity is a stripe customer
-		if ( ! $entity->isBillable())
-		{
-			throw new BadRequestHttpException("The entity isn't a Stripe Customer!");
-		}
+		$this->checkEntityIsBillable();
 
 		// Prepare the expand array
 		$expand = array_get($arguments, 'expand', []);
@@ -517,7 +517,7 @@ class SubscriptionGateway extends StripeGateway {
 
 		// Prepare the payload
 		$payload = array_merge($arguments, [
-			'customer' => $entity->stripe_id,
+			'customer' => $this->billable->stripe_id,
 		]);
 
 		// Remove the "callback" from the arguments, this is passed
@@ -532,11 +532,11 @@ class SubscriptionGateway extends StripeGateway {
 		}
 
 		// Get the entity subscriptions from storage
-		$subscriptions = $entity->subscriptions()->lists('stripe_id');
+		$subscriptions = $this->billable->subscriptions()->lists('stripe_id');
 
 		// Get all the expired subscriptions
 		$events = array_reverse($this->client->eventsIterator([
-			'object_id' => $entity->stripe_id,
+			'object_id' => $this->billable->stripe_id,
 			'type'      => 'customer.subscription.deleted',
 		])->toArray());
 
@@ -635,18 +635,15 @@ class SubscriptionGateway extends StripeGateway {
 	 * @param  \Cartalyst\Stripe\Api\Response|array  $response
 	 * @param  array  $attributes
 	 * @param  \Closure  $callback
-	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
+	 * @return \Cartalyst\Stripe\Models\IlluminateSubscription
 	 */
 	protected function storeSubscription($response, array $attributes = [], Closure $callback = null)
 	{
-		// Get the entity object
-		$entity = $this->billable;
-
 		// Get the subscription id
 		$stripeId = $response['id'];
 
 		// Find the subscription on storage
-		$subscription = $entity->subscriptions()->where('stripe_id', $stripeId)->first();
+		$subscription = $this->billable->subscriptions()->where('stripe_id', $stripeId)->first();
 
 		// Flag to know which event needs to be fired
 		$event = ! $subscription ? 'created' : 'updated';
@@ -672,9 +669,9 @@ class SubscriptionGateway extends StripeGateway {
 		// Does the subscription exist on storage?
 		if ( ! $subscription)
 		{
-			$model = $entity::getSubscriptionModel();
+			$model = $this->billable->getSubscriptionModel();
 
-			$subscription = $entity->subscriptions()->save(new $model($payload));
+			$subscription = $this->billable->subscriptions()->save(new $model($payload));
 		}
 		else
 		{
@@ -690,6 +687,24 @@ class SubscriptionGateway extends StripeGateway {
 		$this->fire("subscription.{$event}", [ $response, $subscription ]);
 
 		return $subscription;
+	}
+
+	/**
+	 * Checks if a valid subscription was selected.
+	 *
+	 * @return void
+	 * @throws \RuntimeException
+	 */
+	protected function checkSubscriptionIsValid()
+	{
+		if ( ! $this->subscription)
+		{
+			$method = debug_backtrace()[1]['function'];
+
+			throw new \RuntimeException(
+				"Calling the '{$method}' method on an invalid or non existing subscription is not allowed!"
+			);
+		}
 	}
 
 }
