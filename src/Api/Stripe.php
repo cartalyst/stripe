@@ -25,6 +25,13 @@ use Guzzle\Plugin\ErrorResponse\ErrorResponsePlugin;
 class Stripe {
 
 	/**
+	 * The package version.
+	 *
+	 * @var string
+	 */
+	protected static $version = '1.0.0';
+
+	/**
 	 * The Stripe API key.
 	 *
 	 * @var string
@@ -36,7 +43,7 @@ class Stripe {
 	 *
 	 * @var string
 	 */
-	protected $version = '2014-07-26';
+	protected $apiVersion = '2014-07-26';
 
 	/**
 	 * The user agent.
@@ -70,20 +77,30 @@ class Stripe {
 	 * Constructor.
 	 *
 	 * @param  string  $apiKey
-	 * @param  string  $version
+	 * @param  string  $apiVersion
 	 * @param  string  $manifestPath
 	 * @return void
 	 */
-	public function __construct($apiKey, $version = null, $manifestPath = null)
+	public function __construct($apiKey, $apiVersion = null, $manifestPath = null)
 	{
 		// Set the Stripe API key for authentication
 		$this->setApiKey($apiKey);
 
-		// Set the version
-		$this->setVersion($version ?: $this->version);
+		// Set the Stripe API version
+		$this->setApiVersion($apiVersion ?: $this->apiVersion);
 
 		// Set the manifest path
 		$this->setManifestPath($manifestPath ?: __DIR__.'/Manifests');
+	}
+
+	/**
+	 * Returns the current package version.
+	 *
+	 * @return string
+	 */
+	public static function getVersion()
+	{
+		return static::$version;
 	}
 
 	/**
@@ -110,26 +127,26 @@ class Stripe {
 	}
 
 	/**
-	 * Returns the version that's being used.
+	 * Returns the Stripe API version that's being used.
 	 *
 	 * @return string
 	 */
-	public function getVersion()
+	public function getApiVersion()
 	{
-		return $this->version;
+		return $this->apiVersion;
 	}
 
 	/**
-	 * Sets the version to be used.
+	 * Sets the Stripe API version to be used.
 	 *
 	 * @param  string  $version
 	 * @return $this
 	 */
-	public function setVersion($version)
+	public function setApiVersion($version)
 	{
-		$this->version = (string) $version;
+		$this->apiVersion = (string) $version;
 
-		$this->setHeaders([ 'Stripe-Version' => $this->version ]);
+		$this->setHeaders([ 'Stripe-Version' => $this->apiVersion ]);
 
 		return $this;
 	}

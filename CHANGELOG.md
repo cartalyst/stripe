@@ -30,6 +30,9 @@ We do not give estimated times for completion on `Accepted` Proposals.
 - Updated the billable trait to use the new Customer Gateway class.
 - Improvements on most of the Gateways.
 - Updated the Laravel Service Provider.
+- Renamed the `getVersion()` and `setVersion()` methods on the Stripe API class to `getApiVersion()` and `setApiVersion()`.
+- Renamed the `$version` property on the Stripe API class to `$apiVersion`.
+- Added a `getVersion()` to the Stripe API class that returns the current package version.
 
 `REMOVED`
 
