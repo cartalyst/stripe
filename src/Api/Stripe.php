@@ -382,7 +382,7 @@ class Stripe {
 	 */
 	protected function getFullManifestPath()
 	{
-		return $this->getManifestPath().'/'.$this->getVersion();
+		return $this->getManifestPath().'/'.$this->getApiVersion();
 	}
 
 	/**
