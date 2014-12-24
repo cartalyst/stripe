@@ -28,9 +28,9 @@ class CustomerGateway extends AbstractGateway {
 	 */
 	public function find()
 	{
-		return $this->client->customers()->find([
-			'id' => (string) $this->billable->stripe_id,
-		]);
+		return $this->client->customer(
+			(string) $this->billable->stripe_id
+		);
 	}
 
 	/**

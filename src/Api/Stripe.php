@@ -19,6 +19,7 @@
 
 use Guzzle\Common\Event;
 use InvalidArgumentException;
+use Doctrine\Common\Inflector\Inflector;
 use Guzzle\Service\Description\ServiceDescription;
 use Guzzle\Plugin\ErrorResponse\ErrorResponsePlugin;
 
@@ -275,7 +276,7 @@ class Stripe {
 	 */
 	protected function isSingleRequest($method)
 	{
-		return (str_singular($method) === $method && $this->manifestExists(str_plural($method)));
+		return (Inflector::singularize($method) === $method && $this->manifestExists(Inflector::pluralize($method)));
 	}
 
 	/**
@@ -295,7 +296,7 @@ class Stripe {
 		}
 
 		// Get the pluralized method name
-		$pluralMethod = str_plural($method);
+		$pluralMethod = Inflector::pluralize($method);
 
 		// Get the request manifest payload data
 		$manifest = $this->getManifestPayload($pluralMethod);
@@ -361,9 +362,9 @@ class Stripe {
 		// Listen to the "command.after_prepare" event fired by Guzzle
 		$dispatcher->addListener('command.after_prepare', function(Event $event)
 		{
-			$request = $event['command']->getRequest();
-
-			$request->getQuery()->setAggregator(new QueryAggregator());
+			$event['command']->getRequest()->getQuery()->setAggregator(
+				new QueryAggregator()
+			);
 		});
 
 		// Set the manifest payload into the Guzzle client

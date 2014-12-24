@@ -8,11 +8,9 @@ The package requires PHP 5.4+ and follows the FIG standard PSR-4 to ensure a hig
 
 Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well, rock on.
 
-An open source package by [Cartalyst](https://cartalyst.com), code well, rock on!
-
 ## Documentation
 
-Reader-friendly Documentation can be found here. [Interpret Manual](https://cartalyst.com/manual/stripe).
+Reader-friendly Documentation can be found here. [Stripe Manual](https://cartalyst.com/manual/stripe).
 
 Raw files can be found via this projects docs/version branch.
 
@@ -24,6 +22,7 @@ Raw files can be found via this projects docs/version branch.
 Important versions listed below. Refer to the [Changelog](CHANGELOG.md) for a full history of the project.
 
 - [0.1](CHANGELOG.md) - 2014-11-14
+- [0.2](CHANGELOG.md) - TBA
 
 ## Support
 

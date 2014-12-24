@@ -18,11 +18,10 @@
  */
 
 use Closure;
-use Cartalyst\Stripe\Api\Stripe;
 use Cartalyst\Stripe\Gateways;
+use Cartalyst\Stripe\Api\Stripe;
 use Cartalyst\Stripe\Api\Models\Customer;
 use Cartalyst\Stripe\Api\Exception\NotFoundException;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 trait BillableTrait {
 
@@ -32,55 +31,6 @@ trait BillableTrait {
 	 * @var \Cartalyst\Stripe\Api\Stripe
 	 */
 	protected static $stripeClient;
-
-	/**
-	 * The Eloquent card model name.
-	 *
-	 * @var string
-	 */
-	protected static $cardModel = 'Cartalyst\Stripe\Models\IlluminateCard';
-
-	/**
-	 * The Eloquent charge model name.
-	 *
-	 * @var string
-	 */
-	protected static $chargeModel = 'Cartalyst\Stripe\Models\IlluminateCharge';
-
-	/**
-	 * The Eloquent charge refund model name.
-	 *
-	 * @var string
-	 */
-	protected static $chargeRefundModel = 'Cartalyst\Stripe\Models\IlluminateChargeRefund';
-
- 	/**
-	 * The Eloquent discount model name.
-	 *
-	 * @var string
-	 */
-	protected static $discountModel = 'Cartalyst\Stripe\Models\IlluminateDiscount';
-
-	/**
-	 * The Eloquent invoice model name.
-	 *
-	 * @var string
-	 */
-	protected static $invoiceModel = 'Cartalyst\Stripe\Models\IlluminateInvoice';
-
-	/**
-	 * The Eloquent invoice item model name.
-	 *
-	 * @var string
-	 */
-	protected static $invoiceItemModel = 'Cartalyst\Stripe\Models\IlluminateInvoiceItem';
-
-	/**
-	 * The Eloquent subscription model name.
-	 *
-	 * @var string
-	 */
-	protected static $subscriptionModel = 'Cartalyst\Stripe\Models\IlluminateSubscription';
 
 	/**
 	 * {@inheritDoc}

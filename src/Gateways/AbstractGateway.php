@@ -19,7 +19,6 @@
 
 use Closure;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Cartalyst\Stripe\BillableInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -142,10 +141,10 @@ abstract class AbstractGateway {
 	 *
 	 * @param  \Closure  $callback
 	 * @param  \Cartalyst\Stripe\Api\Models\Collection|array  $response
-	 * @param  \Illuminate\Database\Eloquent\Model  $object
+	 * @param  mixed  $object
 	 * @return void
 	 */
-	protected function handleCallback(Closure $callback = null, $response, Model $object)
+	protected function handleCallback(Closure $callback = null, $response, $object)
 	{
 		if ($callback) call_user_func($callback, $response, $object);
 	}

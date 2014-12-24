@@ -17,6 +17,8 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 - Added a base Illuminate Model that all the Billable models extends.
 - Added a new Customer Gateway class to handle customer creation, updates and deletion.
+- Added a new stripe CLI tool to help the generate of schema files and to run synchronization calls.
+- Added a Billable Trait into the Laravel folder so it's more decoupled.
 
 `CHANGED`
 
@@ -33,6 +35,8 @@ We do not give estimated times for completion on `Accepted` Proposals.
 - Renamed the `getVersion()` and `setVersion()` methods on the Stripe API class to `getApiVersion()` and `setApiVersion()`.
 - Renamed the `$version` property on the Stripe API class to `$apiVersion`.
 - Added a `getVersion()` to the Stripe API class that returns the current package version.
+- Models folder moved into the `Laravel` folder and their corresponding namespaces updated.
+- Updated the Billable Trait and moved the model names properties into the Billable Trait on the Laravel folder.
 
 `REMOVED`
 

@@ -37,7 +37,7 @@ class InvoiceGateway extends AbstractGateway {
 	 *
 	 * @var \Cartalyst\Stripe\Gateways\InvoiceItemsGateway
 	 */
-	protected $invoiceItems;
+	protected $invoiceItemsGateway;
 
 	/**
 	 * Constructor.
@@ -65,7 +65,7 @@ class InvoiceGateway extends AbstractGateway {
 	 */
 	public function items()
 	{
-		return $this->invoiceItems ?: new InvoiceItemsGateway($this->billable);
+		return $this->invoiceItemsGateway ?: new InvoiceItemsGateway($this->billable);
 	}
 
 	/**
@@ -78,7 +78,7 @@ class InvoiceGateway extends AbstractGateway {
 	{
 		// Find or Create the Stripe customer that
 		// will belong to this billable entity.
-		$customer = $this->findOrCreateCustomer(
+		$customer = $this->billable->findOrCreateStripeCustomer(
 			array_get($attributes, 'customer', [])
 		);
 
@@ -110,6 +110,7 @@ class InvoiceGateway extends AbstractGateway {
 	 * @param  array  $attributes
 	 * @return \Cartalyst\Stripe\Models\IlluminateInvoice
 	 */
+	# probably remove the $id argument
 	public function update($id = null, array $attributes = [])
 	{
 		// Get the invoice id

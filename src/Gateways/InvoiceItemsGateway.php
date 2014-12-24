@@ -30,18 +30,15 @@ class InvoiceItemsGateway extends AbstractGateway {
 	 */
 	public function create(array $attributes = [])
 	{
-		// Get the entity object
-		$entity = $this->billable;
-
 		// Find or Create the Stripe customer that
 		// will belong to this billable entity.
-		$customer = $this->findOrCreateCustomer(
+		$customer = $this->billable->findOrCreateStripeCustomer(
 			array_get($attributes, 'customer', [])
 		);
 
 		// Prepare the payload
 		$attributes = array_merge($attributes, [
-			'customer' => $entity->stripe_id,
+			'customer' => $this->billable->stripe_id,
 		]);
 
 		// Create the invoice item on Stripe
@@ -96,9 +93,6 @@ class InvoiceItemsGateway extends AbstractGateway {
 	 */
 	public function storeItem($response, IlluminateInvoice $invoice = null)
 	{
-		// Get the entity object
-		$entity = $this->billable;
-
 		// Get the invoice item id
 		$stripeId = $response['id'];
 
@@ -110,7 +104,7 @@ class InvoiceItemsGateway extends AbstractGateway {
 		$periodEnd = $this->nullableTimestamp(array_get($response, 'period.end', null));
 
 		// Find the invoice item on storage
-		$item = $entity->invoiceItems()
+		$item = $this->billable->invoiceItems()
 			->where('stripe_id', $stripeId)
 			->where('type', $type)
 			->where('period_start', $periodStart)
@@ -138,9 +132,9 @@ class InvoiceItemsGateway extends AbstractGateway {
 		// Does the invoice item exist on storage?
 		if ( ! $item)
 		{
-			$model = $entity::getInvoiceItemModel();
+			$model = $this->billable::getInvoiceItemModel();
 
-			$item = $entity->invoiceItems()->save(new $model($payload));
+			$item = $this->billable->invoiceItems()->save(new $model($payload));
 		}
 		else
 		{

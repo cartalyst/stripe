@@ -18,11 +18,12 @@
  */
 
 use Exception;
-use Cartalyst\Stripe\Console;
+use Cartalyst\Stripe\Sync;
 use InvalidArgumentException;
 use Cartalyst\Stripe\Api\Stripe;
-use Illuminate\Support\ServiceProvider;
+use Cartalyst\Stripe\Laravel\Console;
 use Cartalyst\Stripe\BillableInterface;
+use Illuminate\Support\ServiceProvider;
 
 class StripeServiceProvider extends ServiceProvider {
 
@@ -33,7 +34,13 @@ class StripeServiceProvider extends ServiceProvider {
 	{
 		$this->registerStripe();
 
-		$this->registerTableCommand();
+		$this->registerStripeSync();
+
+		// $this->registerSyncCommand();
+
+		$this->registerSchemaCommand();
+
+		// $this->registerSyncCommandTypes();
 
 		$this->setStripeClientOnBillableEntity();
 	}
@@ -45,6 +52,15 @@ class StripeServiceProvider extends ServiceProvider {
 	{
 		return [
 			'stripe',
+			'stripe.sync',
+			'stripe.sync.cards',
+			'stripe.sync.plans',
+			'stripe.sync.charges',
+			'stripe.sync.coupons',
+			'stripe.sync.invoices',
+			'stripe.sync.customers',
+			'stripe.sync.recipients',
+			'stripe.sync.subscriptions',
 		];
 	}
 
@@ -70,18 +86,80 @@ class StripeServiceProvider extends ServiceProvider {
 	}
 
 	/**
-	 * Registers the Stripe table command.
+	 * Register the Stripe Sync.
 	 *
 	 * @return void
 	 */
-	protected function registerTableCommand()
+	protected function registerStripeSync()
 	{
-		$this->app->bindShared('command.stripe.table', function($app)
+		$this->app->bindShared('stripe.sync', function($app)
 		{
-			return new Console\TableCommand;
+			# need to pass in the types as well..
+
+			return new Sync($app['stripe']);
 		});
 
-		$this->commands('command.stripe.table');
+		$this->app->alias('stripe.sync', 'Cartalyst\Stripe\Sync');
+	}
+
+	/**
+	 * Register the Stripe Sync command.
+	 *
+	 * @return void
+	 */
+	protected function registerSyncCommand()
+	{
+		$this->app->bindShared('command.stripe.sync', function($app)
+		{
+			return new Console\SyncCommand;
+		});
+
+		$this->commands('command.stripe.sync');
+	}
+
+	/**
+	 * Register the Stripe Sync command types.
+	 *
+	 * @return void
+	 */
+	protected function registerSyncCommandTypes()
+	{
+		$types = [
+			'all', # not sure..
+			'cards',
+			'plans',
+			'charges',
+			'coupons',
+			'invoices',
+			'customers',
+			'recipients',
+			'subscriptions',
+		];
+
+		foreach ($types as $type)
+		{
+			$this->app->bindShared('stripe.sync.'.$type, function($app) use ($type)
+			{
+				$class = 'Cartalyst\\Stripe\\Sync\\'.ucfirst($type).'Sync';
+
+				return new $class($app);
+			});
+		}
+	}
+
+	/**
+	 * Registers the Stripe schema command.
+	 *
+	 * @return void
+	 */
+	protected function registerSchemaCommand()
+	{
+		$this->app->bindShared('command.stripe.schema', function($app)
+		{
+			return new Console\SchemaCommand;
+		});
+
+		$this->commands('command.stripe.schema');
 	}
 
 	/**

@@ -120,7 +120,7 @@ class SubscriptionGateway extends AbstractGateway {
 	public function create(array $attributes = [])
 	{
 		// Fetch this entity Stripe customer
-		$this->findOrCreateCustomer(
+		$this->billable->findOrCreateStripeCustomer(
 			array_get($attributes, 'customer', [])
 		);
 

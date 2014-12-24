@@ -68,7 +68,8 @@ class CardGateway extends AbstractGateway {
 	{
 		// Find or Create the Stripe customer that
 		// will belong to this billable entity.
-		$this->findOrCreateCustomer(
+		#(new CustomerGateway($this->billable))->findOrCreate(
+		$this->billable->findOrCreateStripeCustomer(
 			array_pull($attributes, 'customer', [])
 		);
 

@@ -81,7 +81,7 @@ class ChargeGateway extends AbstractGateway {
 	{
 		// Find or Create the Stripe customer that
 		// will belong to this billable entity.
-		$customer = $this->findOrCreate(
+		$customer = $this->billable->findOrCreateStripeCustomer(
 			array_pull($attributes, 'customer', [])
 		);
 

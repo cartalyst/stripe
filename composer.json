@@ -36,7 +36,10 @@
 	],
 	"require": {
 		"php": ">=5.4.0",
-		"guzzle/guzzle": "3.9.*"
+		"doctrine/inflector": "1.0.*",
+		"guzzle/guzzle": "3.9.*",
+		"symfony/console": "~2.5",
+		"symfony/filesystem": "~2.5"
 	},
 	"require-dev": {
 		"illuminate/console": "~4.1|~5.0",

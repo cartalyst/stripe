@@ -1,0 +1,1 @@
+ALTER TABLE `billable_table` DROP `stripe_id`;
