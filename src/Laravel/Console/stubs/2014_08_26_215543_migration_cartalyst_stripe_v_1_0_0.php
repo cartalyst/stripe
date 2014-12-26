@@ -184,7 +184,7 @@ class MigrationCartalystStripeV100 extends Migration {
 			$table->engine = 'InnoDB';
 		});
 
-		{{billable_tables_up}}
+{{billable_tables_up}}
 	}
 
 	/**
@@ -207,7 +207,7 @@ class MigrationCartalystStripeV100 extends Migration {
 
 		foreach ($tables as $table) Schema::drop($table);
 
-		{{billable_tables_down}}
+{{billable_tables_down}}
 	}
 
 }

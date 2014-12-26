@@ -63,7 +63,7 @@ class SchemaCommand extends Command {
 	 * @param  string  $stubsPath
 	 * @return void
 	 */
-	public function __construct($stubsPath = __DIR__.'/stubs')
+	public function __construct($stubsPath = __DIR__.'/../Native/stubs')
 	{
 		parent::__construct();
 
@@ -185,11 +185,9 @@ class SchemaCommand extends Command {
 	 */
 	protected function prepareBillableStub(array $tables, $type)
 	{
-		$contents = implode("\n\t\t", preg_split("/((\r?\n)|(\r\n?))/",
-			file_get_contents(
-				$this->getStubsPath()."/billable_table_{$type}.stub"
-			)
-		));
+		$contents = file_get_contents(
+			$this->getStubsPath()."/billable_table_{$type}.stub"
+		);
 
 		$content = array_map(function($table) use ($contents)
 		{
@@ -197,7 +195,7 @@ class SchemaCommand extends Command {
 		}, $tables);
 
 		return preg_replace(
-			"/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n\n", rtrim(implode("\n\t\t", $content), "\n\t\t")
+			"/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n\n", rtrim(implode("\n", $content), "\n\t\t")
 		);
 	}
 

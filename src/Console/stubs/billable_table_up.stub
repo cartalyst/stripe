@@ -1,1 +1,0 @@
-ALTER TABLE `billable_table` ADD `stripe_id` varchar(255) null, ADD UNIQUE {{billable_table}}_stripe_id_unique(`stripe_id`);
