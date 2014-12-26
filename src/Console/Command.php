@@ -131,7 +131,7 @@ class Command extends \Symfony\Component\Console\Command\Command {
 	 * Call another console command silently.
 	 *
 	 * @param  string  $command
-	 * @param  array   $arguments
+	 * @param  array  $arguments
 	 * @return integer
 	 */
 	public function callSilent($command, array $arguments = [])
@@ -175,7 +175,7 @@ class Command extends \Symfony\Component\Console\Command\Command {
 	 * Confirm a question with the user.
 	 *
 	 * @param  string  $question
-	 * @param  bool    $default
+	 * @param  bool  $default
 	 * @return bool
 	 */
 	public function confirm($question, $default = true)
@@ -204,7 +204,7 @@ class Command extends \Symfony\Component\Console\Command\Command {
 	 * Prompt the user for input but hide the answer from the console.
 	 *
 	 * @param  string  $question
-	 * @param  bool    $fallback
+	 * @param  bool  $fallback
 	 * @return string
 	 */
 	public function secret($question, $fallback = true)
@@ -218,9 +218,9 @@ class Command extends \Symfony\Component\Console\Command\Command {
 	 * Give the user a single choice from an array of answers.
 	 *
 	 * @param  string  $question
-	 * @param  array   $choices
+	 * @param  array  $choices
 	 * @param  string  $default
-	 * @param  mixed   $attempts
+	 * @param  mixed  $attempts
 	 * @return bool
 	 */
 	public function choice($question, array $choices, $default = null, $attempts = false)
