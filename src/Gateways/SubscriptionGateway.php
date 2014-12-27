@@ -431,15 +431,10 @@ class SubscriptionGateway extends AbstractGateway {
 	 */
 	public function setTrialPeriod(Carbon $period)
 	{
-		$subscription = $this->update([
+		return $this->update([
+			'plan'      => $this->subscription->plan_id,
 			'trial_end' => $period->getTimestamp(),
 		]);
-
-		$this->storeSubscription($subscription, [
-			'trial_ends_at' => $period,
-		]);
-
-		return $subscription;
 	}
 
 	/**
@@ -449,15 +444,10 @@ class SubscriptionGateway extends AbstractGateway {
 	 */
 	public function removeTrialPeriod()
 	{
-		$subscription = $this->update([
+		return $this->update([
+			'plan'      => $this->subscription->plan_id,
 			'trial_end' => 'now',
 		]);
-
-		$this->storeSubscription($subscription, [
-			'trial_ends_at' => null,
-		]);
-
-		return $subscription;
 	}
 
 	/**
