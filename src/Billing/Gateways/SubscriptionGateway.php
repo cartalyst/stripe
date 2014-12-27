@@ -422,37 +422,27 @@ class SubscriptionGateway extends StripeGateway {
 	 * Sets the trial period of the subscription.
 	 *
 	 * @param  \Carbon\Carbon  $period
-	 * @return array
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
 	 */
 	public function setTrialPeriod(Carbon $period)
 	{
-		$subscription = $this->update([
+		return $this->update([
+			'plan'      => $this->subscription->plan_id,
 			'trial_end' => $period->getTimestamp(),
 		]);
-
-		$this->storeSubscription($subscription, [
-			'trial_ends_at' => $period,
-		]);
-
-		return $subscription;
 	}
 
 	/**
 	 * Removes the trial period of the subscription.
 	 *
-	 * @return array
+	 * @return \Cartalyst\Stripe\Billing\Models\IlluminateSubscription
 	 */
 	public function removeTrialPeriod()
 	{
-		$subscription = $this->update([
+		return $this->update([
+			'plan'      => $this->subscription->plan_id,
 			'trial_end' => 'now',
 		]);
-
-		$this->storeSubscription($subscription, [
-			'trial_ends_at' => null,
-		]);
-
-		return $subscription;
 	}
 
 	/**
