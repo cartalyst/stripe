@@ -24,17 +24,23 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class SchemaCommand extends Command {
+class SchemaCommand extends \Symfony\Component\Console\Command\Command {
+
+	use CommandTrait;
 
 	/**
-	 * {@inheritDoc}
+	 * The selected billable table names.
+	 *
+	 * @var array
 	 */
-	protected $name = 'schema';
+	protected $billableEntities = [];
 
 	/**
-	 * {@inheritDoc}
+	 * The selected storage path for the generated schema files.
+	 *
+	 * @var string
 	 */
-	protected $description = 'Creates the appropriate schema files for the Stripe database tables.';
+	protected $storagePath = [];
 
 	/**
 	 * The Schema stubs path.
@@ -77,10 +83,29 @@ class SchemaCommand extends Command {
 	/**
 	 * {@inheritDoc}
 	 */
+	protected function configure()
+	{
+		$this
+			->setName('schema')
+			->setDescription('Creates the appropriate schema files for the Stripe database tables.')
+			->addArgument('version', InputArgument::OPTIONAL, 'The version you want to upgrade from.')
+			->addOption('path', null, InputOption::VALUE_REQUIRED, 'The path to where the schema file will be stored.')
+		;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function fire()
 	{
 		// Get the selected version
 		$version = $this->argument('version');
+
+		// Ask the user to type in the billable table names
+		$this->askForEntity();
+
+		// Ask the user to type the storage path
+		$this->askForStoragePath();
 
 		// Compare the selected version with the current available version
 		if ( ! version_compare(Stripe::getVersion(), $version, '>'))
@@ -89,8 +114,6 @@ class SchemaCommand extends Command {
 				"The version you want to upgrade from is higher than the current available version."
 			);
 		}
-
-		if ( ! $this->option('path')) throw new \RuntimeException('The "--path" is required.');
 
 		$this->generateSchemaFiles($version);
 
@@ -149,7 +172,7 @@ class SchemaCommand extends Command {
 	protected function storeSchemaFile(SplFileInfo $file)
 	{
 		$this->filesystem->dumpFile(
-			$this->option('path').'/'.$file->getFileName(),
+			$this->storagePath.'/'.$file->getFileName(),
 			$this->getSchemaStubContents($file)
 		);
 	}
@@ -162,15 +185,11 @@ class SchemaCommand extends Command {
 	 */
 	protected function getSchemaStubContents(SplFileInfo $file)
 	{
-		$tables = array_unique(array_filter(
-			array_map('trim', explode(',', $this->argument('entity')))
-		));
-
 		$search = [ '{{billable_tables_up}}', '{{billable_tables_down}}' ];
 
 		$replace = [
-			$this->prepareBillableStub($tables, 'up'),
-			$this->prepareBillableStub($tables, 'down')
+			$this->prepareBillableStub('up'),
+			$this->prepareBillableStub('down')
 		];
 
 		return str_replace($search, $replace, file_get_contents($file->getPathName()));
@@ -179,11 +198,10 @@ class SchemaCommand extends Command {
 	/**
 	 * Prepares the billable tables.
 	 *
-	 * @param  array  $tables
 	 * @param  string  $type
 	 * @return string
 	 */
-	protected function prepareBillableStub(array $tables, $type)
+	protected function prepareBillableStub($type)
 	{
 		$contents = file_get_contents(
 			$this->getStubsPath()."/billable_table_{$type}.stub"
@@ -192,37 +210,39 @@ class SchemaCommand extends Command {
 		$content = array_map(function($table) use ($contents)
 		{
 			return str_replace('billable_table', $table, $contents);
-		}, $tables);
+		}, $this->billableEntities);
 
 		return preg_replace(
 			"/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n\n", rtrim(implode("\n", $content), "\n\t\t")
 		);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function getArguments()
+	protected function askForEntity()
 	{
-		return [
+		if ( ! $entity = $this->ask('Please type the billable table name'))
+		{
+			return $this->askForEntity();
+		}
 
-			[ 'entity', InputArgument::REQUIRED, 'The name of your billable table.' ],
+		if ( ! in_array($entity, $this->billableEntities))
+		{
+			$this->billableEntities[] = $entity;
+		}
 
-			[ 'version', InputArgument::OPTIONAL, 'The version you want to upgrade from.' ],
-
-		];
+		if ($this->confirm('Would you like to add another billable table? (y/N)', false))
+		{
+			return $this->askForEntity();
+		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function getOptions()
+	protected function askForStoragePath()
 	{
-		return [
+		if ( ! $storagePath = $this->option('path', null))
+		{
+			$storagePath = $this->ask('Type the full storage path');
+		}
 
-			[ 'path', null, InputOption::VALUE_REQUIRED, 'The path to where the schema file will be stored.' ],
-
-		 ];
+		$this->storagePath = $storagePath;
 	}
 
 }
