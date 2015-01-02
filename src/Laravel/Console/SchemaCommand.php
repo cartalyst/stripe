@@ -67,11 +67,11 @@ class SchemaCommand extends \Illuminate\Console\Command {
 		];
 	}
 
-    /**
-     * Returns the default helper set with the helpers that should be available.
-     *
-     * @return \Symfony\Component\Console\Helper\HelperSet
-     */
+	/**
+	 * Returns the default helper set with the helpers that should be available.
+	 *
+	 * @return \Symfony\Component\Console\Helper\HelperSet
+	 */
 	protected function getDefaultHelperSet()
 	{
 		return new HelperSet([

@@ -164,6 +164,16 @@ class SchemaCommand extends \Symfony\Component\Console\Command\Command {
 	}
 
 	/**
+	 * Returns the storage path.
+	 *
+	 * @return string
+	 */
+	protected function getStoragePath()
+	{
+		return $this->storagePath;
+	}
+
+	/**
 	 * Store the schema file on the given path.
 	 *
 	 * @param  \Symfony\Component\Finder\SplFileInfo  $file
@@ -172,7 +182,7 @@ class SchemaCommand extends \Symfony\Component\Console\Command\Command {
 	protected function storeSchemaFile(SplFileInfo $file)
 	{
 		$this->filesystem->dumpFile(
-			$this->storagePath.'/'.$file->getFileName(),
+			$this->getStoragePath().'/'.$file->getFileName(),
 			$this->getSchemaStubContents($file)
 		);
 	}
@@ -188,8 +198,7 @@ class SchemaCommand extends \Symfony\Component\Console\Command\Command {
 		$search = [ '{{billable_tables_up}}', '{{billable_tables_down}}' ];
 
 		$replace = [
-			$this->prepareBillableStub('up'),
-			$this->prepareBillableStub('down')
+			$this->prepareBillableStub('up'), $this->prepareBillableStub('down'),
 		];
 
 		return str_replace($search, $replace, file_get_contents($file->getPathName()));
@@ -203,20 +212,27 @@ class SchemaCommand extends \Symfony\Component\Console\Command\Command {
 	 */
 	protected function prepareBillableStub($type)
 	{
-		$contents = file_get_contents(
+		$fileContent = file_get_contents(
 			$this->getStubsPath()."/billable_table_{$type}.stub"
 		);
 
-		$content = array_map(function($table) use ($contents)
+		$callback = function ($table) use ($fileContent)
 		{
-			return str_replace('billable_table', $table, $contents);
-		}, $this->billableEntities);
+			return str_replace('billable_table', $table, $fileContent);
+		};
+
+		$content = array_map($callback, $this->billableEntities);
 
 		return preg_replace(
 			"/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n\n", rtrim(implode("\n", $content), "\n\t\t")
 		);
 	}
 
+	/**
+	 * Asks the users to type the billable table names.
+	 *
+	 * @return void
+	 */
 	protected function askForEntity()
 	{
 		if ( ! $entity = $this->ask('Please type the billable table name'))
@@ -235,6 +251,11 @@ class SchemaCommand extends \Symfony\Component\Console\Command\Command {
 		}
 	}
 
+	/**
+	 * Asks the users to type the storage path.
+	 *
+	 * @return void
+	 */
 	protected function askForStoragePath()
 	{
 		if ( ! $storagePath = $this->option('path', null))
