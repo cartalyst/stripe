@@ -17,11 +17,9 @@
  * @link       http://cartalyst.com
  */
 
-use Guzzle\Common\Event;
 use InvalidArgumentException;
 use Doctrine\Common\Inflector\Inflector;
 use Guzzle\Service\Description\ServiceDescription;
-use Guzzle\Plugin\ErrorResponse\ErrorResponsePlugin;
 
 class Stripe {
 
@@ -30,7 +28,7 @@ class Stripe {
 	 *
 	 * @var string
 	 */
-	protected static $version = '1.0.0';
+	const VERSION = '0.2.0';
 
 	/**
 	 * The Stripe API key.
@@ -47,27 +45,6 @@ class Stripe {
 	protected $apiVersion = '2014-07-26';
 
 	/**
-	 * The user agent.
-	 *
-	 * @var string
-	 */
-	protected $userAgent = 'Cartalyst-Stripe/1.0.0';
-
-	/**
-	 * The manifests path.
-	 *
-	 * @var string
-	 */
-	protected $manifestPath;
-
-	/**
-	 * The cached manifests data.
-	 *
-	 * @var array
-	 */
-	protected $manifests = [];
-
-	/**
 	 * The headers to be sent to the Guzzle client.
 	 *
 	 * @var array
@@ -75,23 +52,42 @@ class Stripe {
 	protected $headers = [];
 
 	/**
+	 * The cached request clients.
+	 *
+	 * @var array
+	 */
+	protected $cachedClient = [];
+
+	/**
 	 * Constructor.
 	 *
 	 * @param  string  $apiKey
 	 * @param  string  $apiVersion
-	 * @param  string  $manifestPath
 	 * @return void
 	 */
-	public function __construct($apiKey, $apiVersion = null, $manifestPath = null)
+	public function __construct($apiKey = null, $apiVersion = null)
 	{
 		// Set the Stripe API key for authentication
-		$this->setApiKey($apiKey);
+		$this->setApiKey(
+			$apiKey ?: getenv('STRIPE_API_KEY')
+		);
 
 		// Set the Stripe API version
-		$this->setApiVersion($apiVersion ?: $this->apiVersion);
+		$this->setApiVersion(
+			$apiVersion ?: getenv('STRIPE_API_VERSION') ?: $this->apiVersion
+		);
+	}
 
-		// Set the manifest path
-		$this->setManifestPath($manifestPath ?: __DIR__.'/Manifests');
+	/**
+	 * Create a new Stripe API instance.
+	 *
+	 * @param  string  $apiKey
+	 * @param  string  $apiVersion
+	 * @return \Cartalyst\Stripe\Api\Stripe
+	 */
+	public static function make($apiKey = null, $apiVersion = null)
+	{
+		return new static($apiKey, $apiVersion);
 	}
 
 	/**
@@ -101,7 +97,7 @@ class Stripe {
 	 */
 	public static function getVersion()
 	{
-		return static::$version;
+		return self::VERSION;
 	}
 
 	/**
@@ -119,16 +115,22 @@ class Stripe {
 	 *
 	 * @param  string  $apiKey
 	 * @return $this
+	 * @throws \RuntimeException
 	 */
 	public function setApiKey($apiKey)
 	{
 		$this->apiKey = $apiKey;
 
+		if ( ! $this->apiKey)
+		{
+			throw new \RuntimeException('The Stripe API key is not defined!');
+		}
+
 		return $this;
 	}
 
 	/**
-	 * Returns the Stripe API version that's being used.
+	 * Returns the Stripe API version.
 	 *
 	 * @return string
 	 */
@@ -138,62 +140,14 @@ class Stripe {
 	}
 
 	/**
-	 * Sets the Stripe API version to be used.
+	 * Sets the Stripe API version.
 	 *
-	 * @param  string  $version
+	 * @param  string  $apiVersion
 	 * @return $this
 	 */
-	public function setApiVersion($version)
+	public function setApiVersion($apiVersion)
 	{
-		$this->apiVersion = (string) $version;
-
-		$this->setHeaders([ 'Stripe-Version' => $this->apiVersion ]);
-
-		return $this;
-	}
-
-	/**
-	 * Returns the user agent.
-	 *
-	 * @return string
-	 */
-	public function getUserAgent()
-	{
-		return $this->userAgent;
-	}
-
-	/**
-	 * Sets the user agent.
-	 *
-	 * @param  string  $userAgent
-	 * @return $this
-	 */
-	public function setUserAgent($userAgent)
-	{
-		$this->userAgent = $userAgent;
-
-		return $this;
-	}
-
-	/**
-	 * Returns the manifests path.
-	 *
-	 * @return string
-	 */
-	public function getManifestPath()
-	{
-		return $this->manifestPath;
-	}
-
-	/**
-	 * Sets the manifests path.
-	 *
-	 * @param  string  $manifestPath
-	 * @return $this
-	 */
-	public function setManifestPath($manifestPath)
-	{
-		$this->manifestPath = $manifestPath;
+		$this->apiVersion = (string) $apiVersion;
 
 		return $this;
 	}
@@ -304,7 +258,7 @@ class Stripe {
 		// Get the 'find' method parameters from the manifest
 		if ( ! $method = array_get($manifest, 'find'))
 		{
-			throw new InvalidArgumentException("Undefined method [{$method}] called.");;
+			throw new InvalidArgumentException("Undefined method [{$method}] called.");
 		}
 
 		// Get the required parameters for the request
@@ -332,45 +286,28 @@ class Stripe {
 	 */
 	protected function handleRequest($method)
 	{
-		if ( ! $this->manifestExists($method))
+		//
+		if ( ! $client = array_get($this->cachedClient, $method))
 		{
-			throw new InvalidArgumentException("Undefined method [{$method}] called.");
-		}
+			//
+			if ( ! $this->manifestExists($method))
+			{
+				throw new InvalidArgumentException("Undefined method [{$method}] called.");
+			}
 
-		// Initialize the Guzzle client
-		$client = new GuzzleClient;
+			// Create a new Guzzle instance
+			$client = new Client($this);
 
-		// Set our own stripe api client for internal
-		// usage within our api models.
-		$client->setApiClient($this);
+			// Set the headers
+			$client->setHeaders($this->getHeaders());
 
-		// Set the client user agent
-		$client->setUserAgent($this->getUserAgent(), true);
-
-		// Set the authentication
-		$client->setDefaultOption('auth', [ $this->getApiKey(), null ]);
-
-		// Set the headers
-		$client->setDefaultOption('headers', $this->getHeaders());
-
-		// Get the Guzzle event dispatcher
-		$dispatcher = $client->getEventDispatcher();
-
-		// Register the error response plugin for our custom exceptions
-		$dispatcher->addSubscriber(new ErrorResponsePlugin);
-
-		// Listen to the "command.after_prepare" event fired by Guzzle
-		$dispatcher->addListener('command.after_prepare', function(Event $event)
-		{
-			$event['command']->getRequest()->getQuery()->setAggregator(
-				new QueryAggregator()
+			// Set the manifest payload into the Guzzle client
+			$client->setDescription(
+				$this->buildPayload($method)
 			);
-		});
 
-		// Set the manifest payload into the Guzzle client
-		$client->setDescription(ServiceDescription::factory(
-			$this->buildPayload($method)
-		));
+			$this->cachedClient[$method] = $client;
+		}
 
 		// Return the Guzzle client
 		return $client;
@@ -383,7 +320,7 @@ class Stripe {
 	 */
 	protected function getFullManifestPath()
 	{
-		return $this->getManifestPath().'/'.$this->getApiVersion();
+		return __DIR__."/Manifests/{$this->apiVersion}";
 	}
 
 	/**
@@ -398,10 +335,21 @@ class Stripe {
 	}
 
 	/**
+	 * Checks if the manifest file for the current request exists.
+	 *
+	 * @param  string  $file
+	 * @return bool
+	 */
+	protected function manifestExists($file)
+	{
+		return file_exists($this->getManifestFilePath($file));
+	}
+
+	/**
 	 * Returns the current request payload.
 	 *
 	 * @param  string  $method
-	 * @return array
+	 * @return \Guzzle\Service\Description\ServiceDescription
 	 */
 	protected function buildPayload($method)
 	{
@@ -409,7 +357,9 @@ class Stripe {
 
 		$manifest = $this->getManifestPayload('manifest', false);
 
-		return array_merge($manifest, compact('operations'));
+		return ServiceDescription::factory(
+			array_merge($manifest, compact('operations'))
+		);
 	}
 
 	/**
@@ -421,32 +371,12 @@ class Stripe {
 	 */
 	protected function getManifestPayload($file, $includeErrors = true)
 	{
-		$file = ucwords($file);
-
-		if ( ! $manifest = array_get($this->manifests, $file))
+		if ($includeErrors)
 		{
-			if ($includeErrors)
-			{
-				$errors = $this->getManifestPayload('errors', false);
-			}
-
-			$manifest = require_once $this->getManifestFilePath($file);
-
-			array_set($this->manifests, $file, $manifest);
+			$errors = $this->getManifestPayload('errors', false);
 		}
 
-		return $manifest;
-	}
-
-	/**
-	 * Checks if the manifest file for the current request exists.
-	 *
-	 * @param  string  $file
-	 * @return bool
-	 */
-	protected function manifestExists($file)
-	{
-		return file_exists($this->getManifestFilePath($file));
+		return require_once $this->getManifestFilePath(ucwords($file));
 	}
 
 }
