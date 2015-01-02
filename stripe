@@ -18,6 +18,12 @@
  * @link       http://cartalyst.com
  */
 
+if (PHP_SAPI !== 'cli')
+{
+	die('The Stripe command should be run on the CLI environment.');
+}
+
+// Include the Composer Class Loader
 if ( ! file_exists($path = __DIR__.'/vendor/autoload.php'))
 {
 	$path = __DIR__.'/../../autoload.php';
@@ -25,9 +31,8 @@ if ( ! file_exists($path = __DIR__.'/vendor/autoload.php'))
 
 require $path;
 
-$app = new Symfony\Component\Console\Application('Cartalyst Stripe CLI Tool', '0.2.0');
-
-// $app->add(new Cartalyst\Stripe\Console\SyncCommand);
+// Initialize the Console Application
+$app = new Symfony\Component\Console\Application('Cartalyst Stripe CLI Tool', Cartalyst\Stripe\Api\Stripe::VERSION);
+$app->add(new Cartalyst\Stripe\Console\SyncCommand);
 $app->add(new Cartalyst\Stripe\Console\SchemaCommand);
-
 $app->run();
