@@ -1,4 +1,0 @@
-		Schema::table('billable_table', function(Blueprint $table)
-		{
-			$table->dropColumn('stripe_id');
-		});
