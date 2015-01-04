@@ -2,11 +2,11 @@
 
 [![Build Status](http://ci.cartalyst.com/build-status/svg/16)](http://ci.cartalyst.com/build-status/view/16)
 
-A comprehensive billing and API package for [Stripe](https://stripe.com/).
+A comprehensive API package for [Stripe](https://stripe.com/).
 
 The package requires PHP 5.4+ and follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP.
 
-Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well, rock on.
+Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](LICENSE). Code well, rock on.
 
 ## Documentation
 
@@ -41,4 +41,4 @@ Bug reports, proposals, and pull requests can be submitted by following our [Con
 
 This software is released under the [Cartalyst PSL](LICENSE) License.
 
-© 2012-2014 Cartalyst LLC, All rights reserved.
+© 2011-2015 Cartalyst LLC, All rights reserved.

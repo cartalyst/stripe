@@ -5,8 +5,7 @@
 		"php",
 		"cartalyst",
 		"laravel",
-		"stripe",
-		"billing"
+		"stripe"
 	],
 	"license": "proprietary",
 	"authors": [

@@ -13,7 +13,7 @@
  * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
- * @copyright  (c) 2011-2014, Cartalyst LLC
+ * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -69,7 +69,7 @@ class Client extends \Guzzle\Service\Client {
 		$dispatcher = $this->getEventDispatcher();
 
 		// Register the error response plugin for our custom exceptions
-		$dispatcher->addSubscriber(new ErrorResponsePlugin());
+		$dispatcher->addSubscriber(new ErrorResponsePlugin);
 
 		// Listen to the "command.before_send" event fired by Guzzle
 		$dispatcher->addListener('command.before_send', [ $this, 'commandBeforeSend' ]);
