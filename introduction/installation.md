@@ -1,6 +1,6 @@
 ## Installation
 
-The best and easiest way to install the Stripe package is with [Composer](http://getcomposer.org).
+Cartalyst packages utilize [Composer](http://getcomposer.org), for more information on how to install Composer please read the [Composer Documentation](https://getcomposer.org/doc/00-intro.md).
 
 ### Preparation
 
