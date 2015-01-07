@@ -4,7 +4,7 @@
 
 A comprehensive API package for [Stripe](https://stripe.com/).
 
-The package requires PHP 5.4+ and follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP.
+The package requires PHP 5.4+ and follows the FIG standards PSR-2 and PSR-4 to ensure a high level of interoperability between shared PHP.
 
 Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](LICENSE). Code well, rock on.
 
