@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Stripe\Tests\Filters;
+<?php
+
 /**
  * Part of the Stripe package.
  *
@@ -17,19 +18,20 @@
  * @link       http://cartalyst.com
  */
 
+namespace Cartalyst\Stripe\tests\Filters;
+
 use PHPUnit_Framework_TestCase;
 use Cartalyst\Stripe\Filters\Boolean;
 
-class BooleanTest extends PHPUnit_Framework_TestCase {
+class BooleanTest extends PHPUnit_Framework_TestCase
+{
+    /** @test */
+    public function it_can_convert_booleans()
+    {
+        $this->assertEquals('true', Boolean::convert(1));
+        $this->assertEquals('true', Boolean::convert(true));
 
-	/** @test */
-	public function it_can_convert_booleans()
-	{
-		$this->assertEquals('true', Boolean::convert(1));
-		$this->assertEquals('true', Boolean::convert(true));
-
-		$this->assertEquals('false', Boolean::convert(0));
-		$this->assertEquals('false', Boolean::convert(false));
-	}
-
+        $this->assertEquals('false', Boolean::convert(0));
+        $this->assertEquals('false', Boolean::convert(false));
+    }
 }

@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Stripe\Models;
+<?php
+
 /**
  * Part of the Stripe package.
  *
@@ -17,51 +18,50 @@
  * @link       http://cartalyst.com
  */
 
+namespace Cartalyst\Stripe\Models;
+
 use Carbon\Carbon;
 use Guzzle\Service\Command\ResponseClassInterface;
 
-class Subscription extends Collection implements ResponseClassInterface {
+class Subscription extends Collection implements ResponseClassInterface
+{
+    use GuzzleCommandTrait;
 
-	use GuzzleCommandTrait;
+    /**
+     * Determines if the subscription is within the trial period.
+     *
+     * @return bool
+     */
+    public function onTrialPeriod()
+    {
+        if ($endsAt = $this->trial_end) {
+            return Carbon::today()->lt(Carbon::createFromTimeStamp($endsAt));
+        }
 
-	/**
-	 * Determines if the subscription is within the trial period.
-	 *
-	 * @return bool
-	 */
-	public function onTrialPeriod()
-	{
-		if ($endsAt = $this->trial_end)
-		{
-			return Carbon::today()->lt(Carbon::createFromTimeStamp($endsAt));
-		}
+        return false;
+    }
 
-		return false;
-	}
+    /**
+     * Determines if the subscription is on grace period after cancellation.
+     *
+     * @return bool
+     */
+    public function onGracePeriod()
+    {
+        if ($this->canceled_at && ! $this->ended_at) {
+            return Carbon::today()->lt(Carbon::createFromTimeStamp($this->current_period_end));
+        }
 
-	/**
-	 * Determines if the subscription is on grace period after cancellation.
-	 *
-	 * @return bool
-	 */
-	public function onGracePeriod()
-	{
-		if ($this->canceled_at && ! $this->ended_at)
-		{
-			return Carbon::today()->lt(Carbon::createFromTimeStamp($this->current_period_end));
-		}
+        return false;
+    }
 
-		return false;
-	}
-
-	/**
-	 * Determines if the subscription is no longer active.
-	 *
-	 * @return bool
-	 */
-	public function isCanceled()
-	{
-		return (bool) $this->canceled_at;
-	}
-
+    /**
+     * Determines if the subscription is no longer active.
+     *
+     * @return bool
+     */
+    public function isCanceled()
+    {
+        return (bool) $this->canceled_at;
+    }
 }

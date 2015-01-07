@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Stripe\Filters;
+<?php
+
 /**
  * Part of the Stripe package.
  *
@@ -17,22 +18,22 @@
  * @link       http://cartalyst.com
  */
 
-class Number {
+namespace Cartalyst\Stripe\Filters;
 
-	/**
-	 * Converts a number into an integer.
-	 *
-	 * @param  mixed  $number
-	 * @return int
-	 */
-	public static function convert($number)
-	{
-		if (is_string($number) || is_float($number))
-		{
-			return (int) ($number * 100);
-		}
+class Number
+{
+    /**
+     * Converts a number into an integer.
+     *
+     * @param  mixed  $number
+     * @return int
+     */
+    public static function convert($number)
+    {
+        if (is_string($number) || is_float($number)) {
+            return (int) ($number * 100);
+        }
 
-		return $number;
-	}
-
+        return $number;
+    }
 }

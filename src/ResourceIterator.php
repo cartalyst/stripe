@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Stripe;
+<?php
+
 /**
  * Part of the Stripe package.
  *
@@ -17,40 +18,40 @@
  * @link       http://cartalyst.com
  */
 
+namespace Cartalyst\Stripe;
+
 use Guzzle\Service\Command\CommandInterface;
 use Guzzle\Service\Resource\ResourceIterator as BaseResourceIterator;
 
-class ResourceIterator extends BaseResourceIterator {
+class ResourceIterator extends BaseResourceIterator
+{
+    /**
+     * {@inheritDoc}
+     */
+    public function __construct(CommandInterface $command, array $data = [])
+    {
+        parent::__construct($command, $data);
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function __construct(CommandInterface $command, array $data = [])
-	{
-		parent::__construct($command, $data);
+        $this->pageSize = 100;
+    }
 
-		$this->pageSize = 100;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    protected function sendRequest()
+    {
+        $this->command->set('limit', $this->pageSize);
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function sendRequest()
-	{
-		$this->command->set('limit', $this->pageSize);
+        if ($this->nextToken) {
+            $this->command->set('starting_after', $this->nextToken);
+        }
 
-		if ($this->nextToken)
-		{
-			$this->command->set('starting_after', $this->nextToken);
-		}
+        $result = $this->command->execute();
 
-		$result = $this->command->execute();
+        $data = $result['data'];
 
-		$data = $result['data'];
+        $this->nextToken = $result['has_more'] ? end($data)['id'] : false;
 
-		$this->nextToken = $result['has_more'] ? end($data)['id'] : false;
-
-		return $data;
-	}
-
+        return $data;
+    }
 }

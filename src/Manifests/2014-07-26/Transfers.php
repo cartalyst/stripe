@@ -19,255 +19,255 @@
 
 return [
 
-	'all' => [
+    'all' => [
 
-		'httpMethod'     => 'GET',
-		'uri'            => '/v1/transfers',
-		'summary'        => 'Returns a list of the existing transfers.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
-		'errorResponses' => $errors,
-		'parameters'     => [
+        'httpMethod'     => 'GET',
+        'uri'            => '/v1/transfers',
+        'summary'        => 'Returns a list of the existing transfers.',
+        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'errorResponses' => $errors,
+        'parameters'     => [
 
-			'created' => [
-				'description' => 'A filter based on the "created" field. Can be an exact UTC timestamp, or an hash.',
-				'location'    => 'query',
-				'required'    => false,
-			],
+            'created' => [
+                'description' => 'A filter based on the "created" field. Can be an exact UTC timestamp, or an hash.',
+                'location'    => 'query',
+                'required'    => false,
+            ],
 
-			'date' => [
-				'description' => 'A filter on the list based on the object date field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
-				'location'    => 'query',
-				'required'    => false,
-			],
+            'date' => [
+                'description' => 'A filter on the list based on the object date field. The value can be a string with an integer Unix timestamp, or it can be a dictionary.',
+                'location'    => 'query',
+                'required'    => false,
+            ],
 
-			'ending_before' => [
-				'description' => 'A cursor to be used in pagination.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
+            'ending_before' => [
+                'description' => 'A cursor to be used in pagination.',
+                'location'    => 'query',
+                'type'        => 'string',
+                'required'    => false,
+            ],
 
-			'limit' => [
-				'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
-				'location'    => 'query',
-				'type'        => 'integer',
-				'min'         => 1,
-				'max'         => 100,
-				'required'    => false,
-			],
+            'limit' => [
+                'description' => 'A limit on the number of objects to be returned. Limit can range between 1 and 100 items.',
+                'location'    => 'query',
+                'type'        => 'integer',
+                'min'         => 1,
+                'max'         => 100,
+                'required'    => false,
+            ],
 
-			'recipient' => [
-				'description' => 'Only return transfers for the recipient specified by this recipient ID.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
+            'recipient' => [
+                'description' => 'Only return transfers for the recipient specified by this recipient ID.',
+                'location'    => 'query',
+                'type'        => 'string',
+                'required'    => false,
+            ],
 
-			'starting_after' => [
-				'description' => 'A cursor to be used in pagination.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
+            'starting_after' => [
+                'description' => 'A cursor to be used in pagination.',
+                'location'    => 'query',
+                'type'        => 'string',
+                'required'    => false,
+            ],
 
-			'status' => [
-				'description' => 'Only return transfers that have the given status: "pending", "paid", or "failed".',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-				'enum'        => ['pending', 'paid', 'failed'],
-			],
+            'status' => [
+                'description' => 'Only return transfers that have the given status: "pending", "paid", or "failed".',
+                'location'    => 'query',
+                'type'        => 'string',
+                'required'    => false,
+                'enum'        => ['pending', 'paid', 'failed'],
+            ],
 
-			'expand' => [
-				'description' => 'Allows to expand properties.',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
+            'expand' => [
+                'description' => 'Allows to expand properties.',
+                'location'    => 'query',
+                'type'        => 'array',
+                'required'    => false,
+            ],
 
-			'include' => [
-				'description' => 'Allow to include additional properties.',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
+            'include' => [
+                'description' => 'Allow to include additional properties.',
+                'location'    => 'query',
+                'type'        => 'array',
+                'required'    => false,
+            ],
 
-		],
+        ],
 
-	],
+    ],
 
-	'find' => [
+    'find' => [
 
-		'httpMethod'     => 'GET',
-		'uri'            => '/v1/transfers/{id}',
-		'summary'        => 'Returns the details of an existing transfer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
-		'errorResponses' => $errors,
-		'parameters'     => [
+        'httpMethod'     => 'GET',
+        'uri'            => '/v1/transfers/{id}',
+        'summary'        => 'Returns the details of an existing transfer.',
+        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'errorResponses' => $errors,
+        'parameters'     => [
 
-			'id' => [
-				'description' => 'The transfer unique identifier.',
-				'location'    => 'uri',
-				'type'        => 'string',
-				'required'    => true,
-			],
+            'id' => [
+                'description' => 'The transfer unique identifier.',
+                'location'    => 'uri',
+                'type'        => 'string',
+                'required'    => true,
+            ],
 
-			'expand' => [
-				'description' => 'Allows to expand properties.',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
+            'expand' => [
+                'description' => 'Allows to expand properties.',
+                'location'    => 'query',
+                'type'        => 'array',
+                'required'    => false,
+            ],
 
-		],
+        ],
 
-	],
+    ],
 
-	'create' => [
+    'create' => [
 
-		'httpMethod'     => 'POST',
-		'uri'            => '/v1/transfers',
-		'summary'        => 'Creates a new transfer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
-		'errorResponses' => $errors,
-		'parameters'     => [
+        'httpMethod'     => 'POST',
+        'uri'            => '/v1/transfers',
+        'summary'        => 'Creates a new transfer.',
+        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'errorResponses' => $errors,
+        'parameters'     => [
 
-			'amount' => [
-				'description' => 'A positive amount for the transaction.',
-				'location'    => 'query',
-				'type'        => 'number',
-				'required'    => true,
-				'filters'     => [
-					'Cartalyst\Stripe\Api\Filters\Number::convert',
-				],
-			],
+            'amount' => [
+                'description' => 'A positive amount for the transaction.',
+                'location'    => 'query',
+                'type'        => 'number',
+                'required'    => true,
+                'filters'     => [
+                    'Cartalyst\Stripe\Api\Filters\Number::convert',
+                ],
+            ],
 
-			'currency' => [
-				'description' => '3-letter ISO code for currency.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => true,
-			],
+            'currency' => [
+                'description' => '3-letter ISO code for currency.',
+                'location'    => 'query',
+                'type'        => 'string',
+                'required'    => true,
+            ],
 
-			'recipient' => [
-				'description' => 'The ID of an existing, verified recipient.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => true,
-			],
+            'recipient' => [
+                'description' => 'The ID of an existing, verified recipient.',
+                'location'    => 'query',
+                'type'        => 'string',
+                'required'    => true,
+            ],
 
-			'description' => [
-				'description' => 'An arbitrary string which you can attach to a transfer object.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
+            'description' => [
+                'description' => 'An arbitrary string which you can attach to a transfer object.',
+                'location'    => 'query',
+                'type'        => 'string',
+                'required'    => false,
+            ],
 
-			'bank_account' => [
-				'description' => 'A bank account to attach to the recipient.',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
+            'bank_account' => [
+                'description' => 'A bank account to attach to the recipient.',
+                'location'    => 'query',
+                'type'        => 'array',
+                'required'    => false,
+            ],
 
-			'card' => [
-				'description' => 'A card to attach to the recipient.',
-				'location'    => 'query',
-				'type'        => ['string', 'array'],
-				'required'    => false,
-			],
+            'card' => [
+                'description' => 'A card to attach to the recipient.',
+                'location'    => 'query',
+                'type'        => ['string', 'array'],
+                'required'    => false,
+            ],
 
-			'statement_description' => [
-				'description' => 'An arbitrary string which will be displayed on the recipient\'s bank statement.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
+            'statement_description' => [
+                'description' => 'An arbitrary string which will be displayed on the recipient\'s bank statement.',
+                'location'    => 'query',
+                'type'        => 'string',
+                'required'    => false,
+            ],
 
-			'metadata' => [
-				'description' => 'A set of key/value pairs that you can attach to a transfer object',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
+            'metadata' => [
+                'description' => 'A set of key/value pairs that you can attach to a transfer object',
+                'location'    => 'query',
+                'type'        => 'array',
+                'required'    => false,
+            ],
 
-			'expand' => [
-				'description' => 'Allows to expand properties.',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
+            'expand' => [
+                'description' => 'Allows to expand properties.',
+                'location'    => 'query',
+                'type'        => 'array',
+                'required'    => false,
+            ],
 
-		],
+        ],
 
-	],
+    ],
 
-	'update' => [
+    'update' => [
 
-		'httpMethod'     => 'POST',
-		'uri'            => '/v1/transfers/{id}',
-		'summary'        => 'Updates an existing transfer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
-		'errorResponses' => $errors,
-		'parameters'     => [
+        'httpMethod'     => 'POST',
+        'uri'            => '/v1/transfers/{id}',
+        'summary'        => 'Updates an existing transfer.',
+        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'errorResponses' => $errors,
+        'parameters'     => [
 
-			'id' => [
-				'description' => 'The transfer unique identifier.',
-				'location'    => 'uri',
-				'type'        => 'string',
-				'required'    => true,
-			],
+            'id' => [
+                'description' => 'The transfer unique identifier.',
+                'location'    => 'uri',
+                'type'        => 'string',
+                'required'    => true,
+            ],
 
-			'description' => [
-				'description' => 'An arbitrary string which you can attach to a transfer object.',
-				'location'    => 'query',
-				'type'        => 'string',
-				'required'    => false,
-			],
+            'description' => [
+                'description' => 'An arbitrary string which you can attach to a transfer object.',
+                'location'    => 'query',
+                'type'        => 'string',
+                'required'    => false,
+            ],
 
-			'metadata' => [
-				'description' => 'A set of key/value pairs that you can attach to a transfer object',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
+            'metadata' => [
+                'description' => 'A set of key/value pairs that you can attach to a transfer object',
+                'location'    => 'query',
+                'type'        => 'array',
+                'required'    => false,
+            ],
 
-			'expand' => [
-				'description' => 'Allows to expand properties.',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
+            'expand' => [
+                'description' => 'Allows to expand properties.',
+                'location'    => 'query',
+                'type'        => 'array',
+                'required'    => false,
+            ],
 
-		],
+        ],
 
-	],
+    ],
 
-	'cancel' => [
+    'cancel' => [
 
-		'httpMethod'     => 'POST',
-		'uri'            => '/v1/transfers/{id}/cancel',
-		'summary'        => 'Cancels an existing transfer.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
-		'errorResponses' => $errors,
-		'parameters'     => [
+        'httpMethod'     => 'POST',
+        'uri'            => '/v1/transfers/{id}/cancel',
+        'summary'        => 'Cancels an existing transfer.',
+        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'errorResponses' => $errors,
+        'parameters'     => [
 
-			'id' => [
-				'description' => 'The transfer unique identifier.',
-				'location'    => 'uri',
-				'type'        => 'string',
-				'required'    => true,
-			],
+            'id' => [
+                'description' => 'The transfer unique identifier.',
+                'location'    => 'uri',
+                'type'        => 'string',
+                'required'    => true,
+            ],
 
-			'expand' => [
-				'description' => 'Allows to expand properties.',
-				'location'    => 'query',
-				'type'        => 'array',
-				'required'    => false,
-			],
+            'expand' => [
+                'description' => 'Allows to expand properties.',
+                'location'    => 'query',
+                'type'        => 'array',
+                'required'    => false,
+            ],
 
-		],
+        ],
 
-	],
+    ],
 
 ];

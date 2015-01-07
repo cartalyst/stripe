@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Stripe\Tests\Exception;
+<?php
+
 /**
  * Part of the Stripe package.
  *
@@ -17,32 +18,33 @@
  * @link       http://cartalyst.com
  */
 
+namespace Cartalyst\Stripe\tests\Exception;
+
 use PHPUnit_Framework_TestCase;
 use Guzzle\Http\Message\Response;
 use Cartalyst\Stripe\Exception\CardErrorException;
 
-class CardErrorExceptionTest extends PHPUnit_Framework_TestCase {
+class CardErrorExceptionTest extends PHPUnit_Framework_TestCase
+{
+    /** @test */
+    public function it_can_create_the_exception()
+    {
+        $command = $this->getMock('Guzzle\Service\Command\CommandInterface');
+        $command
+            ->expects($this->once())
+            ->method('getRequest')
+            ->will($this->returnValue(
+                $this->getMock('Guzzle\Http\Message\Request', [], [], '', false)
+            ));
 
-	/** @test */
-	public function it_can_create_the_exception()
-	{
-		$command = $this->getMock('Guzzle\Service\Command\CommandInterface');
-		$command
-			->expects($this->once())
-			->method('getRequest')
-			->will($this->returnValue(
-				$this->getMock('Guzzle\Http\Message\Request', [], [], '', false)
-			));
+        $response = new Response(402);
+        $response->setBody('');
 
-		$response = new Response(402);
-		$response->setBody('');
+        $exception = CardErrorException::fromCommand($command, $response);
 
-		$exception = CardErrorException::fromCommand($command, $response);
-
-		$this->assertInstanceOf(
-			'Cartalyst\Stripe\Exception\CardErrorException',
-			$exception
-		);
-	}
-
+        $this->assertInstanceOf(
+            'Cartalyst\Stripe\Exception\CardErrorException',
+            $exception
+        );
+    }
 }

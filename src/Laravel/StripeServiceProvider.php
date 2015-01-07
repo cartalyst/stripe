@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Stripe\Laravel;
+<?php
+
 /**
  * Part of the Stripe package.
  *
@@ -17,46 +18,46 @@
  * @link       http://cartalyst.com
  */
 
+namespace Cartalyst\Stripe\Laravel;
+
 use Cartalyst\Stripe\Stripe;
 use Illuminate\Support\ServiceProvider;
 
-class StripeServiceProvider extends ServiceProvider {
+class StripeServiceProvider extends ServiceProvider
+{
+    /**
+     * {@inheritDoc}
+     */
+    public function register()
+    {
+        $this->registerStripe();
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function register()
-	{
-		$this->registerStripe();
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public function provides()
+    {
+        return [
+            'stripe',
+        ];
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function provides()
-	{
-		return [
-			'stripe',
-		];
-	}
+    /**
+     * Register the Stripe API class.
+     *
+     * @return void
+     */
+    protected function registerStripe()
+    {
+        $this->app->bindShared('stripe', function ($app) {
+            $config = $app['config']->get('services.stripe');
 
-	/**
-	 * Register the Stripe API class.
-	 *
-	 * @return void
-	 */
-	protected function registerStripe()
-	{
-		$this->app->bindShared('stripe', function($app)
-		{
-			$config = $app['config']->get('services.stripe');
+            return new Stripe(
+                array_get($config, 'secret'), array_get($config, 'version')
+            );
+        });
 
-			return new Stripe(
-				array_get($config, 'secret'), array_get($config, 'version')
-			);
-		});
-
-		$this->app->alias('stripe', 'Cartalyst\Stripe\Stripe');
-	}
-
+        $this->app->alias('stripe', 'Cartalyst\Stripe\Stripe');
+    }
 }

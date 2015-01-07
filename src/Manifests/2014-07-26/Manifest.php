@@ -19,21 +19,21 @@
 
 return [
 
-	'name'        => 'Stripe',
-	'apiVersion'  => '2014-07-26',
-	'baseUrl'     => 'https://api.stripe.com',
-	'description' => 'Stripe is a payment system',
-	'operations'  => [],
+    'name'        => 'Stripe',
+    'apiVersion'  => '2014-07-26',
+    'baseUrl'     => 'https://api.stripe.com',
+    'description' => 'Stripe is a payment system',
+    'operations'  => [],
 
 
 
-	'models' => [
-		'getResponse' => [
-			'type' => 'object',
-			'additionalProperties' => [
-				'location' => 'json'
-			],
-		],
-	],
+    'models' => [
+        'getResponse' => [
+            'type' => 'object',
+            'additionalProperties' => [
+                'location' => 'json'
+            ],
+        ],
+    ],
 
 ];

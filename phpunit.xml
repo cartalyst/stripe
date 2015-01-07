@@ -20,6 +20,7 @@
 			<directory suffix=".php">./src/</directory>
 			<exclude>
 				<file>./src/Laravel/StripeServiceProvider.php</file>
+				<file>./src/Laravel/Facades/Stripe.php</file>
 			</exclude>
 		</whitelist>
 	</filter>

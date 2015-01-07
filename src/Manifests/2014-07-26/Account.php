@@ -19,14 +19,14 @@
 
 return [
 
-	'details' => [
+    'details' => [
 
-		'httpMethod'     => 'GET',
-		'uri'            => '/v1/account',
-		'summary'        => 'Returns the details of the account.',
-		'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
-		'errorResponses' => $errors,
+        'httpMethod'     => 'GET',
+        'uri'            => '/v1/account',
+        'summary'        => 'Returns the details of the account.',
+        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'errorResponses' => $errors,
 
-	],
+    ],
 
 ];

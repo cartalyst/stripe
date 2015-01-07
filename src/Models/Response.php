@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Stripe\Models;
+<?php
+
 /**
  * Part of the Stripe package.
  *
@@ -17,10 +18,11 @@
  * @link       http://cartalyst.com
  */
 
+namespace Cartalyst\Stripe\Models;
+
 use Guzzle\Service\Command\ResponseClassInterface;
 
-class Response extends Collection implements ResponseClassInterface {
-
-	use GuzzleCommandTrait;
-
+class Response extends Collection implements ResponseClassInterface
+{
+    use GuzzleCommandTrait;
 }

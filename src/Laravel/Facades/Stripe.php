@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Stripe\Laravel\Facades;
+<?php
+
 /**
  * Part of the Stripe package.
  *
@@ -17,16 +18,17 @@
  * @link       http://cartalyst.com
  */
 
+namespace Cartalyst\Stripe\Laravel\Facades;
+
 use Illuminate\Support\Facades\Facade;
 
-class Stripe extends Facade {
-
-	/**
-	 * {@inheritDoc}
-	 */
-	protected static function getFacadeAccessor()
-	{
-		return 'stripe';
-	}
-
+class Stripe extends Facade
+{
+    /**
+     * {@inheritDoc}
+     */
+    protected static function getFacadeAccessor()
+    {
+        return 'stripe';
+    }
 }

@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Stripe\Exception;
+<?php
+
 /**
  * Part of the Stripe package.
  *
@@ -17,6 +18,8 @@
  * @link       http://cartalyst.com
  */
 
-class BadRequestException extends StripeException {
+namespace Cartalyst\Stripe\Exception;
 
+class BadRequestException extends StripeException
+{
 }

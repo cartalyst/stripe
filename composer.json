@@ -32,7 +32,8 @@
 	"require": {
 		"php": ">=5.4.0",
 		"doctrine/inflector": "1.0.*",
-		"guzzle/guzzle": "3.9.*"
+		"guzzle/guzzle": "3.9.*",
+		"nesbot/Carbon": "~1.13"
 	},
 	"require-dev": {
 		"mockery/mockery": "~0.9",
@@ -45,7 +46,10 @@
 	"autoload": {
 		"psr-4": {
 			"Cartalyst\\Stripe\\": "src/"
-		}
+		},
+		"files": [
+			"src/helpers.php"
+		]
 	},
 	"extra": {
 		"component": "package",

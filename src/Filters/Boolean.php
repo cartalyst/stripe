@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Stripe\Filters;
+<?php
+
 /**
  * Part of the Stripe package.
  *
@@ -17,17 +18,18 @@
  * @link       http://cartalyst.com
  */
 
-class Boolean {
+namespace Cartalyst\Stripe\Filters;
 
-	/**
-	 * Converts a boolean into its string representation.
-	 *
-	 * @param  bool  $boolean
-	 * @return string
-	 */
-	public static function convert($boolean)
-	{
-		return $boolean ? 'true' : 'false';
-	}
-
+class Boolean
+{
+    /**
+     * Converts a boolean into its string representation.
+     *
+     * @param  bool  $boolean
+     * @return string
+     */
+    public static function convert($boolean)
+    {
+        return $boolean ? 'true' : 'false';
+    }
 }

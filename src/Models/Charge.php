@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Stripe\Models;
+<?php
+
 /**
  * Part of the Stripe package.
  *
@@ -17,38 +18,39 @@
  * @link       http://cartalyst.com
  */
 
+namespace Cartalyst\Stripe\Models;
+
 use Guzzle\Service\Command\ResponseClassInterface;
 
-class Charge extends Collection implements ResponseClassInterface {
+class Charge extends Collection implements ResponseClassInterface
+{
+    use GuzzleCommandTrait;
 
-	use GuzzleCommandTrait;
+    /**
+     * {@inheritDoc}
+     */
+    protected $collections = [
+        'card',
+        'refunds' => 'refunds.data',
+    ];
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected $collections = [
-		'card',
-		'refunds' => 'refunds.data',
-	];
+    /**
+     * Checks if the charge is paid.
+     *
+     * @return bool
+     */
+    public function isPaid()
+    {
+        return $this->paid;
+    }
 
-	/**
-	 * Checks if the charge is paid.
-	 *
-	 * @return bool
-	 */
-	public function isPaid()
-	{
-		return $this->paid;
-	}
-
-	/**
-	 * Checks if the charge has been refunded.
-	 *
-	 * @return bool
-	 */
-	public function isRefunded()
-	{
-		return $this->refunded;
-	}
-
+    /**
+     * Checks if the charge has been refunded.
+     *
+     * @return bool
+     */
+    public function isRefunded()
+    {
+        return $this->refunded;
+    }
 }

@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Stripe\Exception;
+<?php
+
 /**
  * Part of the Stripe package.
  *
@@ -17,129 +18,130 @@
  * @link       http://cartalyst.com
  */
 
+namespace Cartalyst\Stripe\Exception;
+
 use Exception;
 use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
+use Doctrine\Common\Inflector\Inflector;
 use Guzzle\Service\Command\CommandInterface;
 use Guzzle\Plugin\ErrorResponse\ErrorResponseExceptionInterface;
 
-class StripeException extends Exception implements ErrorResponseExceptionInterface {
-
-	/**
-	 * The Guzzle request.
-	 *
-	 * @var \Guzzle\Http\Message\Request
-	 */
-	protected $request;
-
-	/**
-	 * The Guzzle response.
+class StripeException extends Exception implements ErrorResponseExceptionInterface
+{
+    /**
+     * The Guzzle request.
      *
-	 * @var \Guzzle\Http\Message\Response
-	 */
-	protected $response;
+     * @var \Guzzle\Http\Message\Request
+     */
+    protected $request;
 
-	/**
-	 * The error type returned by Stripe.
-	 *
-	 * @var string
-	 */
-	protected $errorType;
+    /**
+     * The Guzzle response.
+     *
+     * @var \Guzzle\Http\Message\Response
+     */
+    protected $response;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public static function fromCommand(CommandInterface $command, Response $response)
-	{
-		$errors = json_decode($response->getBody(true), true);
+    /**
+     * The error type returned by Stripe.
+     *
+     * @var string
+     */
+    protected $errorType;
 
-		$statusCode = $response->getStatusCode();
+    /**
+     * {@inheritDoc}
+     */
+    public static function fromCommand(CommandInterface $command, Response $response)
+    {
+        $errors = json_decode($response->getBody(true), true);
 
-		$type = array_get($errors, 'error.type', null);
+        $statusCode = $response->getStatusCode();
 
-		$message = array_get($errors, 'error.message', null);
+        $type = array_get($errors, 'error.type', null);
 
-		$class = '\\Cartalyst\\Stripe\\Exception\\'.studly_case($type).'Exception';
+        $message = array_get($errors, 'error.message', null);
 
-		if (class_exists($class))
-		{
-			$exception = new $class($message, $statusCode);
-		}
-		else
-		{
-			$exception = new static($message, $statusCode);
-		}
+        $type = str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $type)));
 
-		$exception->setErrorType($type);
+        $class = "\Cartalyst\Stripe\Exception\{$type}Exception";
 
-		$exception->setResponse($response);
+        if (class_exists($class)) {
+            $exception = new $class($message, $statusCode);
+        } else {
+            $exception = new static($message, $statusCode);
+        }
 
-		$exception->setRequest($command->getRequest());
+        $exception->setErrorType($type);
 
-		return $exception;
-	}
+        $exception->setResponse($response);
 
-	/**
-	 * Returns the Guzzle request.
-	 *
-	 * @return \Guzzle\Http\Message\Request
-	 */
-	public function getRequest()
-	{
-		return $this->request;
-	}
+        $exception->setRequest($command->getRequest());
 
-	/**
-	 * Sets the Guzzle request.
-	 *
-	 * @param  \Guzzle\Http\Message\Request  $request
-	 * @return void
-	 */
-	public function setRequest(Request $request)
-	{
-		$this->request = $request;
-	}
+        return $exception;
+    }
 
-	/**
-	 * Returns the Guzzle response.
-	 *
-	 * @return \Guzzle\Http\Message\Response
-	 */
-	public function getResponse()
-	{
-		return $this->response;
-	}
+    /**
+     * Returns the Guzzle request.
+     *
+     * @return \Guzzle\Http\Message\Request
+     */
+    public function getRequest()
+    {
+        return $this->request;
+    }
 
-	/**
-	 * Sets the Guzzle response.
-	 *
-	 * @param  \Guzzle\Http\Message\Response  $response
-	 * @return void
-	 */
-	public function setResponse(Response $response)
-	{
-		$this->response = $response;
-	}
+    /**
+     * Sets the Guzzle request.
+     *
+     * @param  \Guzzle\Http\Message\Request  $request
+     * @return void
+     */
+    public function setRequest(Request $request)
+    {
+        $this->request = $request;
+    }
 
-	/**
-	 * Returns the error type returned by Stripe.
-	 *
-	 * @return string
-	 */
-	public function getErrorType()
-	{
-		return $this->errorType;
-	}
+    /**
+     * Returns the Guzzle response.
+     *
+     * @return \Guzzle\Http\Message\Response
+     */
+    public function getResponse()
+    {
+        return $this->response;
+    }
 
-	/**
-	 * Sets the error type returned by Stripe.
-	 *
-	 * @param  string  $errorType
-	 * @return void
-	 */
-	public function setErrorType($errorType)
-	{
-		$this->errorType = $errorType;
-	}
+    /**
+     * Sets the Guzzle response.
+     *
+     * @param  \Guzzle\Http\Message\Response  $response
+     * @return void
+     */
+    public function setResponse(Response $response)
+    {
+        $this->response = $response;
+    }
 
+    /**
+     * Returns the error type returned by Stripe.
+     *
+     * @return string
+     */
+    public function getErrorType()
+    {
+        return $this->errorType;
+    }
+
+    /**
+     * Sets the error type returned by Stripe.
+     *
+     * @param  string  $errorType
+     * @return void
+     */
+    public function setErrorType($errorType)
+    {
+        $this->errorType = $errorType;
+    }
 }

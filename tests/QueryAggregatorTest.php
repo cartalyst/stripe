@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Stripe\Tests;
+<?php
+
 /**
  * Part of the Stripe package.
  *
@@ -17,47 +18,48 @@
  * @link       http://cartalyst.com
  */
 
+namespace Cartalyst\Stripe\tests;
+
 use Guzzle\Http\QueryString;
 use PHPUnit_Framework_TestCase;
 use Cartalyst\Stripe\QueryAggregator;
 
-class QueryAggregatorTest extends PHPUnit_Framework_TestCase {
+class QueryAggregatorTest extends PHPUnit_Framework_TestCase
+{
+    /** @test */
+    public function it_can_test_the_aggregate_method()
+    {
+        $query = new QueryString();
 
-	/** @test */
-	public function it_can_test_the_aggregate_method()
-	{
-		$query = new QueryString();
+        $aggregator = new QueryAggregator();
 
-		$aggregator = new QueryAggregator();
+        $result = $aggregator->aggregate(
+            'expand',
+            [
+                'customer', 'invoice',
+            ],
+            $query
+        );
 
-		$result = $aggregator->aggregate(
-			'expand',
-			[
-				'customer', 'invoice',
-			],
-			$query
-		);
+        $expected[$query->encodeValue('expand[]')] = ['customer', 'invoice'];
 
-		$expected[$query->encodeValue('expand[]')] = ['customer', 'invoice'];
-
-		$this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $result);
 
 
-		$result = $aggregator->aggregate(
-			'card',
-			[
-				'name' => 'foo',
-				'ccv'  => '123',
-			],
-			$query
-		);
+        $result = $aggregator->aggregate(
+            'card',
+            [
+                'name' => 'foo',
+                'ccv'  => '123',
+            ],
+            $query
+        );
 
-		$expected = [
-			$query->encodeValue('card[name]') => 'foo',
-			$query->encodeValue('card[ccv]')  => '123',
-		];
+        $expected = [
+            $query->encodeValue('card[name]') => 'foo',
+            $query->encodeValue('card[ccv]')  => '123',
+        ];
 
-		$this->assertEquals($expected, $result);
-	}
-
+        $this->assertEquals($expected, $result);
+    }
 }

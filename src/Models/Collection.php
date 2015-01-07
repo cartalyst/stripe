@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Stripe\Models;
+<?php
+
 /**
  * Part of the Stripe package.
  *
@@ -17,83 +18,79 @@
  * @link       http://cartalyst.com
  */
 
+namespace Cartalyst\Stripe\Models;
+
 use Cartalyst\Stripe\Stripe;
 
-class Collection extends \Illuminate\Support\Collection {
+class Collection extends \Illuminate\Support\Collection
+{
+    /**
+     * {@inheritDoc}
+     */
+    protected $items;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected $items;
+    /**
+     * List of API response properties that'll be
+     * automatically converted into collections.
+     *
+     * @var array
+     */
+    protected $collections = [];
 
-	/**
-	 * List of API response properties that'll be
-	 * automatically converted into collections.
-	 *
-	 * @var array
-	 */
-	protected $collections = [];
+    /**
+     * The Stripe API client instance.
+     *
+     * @var \Cartalyst\Stripe\Stripe
+     */
+    protected $apiClient;
 
-	/**
-	 * The Stripe API client instance.
-	 *
-	 * @var \Cartalyst\Stripe\Stripe
-	 */
-	protected $apiClient;
+    /**
+     * Returns the Stripe API client instance.
+     *
+     * @return \Cartalyst\Stripe\Stripe
+     */
+    public function getApiClient()
+    {
+        return $this->apiClient;
+    }
 
-	/**
-	 * Returns the Stripe API client instance.
-	 *
-	 * @return \Cartalyst\Stripe\Stripe
-	 */
-	public function getApiClient()
-	{
-		return $this->apiClient;
-	}
+    /**
+     * Sets the Stripe API client instance.
+     *
+     * @param \Cartalyst\Stripe\Stripe  $client
+     * @return void
+     */
+    public function setApiClient(Stripe $client)
+    {
+        $this->apiClient = $client;
+    }
 
-	/**
-	 * Sets the Stripe API client instance.
-	 *
-	 * @param \Cartalyst\Stripe\Stripe  $client
-	 * @return void
-	 */
-	public function setApiClient(Stripe $client)
-	{
-		$this->apiClient = $client;
-	}
+    /**
+     * Returns the given key value from the collection.
+     *
+     * @param  mixed  $key
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        if (in_array($key, $this->collections) || array_key_exists($key, $this->collections)) {
+            if ($mappedKey = array_get($this->collections, $key, [])) {
+                $key = strstr($mappedKey, '.', true);
 
-	/**
-	 * Returns the given key value from the collection.
-	 *
-	 * @param  mixed  $key
-	 * @return mixed
-	 */
-	public function __get($key)
-	{
-		if (in_array($key, $this->collections) || array_key_exists($key, $this->collections))
-		{
-			if ($mappedKey = array_get($this->collections, $key, []))
-			{
-				$key = strstr($mappedKey, '.', true);
+                $query = ltrim(strstr($mappedKey, '.'), '.');
 
-				$query = ltrim(strstr($mappedKey, '.'), '.');
+                $data = array_get($this->get($key), $query, []);
+            } else {
+                $data = $this->get($key, []);
+            }
 
-				$data = array_get($this->get($key), $query, []);
-			}
-			else
-			{
-				$data = $this->get($key, []);
-			}
+            return new Collection($data);
+        }
 
-			return new Collection($data);
-		}
+        if (method_exists($this, $method = "{$key}Attribute")) {
+            return $this->{$method}($this->get($key));
+        }
 
-		if (method_exists($this, $method = "{$key}Attribute"))
-		{
-			return $this->{$method}($this->get($key));
-		}
-
-		return $this->get($key, null);
-	}
-
+        return $this->get($key, null);
+    }
 }

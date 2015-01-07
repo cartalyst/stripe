@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Stripe;
+<?php
+
 /**
  * Part of the Stripe package.
  *
@@ -17,40 +18,36 @@
  * @link       http://cartalyst.com
  */
 
+namespace Cartalyst\Stripe;
+
 use Guzzle\Http\QueryString;
 use Guzzle\Http\QueryAggregator\QueryAggregatorInterface;
 
-class QueryAggregator implements QueryAggregatorInterface {
+class QueryAggregator implements QueryAggregatorInterface
+{
+    /**
+     * {@inheritDoc}
+     */
+    public function aggregate($key, $value, QueryString $query)
+    {
+        $response = [];
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function aggregate($key, $value, QueryString $query)
-	{
-		$response = [];
+        foreach ($value as $k => $v) {
+            if (is_int($k)) {
+                return [
+                    $query->encodeValue("{$key}[]") => $value
+                ];
+            }
 
-		foreach ($value as $k => $v)
-		{
-			if (is_int($k))
-			{
-				return [
-					$query->encodeValue("{$key}[]") => $value
-				];
-			}
+            $k = "{$key}[{$k}]";
 
-			$k = "{$key}[{$k}]";
+            if (is_array($v)) {
+                $response = array_merge($response, self::aggregate($k, $v, $query));
+            } else {
+                $response[$query->encodeValue($k)] = $query->encodeValue($v);
+            }
+        }
 
-			if (is_array($v))
-			{
-				$response = array_merge($response, self::aggregate($k, $v, $query));
-			}
-			else
-			{
-				$response[$query->encodeValue($k)] = $query->encodeValue($v);
-			}
-		}
-
-		return $response;
-	}
-
+        return $response;
+    }
 }
