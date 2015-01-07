@@ -124,7 +124,7 @@ class Stripe
     {
         $this->apiKey = $apiKey;
 
-        if (! $this->apiKey) {
+        if ( ! $this->apiKey) {
             throw new \RuntimeException('The Stripe API key is not defined!');
         }
 
@@ -253,7 +253,7 @@ class Stripe
         $manifest = $this->getManifestPayload($pluralMethod);
 
         // Get the 'find' method parameters from the manifest
-        if (! $method = array_get($manifest, 'find')) {
+        if ( ! $method = array_get($manifest, 'find')) {
             throw new InvalidArgumentException("Undefined method [{$method}] called.");
         }
 
@@ -282,9 +282,9 @@ class Stripe
     protected function handleRequest($method)
     {
         //
-        if (! $client = array_get($this->cachedClient, $method)) {
+        if ( ! $client = array_get($this->cachedClient, $method)) {
             //
-            if (! $this->manifestExists($method)) {
+            if ( ! $this->manifestExists($method)) {
                 throw new InvalidArgumentException("Undefined method [{$method}] called.");
             }
 

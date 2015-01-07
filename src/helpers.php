@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Part of the Stripe package.
  *
@@ -17,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-if (! function_exists('array_forget')) {
+if ( ! function_exists('array_forget')) {
     /**
      * Removes an array item from a given array using "dot" notation.
      *
@@ -32,7 +33,7 @@ if (! function_exists('array_forget')) {
         while (count($keys) > 1) {
             $key = array_shift($keys);
 
-            if (! isset($array[$key]) || ! is_array($array[$key])) {
+            if ( ! isset($array[$key]) || ! is_array($array[$key])) {
                 return;
             }
 
@@ -43,7 +44,7 @@ if (! function_exists('array_forget')) {
     }
 }
 
-if (! function_exists('array_get')) {
+if ( ! function_exists('array_get')) {
     /**
      * Gets an item from an array using "dot" notation.
      *
@@ -63,7 +64,7 @@ if (! function_exists('array_get')) {
         }
 
         foreach (explode('.', $key) as $segment) {
-            if (! is_array($array) || ! array_key_exists($segment, $array)) {
+            if ( ! is_array($array) || ! array_key_exists($segment, $array)) {
                 return value($default);
             }
 
@@ -74,7 +75,7 @@ if (! function_exists('array_get')) {
     }
 }
 
-if (! function_exists('array_pull')) {
+if ( ! function_exists('array_pull')) {
     /**
      * Gets a value from the array, and remove it.
      *
@@ -93,7 +94,7 @@ if (! function_exists('array_pull')) {
     }
 }
 
-if (! function_exists('array_set')) {
+if ( ! function_exists('array_set')) {
     /**
      * Sets an array item to a given value using "dot" notation.
      *
@@ -118,7 +119,7 @@ if (! function_exists('array_set')) {
             // If the key doesn't exist at this depth, we will just create an empty array
             // to hold the next value, allowing us to create the arrays to hold final
             // values at the correct depth. Then we'll keep digging into the array.
-            if (! isset($array[$key]) || ! is_array($array[$key])) {
+            if ( ! isset($array[$key]) || ! is_array($array[$key])) {
                 $array[$key] = array();
             }
 
@@ -131,7 +132,7 @@ if (! function_exists('array_set')) {
     }
 }
 
-if (! function_exists('array_where')) {
+if ( ! function_exists('array_where')) {
     /**
      * Filter the array using the given Closure.
      *
@@ -153,7 +154,7 @@ if (! function_exists('array_where')) {
     }
 }
 
-if (! function_exists('value')) {
+if ( ! function_exists('value')) {
     /**
      * Returns the default value of the given value.
      *
