@@ -20,9 +20,7 @@
 
 namespace Cartalyst\Stripe\Models;
 
-use Guzzle\Service\Command\ResponseClassInterface;
-
-class Customer extends Collection implements ResponseClassInterface
+class Customer extends Collection
 {
     /**
      * Returns all the customer charges.

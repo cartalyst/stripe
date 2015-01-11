@@ -20,9 +20,7 @@
 
 namespace Cartalyst\Stripe\Models;
 
-use Guzzle\Service\Command\ResponseClassInterface;
-
-class Charge extends Collection implements ResponseClassInterface
+class Charge extends Collection
 {
     /**
      * {@inheritDoc}

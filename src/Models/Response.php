@@ -20,9 +20,7 @@
 
 namespace Cartalyst\Stripe\Models;
 
-use Guzzle\Service\Command\ResponseClassInterface;
-
-class Response extends Collection implements ResponseClassInterface
+class Response extends Collection
 {
 
 }

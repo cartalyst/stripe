@@ -21,9 +21,8 @@
 namespace Cartalyst\Stripe\Models;
 
 use Carbon\Carbon;
-use Guzzle\Service\Command\ResponseClassInterface;
 
-class Subscription extends Collection implements ResponseClassInterface
+class Subscription extends Collection
 {
     /**
      * Determines if the subscription is within the trial period.

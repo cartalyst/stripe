@@ -21,9 +21,8 @@
 namespace Cartalyst\Stripe\Models;
 
 use Carbon\Carbon;
-use Guzzle\Service\Command\ResponseClassInterface;
 
-class Card extends Collection implements ResponseClassInterface
+class Card extends Collection
 {
     /**
      * Checks if the card has expired.

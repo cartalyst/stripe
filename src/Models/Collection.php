@@ -28,8 +28,9 @@ use CachingIterator;
 use IteratorAggregate;
 use Cartalyst\Stripe\Stripe;
 use Guzzle\Service\Command\OperationCommand;
+use Guzzle\Service\Command\ResponseClassInterface;
 
-class Collection implements ArrayAccess, Countable, IteratorAggregate
+class Collection implements ArrayAccess, Countable, IteratorAggregate, ResponseClassInterface
 {
     /**
      * The items contained in the collection.
