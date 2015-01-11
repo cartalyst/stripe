@@ -280,28 +280,43 @@ class Stripe
      */
     protected function handleRequest($method)
     {
-        //
+        // Is there a cached Guzzle client instance for this method?
         if ( ! $client = array_get($this->cachedClient, $method)) {
-            //
+            // Check if the manifest file for the given method exists
             if ( ! $this->manifestExists($method)) {
                 throw new \InvalidArgumentException("Undefined method [{$method}] called.");
             }
 
-            // Create a new Guzzle instance
-            $client = new Client($this);
+            // Create a new Guzzle client instance for this method
+            $client = $this->makeGuzzleClient($method);
 
-            // Set the headers
-            $client->setHeaders($this->getHeaders());
-
-            // Set the manifest payload into the Guzzle client
-            $client->setDescription(
-                $this->buildPayload($method)
-            );
-
+            // Make sure this client instance is cached
             $this->cachedClient[$method] = $client;
         }
 
-        // Return the Guzzle client
+        // Return the Guzzle client instance
+        return $client;
+    }
+
+    /**
+     * Creates a new Guzzle client instance for the given method.
+     *
+     * @param  string  $method
+     * @return \Cartalyst\Stripe\Client
+     */
+    protected function makeGuzzleClient($method)
+    {
+        // Create a new Guzzle instance
+        $client = new Client($this);
+
+        // Set the headers
+        $client->setHeaders($this->getHeaders());
+
+        // Set the manifest payload into the Guzzle client
+        $client->setDescription(
+            $this->buildPayload($method)
+        );
+
         return $client;
     }
 

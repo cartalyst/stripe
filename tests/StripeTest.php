@@ -45,13 +45,19 @@ class StripeTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_create_a_new_instance_using_the_make_method()
     {
-        Stripe::make('stripe-api-key');
+        $stripe = Stripe::make('stripe-api-key');
+
+        $this->assertEquals('stripe-api-key', $stripe->getApiKey());
     }
 
     /** @test */
-    public function it_can_get_the_current_package_version()
+    public function it_can_create_a_new_instance_using_enviroment_variables()
     {
-        $this->stripe->getVersion();
+        $stripe = new Stripe;
+
+        $this->assertEquals('stripe-api-key', $stripe->getApiKey());
+
+        $this->assertEquals('stripe-api-version', $stripe->getApiVersion());
     }
 
     /** @test */
@@ -59,17 +65,20 @@ class StripeTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals('stripe-api-key', $this->stripe->getApiKey());
 
-        $this->stripe->setApiKey('my-stripe-key');
+        $this->stripe->setApiKey('new-stripe-api-key');
 
-        $this->assertEquals('my-stripe-key', $this->stripe->getApiKey());
+        $this->assertEquals('new-stripe-api-key', $this->stripe->getApiKey());
     }
 
     /**
      * @test
      * @expectedException \RuntimeException
      */
-    public function it_throws_an_exception_when_the_api_is_not_set()
+    public function it_throws_an_exception_when_the_api_key_is_not_set()
     {
+        // Unset the environment variable
+        putenv('STRIPE_API_KEY');
+
         new Stripe;
     }
 
@@ -84,33 +93,20 @@ class StripeTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function it_can_get_and_set_the_client_headers()
+    public function it_can_get_and_set_the_guzzle_client_headers()
     {
-        $this->stripe->setHeaders([
-            'some-header' => 'foo-bar',
-        ]);
-
-        $headers = $this->stripe->getHeaders();
-
-        $expected = [
+        $headers = [
             'some-header' => 'foo-bar',
         ];
 
-        $this->assertEquals($headers, $expected);
+        $this->stripe->setHeaders($headers);
+
+        $this->assertEquals($headers, $this->stripe->getHeaders());
     }
 
-    public function check_a_single_api_request()
+    /** @test */
+    public function it_can_get_the_current_package_version()
     {
-        # $this->stripe->customer(:customerId);
-    }
-
-    public function check_a_iterator_api_request()
-    {
-        # $this->stripe->customersIterator();
-    }
-
-    public function check_a_normal_api_request()
-    {
-        # $this->stripe->customers()->all();
+        $this->stripe->getVersion();
     }
 }
