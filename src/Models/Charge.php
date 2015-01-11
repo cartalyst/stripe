@@ -24,8 +24,6 @@ use Guzzle\Service\Command\ResponseClassInterface;
 
 class Charge extends Collection implements ResponseClassInterface
 {
-    use GuzzleCommandTrait;
-
     /**
      * {@inheritDoc}
      */

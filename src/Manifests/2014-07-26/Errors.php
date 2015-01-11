@@ -20,42 +20,42 @@
 return [
 
     [
-        'class' => 'Cartalyst\Stripe\Api\Exception\BadRequestException',
+        'class' => 'Cartalyst\Stripe\Exception\BadRequestException',
         'code'  => 400,
     ],
 
     [
-        'class' => 'Cartalyst\Stripe\Api\Exception\UnauthorizedException',
+        'class' => 'Cartalyst\Stripe\Exception\UnauthorizedException',
         'code'  => 401,
     ],
 
     [
-        'class' => 'Cartalyst\Stripe\Api\Exception\RequestFailedException',
+        'class' => 'Cartalyst\Stripe\Exception\RequestFailedException',
         'code'  => 402,
     ],
 
     [
-        'class' => 'Cartalyst\Stripe\Api\Exception\NotFoundException',
+        'class' => 'Cartalyst\Stripe\Exception\NotFoundException',
         'code'  => 404,
     ],
 
     [
-        'class' => 'Cartalyst\Stripe\Api\Exception\ServerErrorException',
+        'class' => 'Cartalyst\Stripe\Exception\ServerErrorException',
         'code'  => 500,
     ],
 
     [
-        'class' => 'Cartalyst\Stripe\Api\Exception\ServerErrorException',
+        'class' => 'Cartalyst\Stripe\Exception\ServerErrorException',
         'code'  => 502,
     ],
 
     [
-        'class' => 'Cartalyst\Stripe\Api\Exception\ServerErrorException',
+        'class' => 'Cartalyst\Stripe\Exception\ServerErrorException',
         'code'  => 503,
     ],
 
     [
-        'class' => 'Cartalyst\Stripe\Api\Exception\ServerErrorException',
+        'class' => 'Cartalyst\Stripe\Exception\ServerErrorException',
         'code'  => 504,
     ],
 

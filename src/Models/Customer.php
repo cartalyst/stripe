@@ -24,8 +24,6 @@ use Guzzle\Service\Command\ResponseClassInterface;
 
 class Customer extends Collection implements ResponseClassInterface
 {
-    use GuzzleCommandTrait;
-
     /**
      * Returns all the customer charges.
      *

@@ -24,7 +24,7 @@ return [
         'httpMethod'     => 'GET',
         'uri'            => '/v1/transfers',
         'summary'        => 'Returns a list of the existing transfers.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Response',
         'errorResponses' => $errors,
         'parameters'     => [
 
@@ -101,7 +101,7 @@ return [
         'httpMethod'     => 'GET',
         'uri'            => '/v1/transfers/{id}',
         'summary'        => 'Returns the details of an existing transfer.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Response',
         'errorResponses' => $errors,
         'parameters'     => [
 
@@ -128,7 +128,7 @@ return [
         'httpMethod'     => 'POST',
         'uri'            => '/v1/transfers',
         'summary'        => 'Creates a new transfer.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Response',
         'errorResponses' => $errors,
         'parameters'     => [
 
@@ -207,7 +207,7 @@ return [
         'httpMethod'     => 'POST',
         'uri'            => '/v1/transfers/{id}',
         'summary'        => 'Updates an existing transfer.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Response',
         'errorResponses' => $errors,
         'parameters'     => [
 
@@ -248,7 +248,7 @@ return [
         'httpMethod'     => 'POST',
         'uri'            => '/v1/transfers/{id}/cancel',
         'summary'        => 'Cancels an existing transfer.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Response',
         'errorResponses' => $errors,
         'parameters'     => [
 

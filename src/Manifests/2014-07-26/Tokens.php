@@ -24,7 +24,7 @@ return [
         'httpMethod'     => 'POST',
         'uri'            => '/v1/tokens',
         'summary'        => 'Creates a new token.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Response',
         'errorResponses' => $errors,
         'parameters'     => [
 
@@ -65,7 +65,7 @@ return [
         'httpMethod'     => 'GET',
         'uri'            => '/v1/tokens/{id}',
         'summary'        => 'Returns the details about an existing token.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Response',
         'errorResponses' => $errors,
         'parameters'     => [
 

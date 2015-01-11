@@ -24,7 +24,7 @@ return [
         'httpMethod'     => 'GET',
         'uri'            => '/v1/charges',
         'summary'        => 'Returns a list of charges that were previously created.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Charge',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Charge',
         'errorResponses' => $errors,
         'parameters'     => [
 
@@ -88,7 +88,7 @@ return [
         'httpMethod'     => 'GET',
         'uri'            => '/v1/charges/{id}',
         'summary'        => 'Returns the details of a charge that has been previously created.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Charge',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Charge',
         'errorResponses' => $errors,
         'parameters'     => [
 
@@ -115,7 +115,7 @@ return [
         'httpMethod'     => 'POST',
         'uri'            => '/v1/charges',
         'summary'        => 'Creates a new charge.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Charge',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Charge',
         'errorResponses' => $errors,
         'parameters'     => [
 
@@ -211,7 +211,7 @@ return [
         'httpMethod'     => 'POST',
         'uri'            => '/v1/charges/{id}',
         'summary'        => 'Updates the specified charge.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Charge',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Charge',
         'errorResponses' => $errors,
         'parameters'     => [
 
@@ -252,7 +252,7 @@ return [
         'httpMethod'     => 'POST',
         'uri'            => '/v1/charges/{id}/capture',
         'summary'        => 'Captures the payment of specified, uncaptured, charge.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Charge',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Charge',
         'errorResponses' => $errors,
         'parameters'     => [
 

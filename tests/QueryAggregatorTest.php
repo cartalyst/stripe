@@ -29,9 +29,9 @@ class QueryAggregatorTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_test_the_aggregate_method()
     {
-        $query = new QueryString();
+        $query = new QueryString;
 
-        $aggregator = new QueryAggregator();
+        $aggregator = new QueryAggregator;
 
         $result = $aggregator->aggregate(
             'expand',

@@ -25,8 +25,6 @@ use Guzzle\Service\Command\ResponseClassInterface;
 
 class Subscription extends Collection implements ResponseClassInterface
 {
-    use GuzzleCommandTrait;
-
     /**
      * Determines if the subscription is within the trial period.
      *

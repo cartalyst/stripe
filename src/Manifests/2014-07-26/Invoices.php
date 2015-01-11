@@ -24,7 +24,7 @@ return [
         'httpMethod'     => 'GET',
         'uri'            => '/v1/invoices',
         'summary'        => 'Returns all the existing invoices.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Response',
         'errorResponses' => $errors,
         'parameters'     => [
 
@@ -88,7 +88,7 @@ return [
         'httpMethod'     => 'GET',
         'uri'            => '/v1/invoices/{id}',
         'summary'        => 'Returns an existing invoice.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Response',
         'errorResponses' => $errors,
         'parameters'     => [
 
@@ -115,7 +115,7 @@ return [
         'httpMethod'     => 'POST',
         'uri'            => '/v1/invoices',
         'summary'        => 'Creates a new invoice.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Response',
         'errorResponses' => $errors,
         'parameters'     => [
 
@@ -177,7 +177,7 @@ return [
         'httpMethod'     => 'POST',
         'uri'            => '/v1/invoices/{id}',
         'summary'        => 'Updates an existing invoice.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Response',
         'errorResponses' => $errors,
         'parameters'     => [
 
@@ -252,7 +252,7 @@ return [
         'httpMethod'     => 'POST',
         'uri'            => '/v1/invoices/{id}/pay',
         'summary'        => 'Pays an existing invoice.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Response',
         'errorResponses' => $errors,
         'parameters'     => [
 
@@ -279,7 +279,7 @@ return [
         'httpMethod'     => 'GET',
         'uri'            => '/v1/invoices/{id}/lines',
         'summary'        => 'Returns an existing invoice line items.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Response',
         'errorResponses' => $errors,
         'parameters'     => [
 
@@ -343,7 +343,7 @@ return [
         'httpMethod'     => 'GET',
         'uri'            => '/v1/invoices/upcoming',
         'summary'        => 'Get upcoming invoices',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Response',
         'errorResponses' => $errors,
         'parameters'     => [
 

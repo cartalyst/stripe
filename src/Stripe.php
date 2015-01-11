@@ -20,7 +20,6 @@
 
 namespace Cartalyst\Stripe;
 
-use InvalidArgumentException;
 use Doctrine\Common\Inflector\Inflector;
 use Guzzle\Service\Description\ServiceDescription;
 
@@ -243,7 +242,7 @@ class Stripe
     {
         // Check if we have any arguments
         if (empty($arguments)) {
-            throw new InvalidArgumentException('Not enough arguments provided!');
+            throw new \InvalidArgumentException('Not enough arguments provided!');
         }
 
         // Get the pluralized method name
@@ -254,7 +253,7 @@ class Stripe
 
         // Get the 'find' method parameters from the manifest
         if ( ! $method = array_get($manifest, 'find')) {
-            throw new InvalidArgumentException("Undefined method [{$method}] called.");
+            throw new \InvalidArgumentException("Undefined method [{$method}] called.");
         }
 
         // Get the required parameters for the request
@@ -285,7 +284,7 @@ class Stripe
         if ( ! $client = array_get($this->cachedClient, $method)) {
             //
             if ( ! $this->manifestExists($method)) {
-                throw new InvalidArgumentException("Undefined method [{$method}] called.");
+                throw new \InvalidArgumentException("Undefined method [{$method}] called.");
             }
 
             // Create a new Guzzle instance

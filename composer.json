@@ -33,7 +33,7 @@
 		"php": ">=5.4.0",
 		"doctrine/inflector": "1.0.*",
 		"guzzle/guzzle": "3.9.*",
-		"nesbot/Carbon": "~1.13"
+		"nesbot/carbon": "~1.13"
 	},
 	"require-dev": {
 		"mockery/mockery": "~0.9",

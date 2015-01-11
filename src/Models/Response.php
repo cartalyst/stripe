@@ -24,5 +24,5 @@ use Guzzle\Service\Command\ResponseClassInterface;
 
 class Response extends Collection implements ResponseClassInterface
 {
-    use GuzzleCommandTrait;
+
 }

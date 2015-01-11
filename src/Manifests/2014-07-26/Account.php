@@ -24,7 +24,7 @@ return [
         'httpMethod'     => 'GET',
         'uri'            => '/v1/account',
         'summary'        => 'Returns the details of the account.',
-        'responseClass'  => 'Cartalyst\Stripe\Api\Models\Response',
+        'responseClass'  => 'Cartalyst\Stripe\Models\Response',
         'errorResponses' => $errors,
 
     ],

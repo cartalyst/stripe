@@ -25,8 +25,6 @@ use Guzzle\Service\Command\ResponseClassInterface;
 
 class Card extends Collection implements ResponseClassInterface
 {
-    use GuzzleCommandTrait;
-
     /**
      * Checks if the card has expired.
      *

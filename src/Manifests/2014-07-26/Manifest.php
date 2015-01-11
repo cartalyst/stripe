@@ -25,15 +25,4 @@ return [
     'description' => 'Stripe is a payment system',
     'operations'  => [],
 
-
-
-    'models' => [
-        'getResponse' => [
-            'type' => 'object',
-            'additionalProperties' => [
-                'location' => 'json'
-            ],
-        ],
-    ],
-
 ];
