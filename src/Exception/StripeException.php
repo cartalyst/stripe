@@ -59,9 +59,9 @@ class StripeException extends Exception implements ErrorResponseExceptionInterfa
 
         $statusCode = $response->getStatusCode();
 
-        $type = array_get($errors, 'error.type', null);
+        $type = isset($errors['error']['type']) ? $errors['error']['type'] : null;
 
-        $message = array_get($errors, 'error.message', null);
+        $message = isset($errors['error']['message']) ? $errors['error']['message'] : null;
 
         $type = str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $type)));
 

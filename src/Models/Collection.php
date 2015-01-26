@@ -23,8 +23,6 @@ namespace Cartalyst\Stripe\Models;
 use Closure;
 use Countable;
 use ArrayAccess;
-use ArrayIterator;
-use CachingIterator;
 use IteratorAggregate;
 use Cartalyst\Stripe\Stripe;
 use Guzzle\Service\Command\OperationCommand;
@@ -69,7 +67,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, ResponseC
      * Create a new collection instance if the value isn't one already.
      *
      * @param  mixed  $items
-     * @return \Illuminate\Support\Collection
+     * @return \Cartalyst\Stripe\Models\Collection
      */
     public static function make($items)
     {
@@ -77,7 +75,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, ResponseC
 
         if ($items instanceof Collection) return $items;
 
-        return new static(is_array($items) ? $items : array($items));
+        return new static(is_array($items) ? $items : [ $items ]);
     }
 
     /**
@@ -102,35 +100,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, ResponseC
     }
 
     /**
-     * Returns the given key value from the collection.
-     *
-     * @param  mixed  $key
-     * @return mixed
-     */
-    public function __get($key)
-    {
-        if (in_array($key, $this->collections) || array_key_exists($key, $this->collections)) {
-            if ($mappedKey = array_get($this->collections, $key, [])) {
-                $key = strstr($mappedKey, '.', true);
-
-                $query = ltrim(strstr($mappedKey, '.'), '.');
-
-                $data = array_get($this->get($key), $query, []);
-            } else {
-                $data = $this->get($key, []);
-            }
-
-            return new static($data);
-        }
-
-        if (method_exists($this, $method = "{$key}Attribute")) {
-            return $this->{$method}($this->get($key));
-        }
-
-        return $this->get($key, null);
-    }
-
-    /**
      * Create a response model object from a completed command.
      *
      * @param  \Guzzle\Service\Command\OperationCommand  $command
@@ -149,7 +118,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, ResponseC
     }
 
     /**
-     * Get all of the items in the collection.
+     * Returns all of the items in the collection.
      *
      * @return array
      */
@@ -159,104 +128,66 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, ResponseC
     }
 
     /**
-     * Execute a callback over each item.
+     * Counts the number of items in the collection.
      *
-     * @param  Closure  $callback
-     * @return \Illuminate\Support\Collection
+     * @return int
      */
-    public function each(Closure $callback)
+    public function count()
     {
-        array_map($callback, $this->items);
-
-        return $this;
+        return count($this->items);
     }
 
     /**
-     * Fetch a nested element of the collection.
+     * Determines if the given item exists in the collection.
      *
      * @param  string  $key
-     * @return \Illuminate\Support\Collection
+     * @return bool
      */
-    public function fetch($key)
+    public function exists($key)
     {
-        return new static(array_fetch($this->items, $key));
+        return (bool) $this->offsetExists($key);
     }
 
     /**
-     * Run a filter over each of the items.
+     * Returns the given item from the collection.
      *
-     * @param  Closure  $callback
-     * @return \Illuminate\Support\Collection
+     * @param  mixed  $key
+     * @return mixed
      */
-    public function filter(Closure $callback)
+    public function find($key)
     {
-        return new static(array_filter($this->items, $callback));
+        return $this->offsetGet($key);
     }
 
     /**
-     * Get the first item from the collection.
+     * Returns the first item from the collection.
      *
-     * @param  \Closure   $callback
-     * @param  mixed      $default
      * @return mixed|null
      */
-    public function first(Closure $callback = null, $default = null)
+    public function first()
     {
-        if (is_null($callback)) {
-            return count($this->items) > 0 ? reset($this->items) : null;
-        } else {
-            return array_first($this->items, $callback, $default);
-        }
+        return count($this->items) > 0 ? reset($this->items) : null;
     }
 
     /**
-     * Remove an item from the collection by key.
+     * Returns an item from the collection.
      *
-     * @param  mixed  $key
-     * @return void
-     */
-    public function forget($key)
-    {
-        unset($this->items[$key]);
-    }
-
-    /**
-     * Get an item from the collection by key.
-     *
-     * @param  mixed  $key
+     * @param  string  $key
      * @param  mixed  $default
      * @return mixed
      */
     public function get($key, $default = null)
     {
-        if (array_key_exists($key, $this->items)) {
+        if (array_key_exists($key, $this->items))
+        {
             return $this->items[$key];
         }
 
-        return value($default);
+        return $default;
     }
 
     /**
-     * Group an associative array by a field or Closure value.
-     *
-     * @param  callable|string  $groupBy
-     * @return \Illuminate\Support\Collection
-     */
-    public function groupBy($groupBy)
-    {
-        $results = [];
-
-        foreach ($this->items as $key => $value) {
-            $key = is_callable($groupBy) ? $groupBy($value, $key) : data_get($value, $groupBy);
-
-            $results[$key][] = $value;
-        }
-
-        return new static($results);
-    }
-
-    /**
-     * Determine if an item exists in the collection by key.
+     * Determines if an item exists in the collection by key.
      *
      * @param  mixed  $key
      * @return bool
@@ -267,7 +198,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, ResponseC
     }
 
     /**
-     * Determine if the collection is empty or not.
+     * Determines if the collection is empty or not.
      *
      * @return bool
      */
@@ -277,117 +208,134 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, ResponseC
     }
 
     /**
-    * Get the last item from the collection.
-    *
-    * @return mixed|null
-    */
+     * Returns the last item from the collection.
+     *
+     * @return mixed|null
+     */
     public function last()
     {
         return count($this->items) > 0 ? end($this->items) : null;
     }
 
     /**
-     * Get an array with the values of a given key.
+     * Determines if the given offset exists.
      *
-     * @param  string  $value
      * @param  string  $key
-     * @return array
+     * @return bool
      */
-    public function lists($value, $key = null)
+    public function offsetExists($key)
     {
-        return array_pluck($this->items, $value, $key);
+        if (isset($this->items[$key]))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
-     * Run a map over each of the items.
+     * Returns the value for a given offset.
      *
-     * @param  Closure  $callback
-     * @return \Illuminate\Support\Collection
-     */
-    public function map(Closure $callback)
-    {
-        return new static(array_map($callback, $this->items, array_keys($this->items)));
-    }
-
-    /**
-     * Push an item onto the end of the collection.
-     *
-     * @param  mixed  $value
-     * @return void
-     */
-    public function push($value)
-    {
-        $this->items[] = $value;
-    }
-
-    /**
-     * Pulls an item from the collection.
-     *
-     * @param  mixed  $key
-     * @param  mixed  $default
+     * @param  string  $key
      * @return mixed
      */
-    public function pull($key, $default = null)
+    public function offsetGet($key)
     {
-        return array_pull($this->items, $key, $default);
+        if (isset($this->items[$key]))
+        {
+            return $this->items[$key];
+        }
     }
 
     /**
-     * Put an item in the collection by key.
+     * Set the value at the given offset.
      *
-     * @param  mixed  $key
+     * @param  string  $key
      * @param  mixed  $value
      * @return void
      */
-    public function put($key, $value)
+    public function offsetSet($key, $value)
     {
         $this->items[$key] = $value;
     }
 
     /**
-     * Sort through each item with a callback.
+     * Unset the value at the given offset.
      *
-     * @param  Closure  $callback
-     * @return \Illuminate\Support\Collection
+     * @param  string  $key
+     * @return void
      */
-    public function sort(Closure $callback)
+    public function offsetUnset($key)
     {
-        uasort($this->items, $callback);
+        unset($this->items[$key]);
+    }
 
-        return $this;
+    /**
+     * Unset the value at the given offset.
+     *
+     * @param  string  $key
+     * @return void
+     */
+    public function pull($key)
+    {
+        $this->offsetUnset($key);
+    }
+
+    /**
+     * Set the value at the given offset.
+     *
+     * @param  string  $key
+     * @param  mixed  $value
+     * @return void
+     */
+    public function put($key, $value)
+    {
+        $this->offsetSet($key, $value);
     }
 
     /**
      * Sort the collection using the given Closure.
      *
      * @param  \Closure|string  $callback
-     * @param  int              $options
-     * @param  bool             $descending
-     * @return \Illuminate\Support\Collection
+     * @param  int  $options
+     * @param  bool  $descending
+     * @return $this
      */
     public function sortBy($callback, $options = SORT_REGULAR, $descending = false)
     {
         $results = [];
 
-        if (is_string($callback)) $callback =
-                          $this->valueRetriever($callback);
+        if (is_string($callback)) {
+            $callback = function($item) use ($callback) {
+                if (is_null($callback)) return $item;
+
+                foreach (explode('.', $callback) as $segment) {
+                    if (is_array($item)) {
+                        if ( ! array_key_exists($segment, $item)) {
+                            return null;
+                        }
+
+                        $item = $item[$segment];
+                    }
+                }
+
+                return $item;
+            };
+        }
 
         // First we will loop through the items and get the comparator from a callback
         // function which we were given. Then, we will sort the returned values and
         // and grab the corresponding values for the sorted keys from this array.
-        foreach ($this->items as $key => $value)
-        {
+        foreach ($this->items as $key => $value) {
             $results[$key] = $callback($value);
         }
 
-        $descending ? arsort($results, $options)
-                    : asort($results, $options);
+        $descending ? arsort($results, $options) : asort($results, $options);
 
         // Once we have sorted all of the keys in the array, we will loop through them
         // and grab the corresponding model so we can set the underlying items list
         // to the sorted version. Then we'll just return the collection instance.
-        foreach (array_keys($results) as $key)
-        {
+        foreach (array_keys($results) as $key) {
             $results[$key] = $this->items[$key];
         }
 
@@ -400,8 +348,8 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, ResponseC
      * Sort the collection in descending order using the given Closure.
      *
      * @param  \Closure|string  $callback
-     * @param  int              $options
-     * @return \Illuminate\Support\Collection
+     * @param  int  $options
+     * @return $this
      */
     public function sortByDesc($callback, $options = SORT_REGULAR)
     {
@@ -409,47 +357,19 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, ResponseC
     }
 
     /**
-     * Reset the keys on the underlying array.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function values()
-    {
-        $this->items = array_values($this->items);
-
-        return $this;
-    }
-
-    /**
-     * Get a value retrieving callback.
-     *
-     * @param  string  $value
-     * @return \Closure
-     */
-    protected function valueRetriever($value)
-    {
-        return function($item) use ($value)
-        {
-            return data_get($item, $value);
-        };
-    }
-
-    /**
-     * Get the collection of items as a plain array.
+     * Returns the collection of items as a plain array.
      *
      * @return array
      */
     public function toArray()
     {
-        return array_map(function($value)
-        {
-            return $value instanceof ArrayableInterface ? $value->toArray() : $value;
-
+        return array_map(function($value) {
+            return $value;
         }, $this->items);
     }
 
     /**
-     * Get the collection of items as JSON.
+     * Returns the collection of items as JSON.
      *
      * @param  int  $options
      * @return string
@@ -460,85 +380,52 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, ResponseC
     }
 
     /**
-     * Get an iterator for the items.
+     * Dynamically retrieve the value of an item.
      *
-     * @return ArrayIterator
-     */
-    public function getIterator()
-    {
-        $items = isset($this->items['data']) ? $this->items['data'] : $this->items;
-
-        return new ArrayIterator($items);
-    }
-
-    /**
-     * Get a CachingIterator instance.
-     *
-     * @return \CachingIterator
-     */
-    public function getCachingIterator($flags = CachingIterator::CALL_TOSTRING)
-    {
-        return new CachingIterator($this->getIterator(), $flags);
-    }
-
-    /**
-     * Count the number of items in the collection.
-     *
-     * @return int
-     */
-    public function count()
-    {
-        return count($this->items);
-    }
-
-    /**
-     * Determine if an item exists at an offset.
-     *
-     * @param  mixed  $key
-     * @return bool
-     */
-    public function offsetExists($key)
-    {
-        return array_key_exists($key, $this->items);
-    }
-
-    /**
-     * Get an item at a given offset.
-     *
-     * @param  mixed  $key
+     * @param  string  $key
      * @return mixed
      */
-    public function offsetGet($key)
+    public function __get($key)
     {
-        return $this->items[$key];
+        $value = $this->get($key);
+
+        if (method_exists($this, $method = "{$key}Attribute")) {
+            return $this->{$method}($value);
+        }
+
+        return $value;
     }
 
     /**
-     * Set the item at a given offset.
+     * Dynamically set the value of an item.
      *
-     * @param  mixed  $key
+     * @param  string  $key
      * @param  mixed  $value
      * @return void
      */
-    public function offsetSet($key, $value)
+    public function __set($key, $value)
     {
-        if (is_null($key))
-        {
-            $this->items[] = $value;
-        }
-        else
-        {
-            $this->items[$key] = $value;
-        }
+        $this->items[$key] = $value;
     }
 
     /**
-     * Unset the item at a given offset.
+     * Dynamically check if an item is set.
      *
      * @param  string  $key
      * @return void
      */
-    public function offsetUnset($key)
+    public function __isset($key)
+    {
+        return isset($this->items[$key]);
+    }
+
+    /**
+     * Dynamically unset an item.
+     *
+     * @param  string  $key
+     * @return void
+     */
+    public function __unset($key)
     {
         unset($this->items[$key]);
     }
@@ -552,25 +439,4 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, ResponseC
     {
         return $this->toJson();
     }
-
-    /**
-     * Results array of items from Collection or ArrayableInterface.
-     *
-     * @param  \Illuminate\Support\Collection|\Illuminate\Support\Contracts\ArrayableInterface|array  $items
-     * @return array
-     */
-    private function getArrayableItems($items)
-    {
-        if ($items instanceof Collection)
-        {
-            $items = $items->all();
-        }
-        elseif ($items instanceof ArrayableInterface)
-        {
-            $items = $items->toArray();
-        }
-
-        return $items;
-    }
-
 }

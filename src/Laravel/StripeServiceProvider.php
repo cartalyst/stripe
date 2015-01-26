@@ -53,9 +53,11 @@ class StripeServiceProvider extends ServiceProvider
         $this->app->bindShared('stripe', function ($app) {
             $config = $app['config']->get('services.stripe');
 
-            return new Stripe(
-                array_get($config, 'secret'), array_get($config, 'version')
-            );
+            $secret = isset($config['secret']) ? $config['secret'] : null;
+
+            $version = isset($config['version']) ? $config['version'] : null;
+
+            return new Stripe($secret, $version);
         });
 
         $this->app->alias('stripe', 'Cartalyst\Stripe\Stripe');

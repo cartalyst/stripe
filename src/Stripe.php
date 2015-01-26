@@ -44,7 +44,7 @@ class Stripe
      *
      * @var string
      */
-    protected $apiVersion = '2014-07-26';
+    protected $apiVersion = '2015-01-11';
 
     /**
      * The headers to be sent to the Guzzle client.
@@ -215,9 +215,9 @@ class Stripe
     {
         $client = $this->handleRequest(substr($method, 0, -8));
 
-        $command = $client->getCommand('all', array_get($arguments, 0, []));
+        $command = $client->getCommand('all', isset($arguments[0] ? $arguments[0] : []);
 
-        return new ResourceIterator($command, array_get($arguments, 1, []));
+        return new ResourceIterator($command, isset($arguments[1]) ? $arguments[1] : []);
     }
 
     /**
@@ -245,19 +245,22 @@ class Stripe
             throw new \InvalidArgumentException('Not enough arguments provided!');
         }
 
-        // Get the pluralized method name
-        $pluralMethod = Inflector::pluralize($method);
-
         // Get the request manifest payload data
-        $manifest = $this->getManifestPayload($pluralMethod);
+        $manifest = $this->getManifestPayload(Inflector::pluralize($method));
+
+        //
+        $method = isset($manifest['find']) ? $manifest['find'] : null;
 
         // Get the 'find' method parameters from the manifest
-        if ( ! $method = array_get($manifest, 'find')) {
-            throw new \InvalidArgumentException("Undefined method [{$method}] called.");
+        if ( ! $method) {
+            throw new \InvalidArgumentException('Undefined method [find] called.');
         }
 
+        //
+        $parameters = isset($method['parameters']) ? $method['parameters'] : [];
+
         // Get the required parameters for the request
-        $required = array_where(array_get($method, 'parameters', []), function ($key, $value) {
+        $required = array_where($parameters, function ($key, $value) {
             return $value['required'] === true;
         });
 
@@ -281,7 +284,7 @@ class Stripe
     protected function handleRequest($method)
     {
         // Is there a cached Guzzle client instance for this method?
-        if ( ! $client = array_get($this->cachedClient, $method)) {
+        if ( ! isset($this->cachedClient[$method])) {
             // Check if the manifest file for the given method exists
             if ( ! $this->manifestExists($method)) {
                 throw new \InvalidArgumentException("Undefined method [{$method}] called.");
@@ -295,7 +298,7 @@ class Stripe
         }
 
         // Return the Guzzle client instance
-        return $client;
+        return $this->cachedClient[$method];
     }
 
     /**
