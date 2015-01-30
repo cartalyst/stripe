@@ -6,7 +6,9 @@ Cartalyst packages utilize [Composer](http://getcomposer.org), for more informat
 
 Open your `composer.json` file and add the following to the `require` array:
 
-	"cartalyst/stripe": "0.2.*"
+	"cartalyst/stripe": "0.2.*@dev"
+	
+> **Note:** This version is still under development and it's not tagged, use carefully!
 
 Add the following lines after the `require` array on your `composer.json` file:
 
