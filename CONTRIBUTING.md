@@ -4,7 +4,7 @@ This project adheres to the following standards and practices.
 
 ## Versioning
 
-We version under the [Semantic Versioning](http://semver.org/) guidelines as much as possible.
+This package is versioned under the [Semantic Versioning](http://semver.org/) guidelines as much as possible.
 
 Releases will be numbered with the following format:
 
@@ -12,28 +12,30 @@ Releases will be numbered with the following format:
 
 And constructed with the following guidelines:
 
-* Breaking backward compatibility bumps the major (and resets the minor and patch)
-* New additions without breaking backward compatibility bumps the minor (and resets the patch)
-* Bug fixes and misc changes bumps the patch
+* Breaking backward compatibility bumps the major and resets the minor and patch.
+* New additions without breaking backward compatibility bumps the minor and resets the patch.
+* Bug fixes and misc changes bumps the patch.
 
-## Coding Styles
+## Coding Standards
 
-Cartalyst follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) and [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) coding standards.
+This package is compliant with the [PSR-1](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md), [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) and [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md). If you notice any compliance oversights, please send a patch via pull request.
 
-## Cartalyst Contribution Guide
+## Pull Requests
 
-This page contains guidelines for contributing to the Cartalyst packages. Please review these guidelines before submitting any pull requests to the package.
+The pull request process differs for new features and bugs.
+
+Pull requests for bugs may be sent without creating any proposal issue. If you believe that you know of a solution for a bug that has been filed, please leave a comment detailing your proposed fix or create a pull request with the fix mentioning that issue id.
+
+### Proposal \ Feature Requests
+
+If you have a proposal or a feature request, you may create an issue with `[Proposal]` in the title.
+
+The proposal should also describe the new feature, as well as implementation ideas. The proposal will then be reviewed and either approved or denied. Once a proposal is approved, a pull request may be created implementing the new feature.
 
 ### Which Branch?
 
-**ALL** bug fixes should be made to the branch which they belong. Bug fixes should never be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**ALL** bug fixes should be made to the branch which they belong to. Bug fixes should never be sent to the `master` branch unless they fix features that exist only in the upcoming release.
 
-### Pull Requests
+If a bug is found on a `minor` version `1.1` and it exists on the `major` version `1.0`, the bug fix should be sent to the `1.0` branch which will be afterwards merged into the `1.1` branch.
 
-The pull request process differs for new features and bugs. Before sending a pull request for a new feature, you should first create an issue with `[Proposal]` in the title. The proposal should describe the new feature, as well as implementation ideas. The proposal will then be reviewed and either approved or denied. Once a proposal is approved, a pull request may be created implementing the new feature. Pull requests which do not follow this guideline will be closed immediately.
-
-Pull requests for bugs may be sent without creating any proposal issue. If you believe that you know of a solution for a bug that has been filed, please leave a comment detailing your proposed fix.
-
-### Feature Requests
-
-If you have an idea for a new feature you would like to see added to the package, you may create an issue with `[Request]` in the title. The feature request will then be reviewed by a core contributor.
+> **Note:** Pull requests which do not follow these guidelines will be closed without any further notice.
