@@ -11,23 +11,8 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
-### v0.2.0 - TBA ([UPGRADE GUIDE](#..))
+### v1.0.0 - TBA
 
-`REMOVED`
+`INIT`
 
-- All the billable functionality is now part of an external package.
-
-### v0.1.1 - 2014-11-14
-
-`FIXED`
-
-- Fix issue with the subscription swap() method creating a new entry when it wasn't required.
-
-### v0.1.0 - 2014-11-14
-
-`ADDED`
-
-- Stripe API.
-- Stripe Billing Entities features.
-- Laravel Service Provider and Facade.
-- Stripe Webhook Controller for Laravel.
+- ..
