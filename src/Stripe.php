@@ -20,9 +20,8 @@
 
 namespace Cartalyst\Stripe;
 
-use Cartalyst\Stripe\Util\Description;
 use Doctrine\Common\Inflector\Inflector;
-use Guzzle\Service\Description\ServiceDescription;
+use Cartalyst\Stripe\Descriptions\Descriptor;
 
 class Stripe
 {
@@ -77,8 +76,8 @@ class Stripe
      */
     public function __construct($apiKey = null, $apiVersion = null)
     {
-        // Create the Description util instance
-        $this->description = new Description;
+        // Create the Descriptor instance
+        $this->descriptor = new Descriptor;
 
         // Set the Stripe API key for authentication
         $this->setApiKey(
@@ -161,7 +160,7 @@ class Stripe
     {
         $this->apiVersion = (string) $apiVersion;
 
-        $this->description->setApiVersion($this->apiVersion);
+        $this->descriptor->setApiVersion($this->apiVersion);
 
         return $this;
     }
@@ -198,6 +197,7 @@ class Stripe
      */
     public function __call($method, array $arguments = [])
     {
+        die;
         if ($this->isIteratorRequest($method)) {
             return $this->handleIteratorRequest($method, $arguments);
         } elseif ($this->isSingleRequest($method)) {
@@ -327,26 +327,9 @@ class Stripe
 
         // Set the description payload into the Guzzle client
         $client->setDescription(
-            $this->buildPayload($method)
+            $this->descriptor->buildPayload($method)
         );
 
         return $client;
-    }
-
-    /**
-     * Returns the current request payload.
-     *
-     * @param  string  $method
-     * @return \Guzzle\Service\Description\ServiceDescription
-     */
-    protected function buildPayload($method)
-    {
-        $operations = $this->description->getPayload($method);
-
-        $description = $this->description->getPayload('description', false);
-
-        return ServiceDescription::factory(
-            array_merge($description, compact('operations'))
-        );
     }
 }
