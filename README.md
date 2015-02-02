@@ -2,7 +2,7 @@
 
 [![Build Status](http://ci.cartalyst.com/build-status/svg/16)](http://ci.cartalyst.com/build-status/view/16)
 
-A comprehensive API package for [Stripe](https://stripe.com/).
+A comprehensive [Stripe](https://stripe.com/) API package.
 
 The package requires PHP 5.4+ and follows the FIG standards PSR-1, PSR-2 and PSR-4 to ensure a high level of interoperability between shared PHP.
 
