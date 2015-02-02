@@ -20,6 +20,7 @@
 
 namespace Cartalyst\Stripe;
 
+use Cartalyst\Stripe\Util\Description;
 use Doctrine\Common\Inflector\Inflector;
 use Guzzle\Service\Description\ServiceDescription;
 
@@ -30,7 +31,7 @@ class Stripe
      *
      * @var string
      */
-    const VERSION = '0.2.0';
+    const VERSION = '1.0.0';
 
     /**
      * The Stripe API key.
@@ -44,7 +45,7 @@ class Stripe
      *
      * @var string
      */
-    protected $apiVersion = '2015-01-11';
+    protected $apiVersion = '2015-01-26';
 
     /**
      * The headers to be sent to the Guzzle client.
@@ -61,6 +62,13 @@ class Stripe
     protected $cachedClient = [];
 
     /**
+     * The Description util class instance.
+     *
+     * @var \Cartalyst\Stripe\Util\Description
+     */
+    protected $description;
+
+    /**
      * Constructor.
      *
      * @param  string  $apiKey
@@ -69,6 +77,9 @@ class Stripe
      */
     public function __construct($apiKey = null, $apiVersion = null)
     {
+        // Create the Description util instance
+        $this->description = new Description;
+
         // Set the Stripe API key for authentication
         $this->setApiKey(
             $apiKey ?: getenv('STRIPE_API_KEY')
@@ -150,6 +161,8 @@ class Stripe
     {
         $this->apiVersion = (string) $apiVersion;
 
+        $this->description->setApiVersion($this->apiVersion);
+
         return $this;
     }
 
@@ -215,7 +228,7 @@ class Stripe
     {
         $client = $this->handleRequest(substr($method, 0, -8));
 
-        $command = $client->getCommand('all', isset($arguments[0] ? $arguments[0] : []);
+        $command = $client->getCommand('all', isset($arguments[0]) ? $arguments[0] : []);
 
         return new ResourceIterator($command, isset($arguments[1]) ? $arguments[1] : []);
     }
@@ -227,7 +240,7 @@ class Stripe
      */
     protected function isSingleRequest($method)
     {
-        return (Inflector::singularize($method) === $method && $this->manifestExists(Inflector::pluralize($method)));
+        return (Inflector::singularize($method) === $method && $this->description->exists(Inflector::pluralize($method)));
     }
 
     /**
@@ -245,18 +258,18 @@ class Stripe
             throw new \InvalidArgumentException('Not enough arguments provided!');
         }
 
-        // Get the request manifest payload data
-        $manifest = $this->getManifestPayload(Inflector::pluralize($method));
+        // Get the request description payload data
+        $description = $this->description->getPayload(Inflector::pluralize($method));
 
-        //
-        $method = isset($manifest['find']) ? $manifest['find'] : null;
+        // Get the find method
+        $method = isset($description['find']) ? $description['find'] : null;
 
-        // Get the 'find' method parameters from the manifest
+        // Get the 'find' method parameters from the description
         if ( ! $method) {
             throw new \InvalidArgumentException('Undefined method [find] called.');
         }
 
-        //
+        // Get the parameters
         $parameters = isset($method['parameters']) ? $method['parameters'] : [];
 
         // Get the required parameters for the request
@@ -285,16 +298,13 @@ class Stripe
     {
         // Is there a cached Guzzle client instance for this method?
         if ( ! isset($this->cachedClient[$method])) {
-            // Check if the manifest file for the given method exists
-            if ( ! $this->manifestExists($method)) {
+            // Check if the description file for the given method exists
+            if ( ! $this->description->exists($method)) {
                 throw new \InvalidArgumentException("Undefined method [{$method}] called.");
             }
 
-            // Create a new Guzzle client instance for this method
-            $client = $this->makeGuzzleClient($method);
-
-            // Make sure this client instance is cached
-            $this->cachedClient[$method] = $client;
+            // Create a new Guzzle client instance for this request and cache it
+            $this->cachedClient[$method] = $this->makeGuzzleClient($method);
         }
 
         // Return the Guzzle client instance
@@ -315,44 +325,12 @@ class Stripe
         // Set the headers
         $client->setHeaders($this->getHeaders());
 
-        // Set the manifest payload into the Guzzle client
+        // Set the description payload into the Guzzle client
         $client->setDescription(
             $this->buildPayload($method)
         );
 
         return $client;
-    }
-
-    /**
-     * Returns the full versioned manifests path.
-     *
-     * @return string
-     */
-    protected function getFullManifestPath()
-    {
-        return __DIR__."/Manifests/{$this->apiVersion}";
-    }
-
-    /**
-     * Returns the given request manifest file path.
-     *
-     * @param  string  $file
-     * @return string
-     */
-    protected function getManifestFilePath($file)
-    {
-        return $this->getFullManifestPath().'/'.ucwords($file).'.php';
-    }
-
-    /**
-     * Checks if the manifest file for the current request exists.
-     *
-     * @param  string  $file
-     * @return bool
-     */
-    protected function manifestExists($file)
-    {
-        return file_exists($this->getManifestFilePath($file));
     }
 
     /**
@@ -363,28 +341,12 @@ class Stripe
      */
     protected function buildPayload($method)
     {
-        $operations = $this->getManifestPayload($method);
+        $operations = $this->description->getPayload($method);
 
-        $manifest = $this->getManifestPayload('manifest', false);
+        $description = $this->description->getPayload('description', false);
 
         return ServiceDescription::factory(
-            array_merge($manifest, compact('operations'))
+            array_merge($description, compact('operations'))
         );
-    }
-
-    /**
-     * Returns the given file manifest data.
-     *
-     * @param  string  $file
-     * @param  bool  $includeErrors
-     * @return array
-     */
-    protected function getManifestPayload($file, $includeErrors = true)
-    {
-        if ($includeErrors) {
-            $errors = $this->getManifestPayload('errors', false);
-        }
-
-        return require_once $this->getManifestFilePath(ucwords($file));
     }
 }
