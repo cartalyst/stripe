@@ -183,7 +183,7 @@ class Stripe
      */
     public function setHeaders(array $headers = [])
     {
-        $this->headers = array_merge($this->headers, $headers);
+        $this->headers = $headers;
 
         return $this;
     }
