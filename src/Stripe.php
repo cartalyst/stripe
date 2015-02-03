@@ -298,9 +298,9 @@ class Stripe
         // Is there a cached Guzzle client instance for this method?
         if ( ! isset($this->cachedClient[$method])) {
             // Check if the description file for the given method exists
-            // if ( ! $this->descriptor->exists($method)) {
-            //     throw new \InvalidArgumentException("Undefined method [{$method}] called.");
-            // }
+            if ( ! $this->descriptor->exists($method)) {
+                throw new \InvalidArgumentException("Undefined method [{$method}] called.");
+            }
 
             // Create a new Guzzle client instance for this request and cache it
             $this->cachedClient[$method] = $this->makeGuzzleClient($method);
