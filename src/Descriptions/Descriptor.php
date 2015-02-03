@@ -1,5 +1,23 @@
 <?php
 
+/**
+ * Part of the Stripe package.
+ *
+ * NOTICE OF LICENSE
+ *
+ * Licensed under the Cartalyst PSL License.
+ *
+ * This source file is subject to the Cartalyst PSL License that is
+ * bundled with this package in the LICENSE file.
+ *
+ * @package    Stripe
+ * @version    1.0.0
+ * @author     Cartalyst LLC
+ * @license    Cartalyst PSL
+ * @copyright  (c) 2011-2015, Cartalyst LLC
+ * @link       http://cartalyst.com
+ */
+
 namespace Cartalyst\Stripe\Descriptions;
 
 use Symfony\Component\Finder\Finder;
@@ -8,28 +26,56 @@ use Guzzle\Service\Description\ServiceDescription;
 class Descriptor
 {
     /**
+     * The Stripe API endpoint.
+     *
+     * @var string
+     */
+    protected $apiEndpoint = 'https://api.stripe.com';
+
+    /**
      * The Stripe API version.
      *
      * @var string
      */
     protected $apiVersion;
 
+    protected $descriptions = [];
+
     protected $versions = [];
 
+    protected $errors = [];
+
+    /**
+     * Constructor.
+     *
+     * @return void
+     */
     public function __construct()
     {
-        $finder = (new Finder)->name('Description.php')->in(__DIR__.'/*');
+        $this->fetchDescriptions();
+    }
 
-        foreach ($finder as $file) {
-            preg_match('/V\d+(?:\_\d)/', $file->getRealpath(), $matches);
+    /**
+     * Returns the Stripe API Endpoint.
+     *
+     * @return string
+     */
+    public function getApiEndpoint()
+    {
+        return $this->apiEndpoint;
+    }
 
-            $className = "Cartalyst\\Stripe\\Descriptions\\{$matches[0]}\\Description";
+    /**
+     * Sets the Stripe API Endpoint.
+     *
+     * @param  string  $apiEndpoint
+     * @return $this
+     */
+    public function setApiEndpoint($apiEndpoint)
+    {
+        $this->apiEndpoint = $apiEndpoint;
 
-            foreach ((new $className)->getSupportedVersions() as $version)
-            {
-                $this->versions[$version][] = $matches[0];
-            }
-        }
+        return $this;
     }
 
     /**
@@ -60,43 +106,62 @@ class Descriptor
         return $this->versions;
     }
 
-
-    public function make($apiVersion)
-    {
-        # this will return the Guzzle ServiceDescription with the proper payload
-
-        # make sure to cache everything to avoid repeating calls..
-    }
-
     /**
      * Returns the current request payload.
      *
      * @param  string  $method
      * @return \Guzzle\Service\Description\ServiceDescription
      */
-    protected function buildPayload($method)
+    public function resolve($method)
     {
-        $operations = $this->getPayload($method);
+        if ( ! in_array($method, $this->descriptions))
+        {
+            $this->descriptions[$method] = $this->makeDescription($method);
+        }
 
-        $description = $this->getPayload('description', false);
+        return $this->descriptions[$method];
+    }
+
+    protected function makeDescription($method)
+    {
+        $attributes = $this->getAttributes();
+
+        $operations = $this->getOperationPayload($method);
 
         return ServiceDescription::factory(
-            array_merge($description, compact('operations'))
+            array_merge($attributes, compact('operations'))
         );
     }
+
+    protected function fetchDescriptions()
+    {
+        $finder = (new Finder)->files()->name('[0-9].[0-9].php')->depth(0)->in(__DIR__);
+
+        foreach ($finder as $file)
+        {
+            $contents = require_once $file->getRealpath();
+
+            $descriptionVersion = str_replace('.php', null, $file->getFilename());
+
+            foreach ($contents as $version)
+            {
+                $this->versions[$version][] = $descriptionVersion;
+            }
+        }
+    }
+
     /**
      * Returns the given request manifest file.
      *
      * @param  string  $file
      * @return string
      */
-    public function getFile($file)
-    {
-        die;
-        $file = ucwords($file);
+    // public function getFile($file)
+    // {
+    //     $file = ucwords($file);
 
-        return __DIR__."/../Descriptions/{$this->apiVersion}/{$file}.php";
-    }
+    //     return __DIR__."/../Descriptions/{$this->apiVersion}/{$file}.php";
+    // }
 
     /**
      * Checks if the manifest file for the current request exists.
@@ -104,24 +169,53 @@ class Descriptor
      * @param  string  $file
      * @return bool
      */
-    protected function manifestExists($file)
+    // protected function manifestExists($file)
+    // {
+    //     return file_exists($this->getFile($file));
+    // }
+
+    /**
+     * Returns the description base attributes.
+     *
+     * @return array
+     */
+    protected function getAttributes()
     {
-        return file_exists($this->getFile($file));
+        return [
+            'name'        => 'Stripe',
+            'description' => 'Stripe payment system.',
+            'baseUrl'     => $this->apiEndpoint,
+            'apiVersion'  => $this->apiVersion,
+            'operations'  => [],
+        ];
     }
 
     /**
-     * Returns the given file manifest data.
+     * Returns the description errors array to be used on the operations.
      *
-     * @param  string  $file
-     * @param  bool  $includeErrors
      * @return array
      */
-    protected function getPayload($file, $includeErrors = true)
+    protected function getErrors()
     {
-        if ($includeErrors) {
-            $errors = require_once $this->getFile('errors');
+        if (empty($this->errors))
+        {
+            $this->errors = require_once __DIR__.'/Errors.php';
         }
 
-        return require_once $this->getFile($file);
+        return $this->errors;
+    }
+
+    protected function getLatestStableVersion()
+    {
+        return end($this->versions[$this->apiVersion]);
+    }
+
+    protected function getOperationPayload($method)
+    {
+        $file = ucwords($method);
+
+        $errors = $this->getErrors();
+
+        return require_once __DIR__."/{$this->getLatestStableVersion()}/{$file}.php";
     }
 }

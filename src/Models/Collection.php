@@ -23,6 +23,7 @@ namespace Cartalyst\Stripe\Models;
 use Closure;
 use Countable;
 use ArrayAccess;
+use ArrayIterator;
 use IteratorAggregate;
 use Cartalyst\Stripe\Stripe;
 use Guzzle\Service\Command\OperationCommand;
@@ -377,6 +378,16 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, ResponseC
     public function toJson($options = 0)
     {
         return json_encode($this->toArray(), $options);
+    }
+
+    /**
+     * Returns an iterator for the items.
+     *
+     * @return \ArrayIterator
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->items);
     }
 
     /**

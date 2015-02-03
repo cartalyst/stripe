@@ -61,11 +61,11 @@ class Stripe
     protected $cachedClient = [];
 
     /**
-     * The Description util class instance.
+     * The Descriptor class instance.
      *
-     * @var \Cartalyst\Stripe\Util\Description
+     * @var \Cartalyst\Stripe\Descriptions\Descriptor
      */
-    protected $description;
+    protected $descriptor;
 
     /**
      * Constructor.
@@ -197,7 +197,6 @@ class Stripe
      */
     public function __call($method, array $arguments = [])
     {
-        die;
         if ($this->isIteratorRequest($method)) {
             return $this->handleIteratorRequest($method, $arguments);
         } elseif ($this->isSingleRequest($method)) {
@@ -240,7 +239,7 @@ class Stripe
      */
     protected function isSingleRequest($method)
     {
-        return (Inflector::singularize($method) === $method && $this->description->exists(Inflector::pluralize($method)));
+        return (Inflector::singularize($method) === $method && $this->descriptor->exists(Inflector::pluralize($method)));
     }
 
     /**
@@ -259,7 +258,7 @@ class Stripe
         }
 
         // Get the request description payload data
-        $description = $this->description->getPayload(Inflector::pluralize($method));
+        $description = $this->descriptor->getPayload(Inflector::pluralize($method));
 
         // Get the find method
         $method = isset($description['find']) ? $description['find'] : null;
@@ -299,9 +298,9 @@ class Stripe
         // Is there a cached Guzzle client instance for this method?
         if ( ! isset($this->cachedClient[$method])) {
             // Check if the description file for the given method exists
-            if ( ! $this->description->exists($method)) {
-                throw new \InvalidArgumentException("Undefined method [{$method}] called.");
-            }
+            // if ( ! $this->descriptor->exists($method)) {
+            //     throw new \InvalidArgumentException("Undefined method [{$method}] called.");
+            // }
 
             // Create a new Guzzle client instance for this request and cache it
             $this->cachedClient[$method] = $this->makeGuzzleClient($method);
@@ -327,7 +326,7 @@ class Stripe
 
         // Set the description payload into the Guzzle client
         $client->setDescription(
-            $this->descriptor->buildPayload($method)
+            $this->descriptor->resolve($method)
         );
 
         return $client;
