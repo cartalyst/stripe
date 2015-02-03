@@ -39,10 +39,26 @@ class Descriptor
      */
     protected $apiVersion;
 
-    protected $descriptions = [];
-
+    /**
+     * Holds all the supported Stripe versions and their
+     * corresponding descriptions versions.
+     *
+     * @var array
+     */
     protected $versions = [];
 
+    /**
+     * The cached descriptions.
+     *
+     * @var array
+     */
+    protected $descriptions = [];
+
+    /**
+     * Holds the errors to be used on the descriptions operations.
+     *
+     * @var array
+     */
     protected $errors = [];
 
     /**
@@ -101,13 +117,8 @@ class Descriptor
         return $this;
     }
 
-    public function getVersions()
-    {
-        return $this->versions;
-    }
-
     /**
-     * Returns the current request payload.
+     * Resolves the current request payload.
      *
      * @param  string  $method
      * @return \Guzzle\Service\Description\ServiceDescription
@@ -122,6 +133,23 @@ class Descriptor
         return $this->descriptions[$method];
     }
 
+    /**
+     * Checks if the operation file for the current request exists.
+     *
+     * @param  string  $file
+     * @return bool
+     */
+    public function exists($file)
+    {
+        return file_exists($this->getFile($file));
+    }
+
+    /**
+     * Creates a Guzzle Service Description instance of the given method.
+     *
+     * @param  string  $method
+     * @return \Guzzle\Service\Description\ServiceDescription
+     */
     protected function makeDescription($method)
     {
         $attributes = $this->getAttributes();
@@ -133,6 +161,11 @@ class Descriptor
         );
     }
 
+    /**
+     * Fetches all the available descriptions.
+     *
+     * @return void
+     */
     protected function fetchDescriptions()
     {
         $finder = (new Finder)->files()->name('[0-9].[0-9].php')->depth(0)->in(__DIR__);
@@ -151,31 +184,7 @@ class Descriptor
     }
 
     /**
-     * Returns the given request manifest file.
-     *
-     * @param  string  $file
-     * @return string
-     */
-    // public function getFile($file)
-    // {
-    //     $file = ucwords($file);
-
-    //     return __DIR__."/../Descriptions/{$this->apiVersion}/{$file}.php";
-    // }
-
-    /**
-     * Checks if the manifest file for the current request exists.
-     *
-     * @param  string  $file
-     * @return bool
-     */
-    // protected function manifestExists($file)
-    // {
-    //     return file_exists($this->getFile($file));
-    // }
-
-    /**
-     * Returns the description base attributes.
+     * Returns the base attributes for the description.
      *
      * @return array
      */
@@ -205,17 +214,40 @@ class Descriptor
         return $this->errors;
     }
 
+    /**
+     * Returns the latest description version for the
+     * current Stripe API version.
+     *
+     * @return string
+     */
     protected function getLatestStableVersion()
     {
         return end($this->versions[$this->apiVersion]);
     }
 
-    protected function getOperationPayload($method)
+    /**
+     * Returns the given request operation file path.
+     *
+     * @param  string  $file
+     * @return string
+     */
+    protected function getFile($method)
     {
         $file = ucwords($method);
 
+        return __DIR__."/{$this->getLatestStableVersion()}/{$file}.php";
+    }
+
+    /**
+     * Returns the given method operation payload.
+     *
+     * @param  string  $method
+     * @return array
+     */
+    protected function getOperationPayload($method)
+    {
         $errors = $this->getErrors();
 
-        return require_once __DIR__."/{$this->getLatestStableVersion()}/{$file}.php";
+        return require_once $this->getFile($method);
     }
 }
