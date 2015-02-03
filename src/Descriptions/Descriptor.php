@@ -172,7 +172,7 @@ class Descriptor
 
         foreach ($finder as $file)
         {
-            $contents = require_once $file->getRealpath();
+            $contents = require $file->getRealpath();
 
             $descriptionVersion = str_replace('.php', null, $file->getFilename());
 
