@@ -32,8 +32,8 @@
         "php": ">=5.4.0",
         "doctrine/inflector": "1.0.*",
         "guzzle/guzzle": "3.9.*",
-        "nesbot/carbon": "~1.13",
-        "symfony/finder": "~2.5"
+        "nesbot/carbon": "1.13.*",
+        "symfony/finder": "2.5.*"
     },
     "require-dev": {
         "mockery/mockery": "~0.9",
@@ -53,5 +53,5 @@
             "dev-master": "1.0.x-dev"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
