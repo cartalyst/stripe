@@ -56,6 +56,13 @@ class Descriptor
     protected $descriptions = [];
 
     /**
+     * The cached descriptions operations payload.
+     *
+     * @var array
+     */
+    protected $payload = [];
+
+    /**
      * Holds the errors to be used on the descriptions operations.
      *
      * @var array
@@ -152,6 +159,24 @@ class Descriptor
     }
 
     /**
+     * Returns the given method operation payload.
+     *
+     * @param  string  $method
+     * @return array
+     */
+    public function getOperationPayload($method)
+    {
+        if ( ! isset($this->payload[$method]))
+        {
+            $errors = $this->getErrors();
+
+            $this->payload[$method] = require $this->getFile($method);
+        }
+
+        return $this->payload[$method];
+    }
+
+    /**
      * Creates a Guzzle Service Description instance of the given method.
      *
      * @param  string  $method
@@ -243,18 +268,5 @@ class Descriptor
         $file = ucwords($method);
 
         return __DIR__."/{$this->getLatestStableVersion()}/{$file}.php";
-    }
-
-    /**
-     * Returns the given method operation payload.
-     *
-     * @param  string  $method
-     * @return array
-     */
-    protected function getOperationPayload($method)
-    {
-        $errors = $this->getErrors();
-
-        return require_once $this->getFile($method);
     }
 }

@@ -257,8 +257,11 @@ class Stripe
             throw new \InvalidArgumentException('Not enough arguments provided!');
         }
 
+        // The pluralized method name
+        $pluralMethod = Inflector::pluralize($method);
+
         // Get the request description payload data
-        $description = $this->descriptor->getPayload(Inflector::pluralize($method));
+        $description = $this->descriptor->getOperationPayload($pluralMethod);
 
         // Get the find method
         $method = isset($description['find']) ? $description['find'] : null;
