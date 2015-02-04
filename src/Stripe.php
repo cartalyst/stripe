@@ -221,7 +221,7 @@ class Stripe
      *
      * @param  string  $method
      * @param  array  $arguments
-     * @return \Cartalyst\Stripe\Api\ResourceIterator
+     * @return \Cartalyst\Stripe\ResourceIterator
      */
     protected function handleIteratorRequest($method, array $arguments)
     {

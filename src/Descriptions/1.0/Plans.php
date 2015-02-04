@@ -119,7 +119,7 @@ return [
                 'type'        => 'number',
                 'required'    => true,
                 'filters'     => [
-                    'Cartalyst\Stripe\Api\Filters\Number::convert',
+                    'Cartalyst\Stripe\Filters\Number::convert',
                 ],
             ],
 

@@ -126,7 +126,7 @@ return [
                 'type'        => 'number',
                 'required'    => true,
                 'filters'     => [
-                    'Cartalyst\Stripe\Api\Filters\Number::convert',
+                    'Cartalyst\Stripe\Filters\Number::convert',
                 ],
             ],
 
@@ -171,7 +171,7 @@ return [
                 'type'        => 'boolean',
                 'required'    => false,
                 'filters'     => [
-                    'Cartalyst\Stripe\Api\Filters\Boolean::convert',
+                    'Cartalyst\Stripe\Filters\Boolean::convert',
                 ],
             ],
 
@@ -270,7 +270,7 @@ return [
                 'type'        => 'number',
                 'required'    => false,
                 'filters'     => [
-                    'Cartalyst\Stripe\Api\Filters\Number::convert',
+                    'Cartalyst\Stripe\Filters\Number::convert',
                 ],
             ],
 

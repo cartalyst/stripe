@@ -58,7 +58,7 @@ return [
                 'type'        => 'boolean',
                 'required'    => false,
                 'filters'     => [
-                    'Cartalyst\Stripe\Api\Filters\Boolean::convert',
+                    'Cartalyst\Stripe\Filters\Boolean::convert',
                 ],
             ],
 
