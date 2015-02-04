@@ -90,7 +90,16 @@ class StripeTest extends PHPUnit_Framework_TestCase
         $this->stripe->setApiVersion('2014-03-28');
 
         $this->assertEquals('2014-03-28', $this->stripe->getApiVersion());
-    }###
+    }
+
+    /**
+     * @test
+     * @expectedException \InvalidArgumentException
+     */
+    public function if_an_invalid_api_version_is_used_it_throws_an_exception()
+    {
+        $this->stripe->setApiVersion('1.2.3');
+    }
 
     /** @test */
     public function it_can_get_and_set_the_guzzle_client_headers()
