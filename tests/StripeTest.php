@@ -118,4 +118,21 @@ class StripeTest extends PHPUnit_Framework_TestCase
     {
         $this->stripe->getVersion();
     }
+
+    /**
+     * @test
+     * @expectedException \InvalidArgumentException
+     */
+    public function if_an_invalid_method_is_called_an_exception_is_thrown()
+    {
+        $this->stripe->foo();
+    }
+
+    /** @test */
+    public function it_can_do_an_iterator_request()
+    {
+        $this->assertInstanceOf(
+            'Cartalyst\Stripe\ResourceIterator', $this->stripe->customersIterator()
+        );
+    }
 }
