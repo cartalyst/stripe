@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-namespace Cartalyst\Stripe\tests;
+namespace Cartalyst\Stripe\Tests;
 
 use Cartalyst\Stripe\Stripe;
 use PHPUnit_Framework_TestCase;
@@ -57,7 +57,7 @@ class StripeTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('stripe-api-key', $stripe->getApiKey());
 
-        $this->assertEquals('stripe-api-version', $stripe->getApiVersion());
+        $this->assertEquals('2014-03-28', $stripe->getApiVersion());
     }
 
     /** @test */
@@ -87,10 +87,10 @@ class StripeTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals('2014-06-17', $this->stripe->getApiVersion());
 
-        $this->stripe->setApiVersion('2014-01-01');
+        $this->stripe->setApiVersion('2014-03-28');
 
-        $this->assertEquals('2014-01-01', $this->stripe->getApiVersion());
-    }
+        $this->assertEquals('2014-03-28', $this->stripe->getApiVersion());
+    }###
 
     /** @test */
     public function it_can_get_and_set_the_guzzle_client_headers()

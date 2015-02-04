@@ -20,6 +20,7 @@
 
 namespace Cartalyst\Stripe\Descriptions;
 
+use InvalidArgumentException;
 use Symfony\Component\Finder\Finder;
 use Guzzle\Service\Description\ServiceDescription;
 
@@ -109,10 +110,16 @@ class Descriptor
      *
      * @param  string  $apiVersion
      * @return $this
+     * @throws \InvalidArgumentException
      */
     public function setApiVersion($apiVersion)
     {
         $this->apiVersion = $apiVersion;
+
+        if ( ! isset($this->versions[$this->apiVersion]))
+        {
+            throw new InvalidArgumentException('This Api version is not currently supported!');
+        }
 
         return $this;
     }

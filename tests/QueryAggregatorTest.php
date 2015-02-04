@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-namespace Cartalyst\Stripe\tests;
+namespace Cartalyst\Stripe\Tests;
 
 use Guzzle\Http\QueryString;
 use PHPUnit_Framework_TestCase;
@@ -34,25 +34,16 @@ class QueryAggregatorTest extends PHPUnit_Framework_TestCase
         $aggregator = new QueryAggregator;
 
         $result = $aggregator->aggregate(
-            'expand',
-            [
-                'customer', 'invoice',
-            ],
-            $query
+            'expand', [ 'customer', 'invoice', ], $query
         );
 
-        $expected[$query->encodeValue('expand[]')] = ['customer', 'invoice'];
+        $expected[$query->encodeValue('expand[]')] = [ 'customer', 'invoice' ];
 
         $this->assertEquals($expected, $result);
 
 
         $result = $aggregator->aggregate(
-            'card',
-            [
-                'name' => 'foo',
-                'ccv'  => '123',
-            ],
-            $query
+            'card', [ 'name' => 'foo', 'ccv'  => '123', ], $query
         );
 
         $expected = [

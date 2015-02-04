@@ -29,6 +29,6 @@
     </logging>
     <php>
         <env name="STRIPE_API_KEY" value="stripe-api-key"/>
-        <env name="STRIPE_API_VERSION" value="stripe-api-version"/>
+        <env name="STRIPE_API_VERSION" value="2014-03-28"/>
     </php>
 </phpunit>

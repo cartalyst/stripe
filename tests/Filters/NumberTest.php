@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-namespace Cartalyst\Stripe\tests\Filters;
+namespace Cartalyst\Stripe\Tests\Filters;
 
 use PHPUnit_Framework_TestCase;
 use Cartalyst\Stripe\Filters\Number;

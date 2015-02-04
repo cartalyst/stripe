@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-namespace Cartalyst\Stripe\tests\Exception;
+namespace Cartalyst\Stripe\Tests\Exception;
 
 use PHPUnit_Framework_TestCase;
 use Guzzle\Http\Message\Response;
