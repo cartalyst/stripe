@@ -20,8 +20,8 @@
 
 namespace Cartalyst\Stripe;
 
-use Doctrine\Common\Inflector\Inflector;
-use Cartalyst\Stripe\Descriptions\Descriptor;
+use Cartalyst\Stripe\Api;
+use Cartalyst\Stripe\Listeners\ErrorListener;
 
 class Stripe
 {
@@ -33,11 +33,11 @@ class Stripe
     const VERSION = '1.0.0';
 
     /**
-     * The Stripe API key.
+     * The Guzzle client instance.
      *
-     * @var string
+     * @var \GuzzleHttp\Client
      */
-    protected $apiKey;
+    protected $client;
 
     /**
      * The Stripe API version.
@@ -45,27 +45,6 @@ class Stripe
      * @var string
      */
     protected $apiVersion = '2015-01-26';
-
-    /**
-     * The headers to be sent to the Guzzle client.
-     *
-     * @var array
-     */
-    protected $headers = [];
-
-    /**
-     * The cached request clients.
-     *
-     * @var array
-     */
-    protected $cachedClient = [];
-
-    /**
-     * The Descriptor class instance.
-     *
-     * @var \Cartalyst\Stripe\Descriptions\Descriptor
-     */
-    protected $descriptor;
 
     /**
      * Constructor.
@@ -76,18 +55,9 @@ class Stripe
      */
     public function __construct($apiKey = null, $apiVersion = null)
     {
-        // Create the Descriptor instance
-        $this->descriptor = new Descriptor;
+        $this->client = new HttpClient($apiKey, $apiVersion);
 
-        // Set the Stripe API key for authentication
-        $this->setApiKey(
-            $apiKey ?: getenv('STRIPE_API_KEY')
-        );
-
-        // Set the Stripe API version
-        $this->setApiVersion(
-            $apiVersion ?: getenv('STRIPE_API_VERSION') ?: $this->apiVersion
-        );
+        $this->client->setUserAgentVersion(self::VERSION);
     }
 
     /**
@@ -119,7 +89,7 @@ class Stripe
      */
     public function getApiKey()
     {
-        return $this->apiKey;
+        return $this->client->getApiKey();
     }
 
     /**
@@ -127,19 +97,13 @@ class Stripe
      *
      * @param  string  $apiKey
      * @return $this
-     * @throws \RuntimeException
      */
     public function setApiKey($apiKey)
     {
-        $this->apiKey = $apiKey;
-
-        if ( ! $this->apiKey) {
-            throw new \RuntimeException('The Stripe API key is not defined!');
-        }
+        $this->client->setApiKey($apiKey);
 
         return $this;
     }
-
     /**
      * Returns the Stripe API version.
      *
@@ -147,7 +111,7 @@ class Stripe
      */
     public function getApiVersion()
     {
-        return $this->apiVersion;
+        return $this->client->getApiVersion();
     }
 
     /**
@@ -158,32 +122,7 @@ class Stripe
      */
     public function setApiVersion($apiVersion)
     {
-        $this->apiVersion = (string) $apiVersion;
-
-        $this->descriptor->setApiVersion($this->apiVersion);
-
-        return $this;
-    }
-
-    /**
-     * Returns the Guzzle client headers.
-     *
-     * @return array
-     */
-    public function getHeaders()
-    {
-        return $this->headers;
-    }
-
-    /**
-     * Sets the Guzzle client headers.
-     *
-     * @param  array  $headers
-     * @return $this
-     */
-    public function setHeaders(array $headers = [])
-    {
-        $this->headers = $headers;
+        $this->client->setApiVersion($apiVersion);
 
         return $this;
     }
@@ -194,144 +133,26 @@ class Stripe
      * @param  string  $method
      * @param  array  $arguments
      * @return mixed
+     * @throws \InvalidArgumentException
      */
     public function __call($method, array $arguments = [])
     {
-        if ($this->isIteratorRequest($method)) {
-            return $this->handleIteratorRequest($method, $arguments);
-        } elseif ($this->isSingleRequest($method)) {
-            return $this->handleSingleRequest($method, $arguments);
+        if ($class = $this->validateRequest($method)) {
+            return new $class($this->client);
         }
 
-        return $this->handleRequest($method);
+        throw new \InvalidArgumentException("Undefined method [{$method}] called.");
     }
 
-    /**
-     * Determines if the request is an iterator request.
-     *
-     * @return bool
-     */
-    protected function isIteratorRequest($method)
+    protected function validateRequest($method)
     {
-        return substr($method, -8) === 'Iterator';
-    }
+        # check if it's an iterator request : Stripe::customersIterator();
+        # check if it's a single request    : Stripe::customer(:id);
 
-    /**
-     * Handles an iterator request.
-     *
-     * @param  string  $method
-     * @param  array  $arguments
-     * @return \Cartalyst\Stripe\ResourceIterator
-     */
-    protected function handleIteratorRequest($method, array $arguments)
-    {
-        $client = $this->handleRequest(substr($method, 0, -8));
+        $class = "\\Cartalyst\\Stripe\\Api\\".ucwords($method);
 
-        $command = $client->getCommand('all', isset($arguments[0]) ? $arguments[0] : []);
-
-        return new ResourceIterator($command, isset($arguments[1]) ? $arguments[1] : []);
-    }
-
-    /**
-     * Determines if the request is a single request.
-     *
-     * @return bool
-     */
-    protected function isSingleRequest($method)
-    {
-        return (Inflector::singularize($method) === $method && $this->descriptor->exists(Inflector::pluralize($method)));
-    }
-
-    /**
-     * Handles a single request.
-     *
-     * @param  string  $method
-     * @param  array  $arguments
-     * @return \Guzzle\Service\Client
-     * @throws \InvalidArgumentException
-     */
-    protected function handleSingleRequest($method, array $arguments)
-    {
-        // Check if we have any arguments
-        if (empty($arguments)) {
-            throw new \InvalidArgumentException('Not enough arguments provided!');
+        if (class_exists($class)) {
+            return $class;
         }
-
-        // The pluralized method name
-        $pluralMethod = Inflector::pluralize($method);
-
-        // Get the request description payload data
-        $description = $this->descriptor->getOperationPayload($pluralMethod);
-
-        // Get the find method
-        $method = isset($description['find']) ? $description['find'] : null;
-
-        // Get the 'find' method parameters from the description
-        if ( ! $method) {
-            throw new \InvalidArgumentException('Undefined method [find] called.');
-        }
-
-        // Get the parameters
-        $parameters = isset($method['parameters']) ? $method['parameters'] : [];
-
-        // Get the required parameters for the request
-        $required = array_where($parameters, function ($key, $value) {
-            return $value['required'] === true;
-        });
-
-        // Prepare the arguments for the request
-        $arguments = array_combine(
-            array_keys($required),
-            count($required) === 1 ? (array) $arguments[0] : $arguments
-        );
-
-        // Execute the request
-        return $this->handleRequest($pluralMethod)->find($arguments);
-    }
-
-    /**
-     * Handles the current request.
-     *
-     * @param  string  $method
-     * @return \Guzzle\Service\Client
-     * @throws \InvalidArgumentException
-     */
-    protected function handleRequest($method)
-    {
-        // Is there a cached Guzzle client instance for this method?
-        if ( ! isset($this->cachedClient[$method])) {
-            // Check if the description file for the given method exists
-            if ( ! $this->descriptor->exists($method)) {
-                throw new \InvalidArgumentException("Undefined method [{$method}] called.");
-            }
-
-            // Create a new Guzzle client instance for this request and cache it
-            $this->cachedClient[$method] = $this->makeGuzzleClient($method);
-        }
-
-        // Return the Guzzle client instance
-        return $this->cachedClient[$method];
-    }
-
-    /**
-     * Creates a new Guzzle client instance for the given method.
-     *
-     * @param  string  $method
-     * @return \Cartalyst\Stripe\Client
-     */
-    protected function makeGuzzleClient($method)
-    {
-        // Create a new Guzzle instance
-        $client = new Client($this);
-
-        // Set the headers
-        $client->setHeaders($this->getHeaders());
-
-        // Set the description payload into the Guzzle client
-        $client->setDescription(
-            $this->descriptor->resolve($method)
-        );
-
-        return $client;
     }
 }

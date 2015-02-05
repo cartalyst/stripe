@@ -30,10 +30,7 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "doctrine/inflector": "1.0.*",
-        "guzzle/guzzle": "3.9.*",
-        "nesbot/carbon": "1.13.*",
-        "symfony/finder": "2.5.*"
+        "guzzlehttp/guzzle": "~5.0"
     },
     "require-dev": {
         "mockery/mockery": "~0.9",
@@ -42,10 +39,7 @@
     "autoload": {
         "psr-4": {
             "Cartalyst\\Stripe\\": "src/"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
+        }
     },
     "extra": {
         "component": "package",

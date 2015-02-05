@@ -92,47 +92,24 @@ class StripeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('2014-03-28', $this->stripe->getApiVersion());
     }
 
-    /**
-     * @test
-     * @expectedException \InvalidArgumentException
-     */
-    public function if_an_invalid_api_version_is_used_it_throws_an_exception()
-    {
-        $this->stripe->setApiVersion('1.2.3');
-    }
-
-    /** @test */
-    public function it_can_get_and_set_the_guzzle_client_headers()
-    {
-        $headers = [
-            'some-header' => 'foo-bar',
-        ];
-
-        $this->stripe->setHeaders($headers);
-
-        $this->assertEquals($headers, $this->stripe->getHeaders());
-    }
-
     /** @test */
     public function it_can_get_the_current_package_version()
     {
         $this->stripe->getVersion();
     }
 
+    /** @test */
+    public function it_can_create_requests()
+    {
+        $this->stripe->customers();
+    }
+
     /**
      * @test
      * @expectedException \InvalidArgumentException
      */
-    public function if_an_invalid_method_is_called_an_exception_is_thrown()
+    public function it_throws_an_exception_when_the_request_is_invalid()
     {
         $this->stripe->foo();
-    }
-
-    /** @test */
-    public function it_can_do_an_iterator_request()
-    {
-        $this->assertInstanceOf(
-            'Cartalyst\Stripe\ResourceIterator', $this->stripe->customersIterator()
-        );
     }
 }
