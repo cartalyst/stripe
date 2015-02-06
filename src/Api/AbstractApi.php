@@ -50,9 +50,7 @@ abstract class AbstractApi implements ApiInterface
     }
 
     /**
-     * Returns the number of items to return per page.
-     *
-     * @return void
+     * {@inheritDoc}
      */
     public function getPerPage()
     {
@@ -60,10 +58,7 @@ abstract class AbstractApi implements ApiInterface
     }
 
     /**
-     * Sets the number of items to return per page.
-     *
-     * @param  int  $perPage
-     * @return $this
+     * {@inheritDoc}
      */
     public function setPerPage($perPage)
     {
@@ -77,7 +72,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _get($url = null, $options = [])
     {
-        return $this->client->get($url, $options);
+        return $this->client->get($url, $options)->json();
     }
 
     /**
@@ -93,7 +88,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _delete($url = null, array $options = [])
     {
-        return $this->client->delete($url, $options);
+        return $this->client->delete($url, $options)->json();
     }
 
     /**
@@ -101,7 +96,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _put($url = null, array $options = [])
     {
-        return $this->client->put($url, $options);
+        return $this->client->put($url, $options)->json();
     }
 
     /**
@@ -109,7 +104,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _patch($url = null, array $options = [])
     {
-        return $this->client->patch($url, $options);
+        return $this->client->patch($url, $options)->json();
     }
 
     /**
@@ -117,7 +112,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _post($url = null, array $options = [])
     {
-        return $this->client->post($url, $options);
+        return $this->client->post($url, $options)->json();
     }
 
     /**
@@ -125,6 +120,6 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _options($url = null, array $options = [])
     {
-        return $this->client->options($url, $options);
+        return $this->client->options($url, $options)->json();
     }
 }

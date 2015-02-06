@@ -22,32 +22,32 @@ namespace Cartalyst\Stripe\Api;
 
 use Cartalyst\Stripe\HttpClient;
 
-class Customers extends AbstractApi
+class Charges extends AbstractApi
 {
     /**
-     * Creates a new customer.
+     * Creates a new charge.
      *
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
     public function create(array $parameters = [])
     {
-        return $this->_post('v1/customers', [ 'query' => $parameters ]);
+        return $this->_post('v1/charges', [ 'query' => $parameters ]);
     }
 
     /**
-     * Retrieves an existing customer.
+     * Retrieves an existing charge.
      *
      * @param  string  $id
      * @return \GuzzleHttp\Message\ResponseInterface
      */
     public function find($id)
     {
-        return $this->_get("v1/customers/{$id}");
+        return $this->_get("v1/charges/{$id}");
     }
 
     /**
-     * Updates an existing customer.
+     * Updates an existing charge.
      *
      * @param  string  $id
      * @param  array  $parameters
@@ -55,28 +55,29 @@ class Customers extends AbstractApi
      */
     public function update($id, array $parameters = [])
     {
-        return $this->_post("v1/customers/{$id}", [ 'query' => $parameters ]);
+        return $this->_post("v1/charges/{$id}", [ 'query' => $parameters ]);
     }
 
     /**
-     * Deletes an existing customer.
+     * Captures an existing charge.
      *
      * @param  string  $id
+     * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function delete($id)
+    public function capture($id, array $parameters = [])
     {
-        return $this->_delete("v1/customers/{$id}");
+        return $this->_post("v1/charges/{$id}/capture", [ 'query' => $parameters ]);
     }
 
     /**
-     * Lists all customers.
+     * Lists all charges.
      *
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
     public function all(array $parameters = [])
     {
-        return $this->_get('v1/customers', [ 'query' => $parameters ]);
+        return $this->_get('v1/charges', [ 'query' => $parameters ]);
     }
 }

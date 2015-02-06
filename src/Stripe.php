@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe;
 
 use Cartalyst\Stripe\Api;
+use Doctrine\Common\Inflector\Inflector;
 use Cartalyst\Stripe\Listeners\ErrorListener;
 
 class Stripe
@@ -127,21 +128,69 @@ class Stripe
         return $this;
     }
 
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    public function setClient($client)
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
     /**
      * Dynamically handle missing methods.
      *
      * @param  string  $method
      * @param  array  $arguments
-     * @return mixed
-     * @throws \InvalidArgumentException
+     * @return \Cartalyst\Stripe\Api\ApiInterface
+     * @throws \BadMethodCallException
      */
     public function __call($method, array $arguments = [])
     {
+        // if ($this->isSingleRequest($method)) {
+        //     return $this->handleSingleRequest($method);
+        // } elseif ($this->isIteratorRequest($method)) {
+        //     return $this->handleIteratorRequest($method);
+        // }
+
         if ($class = $this->validateRequest($method)) {
             return new $class($this->client);
         }
 
-        throw new \InvalidArgumentException("Undefined method [{$method}] called.");
+        throw new \BadMethodCallException("Undefined method [{$method}] called.");
+    }
+
+    /**
+     * Determines if the request is a single request.
+     *
+     * @return bool
+     */
+    protected function isSingleRequest($method)
+    {
+        return (Inflector::singularize($method) == $method && $this->checkApiClassExists(Inflector::pluralize($method)));
+    }
+
+    /**
+     * Determines if the request is an iterator request.
+     *
+     * @return bool
+     */
+    protected function isIteratorRequest($method)
+    {
+        return substr($method, -8) === 'Iterator';
+    }
+
+    protected function getApiClassNamespace($method)
+    {
+        return "\\Cartalyst\\Stripe\\Api\\".ucwords($method);
+    }
+
+    protected function checkApiClassExists($method)
+    {
+        return class_exists($this->getApiClassNamespace($method));
     }
 
     protected function validateRequest($method)

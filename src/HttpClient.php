@@ -27,10 +27,27 @@ use Cartalyst\Stripe\Listeners\ErrorListener;
 
 class HttpClient extends \GuzzleHttp\Client
 {
+    /**
+     * The Stripe API key.
+     *
+     * @var string
+     */
     protected $apiKey;
 
+    /**
+     * The Stripe API version.
+     *
+     * @var string
+     */
     protected $apiVersion;
 
+    /**
+     * Constructor.
+     *
+     * @param  string  $apiKey
+     * @param  string  $apiVersion
+     * @return void
+     */
     public function __construct($apiKey = null, $apiVersion = null)
     {
         parent::__construct([

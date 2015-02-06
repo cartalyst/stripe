@@ -25,6 +25,26 @@ use Cartalyst\Stripe\Exception\StripeException;
 
 class ErrorListener
 {
+    protected $mappedExceptions = [
+        // Often missing a required parameter
+        400 => 'BadRequestException',
+
+        // Invalid Stripe API key provided
+        401 => 'UnauthorizedException',
+
+        // Parameters were valid but request failed
+        402 => 'InvalidRequestException',
+
+        // The requested item doesn't exist
+        404 => 'NotFoundException',
+
+        // Something went wrong on Stripe's end
+        500 => 'ServerErrorException',
+        502 => 'ServerErrorException',
+        503 => 'ServerErrorException',
+        504 => 'ServerErrorException',
+    ];
+
     /**
      * Constructor.
      *
@@ -46,12 +66,53 @@ class ErrorListener
 
         $type = str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $type)));
 
-        $class = "\Cartalyst\Stripe\Exception\{$type}Exception";
+        // Throw an exception by the error type
+        $this->handleExceptionByType($type, $message, $statusCode);
+
+        // Throw an exception by the status code
+        $this->handleExceptionByStatusCode($message, $statusCode);
+
+        // Not much we can do now, throw a regular exception
+        throw new StripeException($message, $statusCode);
+    }
+
+    protected function getClassNamespace($class)
+    {
+        return "\Cartalyst\\Stripe\\Exception\\{$class}";
+    }
+
+    /**
+     * Throw an exception by the error type.
+     *
+     * @param  string  $type
+     * @param  string $message
+     * @param  int  $statusCode
+     * @return void
+     * @throws mixed
+     */
+    protected function handleExceptionByType($type, $message, $statusCode)
+    {
+        $class = $this->getClassNamespace($type.'Exception');
 
         if (class_exists($class)) {
             throw new $class($message, $statusCode);
-        } else {
-            throw new StripeException($message, $statusCode);
+        }
+    }
+
+    /**
+     * Throw an exception by the status code.
+     *
+     * @param  string $message
+     * @param  int  $statusCode
+     * @return void
+     * @throws mixed
+     */
+    protected function handleExceptionByStatusCode($message, $statusCode)
+    {
+        if (array_key_exists($statusCode, $this->mappedExceptions)) {
+            $class = $this->getClassNamespace($this->mappedExceptions[$statusCode]);
+
+            throw new $class($message, $statusCode);
         }
     }
 }

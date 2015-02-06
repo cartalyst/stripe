@@ -23,6 +23,21 @@ namespace Cartalyst\Stripe\Api;
 interface ApiInterface
 {
     /**
+     * Returns the number of items to return per page.
+     *
+     * @return void
+     */
+    public function getPerPage();
+
+    /**
+     * Sets the number of items to return per page.
+     *
+     * @param  int  $perPage
+     * @return $this
+     */
+    public function setPerPage($perPage);
+
+    /**
      * Send a GET request.
      *
      * @param  string  $url
