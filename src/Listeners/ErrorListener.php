@@ -25,24 +25,31 @@ use Cartalyst\Stripe\Exception\StripeException;
 
 class ErrorListener
 {
+    /**
+     * List of mapped exceptions and their corresponding status codes.
+     *
+     * @var array
+     */
     protected $mappedExceptions = [
+
         // Often missing a required parameter
-        400 => 'BadRequestException',
+        400 => 'BadRequest',
 
         // Invalid Stripe API key provided
-        401 => 'UnauthorizedException',
+        401 => 'Unauthorized',
 
         // Parameters were valid but request failed
-        402 => 'InvalidRequestException',
+        402 => 'InvalidRequest',
 
         // The requested item doesn't exist
-        404 => 'NotFoundException',
+        404 => 'NotFound',
 
         // Something went wrong on Stripe's end
-        500 => 'ServerErrorException',
-        502 => 'ServerErrorException',
-        503 => 'ServerErrorException',
-        504 => 'ServerErrorException',
+        500 => 'ServerError',
+        502 => 'ServerError',
+        503 => 'ServerError',
+        504 => 'ServerError',
+
     ];
 
     /**
@@ -67,18 +74,24 @@ class ErrorListener
         $type = str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $type)));
 
         // Throw an exception by the error type
-        $this->handleExceptionByType($type, $message, $statusCode);
+        #$this->handleExceptionByType($type, $message, $statusCode);
 
         // Throw an exception by the status code
-        $this->handleExceptionByStatusCode($message, $statusCode);
+        #$this->handleExceptionByStatusCode($message, $statusCode);
 
         // Not much we can do now, throw a regular exception
-        throw new StripeException($message, $statusCode);
+        throw new \Exception($message, $statusCode);
     }
 
-    protected function getClassNamespace($class)
+    /**
+     * Returns the given exception class full namespace.
+     *
+     * @param  string  $exception
+     * @return string
+     */
+    protected function getExceptionClassNamespace($exception)
     {
-        return "\Cartalyst\\Stripe\\Exception\\{$class}";
+        return "\\Cartalyst\\Stripe\\Exception\\{$exception}Exception";
     }
 
     /**
@@ -92,7 +105,7 @@ class ErrorListener
      */
     protected function handleExceptionByType($type, $message, $statusCode)
     {
-        $class = $this->getClassNamespace($type.'Exception');
+        $class = $this->getExceptionClassNamespace($type);
 
         if (class_exists($class)) {
             throw new $class($message, $statusCode);
@@ -110,7 +123,7 @@ class ErrorListener
     protected function handleExceptionByStatusCode($message, $statusCode)
     {
         if (array_key_exists($statusCode, $this->mappedExceptions)) {
-            $class = $this->getClassNamespace($this->mappedExceptions[$statusCode]);
+            $class = $this->getExceptionClassNamespace($this->mappedExceptions[$statusCode]);
 
             throw new $class($message, $statusCode);
         }
