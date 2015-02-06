@@ -70,9 +70,9 @@ class HttpClient extends \GuzzleHttp\Client
             );
         });
 
-        $emitter->on('error', function(ErrorEvent $event, $name) {
-            new ErrorListener($event, $name);
-        });
+        // $emitter->on('error', function(ErrorEvent $event, $name) {
+        //     new ErrorListener($event, $name);
+        // });
     }
 
     /**
