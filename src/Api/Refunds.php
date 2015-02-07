@@ -43,7 +43,7 @@ class Refunds extends AbstractApi
      * @param  string  $refundId
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function find($chargeId)
+    public function find($chargeId, $refundId)
     {
         return $this->_get("v1/charges/{$chargeId}/refunds/{$refundId}");
     }
@@ -52,8 +52,8 @@ class Refunds extends AbstractApi
      * Updates an existing refund on the given charge.
      *
      * @param  string  $chargeId
-     * @param  array  $parameters
      * @param  string  $refundId
+     * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
     public function update($chargeId, $refundId, array $parameters = [])
