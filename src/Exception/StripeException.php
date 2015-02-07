@@ -20,6 +20,8 @@
 
 namespace Cartalyst\Stripe\Exception;
 
+use GuzzleHttp\Exception\ClientException;
+
 class StripeException extends \Exception
 {
     /**
@@ -50,15 +52,15 @@ class StripeException extends \Exception
     ];
 
     /**
-     * Constructor.
+     * Handles the given exception.
      *
-     * @param  \GuzzleHttp\Event\ErrorEvent  $event
+     * @param  \GuzzleHttp\Exception\ClientException  $exception
      * @return void
      * @throws \Cartalyst\Stripe\Exception\StripeException
      */
-    public static function make($event)
+    public static function make(ClientException $exception)
     {
-        $response = $event->getResponse();
+        $response = $exception->getResponse();
 
         $statusCode = $response->getStatusCode();
 
