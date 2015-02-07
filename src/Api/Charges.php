@@ -20,8 +20,6 @@
 
 namespace Cartalyst\Stripe\Api;
 
-use Cartalyst\Stripe\HttpClient;
-
 class Charges extends AbstractApi
 {
     /**
@@ -32,7 +30,7 @@ class Charges extends AbstractApi
      */
     public function create(array $parameters = [])
     {
-        return $this->_post('v1/charges', [ 'query' => $parameters ]);
+        return $this->_post('v1/charges', $parameters);
     }
 
     /**
@@ -55,7 +53,7 @@ class Charges extends AbstractApi
      */
     public function update($id, array $parameters = [])
     {
-        return $this->_post("v1/charges/{$id}", [ 'query' => $parameters ]);
+        return $this->_post("v1/charges/{$id}", $parameters);
     }
 
     /**
@@ -67,7 +65,7 @@ class Charges extends AbstractApi
      */
     public function capture($id, array $parameters = [])
     {
-        return $this->_post("v1/charges/{$id}/capture", [ 'query' => $parameters ]);
+        return $this->_post("v1/charges/{$id}/capture", $parameters);
     }
 
     /**
@@ -78,6 +76,6 @@ class Charges extends AbstractApi
      */
     public function all(array $parameters = [])
     {
-        return $this->_get('v1/charges', [ 'query' => $parameters ]);
+        return $this->_get('v1/charges', $parameters);
     }
 }

@@ -20,8 +20,6 @@
 
 namespace Cartalyst\Stripe\Api;
 
-use Cartalyst\Stripe\HttpClient;
-
 class Refunds extends AbstractApi
 {
     /**
@@ -33,7 +31,7 @@ class Refunds extends AbstractApi
      */
     public function create($chargeId, array $parameters = [])
     {
-        return $this->_post("v1/charges/{$chargeId}/refunds", [ 'query' => $parameters ]);
+        return $this->_post("v1/charges/{$chargeId}/refunds", $parameters);
     }
 
     /**
@@ -58,7 +56,7 @@ class Refunds extends AbstractApi
      */
     public function update($chargeId, $refundId, array $parameters = [])
     {
-        return $this->_post("v1/charges/{$chargeId}/refunds/{$refundId}", [ 'query' => $parameters ]);
+        return $this->_post("v1/charges/{$chargeId}/refunds/{$refundId}", $parameters);
     }
 
     /**
@@ -70,6 +68,6 @@ class Refunds extends AbstractApi
      */
     public function all($chargeId, array $parameters = [])
     {
-        return $this->_get("v1/charges/{$chargeId}/refunds", [ 'query' => $parameters ]);
+        return $this->_get("v1/charges/{$chargeId}/refunds", $parameters);
     }
 }

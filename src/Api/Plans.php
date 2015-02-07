@@ -20,32 +20,32 @@
 
 namespace Cartalyst\Stripe\Api;
 
-class Customers extends AbstractApi
+class Plans extends AbstractApi
 {
     /**
-     * Creates a new customer.
+     * Creates a new plan.
      *
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
     public function create(array $parameters = [])
     {
-        return $this->_post('v1/customers', $parameters);
+        return $this->_post('v1/plans', $parameters);
     }
 
     /**
-     * Retrieves an existing customer.
+     * Retrieves an existing plan.
      *
      * @param  string  $id
      * @return \GuzzleHttp\Message\ResponseInterface
      */
     public function find($id)
     {
-        return $this->_get("v1/customers/{$id}");
+        return $this->_get("v1/plans/{$id}");
     }
 
     /**
-     * Updates an existing customer.
+     * Updates an existing plan.
      *
      * @param  string  $id
      * @param  array  $parameters
@@ -53,28 +53,28 @@ class Customers extends AbstractApi
      */
     public function update($id, array $parameters = [])
     {
-        return $this->_post("v1/customers/{$id}", $parameters);
+        return $this->_post("v1/plans/{$id}", $parameters);
     }
 
     /**
-     * Deletes an existing customer.
+     * Deletes an existing plan.
      *
      * @param  string  $id
      * @return \GuzzleHttp\Message\ResponseInterface
      */
     public function delete($id)
     {
-        return $this->_delete("v1/customers/{$id}");
+        return $this->_delete("v1/plans/{$id}");
     }
 
     /**
-     * Lists all customers.
+     * Lists all plans.
      *
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
     public function all(array $parameters = [])
     {
-        return $this->_get('v1/customers', $parameters);
+        return $this->_get('v1/plans', $parameters);
     }
 }
