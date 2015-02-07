@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Api;
 
 use GuzzleHttp\Client;
+use Cartalyst\Stripe\Exception\StripeException;
 
 abstract class AbstractApi implements ApiInterface
 {
@@ -72,7 +73,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _get($url = null, $options = [])
     {
-        return $this->client->get($url, $options)->json();
+        return $this->call('get', $url, $options)->json();
     }
 
     /**
@@ -80,7 +81,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _head($url = null, array $options = [])
     {
-        return $this->client->head($url, $options);
+        return $this->call('head', $url, $options);
     }
 
     /**
@@ -88,7 +89,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _delete($url = null, array $options = [])
     {
-        return $this->client->delete($url, $options)->json();
+        return $this->call('delete', $url, $options)->json();
     }
 
     /**
@@ -96,7 +97,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _put($url = null, array $options = [])
     {
-        return $this->client->put($url, $options)->json();
+        return $this->call('put', $url, $options)->json();
     }
 
     /**
@@ -104,7 +105,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _patch($url = null, array $options = [])
     {
-        return $this->client->patch($url, $options)->json();
+        return $this->call('patch', $url, $options)->json();
     }
 
     /**
@@ -112,7 +113,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _post($url = null, array $options = [])
     {
-        return $this->client->post($url, $options)->json();
+        return $this->call('post', $url, $options)->json();
     }
 
     /**
@@ -120,6 +121,18 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _options($url = null, array $options = [])
     {
-        return $this->client->options($url, $options)->json();
+        return $this->call('options', $url, $options)->json();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function call($httpMethod, $url, array $options = [])
+    {
+        try {
+            return $this->client->{$httpMethod}($url, $options);
+        } catch (\Exception $e) {
+            return StripeException::make($e);
+        }
     }
 }

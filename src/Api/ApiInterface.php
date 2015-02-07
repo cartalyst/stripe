@@ -99,4 +99,15 @@ interface ApiInterface
      * @return \GuzzleHttp\Message\ResponseInterface
      */
     public function _options($url = null, array $options = []);
+
+    /**
+     * Executes the HTTP request.
+     *
+     * @param  string  $httpMethod
+     * @param  string  $url
+     * @param  array  $options
+     * @return \GuzzleHttp\Message\ResponseInterface
+     * @throws \Cartalyst\Stripe\Exception\StripeException
+     */
+    public function call($httpMethod, $url, array $options = []);
 }

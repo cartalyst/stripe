@@ -18,14 +18,14 @@
  * @link       http://cartalyst.com
  */
 
-namespace Cartalyst\Stripe;
+namespace Cartalyst\Stripe\HttpClient;
 
 use GuzzleHttp\Query;
 use GuzzleHttp\Event\ErrorEvent;
 use GuzzleHttp\Event\BeforeEvent;
 use Cartalyst\Stripe\Listeners\ErrorListener;
 
-class HttpClient extends \GuzzleHttp\Client
+class Client extends \GuzzleHttp\Client implements ClientInterface
 {
     /**
      * The Stripe API key.
@@ -39,46 +39,45 @@ class HttpClient extends \GuzzleHttp\Client
      *
      * @var string
      */
-    protected $apiVersion;
+    protected $apiVersion = '2015-01-26';
 
     /**
      * Constructor.
      *
      * @param  string  $apiKey
      * @param  string  $apiVersion
+     * @param  string  $version
      * @return void
      */
-    public function __construct($apiKey = null, $apiVersion = null)
+    public function __construct($apiKey = null, $apiVersion = null, $version)
     {
         parent::__construct([
             'base_url' => ['https://api.stripe.com/', ['version' => 'v1']]
         ]);
 
+        // Set the Stripe API key
         $this->setApiKey(
             $apiKey ?: getenv('STRIPE_API_KEY')
         );
 
+        // Set the Stripe API version
         $this->setApiVersion(
             $apiVersion ?: getenv('STRIPE_API_VERSION') ?: $this->apiVersion
         );
 
-        $emitter = $this->getEmitter();
+        // Set the user agent
+        $this->setDefaultOption('headers/User-Agent', "Cartalyst-Stripe/{$version}");
 
-        $emitter->on('before', function(BeforeEvent $event) {
-            $event->getRequest()->getQuery()->setAggregator(
-                Query::phpAggregator(false)
-            );
+        // Set the query aggregator
+        $this->getEmitter()->on('before', function(BeforeEvent $event) {
+            $aggregator = Query::phpAggregator(false);
+
+            $event->getRequest()->getQuery()->setAggregator($aggregator);
         });
-
-        // $emitter->on('error', function(ErrorEvent $event, $name) {
-        //     new ErrorListener($event, $name);
-        // });
     }
 
     /**
-     * Returns the Stripe API key.
-     *
-     * @return string
+     * {@inheritDoc}
      */
     public function getApiKey()
     {
@@ -86,11 +85,7 @@ class HttpClient extends \GuzzleHttp\Client
     }
 
     /**
-     * Sets the Stripe API key.
-     *
-     * @param  string  $apiKey
-     * @return $this
-     * @throws \RuntimeException
+     * {@inheritDoc}
      */
     public function setApiKey($apiKey)
     {
@@ -110,9 +105,7 @@ class HttpClient extends \GuzzleHttp\Client
     }
 
     /**
-     * Returns the Stripe API version.
-     *
-     * @return string
+     * {@inheritDoc}
      */
     public function getApiVersion()
     {
@@ -120,26 +113,12 @@ class HttpClient extends \GuzzleHttp\Client
     }
 
     /**
-     * Sets the Stripe API version.
-     *
-     * @param  string  $apiVersion
-     * @return $this
+     * {@inheritDoc}
      */
     public function setApiVersion($apiVersion)
     {
         $this->apiVersion = (string) $apiVersion;
 
         $this->setDefaultOption('headers/Stripe-Version', $this->apiVersion);
-    }
-
-    /**
-     * Sets the user agent version.
-     *
-     * @param  string  $version
-     * @return void
-     */
-    public function setUserAgentVersion($version)
-    {
-        $this->setDefaultOption('headers/User-Agent', "Cartalyst-Stripe/{$version}");
     }
 }

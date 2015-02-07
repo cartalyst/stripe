@@ -21,8 +21,9 @@
 namespace Cartalyst\Stripe;
 
 use Cartalyst\Stripe\Api;
+use Cartalyst\Stripe\HttpClient\Client;
 use Doctrine\Common\Inflector\Inflector;
-use Cartalyst\Stripe\Listeners\ErrorListener;
+use Cartalyst\Stripe\HttpClient\ClientInterface;
 
 class Stripe
 {
@@ -41,13 +42,6 @@ class Stripe
     protected $client;
 
     /**
-     * The Stripe API version.
-     *
-     * @var string
-     */
-    protected $apiVersion = '2015-01-26';
-
-    /**
      * Constructor.
      *
      * @param  string  $apiKey
@@ -56,9 +50,7 @@ class Stripe
      */
     public function __construct($apiKey = null, $apiVersion = null)
     {
-        $this->client = new HttpClient($apiKey, $apiVersion);
-
-        $this->client->setUserAgentVersion(self::VERSION);
+        $this->client = new Client($apiKey, $apiVersion, self::VERSION);
     }
 
     /**
@@ -105,6 +97,7 @@ class Stripe
 
         return $this;
     }
+
     /**
      * Returns the Stripe API version.
      *
@@ -128,12 +121,23 @@ class Stripe
         return $this;
     }
 
+    /**
+     * Returns the Guzzle client instance.
+     *
+     * @return \Cartalyst\Stripe\HttpClient\ClientInterface
+     */
     public function getClient()
     {
         return $this->client;
     }
 
-    public function setClient($client)
+    /**
+     * Sets the Guzzle client instance.
+     *
+     * @param  \Cartalyst\Stripe\HttpClient\ClientInterface  $client
+     * @return $this
+     */
+    public function setClient(ClientInterface $client)
     {
         $this->client = $client;
 
