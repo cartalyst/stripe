@@ -73,7 +73,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _get($url = null, $options = [])
     {
-        return $this->call('get', $url, $options)->json();
+        return $this->execute('get', $url, $options)->json();
     }
 
     /**
@@ -81,7 +81,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _head($url = null, array $options = [])
     {
-        return $this->call('head', $url, $options);
+        return $this->execute('head', $url, $options);
     }
 
     /**
@@ -89,7 +89,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _delete($url = null, array $options = [])
     {
-        return $this->call('delete', $url, $options)->json();
+        return $this->execute('delete', $url, $options)->json();
     }
 
     /**
@@ -97,7 +97,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _put($url = null, array $options = [])
     {
-        return $this->call('put', $url, $options)->json();
+        return $this->execute('put', $url, $options)->json();
     }
 
     /**
@@ -105,7 +105,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _patch($url = null, array $options = [])
     {
-        return $this->call('patch', $url, $options)->json();
+        return $this->execute('patch', $url, $options)->json();
     }
 
     /**
@@ -113,7 +113,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _post($url = null, array $options = [])
     {
-        return $this->call('post', $url, $options)->json();
+        return $this->execute('post', $url, $options)->json();
     }
 
     /**
@@ -121,13 +121,13 @@ abstract class AbstractApi implements ApiInterface
      */
     public function _options($url = null, array $options = [])
     {
-        return $this->call('options', $url, $options)->json();
+        return $this->execute('options', $url, $options)->json();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function call($httpMethod, $url, array $options = [])
+    public function execute($httpMethod, $url, array $options = [])
     {
         try {
             return $this->client->{$httpMethod}($url, $options);
