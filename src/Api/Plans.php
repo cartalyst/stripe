@@ -36,35 +36,35 @@ class Plans extends Api
     /**
      * Retrieves an existing plan.
      *
-     * @param  string  $id
+     * @param  string  $planId
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function find($id)
+    public function find($planId)
     {
-        return $this->_get("v1/plans/{$id}");
+        return $this->_get("v1/plans/{$planId}");
     }
 
     /**
      * Updates an existing plan.
      *
-     * @param  string  $id
+     * @param  string  $planId
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function update($id, array $parameters = [])
+    public function update($planId, array $parameters = [])
     {
-        return $this->_post("v1/plans/{$id}", $parameters);
+        return $this->_post("v1/plans/{$planId}", $parameters);
     }
 
     /**
      * Deletes an existing plan.
      *
-     * @param  string  $id
+     * @param  string  $planId
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function delete($id)
+    public function delete($planId)
     {
-        return $this->_delete("v1/plans/{$id}");
+        return $this->_delete("v1/plans/{$planId}");
     }
 
     /**

@@ -36,36 +36,36 @@ class Charges extends Api
     /**
      * Retrieves an existing charge.
      *
-     * @param  string  $id
+     * @param  string  $chargeId
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function find($id)
+    public function find($chargeId)
     {
-        return $this->_get("v1/charges/{$id}");
+        return $this->_get("v1/charges/{$chargeId}");
     }
 
     /**
      * Updates an existing charge.
      *
-     * @param  string  $id
+     * @param  string  $chargeId
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function update($id, array $parameters = [])
+    public function update($chargeId, array $parameters = [])
     {
-        return $this->_post("v1/charges/{$id}", $parameters);
+        return $this->_post("v1/charges/{$chargeId}", $parameters);
     }
 
     /**
      * Captures an existing charge.
      *
-     * @param  string  $id
+     * @param  string  $chargeId
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function capture($id, array $parameters = [])
+    public function capture($chargeId, array $parameters = [])
     {
-        return $this->_post("v1/charges/{$id}/capture", $parameters);
+        return $this->_post("v1/charges/{$chargeId}/capture", $parameters);
     }
 
     /**

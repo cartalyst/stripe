@@ -36,35 +36,35 @@ class Coupons extends Api
     /**
      * Retrieves an existing coupon.
      *
-     * @param  string  $id
+     * @param  string  $couponId
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function find($id)
+    public function find($couponId)
     {
-        return $this->_get("v1/coupons/{$id}");
+        return $this->_get("v1/coupons/{$couponId}");
     }
 
     /**
      * Updates an existing coupon.
      *
-     * @param  string  $id
+     * @param  string  $couponId
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function update($id, array $parameters = [])
+    public function update($couponId, array $parameters = [])
     {
-        return $this->_post("v1/coupons/{$id}", $parameters);
+        return $this->_post("v1/coupons/{$couponId}", $parameters);
     }
 
     /**
      * Deletes an existing coupon.
      *
-     * @param  string  $id
+     * @param  string  $couponId
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function delete($id)
+    public function delete($couponId)
     {
-        return $this->_delete("v1/coupons/{$id}");
+        return $this->_delete("v1/coupons/{$couponId}");
     }
 
     /**

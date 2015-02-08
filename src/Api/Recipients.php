@@ -36,35 +36,35 @@ class Recipients extends Api
     /**
      * Retrieves an existing recipient.
      *
-     * @param  string  $id
+     * @param  string  $recipientId
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function find($id)
+    public function find($recipientId)
     {
-        return $this->_get("v1/recipients/{$id}");
+        return $this->_get("v1/recipients/{$recipientId}");
     }
 
     /**
      * Updates an existing recipient.
      *
-     * @param  string  $id
+     * @param  string  $recipientId
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function update($id, array $parameters = [])
+    public function update($recipientId, array $parameters = [])
     {
-        return $this->_post("v1/recipients/{$id}", $parameters);
+        return $this->_post("v1/recipients/{$recipientId}", $parameters);
     }
 
     /**
      * Deletes an existing recipient.
      *
-     * @param  string  $id
+     * @param  string  $recipientId
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function delete($id)
+    public function delete($recipientId)
     {
-        return $this->_delete("v1/recipients/{$id}");
+        return $this->_delete("v1/recipients/{$recipientId}");
     }
 
     /**

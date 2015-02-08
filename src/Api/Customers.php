@@ -36,35 +36,35 @@ class Customers extends Api
     /**
      * Retrieves an existing customer.
      *
-     * @param  string  $id
+     * @param  string  $customerId
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function find($id)
+    public function find($customerId)
     {
-        return $this->_get("v1/customers/{$id}");
+        return $this->_get("v1/customers/{$customerId}");
     }
 
     /**
      * Updates an existing customer.
      *
-     * @param  string  $id
+     * @param  string  $customerId
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function update($id, array $parameters = [])
+    public function update($customerId, array $parameters = [])
     {
-        return $this->_post("v1/customers/{$id}", $parameters);
+        return $this->_post("v1/customers/{$customerId}", $parameters);
     }
 
     /**
      * Deletes an existing customer.
      *
-     * @param  string  $id
+     * @param  string  $customerId
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function delete($id)
+    public function delete($customerId)
     {
-        return $this->_delete("v1/customers/{$id}");
+        return $this->_delete("v1/customers/{$customerId}");
     }
 
     /**
