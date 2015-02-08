@@ -23,7 +23,6 @@ namespace Cartalyst\Stripe\HttpClient;
 use GuzzleHttp\Query;
 use GuzzleHttp\Event\ErrorEvent;
 use GuzzleHttp\Event\BeforeEvent;
-use Cartalyst\Stripe\Listeners\ErrorListener;
 
 class Client extends \GuzzleHttp\Client implements ClientInterface
 {
