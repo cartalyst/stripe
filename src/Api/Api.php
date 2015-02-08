@@ -23,7 +23,7 @@ namespace Cartalyst\Stripe\Api;
 use GuzzleHttp\Client;
 use Cartalyst\Stripe\Exception\StripeException;
 
-abstract class AbstractApi implements ApiInterface
+abstract class Api implements ApiInterface
 {
     /**
      * The Guzzle client instance.

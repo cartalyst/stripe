@@ -20,7 +20,7 @@
 
 namespace Cartalyst\Stripe\Api;
 
-class Cards extends AbstractApi
+class Cards extends Api
 {
     /**
      * Creates a new card on the given customer.

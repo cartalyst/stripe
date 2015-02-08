@@ -20,7 +20,7 @@
 
 namespace Cartalyst\Stripe\Api;
 
-class Charges extends AbstractApi
+class Charges extends Api
 {
     /**
      * Creates a new charge.

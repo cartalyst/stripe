@@ -20,7 +20,7 @@
 
 namespace Cartalyst\Stripe\Api;
 
-class Recipients extends AbstractApi
+class Recipients extends Api
 {
     /**
      * Creates a new recipient.

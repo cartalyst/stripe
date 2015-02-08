@@ -20,7 +20,7 @@
 
 namespace Cartalyst\Stripe\Api;
 
-class Account extends AbstractApi
+class Account extends Api
 {
     /**
      * Retrieves the details of the account, based on the

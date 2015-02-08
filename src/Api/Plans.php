@@ -20,7 +20,7 @@
 
 namespace Cartalyst\Stripe\Api;
 
-class Plans extends AbstractApi
+class Plans extends Api
 {
     /**
      * Creates a new plan.

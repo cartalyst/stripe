@@ -20,7 +20,7 @@
 
 namespace Cartalyst\Stripe\Api;
 
-class Subscriptions extends AbstractApi
+class Subscriptions extends Api
 {
     /**
      * Creates a new subscription on the given customer.

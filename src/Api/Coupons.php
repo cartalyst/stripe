@@ -20,7 +20,7 @@
 
 namespace Cartalyst\Stripe\Api;
 
-class Coupons extends AbstractApi
+class Coupons extends Api
 {
     /**
      * Creates a new coupon.
