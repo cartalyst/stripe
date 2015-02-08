@@ -22,5 +22,4 @@ namespace Cartalyst\Stripe\Exception;
 
 class UnauthorizedException extends StripeException
 {
-
 }

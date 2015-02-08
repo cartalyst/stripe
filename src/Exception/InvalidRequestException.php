@@ -22,5 +22,4 @@ namespace Cartalyst\Stripe\Exception;
 
 class InvalidRequestException extends StripeException
 {
-
 }

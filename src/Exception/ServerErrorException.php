@@ -22,5 +22,4 @@ namespace Cartalyst\Stripe\Exception;
 
 class ServerErrorException extends StripeException
 {
-
 }
