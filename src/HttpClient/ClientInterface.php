@@ -56,6 +56,20 @@ interface ClientInterface
     public function setApiVersion($apiVersion);
 
     /**
+     * Returns the last executed request instance.
+     *
+     * @return \GuzzleHttp\Message\Request
+     */
+    public function getLastRequest();
+
+    /**
+     * Returns the last executed request response.
+     *
+     * @return \GuzzleHttp\Message\Response
+     */
+    public function getLastResponse();
+
+    /**
      * Sends a single request.
      *
      * @param RequestInterface $request Request to send
