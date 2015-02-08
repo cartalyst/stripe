@@ -107,7 +107,6 @@ interface ApiInterface
      * @param  string  $url
      * @param  array  $options
      * @return \GuzzleHttp\Message\ResponseInterface
-     * @throws \Cartalyst\Stripe\Exception\StripeException
      */
     public function execute($httpMethod, $url, array $options = []);
 }

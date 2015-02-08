@@ -129,10 +129,6 @@ abstract class Api implements ApiInterface
      */
     public function execute($httpMethod, $url, array $options = [])
     {
-        try {
-            return $this->client->{$httpMethod}($url, [ 'query' => $options ]);
-        } catch (\Exception $e) {
-            return StripeException::make($e);
-        }
+        return $this->client->{$httpMethod}($url, [ 'query' => $options ]);
     }
 }

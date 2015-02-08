@@ -23,6 +23,8 @@ namespace Cartalyst\Stripe\HttpClient;
 use GuzzleHttp\Query;
 use GuzzleHttp\Event\ErrorEvent;
 use GuzzleHttp\Event\BeforeEvent;
+use GuzzleHttp\Message\RequestInterface;
+use Cartalyst\Stripe\Exception\StripeException;
 
 class Client extends \GuzzleHttp\Client implements ClientInterface
 {
@@ -39,6 +41,20 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
      * @var string
      */
     protected $apiVersion = '2015-01-26';
+
+    /**
+     * The last executed request instance.
+     *
+     * @var \GuzzleHttp\Message\Request
+     */
+    protected $lastRequest;
+
+    /**
+     * The last executed request response.
+     *
+     * @var \GuzzleHttp\Message\Response
+     */
+    protected $lastResponse;
 
     /**
      * Constructor.
@@ -119,5 +135,23 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
         $this->apiVersion = (string) $apiVersion;
 
         $this->setDefaultOption('headers/Stripe-Version', $this->apiVersion);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function send(RequestInterface $request)
+    {
+        try {
+            $response = parent::send($request);
+
+            $this->lastRequest = $request;
+
+            $this->lastResponse = $response;
+
+            return $response;
+         } catch (\Exception $e) {
+            return StripeException::make($e);
+        }
     }
 }

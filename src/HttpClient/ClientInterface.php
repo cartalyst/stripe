@@ -20,6 +20,8 @@
 
 namespace Cartalyst\Stripe\HttpClient;
 
+use GuzzleHttp\Message\RequestInterface;
+
 interface ClientInterface
 {
     /**
@@ -52,4 +54,13 @@ interface ClientInterface
      * @return $this
      */
     public function setApiVersion($apiVersion);
+
+    /**
+     * Sends a single request.
+     *
+     * @param RequestInterface $request Request to send
+     * @return \GuzzleHttp\Message\ResponseInterface
+     * @throws \Cartalyst\Stripe\Exception\StripeException
+     */
+    public function send(RequestInterface $request);
 }
