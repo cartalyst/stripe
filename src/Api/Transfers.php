@@ -20,72 +20,61 @@
 
 namespace Cartalyst\Stripe\Api;
 
-class Customers extends Api
+class Transfers extends Api
 {
     /**
-     * Creates a new customer.
+     * Creates a new transfer.
      *
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
     public function create(array $parameters = [])
     {
-        return $this->_post('v1/customers', $parameters);
+        return $this->_post('v1/transfers', $parameters);
     }
 
     /**
-     * Retrieves an existing customer.
+     * Retrieves an existing transfer.
      *
-     * @param  string  $customerId
+     * @param  string  $transferId
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function find($customerId)
+    public function find($transferId)
     {
-        return $this->_get("v1/customers/{$customerId}");
+        return $this->_get("v1/transfers/{$transferId}");
     }
 
     /**
-     * Updates an existing customer.
+     * Updates an existing transfer.
      *
-     * @param  string  $customerId
+     * @param  string  $transferId
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function update($customerId, array $parameters = [])
+    public function update($transferId, array $parameters = [])
     {
-        return $this->_post("v1/customers/{$customerId}", $parameters);
+        return $this->_post("v1/transfers/{$transferId}", $parameters);
     }
 
     /**
-     * Deletes an existing customer.
+     * Cancels an existing transfer.
      *
-     * @param  string  $customerId
+     * @param  string  $transferId
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function delete($customerId)
+    public function cancel($transferId)
     {
-        return $this->_delete("v1/customers/{$customerId}");
+        return $this->_post("v1/transfers/{$transferId}/cancel");
     }
 
     /**
-     * Deletes an existing customer discount.
-     *
-     * @param  string  $customerId
-     * @return \GuzzleHttp\Message\ResponseInterface
-     */
-    public function deleteDiscount($customerId)
-    {
-        return $this->_delete("v1/customers/{$customerId}/discount");
-    }
-
-    /**
-     * Lists all customers.
+     * Lists all transfers.
      *
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
     public function all(array $parameters = [])
     {
-        return $this->_get('v1/customers', $parameters);
+        return $this->_get('v1/transfers', $parameters);
     }
 }

@@ -95,6 +95,18 @@ class Subscriptions extends Api
     }
 
     /**
+     * Deletes an existing subscription discount.
+     *
+     * @param  string  $customerId
+     * @param  string  $subscriptionId
+     * @return \GuzzleHttp\Message\ResponseInterface
+     */
+    public function deleteDiscount($customerId, $subscriptionId)
+    {
+        return $this->_delete("v1/customers/{$customerId}/subscriptions/{$subscriptionId}/discount");
+    }
+
+    /**
      * Lists all subscriptions from the given customer.
      *
      * @param  string  $customerId
