@@ -22,7 +22,6 @@ namespace Cartalyst\Stripe;
 
 use Cartalyst\Stripe\Api;
 use Cartalyst\Stripe\HttpClient\Client;
-use Doctrine\Common\Inflector\Inflector;
 use Cartalyst\Stripe\HttpClient\ClientInterface;
 
 class Stripe
@@ -51,8 +50,6 @@ class Stripe
     public function __construct($apiKey = null, $apiVersion = null)
     {
         $this->client = new Client($apiKey, $apiVersion, self::VERSION);
-
-        $this->pager = new Pager($this->client);
     }
 
     /**
@@ -97,8 +94,6 @@ class Stripe
     {
         $this->client->setApiKey($apiKey);
 
-        $this->pager->setClient($this->client);
-
         return $this;
     }
 
@@ -121,8 +116,6 @@ class Stripe
     public function setApiVersion($apiVersion)
     {
         $this->client->setApiVersion($apiVersion);
-
-        $this->pager->setClient($this->client);
 
         return $this;
     }
@@ -156,37 +149,16 @@ class Stripe
      * @param  string  $method
      * @param  array  $parameters
      * @return \Cartalyst\Stripe\Api\ApiInterface
-     * @throws \BadMethodCallException
      */
     public function __call($method, array $parameters = [])
     {
-        // if ($this->isSingleRequest($method)) {
-        //     return $this->handleSingleRequest($method);
-        //} else
         if ($this->isIteratorRequest($method)) {
-            $class = $this->validateRequest(substr($method, 0, -8));
+            $apiInstance = $this->getApiInstance(substr($method, 0, -8));
 
-            $api = new $class($this->client);
-
-            return $this->pager->fetch($api, $parameters);
+            return (new Pager($apiInstance))->fetch($parameters);
         }
 
-        if ($class = $this->validateRequest($method)) {
-            return new $class($this->client);
-        }
-
-        throw new \BadMethodCallException("Undefined method [{$method}] called.");
-    }
-
-
-    /**
-     * Determines if the request is a single request.
-     *
-     * @return bool
-     */
-    protected function isSingleRequest($method)
-    {
-        return (Inflector::singularize($method) == $method && $this->checkApiClassExists(Inflector::pluralize($method)));
+        return $this->getApiInstance($method);
     }
 
     /**
@@ -199,25 +171,21 @@ class Stripe
         return substr($method, -8) === 'Iterator';
     }
 
-    protected function getApiClassNamespace($method)
+    /**
+     * Returns the Api class instance for the given method.
+     *
+     * @param  string  $method
+     * @return \Cartalyst\Stripe\Api\ApiInterface
+     * @throws \BadMethodCallException
+     */
+    protected function getApiInstance($method)
     {
-        return "\\Cartalyst\\Stripe\\Api\\".ucwords($method);
-    }
-
-    protected function checkApiClassExists($method)
-    {
-        return class_exists($this->getApiClassNamespace($method));
-    }
-
-    protected function validateRequest($method)
-    {
-        # check if it's an iterator request : Stripe::customersIterator();
-        # check if it's a single request    : Stripe::customer(:id);
-
         $class = "\\Cartalyst\\Stripe\\Api\\".ucwords($method);
 
         if (class_exists($class)) {
-            return $class;
+            return new $class($this->client);
         }
-    }
+
+        throw new \BadMethodCallException("Undefined method [{$method}] called.");
+   }
 }

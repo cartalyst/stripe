@@ -21,26 +21,18 @@
 namespace Cartalyst\Stripe;
 
 use Cartalyst\Stripe\Api\ApiInterface;
-use Cartalyst\Stripe\HttpClient\ClientInterface;
 
 class Pager implements PagerInterface
 {
     /**
-     * The Stripe Http Client instance.
+     * The Api instance.
      *
-     * @var \Cartalyst\Stripe\HttpClient\Client
+     * @var  \Cartalyst\Stripe\Api\ApiInterface  $api
      */
-    protected $client;
+    protected $api;
 
     /**
-     * The previous request token.
-     *
-     * @var array
-     */
-    protected $previousToken;
-
-    /**
-     * The next requst token.
+     * The next request token.
      *
      * @var array
      */
@@ -49,62 +41,49 @@ class Pager implements PagerInterface
     /**
      * Constructor.
      *
-     * @param  \Cartalyst\Stripe\HttpClient\ClientInterface  $client
+     * @param  \Cartalyst\Stripe\Api\ApiInterface  $api
      * @return void
      */
-    public function __construct(ClientInterface $client)
+    public function __construct(ApiInterface $api)
     {
-        $this->client = $client;
+        $this->api = $api;
     }
 
     /**
-     * {@inheritDoc}
+     * Fetches all the objects of the given api.
+     *
+     * @param  array  $parameters
+     * @return array
      */
-    public function getClient()
+    public function fetch(array $parameters = [])
     {
-        return $this->client;
-    }
+        $this->api->setPerPage(100);
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setClient(ClientInterface $client)
-    {
-        $this->client = $client;
-
-        return $this;
-    }
-
-    public function fetch(ApiInterface $api, array $parameters = [])
-    {
-        $this->client->clearLastRequest();
-
-        $this->client->clearLastResponse();
-
-        $perPage = $api->getPerPage();
-
-        $api->setPerPage(100);
-
-        $results = $this->processRequest($api, $parameters)['data'];
+        $results = $this->processRequest($parameters);
 
         while ($this->nextToken) {
-            $results = array_merge($results, $this->processRequest($api, $parameters)['data']);
+            $results = array_merge($results, $this->processRequest($parameters));
         }
 
         return $results;
     }
 
-    protected function processRequest($api, array $parameters = [])
+    /**
+     * Processes the api request.
+     *
+     * @param  array  $parameters
+     * @return array
+     */
+    protected function processRequest(array $parameters = [])
     {
-        if ($this->nextToken)
-        {
+        if ($this->nextToken) {
             $parameters['starting_after'] = $this->nextToken;
         }
 
-        $result = call_user_func_array([ $api, 'all' ], [ $parameters ]);
+        $result = call_user_func_array([ $this->api, 'all' ], [ $parameters ]);
 
         $this->nextToken = $result['has_more'] ? end($result['data'])['id'] : false;
 
-        return $result;
+        return $result['data'];
     }
 }

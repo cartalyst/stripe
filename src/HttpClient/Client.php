@@ -43,20 +43,6 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
     protected $apiVersion = '2015-01-26';
 
     /**
-     * The last executed request instance.
-     *
-     * @var \GuzzleHttp\Message\Request
-     */
-    protected $lastRequest;
-
-    /**
-     * The last executed request response.
-     *
-     * @var \GuzzleHttp\Message\Response
-     */
-    protected $lastResponse;
-
-    /**
      * Constructor.
      *
      * @param  string  $apiKey
@@ -140,52 +126,10 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
     /**
      * {@inheritDoc}
      */
-    public function getLastRequest()
-    {
-        return $this->lastRequest;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function clearLastRequest()
-    {
-        $this->lastRequest = null;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getLastResponse()
-    {
-        return $this->lastResponse;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function clearLastResponse()
-    {
-        $this->lastResponse = null;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function send(RequestInterface $request)
     {
         try {
-            $response = parent::send($request);
-
-            $this->lastRequest = $request;
-
-            $this->lastResponse = $response;
-
-            return $response;
+            return parent::send($request);
          } catch (\Exception $e) {
             return StripeException::make($e);
         }

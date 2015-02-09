@@ -24,18 +24,5 @@ use Cartalyst\Stripe\HttpClient\ClientInterface;
 
 interface PagerInterface
 {
-    /**
-     * Returns the Stripe Http Client instance.
-     *
-     * @return \Cartalyst\Stripe\HttpClient\ClientInterface
-     */
-    public function getClient();
 
-    /**
-     * Returns the Stripe Http Client instance.
-     *
-     * @param  \Cartalyst\Stripe\HttpClient\ClientInterface  $client
-     * @return $this
-     */
-    public function setClient(ClientInterface $client);
 }

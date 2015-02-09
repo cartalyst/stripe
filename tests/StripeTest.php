@@ -20,6 +20,7 @@
 
 namespace Cartalyst\Stripe\Tests;
 
+use Mockery as m;
 use Cartalyst\Stripe\Stripe;
 use PHPUnit_Framework_TestCase;
 
@@ -40,6 +41,16 @@ class StripeTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->stripe = new Stripe('stripe-api-key', '2014-06-17');
+    }
+
+    /**
+     * Close mockery.
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        m::close();
     }
 
     /** @test */
@@ -68,6 +79,16 @@ class StripeTest extends PHPUnit_Framework_TestCase
         $this->stripe->setApiKey('new-stripe-api-key');
 
         $this->assertEquals('new-stripe-api-key', $this->stripe->getApiKey());
+    }
+
+    /** @test */
+    public function it_can_get_and_set_the_http_client()
+    {
+        $this->assertInstanceOf(
+            'Cartalyst\Stripe\HttpClient\ClientInterface', $this->stripe->getClient()
+        );
+
+        $this->stripe->setClient(m::mock('Cartalyst\Stripe\HttpClient\ClientInterface'));
     }
 
     /**
@@ -104,9 +125,15 @@ class StripeTest extends PHPUnit_Framework_TestCase
         $this->stripe->customers();
     }
 
+    /** @test */
+    public function it_can_create_iterator_requests()
+    {
+        //$this->stripe->customersIterator();
+    }
+
     /**
      * @test
-     * @expectedException \InvalidArgumentException
+     * @expectedException \BadMethodCallException
      */
     public function it_throws_an_exception_when_the_request_is_invalid()
     {
