@@ -26,7 +26,7 @@ Important versions listed below. Refer to the [Changelog](CHANGELOG.md) for a fu
 
 The following support channels can be used for contact.
 
-- [Twitter](https://cartalyst.com/@twitter)
+- [Twitter](https://twitter.com/@cartalyst)
 - [Email](mailto:help@cartalyst.com)
 
 Bug reports, feature requests, and pull requests can be submitted by following our [Contribution Guide](CONTRIBUTING.md).
