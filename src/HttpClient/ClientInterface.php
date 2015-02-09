@@ -63,11 +63,25 @@ interface ClientInterface
     public function getLastRequest();
 
     /**
+     * Clears the last executed request instance.
+     *
+     * @return $this
+     */
+    public function clearLastRequest();
+
+    /**
      * Returns the last executed request response.
      *
      * @return \GuzzleHttp\Message\Response
      */
     public function getLastResponse();
+
+    /**
+     * Clears the last executed request response.
+     *
+     * @return $this
+     */
+    public function clearLastResponse();
 
     /**
      * Sends a single request.

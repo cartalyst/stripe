@@ -51,6 +51,8 @@ class Stripe
     public function __construct($apiKey = null, $apiVersion = null)
     {
         $this->client = new Client($apiKey, $apiVersion, self::VERSION);
+
+        $this->pager = new Pager($this->client);
     }
 
     /**
@@ -95,6 +97,8 @@ class Stripe
     {
         $this->client->setApiKey($apiKey);
 
+        $this->pager->setClient($this->client);
+
         return $this;
     }
 
@@ -117,6 +121,8 @@ class Stripe
     public function setApiVersion($apiVersion)
     {
         $this->client->setApiVersion($apiVersion);
+
+        $this->pager->setClient($this->client);
 
         return $this;
     }
@@ -148,17 +154,22 @@ class Stripe
      * Dynamically handle missing methods.
      *
      * @param  string  $method
-     * @param  array  $arguments
+     * @param  array  $parameters
      * @return \Cartalyst\Stripe\Api\ApiInterface
      * @throws \BadMethodCallException
      */
-    public function __call($method, array $arguments = [])
+    public function __call($method, array $parameters = [])
     {
         // if ($this->isSingleRequest($method)) {
         //     return $this->handleSingleRequest($method);
-        // } elseif ($this->isIteratorRequest($method)) {
-        //     return $this->handleIteratorRequest($method);
-        // }
+        //} else
+        if ($this->isIteratorRequest($method)) {
+            $class = $this->validateRequest(substr($method, 0, -8));
+
+            $api = new $class($this->client);
+
+            return $this->pager->fetch($api, $parameters);
+        }
 
         if ($class = $this->validateRequest($method)) {
             return new $class($this->client);
@@ -166,6 +177,7 @@ class Stripe
 
         throw new \BadMethodCallException("Undefined method [{$method}] called.");
     }
+
 
     /**
      * Determines if the request is a single request.

@@ -148,9 +148,29 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
     /**
      * {@inheritDoc}
      */
+    public function clearLastRequest()
+    {
+        $this->lastRequest = null;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getLastResponse()
     {
         return $this->lastResponse;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function clearLastResponse()
+    {
+        $this->lastResponse = null;
+
+        return $this;
     }
 
     /**

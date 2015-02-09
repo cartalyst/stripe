@@ -35,9 +35,9 @@ abstract class Api implements ApiInterface
     /**
      * Number of items to return per page.
      *
-     * @var int
+     * @var null|int
      */
-    protected $perPage = 100;
+    protected $perPage;
 
     /**
      * Constructor.
@@ -71,64 +71,68 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritDoc}
      */
-    public function _get($url = null, $options = [])
+    public function _get($url = null, $parameters = [])
     {
-        return $this->execute('get', $url, $options)->json();
+        if ($this->perPage) {
+            $parameters['limit'] = $this->perPage;
+        }
+
+        return $this->execute('get', $url, $parameters)->json();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function _head($url = null, array $options = [])
+    public function _head($url = null, array $parameters = [])
     {
-        return $this->execute('head', $url, $options);
+        return $this->execute('head', $url, $parameters);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function _delete($url = null, array $options = [])
+    public function _delete($url = null, array $parameters = [])
     {
-        return $this->execute('delete', $url, $options)->json();
+        return $this->execute('delete', $url, $parameters)->json();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function _put($url = null, array $options = [])
+    public function _put($url = null, array $parameters = [])
     {
-        return $this->execute('put', $url, $options)->json();
+        return $this->execute('put', $url, $parameters)->json();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function _patch($url = null, array $options = [])
+    public function _patch($url = null, array $parameters = [])
     {
-        return $this->execute('patch', $url, $options)->json();
+        return $this->execute('patch', $url, $parameters)->json();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function _post($url = null, array $options = [])
+    public function _post($url = null, array $parameters = [])
     {
-        return $this->execute('post', $url, $options)->json();
+        return $this->execute('post', $url, $parameters)->json();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function _options($url = null, array $options = [])
+    public function _options($url = null, array $parameters = [])
     {
-        return $this->execute('options', $url, $options)->json();
+        return $this->execute('options', $url, $parameters)->json();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function execute($httpMethod, $url, array $options = [])
+    public function execute($httpMethod, $url, array $parameters = [])
     {
-        return $this->client->{$httpMethod}($url, [ 'query' => $options ]);
+        return $this->client->{$httpMethod}($url, [ 'query' => $parameters ]);
     }
 }
