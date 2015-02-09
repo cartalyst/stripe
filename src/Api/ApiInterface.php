@@ -41,72 +41,72 @@ interface ApiInterface
      * Send a GET request.
      *
      * @param  string  $url
-     * @param  array  $options
+     * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function _get($url = null, $options = []);
+    public function _get($url = null, $parameters = []);
 
     /**
      * Send a HEAD request.
      *
      * @param  string  $url
-     * @param  array  $options
+     * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function _head($url = null, array $options = []);
+    public function _head($url = null, array $parameters = []);
 
     /**
      * Send a DELETE request.
      *
      * @param  string  $url
-     * @param  array  $options
+     * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function _delete($url = null, array $options = []);
+    public function _delete($url = null, array $parameters = []);
 
     /**
      * Send a PUT request.
      *
      * @param  string  $url
-     * @param  array  $options
+     * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function _put($url = null, array $options = []);
+    public function _put($url = null, array $parameters = []);
 
     /**
      * Send a PATCH request.
      *
      * @param  string  $url
-     * @param  array  $options
+     * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function _patch($url = null, array $options = []);
+    public function _patch($url = null, array $parameters = []);
 
     /**
      * Send a POST request.
      *
      * @param  string  $url
-     * @param  array  $options
+     * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function _post($url = null, array $options = []);
+    public function _post($url = null, array $parameters = []);
 
     /**
      * Send an OPTIONS request.
      *
      * @param  string  $url
-     * @param  array  $options
+     * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function _options($url = null, array $options = []);
+    public function _parameters($url = null, array $parameters = []);
 
     /**
      * Executes the HTTP request.
      *
      * @param  string  $httpMethod
      * @param  string  $url
-     * @param  array  $options
+     * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function execute($httpMethod, $url, array $options = []);
+    public function execute($httpMethod, $url, array $parameters = []);
 }
