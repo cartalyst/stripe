@@ -22,12 +22,12 @@ namespace Cartalyst\Stripe;
 
 use Cartalyst\Stripe\Api\ApiInterface;
 
-class Pager implements PagerInterface
+class Pager
 {
     /**
      * The Api instance.
      *
-     * @var  \Cartalyst\Stripe\Api\ApiInterface  $api
+     * @var \Cartalyst\Stripe\Api\ApiInterface  $api
      */
     protected $api;
 

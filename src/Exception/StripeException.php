@@ -99,7 +99,7 @@ class StripeException extends \Exception
      * Throw an exception by the error type.
      *
      * @param  string  $type
-     * @param  string $message
+     * @param  string  $message
      * @param  int  $statusCode
      * @return void
      * @throws mixed

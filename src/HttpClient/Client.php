@@ -21,7 +21,6 @@
 namespace Cartalyst\Stripe\HttpClient;
 
 use GuzzleHttp\Query;
-use GuzzleHttp\Event\ErrorEvent;
 use GuzzleHttp\Event\BeforeEvent;
 use GuzzleHttp\Message\RequestInterface;
 use Cartalyst\Stripe\Exception\StripeException;
