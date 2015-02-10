@@ -98,7 +98,7 @@ interface ApiInterface
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function _parameters($url = null, array $parameters = []);
+    public function _options($url = null, array $parameters = []);
 
     /**
      * Executes the HTTP request.
