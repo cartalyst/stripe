@@ -30,7 +30,7 @@ class Transfers extends Api
      */
     public function create(array $parameters = [])
     {
-        return $this->_post('v1/transfers', $parameters);
+        return $this->_post('transfers', $parameters);
     }
 
     /**
@@ -41,7 +41,7 @@ class Transfers extends Api
      */
     public function find($transferId)
     {
-        return $this->_get("v1/transfers/{$transferId}");
+        return $this->_get("transfers/{$transferId}");
     }
 
     /**
@@ -53,7 +53,7 @@ class Transfers extends Api
      */
     public function update($transferId, array $parameters = [])
     {
-        return $this->_post("v1/transfers/{$transferId}", $parameters);
+        return $this->_post("transfers/{$transferId}", $parameters);
     }
 
     /**
@@ -64,7 +64,7 @@ class Transfers extends Api
      */
     public function cancel($transferId)
     {
-        return $this->_post("v1/transfers/{$transferId}/cancel");
+        return $this->_post("transfers/{$transferId}/cancel");
     }
 
     /**
@@ -75,6 +75,6 @@ class Transfers extends Api
      */
     public function all(array $parameters = [])
     {
-        return $this->_get('v1/transfers', $parameters);
+        return $this->_get('transfers', $parameters);
     }
 }

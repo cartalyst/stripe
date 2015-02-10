@@ -30,7 +30,7 @@ class Plans extends Api
      */
     public function create(array $parameters = [])
     {
-        return $this->_post('v1/plans', $parameters);
+        return $this->_post('plans', $parameters);
     }
 
     /**
@@ -41,7 +41,7 @@ class Plans extends Api
      */
     public function find($planId)
     {
-        return $this->_get("v1/plans/{$planId}");
+        return $this->_get("plans/{$planId}");
     }
 
     /**
@@ -53,7 +53,7 @@ class Plans extends Api
      */
     public function update($planId, array $parameters = [])
     {
-        return $this->_post("v1/plans/{$planId}", $parameters);
+        return $this->_post("plans/{$planId}", $parameters);
     }
 
     /**
@@ -64,7 +64,7 @@ class Plans extends Api
      */
     public function delete($planId)
     {
-        return $this->_delete("v1/plans/{$planId}");
+        return $this->_delete("plans/{$planId}");
     }
 
     /**
@@ -75,6 +75,6 @@ class Plans extends Api
      */
     public function all(array $parameters = [])
     {
-        return $this->_get('v1/plans', $parameters);
+        return $this->_get('plans', $parameters);
     }
 }

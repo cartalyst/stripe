@@ -31,7 +31,7 @@ class Cards extends Api
      */
     public function create($customerId, array $parameters = [])
     {
-        return $this->_post("v1/customers/{$customerId}/cards", $parameters);
+        return $this->_post("customers/{$customerId}/cards", $parameters);
     }
 
     /**
@@ -43,7 +43,7 @@ class Cards extends Api
      */
     public function find($customerId, $cardId)
     {
-        return $this->_get("v1/customers/{$customerId}/cards/{$cardId}");
+        return $this->_get("customers/{$customerId}/cards/{$cardId}");
     }
 
     /**
@@ -56,7 +56,7 @@ class Cards extends Api
      */
     public function update($customerId, $cardId, array $parameters = [])
     {
-        return $this->_post("v1/customers/{$customerId}/cards/{$cardId}", $parameters);
+        return $this->_post("customers/{$customerId}/cards/{$cardId}", $parameters);
     }
 
     /**
@@ -68,7 +68,7 @@ class Cards extends Api
      */
     public function delete($customerId, $cardId)
     {
-        return $this->_delete("v1/customers/{$customerId}/cards/{$cardId}");
+        return $this->_delete("customers/{$customerId}/cards/{$cardId}");
     }
 
     /**
@@ -80,6 +80,6 @@ class Cards extends Api
      */
     public function all($customerId, array $parameters = [])
     {
-        return $this->_get('v1/cards', $parameters);
+        return $this->_get('cards', $parameters);
     }
 }

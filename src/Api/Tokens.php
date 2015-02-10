@@ -30,7 +30,7 @@ class Tokens extends Api
      */
     public function create(array $parameters)
     {
-        return $this->_post('v1/tokens', $parameters);
+        return $this->_post('tokens', $parameters);
     }
 
     /**
@@ -41,6 +41,6 @@ class Tokens extends Api
      */
     public function find($tokenId)
     {
-        return $this->_get("v1/tokens/{$tokenId}");
+        return $this->_get("tokens/{$tokenId}");
     }
 }

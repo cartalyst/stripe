@@ -31,7 +31,7 @@ class Subscriptions extends Api
      */
     public function create($customerId, array $parameters = [])
     {
-        return $this->_post("v1/customers/{$customerId}/subscriptions", $parameters);
+        return $this->_post("customers/{$customerId}/subscriptions", $parameters);
     }
 
     /**
@@ -43,7 +43,7 @@ class Subscriptions extends Api
      */
     public function find($customerId, $subscriptionId)
     {
-        return $this->_get("v1/customers/{$customerId}/subscriptions/{$subscriptionId}");
+        return $this->_get("customers/{$customerId}/subscriptions/{$subscriptionId}");
     }
 
     /**
@@ -56,7 +56,7 @@ class Subscriptions extends Api
      */
     public function update($customerId, $subscriptionId, array $parameters = [])
     {
-        return $this->_post("v1/customers/{$customerId}/subscriptions/{$subscriptionId}", $parameters);
+        return $this->_post("customers/{$customerId}/subscriptions/{$subscriptionId}", $parameters);
     }
 
     /**
@@ -69,7 +69,7 @@ class Subscriptions extends Api
      */
     public function cancel($customerId, $subscriptionId, $atPeriodEnd = true)
     {
-        return $this->_delete("v1/customers/{$customerId}/subscriptions/{$subscriptionId}", [
+        return $this->_delete("customers/{$customerId}/subscriptions/{$subscriptionId}", [
             'query' => [
                 'at_period_end' => $atPeriodEnd,
             ],
@@ -103,7 +103,7 @@ class Subscriptions extends Api
      */
     public function deleteDiscount($customerId, $subscriptionId)
     {
-        return $this->_delete("v1/customers/{$customerId}/subscriptions/{$subscriptionId}/discount");
+        return $this->_delete("customers/{$customerId}/subscriptions/{$subscriptionId}/discount");
     }
 
     /**
@@ -115,6 +115,6 @@ class Subscriptions extends Api
      */
     public function all($customerId, array $parameters = [])
     {
-        return $this->_get("v1/{$customerId}/subscriptions", $parameters);
+        return $this->_get("{$customerId}/subscriptions", $parameters);
     }
 }

@@ -132,6 +132,6 @@ abstract class Api implements ApiInterface
      */
     public function execute($httpMethod, $url, array $parameters = [])
     {
-        return $this->client->{$httpMethod}($url, [ 'query' => $parameters ]);
+        return $this->client->{$httpMethod}("v1/{$url}", [ 'query' => $parameters ]);
     }
 }

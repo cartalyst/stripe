@@ -30,7 +30,7 @@ class Customers extends Api
      */
     public function create(array $parameters = [])
     {
-        return $this->_post('v1/customers', $parameters);
+        return $this->_post('customers', $parameters);
     }
 
     /**
@@ -41,7 +41,7 @@ class Customers extends Api
      */
     public function find($customerId)
     {
-        return $this->_get("v1/customers/{$customerId}");
+        return $this->_get("customers/{$customerId}");
     }
 
     /**
@@ -53,7 +53,7 @@ class Customers extends Api
      */
     public function update($customerId, array $parameters = [])
     {
-        return $this->_post("v1/customers/{$customerId}", $parameters);
+        return $this->_post("customers/{$customerId}", $parameters);
     }
 
     /**
@@ -64,7 +64,7 @@ class Customers extends Api
      */
     public function delete($customerId)
     {
-        return $this->_delete("v1/customers/{$customerId}");
+        return $this->_delete("customers/{$customerId}");
     }
 
     /**
@@ -75,7 +75,7 @@ class Customers extends Api
      */
     public function deleteDiscount($customerId)
     {
-        return $this->_delete("v1/customers/{$customerId}/discount");
+        return $this->_delete("customers/{$customerId}/discount");
     }
 
     /**
@@ -86,6 +86,6 @@ class Customers extends Api
      */
     public function all(array $parameters = [])
     {
-        return $this->_get('v1/customers', $parameters);
+        return $this->_get('customers', $parameters);
     }
 }

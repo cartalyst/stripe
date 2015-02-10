@@ -30,7 +30,7 @@ class Coupons extends Api
      */
     public function create(array $parameters = [])
     {
-        return $this->_post('v1/coupons', $parameters);
+        return $this->_post('coupons', $parameters);
     }
 
     /**
@@ -41,7 +41,7 @@ class Coupons extends Api
      */
     public function find($couponId)
     {
-        return $this->_get("v1/coupons/{$couponId}");
+        return $this->_get("coupons/{$couponId}");
     }
 
     /**
@@ -53,7 +53,7 @@ class Coupons extends Api
      */
     public function update($couponId, array $parameters = [])
     {
-        return $this->_post("v1/coupons/{$couponId}", $parameters);
+        return $this->_post("coupons/{$couponId}", $parameters);
     }
 
     /**
@@ -64,7 +64,7 @@ class Coupons extends Api
      */
     public function delete($couponId)
     {
-        return $this->_delete("v1/coupons/{$couponId}");
+        return $this->_delete("coupons/{$couponId}");
     }
 
     /**
@@ -75,6 +75,6 @@ class Coupons extends Api
      */
     public function all(array $parameters = [])
     {
-        return $this->_get('v1/coupons', $parameters);
+        return $this->_get('coupons', $parameters);
     }
 }

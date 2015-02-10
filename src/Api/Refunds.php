@@ -31,7 +31,7 @@ class Refunds extends Api
      */
     public function create($chargeId, array $parameters = [])
     {
-        return $this->_post("v1/charges/{$chargeId}/refunds", $parameters);
+        return $this->_post("charges/{$chargeId}/refunds", $parameters);
     }
 
     /**
@@ -43,7 +43,7 @@ class Refunds extends Api
      */
     public function find($chargeId, $refundId)
     {
-        return $this->_get("v1/charges/{$chargeId}/refunds/{$refundId}");
+        return $this->_get("charges/{$chargeId}/refunds/{$refundId}");
     }
 
     /**
@@ -56,7 +56,7 @@ class Refunds extends Api
      */
     public function update($chargeId, $refundId, array $parameters = [])
     {
-        return $this->_post("v1/charges/{$chargeId}/refunds/{$refundId}", $parameters);
+        return $this->_post("charges/{$chargeId}/refunds/{$refundId}", $parameters);
     }
 
     /**
@@ -68,6 +68,6 @@ class Refunds extends Api
      */
     public function all($chargeId, array $parameters = [])
     {
-        return $this->_get("v1/charges/{$chargeId}/refunds", $parameters);
+        return $this->_get("charges/{$chargeId}/refunds", $parameters);
     }
 }

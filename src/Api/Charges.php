@@ -30,7 +30,7 @@ class Charges extends Api
      */
     public function create(array $parameters = [])
     {
-        return $this->_post('v1/charges', $parameters);
+        return $this->_post('charges', $parameters);
     }
 
     /**
@@ -41,7 +41,7 @@ class Charges extends Api
      */
     public function find($chargeId)
     {
-        return $this->_get("v1/charges/{$chargeId}");
+        return $this->_get("charges/{$chargeId}");
     }
 
     /**
@@ -53,7 +53,7 @@ class Charges extends Api
      */
     public function update($chargeId, array $parameters = [])
     {
-        return $this->_post("v1/charges/{$chargeId}", $parameters);
+        return $this->_post("charges/{$chargeId}", $parameters);
     }
 
     /**
@@ -65,7 +65,7 @@ class Charges extends Api
      */
     public function capture($chargeId, array $parameters = [])
     {
-        return $this->_post("v1/charges/{$chargeId}/capture", $parameters);
+        return $this->_post("charges/{$chargeId}/capture", $parameters);
     }
 
     /**
@@ -76,6 +76,6 @@ class Charges extends Api
      */
     public function all(array $parameters = [])
     {
-        return $this->_get('v1/charges', $parameters);
+        return $this->_get('charges', $parameters);
     }
 }

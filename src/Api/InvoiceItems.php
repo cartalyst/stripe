@@ -34,7 +34,7 @@ class Invoices extends Api
         $parameters = array_merge($parameters, [
             'customer' => $customerId,
         ]);
-        return $this->_post('v1/invoiceitems', $parameters);
+        return $this->_post('invoiceitems', $parameters);
     }
 
     /**
@@ -45,7 +45,7 @@ class Invoices extends Api
      */
     public function find($invoiceItemId)
     {
-        return $this->_get("v1/invoiceitems/{$invoiceItemId}");
+        return $this->_get("invoiceitems/{$invoiceItemId}");
     }
 
     /**
@@ -57,7 +57,7 @@ class Invoices extends Api
      */
     public function update($invoiceItemId, array $parameters = [])
     {
-        return $this->_post("v1/invoiceitems/{$invoiceItemId}", $parameters);
+        return $this->_post("invoiceitems/{$invoiceItemId}", $parameters);
     }
 
     /**
@@ -68,7 +68,7 @@ class Invoices extends Api
      */
     public function delete($invoiceItemId)
     {
-        return $this->_delete("v1/invoiceitems/{$invoiceItemId}");
+        return $this->_delete("invoiceitems/{$invoiceItemId}");
     }
 
     /**
@@ -79,6 +79,6 @@ class Invoices extends Api
      */
     public function all(array $parameters = [])
     {
-        return $this->_get('v1/invoiceitems', $parameters);
+        return $this->_get('invoiceitems', $parameters);
     }
 }

@@ -30,7 +30,7 @@ class Recipients extends Api
      */
     public function create(array $parameters = [])
     {
-        return $this->_post('v1/recipients', $parameters);
+        return $this->_post('recipients', $parameters);
     }
 
     /**
@@ -41,7 +41,7 @@ class Recipients extends Api
      */
     public function find($recipientId)
     {
-        return $this->_get("v1/recipients/{$recipientId}");
+        return $this->_get("recipients/{$recipientId}");
     }
 
     /**
@@ -53,7 +53,7 @@ class Recipients extends Api
      */
     public function update($recipientId, array $parameters = [])
     {
-        return $this->_post("v1/recipients/{$recipientId}", $parameters);
+        return $this->_post("recipients/{$recipientId}", $parameters);
     }
 
     /**
@@ -64,7 +64,7 @@ class Recipients extends Api
      */
     public function delete($recipientId)
     {
-        return $this->_delete("v1/recipients/{$recipientId}");
+        return $this->_delete("recipients/{$recipientId}");
     }
 
     /**
@@ -75,6 +75,6 @@ class Recipients extends Api
      */
     public function all(array $parameters = [])
     {
-        return $this->_get('v1/recipients', $parameters);
+        return $this->_get('recipients', $parameters);
     }
 }

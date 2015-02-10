@@ -30,7 +30,7 @@ class Invoices extends Api
      */
     public function create(array $parameters = [])
     {
-        return $this->_post('v1/invoices', $parameters);
+        return $this->_post('invoices', $parameters);
     }
 
     /**
@@ -41,7 +41,7 @@ class Invoices extends Api
      */
     public function find($invoiceId)
     {
-        return $this->_get("v1/invoices/{$invoiceId}");
+        return $this->_get("invoices/{$invoiceId}");
     }
 
     /**
@@ -53,7 +53,7 @@ class Invoices extends Api
      */
     public function lineItems($invoiceId, array $parameters = [])
     {
-        return $this->_get("v1/invoices/{$invoiceId}/lines", $parameters);
+        return $this->_get("invoices/{$invoiceId}/lines", $parameters);
     }
 
     /**
@@ -65,7 +65,7 @@ class Invoices extends Api
      */
     public function upcomingInvoice($customerId, $subscriptionId = null)
     {
-        return $this->_get('v1/invoices/upcoming', [
+        return $this->_get('invoices/upcoming', [
             'customer'     => $customerId,
             'subscription' => $subscriptionId,
         ]);
@@ -80,7 +80,7 @@ class Invoices extends Api
      */
     public function update($invoiceId, array $parameters = [])
     {
-        return $this->_post("v1/invoices/{$invoiceId}", $parameters);
+        return $this->_post("invoices/{$invoiceId}", $parameters);
     }
 
     /**
@@ -91,7 +91,7 @@ class Invoices extends Api
      */
     public function pay($invoiceId)
     {
-        return $this->_post("v1/invoices/{$invoiceId}/pay");
+        return $this->_post("invoices/{$invoiceId}/pay");
     }
 
     /**
@@ -102,6 +102,6 @@ class Invoices extends Api
      */
     public function all(array $parameters = [])
     {
-        return $this->_get('v1/invoices', $parameters);
+        return $this->_get('invoices', $parameters);
     }
 }

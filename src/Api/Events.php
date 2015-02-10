@@ -30,7 +30,7 @@ class Events extends Api
      */
     public function find($eventId)
     {
-        return $this->_get("v1/events/{$eventId}");
+        return $this->_get("events/{$eventId}");
     }
 
     /**
@@ -41,6 +41,6 @@ class Events extends Api
      */
     public function all(array $parameters = [])
     {
-        return $this->_get('v1/events', $parameters);
+        return $this->_get('events', $parameters);
     }
 }
