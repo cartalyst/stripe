@@ -35,6 +35,13 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
     protected $apiKey;
 
     /**
+     * The Stripe idempotency key.
+     *
+     * @var string
+     */
+    protected $idempotencyKey;
+
+    /**
      * The Stripe API version.
      *
      * @var string
@@ -120,6 +127,28 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
         $this->apiVersion = (string) $apiVersion;
 
         $this->setDefaultOption('headers/Stripe-Version', $this->apiVersion);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIdempotencyKey()
+    {
+        return $this->idempotencyKey;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setIdempotencyKey($idempotencyKey)
+    {
+        $this->idempotencyKey = $idempotencyKey;
+
+        $this->setDefaultOption('headers/Idempotency-Key', $this->idempotencyKey);
+
+        return $this;
     }
 
     /**

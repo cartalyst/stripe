@@ -144,6 +144,19 @@ class Stripe
     }
 
     /**
+     * Sets the idempotency key.
+     *
+     * @param  string  $idempotencyKey
+     * @return $this
+     */
+    public function idempotent($idempotencyKey)
+    {
+        $this->client->setIdempotencyKey($idempotencyKey);
+
+        return $this;
+    }
+
+    /**
      * Dynamically handle missing methods.
      *
      * @param  string  $method
