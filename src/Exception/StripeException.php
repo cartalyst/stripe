@@ -52,6 +52,13 @@ class StripeException extends \Exception
     ];
 
     /**
+     * The error type returned by Stripe.
+     *
+     * @var string
+     */
+    protected $errorType;
+
+    /**
      * Handles the given exception.
      *
      * @param  \GuzzleHttp\Exception\ClientException  $exception
@@ -70,9 +77,11 @@ class StripeException extends \Exception
 
         $message = isset($body['error']['message']) ? $body['error']['message'] : null;
 
-        $type = str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $type)));
-
+        // Create a new Exception instance
         $instance = new static($message, $statusCode);
+
+        // Set the Stripe error type
+        $instance->setErrorType($type);
 
         // Throw an exception by the error type
         $instance->handleExceptionByType($type, $message, $statusCode);
@@ -82,6 +91,29 @@ class StripeException extends \Exception
 
         // Not much we can do now, throw a regular exception
         throw $instance;
+    }
+
+    /**
+     * Returns the error type returned by Stripe.
+     *
+     * @return string
+     */
+    public function getErrorType()
+    {
+        return $this->errorType;
+    }
+
+    /**
+     * Sets the error type returned by Stripe.
+     *
+     * @param  string  $errorType
+     * @return $this
+     */
+    public function setErrorType($errorType)
+    {
+        $this->errorType = $errorType;
+
+        return $this;
     }
 
     /**
@@ -102,10 +134,12 @@ class StripeException extends \Exception
      * @param  string  $message
      * @param  int  $statusCode
      * @return void
-     * @throws mixed
+     * @throws \Cartalyst\Stripe\Exception\StripeException
      */
     protected function handleExceptionByType($type, $message, $statusCode)
     {
+        $type = str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $type)));
+
         $class = $this->getExceptionClassNamespace($type);
 
         if (class_exists($class)) {
@@ -116,10 +150,10 @@ class StripeException extends \Exception
     /**
      * Throw an exception by the status code.
      *
-     * @param  string $message
+     * @param  string  $message
      * @param  int  $statusCode
      * @return void
-     * @throws mixed
+     * @throws \Cartalyst\Stripe\Exception\StripeException
      */
     protected function handleExceptionByStatusCode($message, $statusCode)
     {
