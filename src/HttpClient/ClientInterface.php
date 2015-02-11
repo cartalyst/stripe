@@ -74,7 +74,7 @@ interface ClientInterface
      * Sends a single request.
      *
      * @param  \GuzzleHttp\Message\RequestInterface  $request
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return \GuzzleHttp\Message\ResponseInterface|null
      * @throws \Cartalyst\Stripe\Exception\StripeException
      */
     public function send(RequestInterface $request);

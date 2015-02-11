@@ -159,7 +159,7 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
         try {
             return parent::send($request);
          } catch (\Exception $e) {
-            return StripeException::make($e);
+            new Error($e);
         }
     }
 }

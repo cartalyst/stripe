@@ -20,36 +20,14 @@
 
 namespace Cartalyst\Stripe\Exception;
 
-use GuzzleHttp\Exception\ClientException;
-
 class StripeException extends \Exception
 {
     /**
-     * List of mapped exceptions and their corresponding status codes.
+     * The error code returned by Stripe.
      *
-     * @var array
+     * @var string
      */
-    protected $mappedExceptions = [
-
-        // Often missing a required parameter
-        400 => 'BadRequest',
-
-        // Invalid Stripe API key provided
-        401 => 'Unauthorized',
-
-        // Parameters were valid but request failed
-        402 => 'InvalidRequest',
-
-        // The requested item doesn't exist
-        404 => 'NotFound',
-
-        // Something went wrong on Stripe's end
-        500 => 'ServerError',
-        502 => 'ServerError',
-        503 => 'ServerError',
-        504 => 'ServerError',
-
-    ];
+    protected $errorCode;
 
     /**
      * The error type returned by Stripe.
@@ -59,38 +37,33 @@ class StripeException extends \Exception
     protected $errorType;
 
     /**
-     * Handles the given exception.
+     * The missing parameter returned by Stripe with the error.
      *
-     * @param  \GuzzleHttp\Exception\ClientException  $exception
-     * @return void
-     * @throws \Cartalyst\Stripe\Exception\StripeException
+     * @var string
      */
-    public static function make(ClientException $exception)
+    protected $missingParameter;
+
+    /**
+     * Returns the error type returned by Stripe.
+     *
+     * @return string
+     */
+    public function getErrorCode()
     {
-        $response = $exception->getResponse();
+        return $this->errorCode;
+    }
 
-        $statusCode = $response->getStatusCode();
+    /**
+     * Sets the error type returned by Stripe.
+     *
+     * @param  string  $errorCode
+     * @return $this
+     */
+    public function setErrorCode($errorCode)
+    {
+        $this->errorCode = $errorCode;
 
-        $body = json_decode($response->getBody(true), true);
-
-        $type = isset($body['error']['type']) ? $body['error']['type'] : null;
-
-        $message = isset($body['error']['message']) ? $body['error']['message'] : null;
-
-        // Create a new Exception instance
-        $instance = new static($message, $statusCode);
-
-        // Set the Stripe error type
-        $instance->setErrorType($type);
-
-        // Throw an exception by the error type
-        $instance->handleExceptionByType($type, $message, $statusCode);
-
-        // Throw an exception by the status code
-        $instance->handleExceptionByStatusCode($message, $statusCode);
-
-        // Not much we can do now, throw a regular exception
-        throw $instance;
+        return $this;
     }
 
     /**
@@ -117,50 +90,25 @@ class StripeException extends \Exception
     }
 
     /**
-     * Returns the given exception class full namespace.
+     * Returns missing parameter returned by Stripe with the error.
      *
-     * @param  string  $exception
      * @return string
      */
-    protected function getExceptionClassNamespace($exception)
+    public function getMissingParameter()
     {
-        return "\\Cartalyst\\Stripe\\Exception\\{$exception}Exception";
+        return $this->missingParameter;
     }
 
     /**
-     * Throw an exception by the error type.
+     * Sets the missing parameter returned by Stripe with the error.
      *
-     * @param  string  $type
-     * @param  string  $message
-     * @param  int  $statusCode
-     * @return void
-     * @throws \Cartalyst\Stripe\Exception\StripeException
+     * @param  string  $missingParameter
+     * @return $this
      */
-    protected function handleExceptionByType($type, $message, $statusCode)
+    public function setMissingParameter($missingParameter)
     {
-        $type = str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $type)));
+        $this->missingParameter = $missingParameter;
 
-        $class = $this->getExceptionClassNamespace($type);
-
-        if (class_exists($class)) {
-            throw new $class($message, $statusCode);
-        }
-    }
-
-    /**
-     * Throw an exception by the status code.
-     *
-     * @param  string  $message
-     * @param  int  $statusCode
-     * @return void
-     * @throws \Cartalyst\Stripe\Exception\StripeException
-     */
-    protected function handleExceptionByStatusCode($message, $statusCode)
-    {
-        if (array_key_exists($statusCode, $this->mappedExceptions)) {
-            $class = $this->getExceptionClassNamespace($this->mappedExceptions[$statusCode]);
-
-            throw new $class($message, $statusCode);
-        }
+        return $this;
     }
 }
