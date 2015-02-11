@@ -86,7 +86,7 @@ class Error
 
         $missingParameter = isset($error['param']) ? $error['param'] : null;
 
-        throw $this->createExceptionInstance(
+        $this->handleException(
             $message, $statusCode, $errorType, $errorCode, $missingParameter
         );
     }
@@ -99,9 +99,10 @@ class Error
      * @param  string  $errorType
      * @param  string  $errorCode
      * @param  string  $missingParameter
-     * @return \Cartalyst\Stripe\Exception\StripeException
+     * @return void
+     * @throws \Cartalyst\Stripe\Exception\StripeException
      */
-    protected function createExceptionInstance($message, $statusCode, $errorType, $errorCode, $missingParameter)
+    protected function handleException($message, $statusCode, $errorType, $errorCode, $missingParameter)
     {
         if ($statusCode === 400 && $errorCode === 'rate_limit') {
             $class = 'ApiLimitExceeded';
@@ -123,6 +124,6 @@ class Error
         $instance->setErrorType($errorType);
         $instance->setMissingParameter($missingParameter);
 
-        return $instance;
+        throw $instance;
     }
 }
