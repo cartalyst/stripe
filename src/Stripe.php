@@ -20,10 +20,6 @@
 
 namespace Cartalyst\Stripe;
 
-use Cartalyst\Stripe\Api;
-use Cartalyst\Stripe\HttpClient\Client;
-use Cartalyst\Stripe\HttpClient\ClientInterface;
-
 class Stripe
 {
     /**
@@ -34,11 +30,11 @@ class Stripe
     const VERSION = '1.0.0';
 
     /**
-     * The Guzzle client instance.
+     * The Config repository instance.
      *
-     * @var \GuzzleHttp\Client
+     * @var \Cartalyst\Stripe\ConfigInterface
      */
-    protected $client;
+    protected $config;
 
     /**
      * Constructor.
@@ -49,7 +45,7 @@ class Stripe
      */
     public function __construct($apiKey = null, $apiVersion = null)
     {
-        $this->client = new Client($apiKey, $apiVersion, self::VERSION);
+        $this->config = new Config(self::VERSION, $apiKey, $apiVersion);
     }
 
     /**
@@ -75,13 +71,36 @@ class Stripe
     }
 
     /**
+     * Returns the Config repository instance.
+     *
+     * @return \Cartalyst\Stripe\ConfigInterface
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
+     * Sets the Config repository instance.
+     *
+     * @param  \Cartalyst\Stripe\ConfigInterface  $config
+     * @return $this
+     */
+    public function setConfig(ConfigInterface $config)
+    {
+        $this->config = $config;
+
+        return $this;
+    }
+
+    /**
      * Returns the Stripe API key.
      *
      * @return string
      */
     public function getApiKey()
     {
-        return $this->client->getApiKey();
+        return $this->config->api_key;
     }
 
     /**
@@ -92,7 +111,7 @@ class Stripe
      */
     public function setApiKey($apiKey)
     {
-        $this->client->setApiKey($apiKey);
+        $this->config->api_key = $apiKey;
 
         return $this;
     }
@@ -104,7 +123,7 @@ class Stripe
      */
     public function getApiVersion()
     {
-        return $this->client->getApiVersion();
+        return $this->config->api_version;
     }
 
     /**
@@ -115,30 +134,7 @@ class Stripe
      */
     public function setApiVersion($apiVersion)
     {
-        $this->client->setApiVersion($apiVersion);
-
-        return $this;
-    }
-
-    /**
-     * Returns the Guzzle client instance.
-     *
-     * @return \Cartalyst\Stripe\HttpClient\ClientInterface
-     */
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    /**
-     * Sets the Guzzle client instance.
-     *
-     * @param  \Cartalyst\Stripe\HttpClient\ClientInterface  $client
-     * @return $this
-     */
-    public function setClient(ClientInterface $client)
-    {
-        $this->client = $client;
+        $this->config->api_version = $apiVersion;
 
         return $this;
     }
@@ -151,7 +147,7 @@ class Stripe
      */
     public function idempotent($idempotencyKey)
     {
-        $this->client->setIdempotencyKey($idempotencyKey);
+        $this->config->idempotency_key = $idempotencyKey;
 
         return $this;
     }
@@ -196,9 +192,9 @@ class Stripe
         $class = "\\Cartalyst\\Stripe\\Api\\".ucwords($method);
 
         if (class_exists($class)) {
-            return new $class($this->client);
+            return new $class($this->config);
         }
 
         throw new \BadMethodCallException("Undefined method [{$method}] called.");
-   }
+    }
 }

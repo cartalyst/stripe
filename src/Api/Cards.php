@@ -80,6 +80,6 @@ class Cards extends Api
      */
     public function all($customerId, array $parameters = [])
     {
-        return $this->_get('cards', $parameters);
+        return $this->_get("customers/{$customerId}/cards", $parameters);
     }
 }

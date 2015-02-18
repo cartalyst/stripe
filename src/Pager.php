@@ -80,7 +80,17 @@ class Pager
             $parameters['starting_after'] = $this->nextToken;
         }
 
-        $result = call_user_func_array([ $this->api, 'all' ], [ $parameters ]);
+        if (isset($parameters[0]) && is_string($parameters[0])) {
+            $id = $parameters[0];
+
+            unset($parameters[0]);
+
+            $parameters = [ $id, $parameters ];
+        } else {
+            $parameters = [ $parameters ];
+        }
+
+        $result = call_user_func_array([ $this->api, 'all' ], $parameters);
 
         $this->nextToken = $result['has_more'] ? end($result['data'])['id'] : false;
 

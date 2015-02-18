@@ -18,11 +18,11 @@
  * @link       http://cartalyst.com
  */
 
-namespace Cartalyst\Stripe\HttpClient;
+namespace Cartalyst\Stripe\Exception;
 
 use GuzzleHttp\Exception\ClientException;
 
-class Error
+class Handler
 {
     /**
      * List of mapped exceptions and their corresponding error types.

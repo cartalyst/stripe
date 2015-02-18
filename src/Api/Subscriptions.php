@@ -70,9 +70,7 @@ class Subscriptions extends Api
     public function cancel($customerId, $subscriptionId, $atPeriodEnd = true)
     {
         return $this->_delete("customers/{$customerId}/subscriptions/{$subscriptionId}", [
-            'query' => [
-                'at_period_end' => $atPeriodEnd,
-            ],
+            'at_period_end' => $atPeriodEnd,
         ]);
     }
 
@@ -88,9 +86,22 @@ class Subscriptions extends Api
         $subscription = $this->find($customerId, $subscription);
 
         return $this->update($customerId, $subscriptionId, [
-            'query' => [
-                'plan' => $subscription['plan']['id'],
-            ],
+            'plan' => $subscription['plan']['id'],
+        ]);
+    }
+
+    /**
+     * Applies the given discount on the given subscription.
+     *
+     * @param  string  $customerId
+     * @param  string  $subscriptionId
+     * @param  string  $couponId
+     * @return \GuzzleHttp\Message\ResponseInterface
+     */
+    public function applyDiscount($customerId, $subscriptionId, $couponId)
+    {
+        return $this->update($customerId, $subscriptionId, [
+            'coupon' => $couponId,
         ]);
     }
 
@@ -115,6 +126,6 @@ class Subscriptions extends Api
      */
     public function all($customerId, array $parameters = [])
     {
-        return $this->_get("{$customerId}/subscriptions", $parameters);
+        return $this->_get("customers/{$customerId}/subscriptions", $parameters);
     }
 }

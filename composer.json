@@ -28,8 +28,15 @@
             "role": "Developer"
         }
     ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.cartalyst.com"
+        }
+    ],
     "require": {
         "php": ">=5.4.0",
+        "cartalyst/collections": "~1.0@dev",
         "guzzlehttp/guzzle": "~5.2"
     },
     "require-dev": {

@@ -68,6 +68,20 @@ class Customers extends Api
     }
 
     /**
+     * Applies the given discount on the given customer.
+     *
+     * @param  string  $customerId
+     * @param  string  $couponId
+     * @return \GuzzleHttp\Message\ResponseInterface
+     */
+    public function applyDiscount($customerId, $couponId)
+    {
+        return $this->update($customerId, [
+            'coupon' => $couponId,
+        ]);
+    }
+
+    /**
      * Deletes an existing customer discount.
      *
      * @param  string  $customerId

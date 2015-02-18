@@ -20,16 +20,18 @@
 
 namespace Cartalyst\Stripe\Api;
 
-use GuzzleHttp\Client;
+use Cartalyst\Stripe\Util;
+use Cartalyst\Stripe\Http\Client;
+use Cartalyst\Stripe\ConfigInterface;
 
 abstract class Api implements ApiInterface
 {
     /**
-     * The Guzzle client instance.
+     * The Config repository instance.
      *
-     * @var \GuzzleHttp\Client
+     * @var \Cartalyst\Stripe\ConfigInterface
      */
-    protected $client;
+    protected $config;
 
     /**
      * Number of items to return per page.
@@ -41,12 +43,22 @@ abstract class Api implements ApiInterface
     /**
      * Constructor.
      *
-     * @param  \GuzzleHttp\Client  $client
+     * @param  \Cartalyst\Stripe\ConfigInterface  $client
      * @return void
      */
-    public function __construct(Client $client)
+    public function __construct(ConfigInterface $config)
     {
-        $this->client = $client;
+        $this->config = $config;
+
+        $this->config->base_url = $this->baseUrl();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function baseUrl()
+    {
+        return 'https://api.stripe.com';
     }
 
     /**
@@ -130,8 +142,10 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritDoc}
      */
-    public function execute($httpMethod, $url, array $parameters = [])
+    public function execute($httpMethod, $url, array $parameters = [], array $body = [])
     {
-        return $this->client->{$httpMethod}("v1/{$url}", [ 'query' => $parameters ]);
+        $parameters = Util::prepareParameters($parameters);
+
+        return (new Client($this->config))->{$httpMethod}("v1/{$url}", [ 'query' => $parameters, 'body' => $body ]);
     }
 }

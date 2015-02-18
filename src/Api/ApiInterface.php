@@ -23,6 +23,13 @@ namespace Cartalyst\Stripe\Api;
 interface ApiInterface
 {
     /**
+     * Returns the API base url.
+     *
+     * @return string
+     */
+    public function baseUrl();
+
+    /**
      * Returns the number of items to return per page.
      *
      * @return void
@@ -106,7 +113,8 @@ interface ApiInterface
      * @param  string  $httpMethod
      * @param  string  $url
      * @param  array  $parameters
+     * @param  array  $body
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function execute($httpMethod, $url, array $parameters = []);
+    public function execute($httpMethod, $url, array $parameters = [], array $body = []);
 }
