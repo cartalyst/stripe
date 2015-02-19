@@ -25,48 +25,49 @@ class ApplicationFeeRefunds extends Api
     /**
      * Creates a new application fee refund.
      *
+     * @param  string  $applicationFeeId
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function create($feeId, array $parameters = [])
+    public function create($applicationFeeId, array $parameters = [])
     {
-        return $this->_post("application_fees/{$feeId}/refunds", $parameters);
+        return $this->_post("application_fees/{$applicationFeeId}/refunds", $parameters);
     }
 
     /**
      * Retrieves an existing application fee refund.
      *
-     * @param  string  $feeId
+     * @param  string  $applicationFeeId
      * @param  string  $refundId
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function find($feeId, $refundId)
+    public function find($applicationFeeId, $refundId)
     {
-        return $this->_get("application_fees/{$feeId}/refunds/{$refundId}");
+        return $this->_get("application_fees/{$applicationFeeId}/refunds/{$refundId}");
     }
 
     /**
      * Updates an existing application fee refund.
      *
-     * @param  string  $feeId
+     * @param  string  $applicationFeeId
      * @param  string  $refundId
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function update($feeId, $refundId, array $parameters = [])
+    public function update($applicationFeeId, $refundId, array $parameters = [])
     {
-        return $this->_post("application_fees/{$feeId}/refunds/{$refundId}", $parameters);
+        return $this->_post("application_fees/{$applicationFeeId}/refunds/{$refundId}", $parameters);
     }
 
     /**
      * Lists all application fee refunds.
      *
-     * @param  string  $feeId
+     * @param  string  $applicationFeeId
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function all($feeId, array $parameters = [])
+    public function all($applicationFeeId, array $parameters = [])
     {
-        return $this->_get("application_fees/{$feeId}/refunds", $parameters);
+        return $this->_get("application_fees/{$applicationFeeId}/refunds", $parameters);
     }
 }
