@@ -83,7 +83,7 @@ class Subscriptions extends Api
      */
     public function reactivate($customerId, $subscriptionId)
     {
-        $subscription = $this->find($customerId, $subscription);
+        $subscription = $this->find($customerId, $subscriptionId);
 
         return $this->update($customerId, $subscriptionId, [
             'plan' => $subscription['plan']['id'],
