@@ -67,7 +67,7 @@ class Subscriptions extends Api
      * @param  bool  $atPeriodEnd
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function cancel($customerId, $subscriptionId, $atPeriodEnd = true)
+    public function cancel($customerId, $subscriptionId, $atPeriodEnd = false)
     {
         return $this->_delete("customers/{$customerId}/subscriptions/{$subscriptionId}", [
             'at_period_end' => $atPeriodEnd,
