@@ -25,11 +25,16 @@ class Invoices extends Api
     /**
      * Creates a new invoice.
      *
+     * @param  string  $customerId
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function create(array $parameters = [])
+    public function create($customerId, array $parameters = [])
     {
+        $parameters = array_merge($parameters, [
+            'customer' => $customerId,
+        ]);
+
         return $this->_post('invoices', $parameters);
     }
 
