@@ -99,7 +99,6 @@
         "recipients/delete",
         "recipients/retrieve-all",
 
-
         "application_fees/index",
         "application_fees/retrieve-single",
         "application_fees/retrieve-all",
@@ -110,6 +109,11 @@
         "application_fee_refunds/update",
         "application_fee_refunds/retrieve-all",
 
+
+        "balance/index",
+        "balance/retrieve-current",
+        "balance/retrieve-single",
+        "balance/retrieve-all",
 
         "events/index",
         "events/retrieve-single",
