@@ -1,27 +1,123 @@
 {
-	"introduction" : [
-		"index",
-		"installation",
-		"integration"
-	],
-	"usage": [
-		"index",
-		"charges",
-		"refunds",
-		"customers",
-		"cards",
-		"plans",
-		"coupons",
-		"subscriptions",
-		"invoices",
-		"invoice_items",
-		"transfers",
-		"recipients",
-		"tokens",
-		"account",
-		"balance",
-		"events",
-		"pagination",
-		"exceptions"
-	]
+    "preface" : [
+        "introduction",
+        "features",
+        "examples"
+    ],
+    "setup": [
+        "installation",
+        "instantiation"
+    ],
+    "integrations": [
+        "index"
+    ],
+    "usage": [
+        "index",
+
+        "charges/index",
+        "charges/create",
+        "charges/retrieve-single",
+        "charges/update",
+        "charges/capture",
+        "charges/retrieve-all",
+
+        "refunds/index",
+        "refunds/create",
+        "refunds/retrieve-single",
+        "refunds/update",
+        "refunds/retrieve-all",
+
+        "customers/index",
+        "customers/create",
+        "customers/retrieve-single",
+        "customers/update",
+        "customers/delete",
+        "customers/delete-discount",
+        "customers/retrieve-all",
+
+        "cards/index",
+        "cards/create",
+        "cards/retrieve-single",
+        "cards/update",
+        "cards/delete",
+        "cards/retrieve-all",
+
+        "subscriptions/index",
+        "subscriptions/create",
+        "subscriptions/retrieve-single",
+        "subscriptions/update",
+        "subscriptions/cancel",
+        "subscriptions/reactivate",
+        "subscriptions/delete-discount",
+        "subscriptions/retrieve-all",
+
+        "plans/index",
+        "plans/create",
+        "plans/retrieve-single",
+        "plans/update",
+        "plans/delete",
+        "plans/retrieve-all",
+
+        "coupons/index",
+        "coupons/create",
+        "coupons/retrieve-single",
+        "coupons/update",
+        "coupons/delete",
+        "coupons/retrieve-all",
+
+        "invoices/index",
+        "invoices/create",
+        "invoices/retrieve-single",
+        "invoices/retrieve-line-items",
+        "invoices/retrieve-upcoming",
+        "invoices/update",
+        "invoices/pay",
+        "invoices/retrieve-all",
+
+        "invoice_items/index",
+        "invoice_items/create",
+        "invoice_items/retrieve-single",
+        "invoice_items/update",
+        "invoice_items/delete",
+        "invoice_items/retrieve-all",
+
+        "disputes/index",
+        "disputes/update",
+        "disputes/close",
+
+        "transfers/index",
+        "transfers/create",
+        "transfers/retrieve-single",
+        "transfers/update",
+        "transfers/cancel",
+        "transfers/retrieve-all",
+
+        "recipients/index",
+        "recipients/create",
+        "recipients/retrieve-single",
+        "recipients/update",
+        "recipients/delete",
+        "recipients/retrieve-all",
+
+
+        "application_fees/index",
+        "application_fees/retrieve-single",
+        "application_fees/retrieve-all",
+
+        "application_fee_refunds/index",
+        "application_fee_refunds/create",
+        "application_fee_refunds/retrieve-single",
+        "application_fee_refunds/update",
+        "application_fee_refunds/retrieve-all",
+
+
+        "events/index",
+        "events/retrieve-single",
+        "events/retrieve-all",
+
+
+        "exceptions",
+        "pagination"
+
+    ]
 }

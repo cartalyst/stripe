@@ -1,66 +1,62 @@
-### Handling Exceptions
+### Exceptions
 
-The Stripe API throws two kinds of exceptions:
-
-###### Guzzle Exceptions
-
-These exceptions will be thrown since Guzzle will automatically validate all the arguments you provide according to the manifest file rules.
-
-If an argument is invalid, Guzzle will throw a `Guzzle\Service\Exception\ValidationException` exception,
-
-```php
-try
-{
-	$customer = Stripe::customers()->find([
-		// We should pass in the id argument here..
-	]);
-}
-catch (Guzzle\Service\Exception\ValidationException $e)
-{
-	$errors = $e->getErrors();
-}
-```
-
-###### API Exceptions
-
-These exceptions will be thrown when something is wrong, like when a credit card with a bad number is submited, an expired credit card or even when Stripe.com itself has done something wrong.
+The Stripe API will throw a few exceptions when something is wrong, like when a credit card with a bad number is submited, an expired credit card or even when Stripe.com itself has done something wrong.
 
 Here is the list of all the exceptions that the Stripe API throws with a brief description:
 
-Exception                                             | Description
------------------------------------------------------ | ------------------------
-Cartalyst\Stripe\Api\Exception\BadRequestException    | This exception will be thrown when the data sent through the request is mal formed.
-Cartalyst\Stripe\Api\Exception\UnauthorizedException  | This exception will be thrown if your Stripe API Key is incorrect.
-Cartalyst\Stripe\Api\Exception\RequestFailedException | This exception will be thrown whenever the request fails for some reason.
-Cartalyst\Stripe\Api\Exception\CardErrorException     | This exception will be thrown whenever the credit card is invalid.
-Cartalyst\Stripe\Api\Exception\NotFoundException      | This exception will be thrown whenever a request results on a 404.
-Cartalyst\Stripe\Api\Exception\ServerErrorException   | This exception will be thrown whenever Stripe does something wrong.
+<table>
+	<thead>
+		<th>Exception</th>
+		<th>Description</th>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Cartalyst\Stripe\Exception\BadRequestException</td>
+			<td>This exception will be thrown when the data sent through the request is mal formed.</td>
+		</tr>
+		<tr>
+			<td>Cartalyst\Stripe\Exception\UnauthorizedException</td>
+			<td>This exception will be thrown if your Stripe API Key is incorrect.</td>
+		</tr>
+		<tr>
+			<td>Cartalyst\Stripe\Exception\InvalidRequestException</td>
+			<td>This exception will be thrown whenever the request fails for some reason.</td>
+		</tr>
+		<tr>
+			<td>Cartalyst\Stripe\Exception\NotFoundException</td>
+			<td>This exception will be thrown whenever a request results on a 404.</td>
+		</tr>
+		<tr>
+			<td>Cartalyst\Stripe\Exception\CardErrorException</td>
+			<td>This exception will be thrown whenever the credit card is invalid.</td>
+		</tr>
+		<tr>
+			<td>Cartalyst\Stripe\Exception\ServerErrorException</td>
+			<td>This exception will be thrown whenever Stripe does something wrong.</td>
+		</tr>
+	</tbody>
+</table>
 
 #### Usage
 
-Below is an example of using the API to find a customer, but this customer doesn't exist, so it'll thrown a `NotFoundException`.
+Below is an example of using the API to find a customer, but this customer doesn't exist, so it'll throw a `NotFoundException`.
 
 ```php
 try
 {
-	$customer = Stripe::customers()->find([
-		'id' => 'foobar',
-	]);
+	$customer = $stripe->customers()->find('foobar');
 
 	echo $customer['email'];
 }
-catch (Cartalyst\Stripe\Api\Exception\NotFoundException $e)
+catch (Cartalyst\Stripe\Exception\NotFoundException $e)
 {
+	// Get the status code
+	$code = $e->getCode();
+
 	// Get the error message returned by Stripe
 	$message = $e->getMessage();
 
 	// Get the error type returned by Stripe
 	$type = $e->getErrorType();
-
-	// Get the status code
-	$code = $e->getCode();
-
-	// Get the request response, if required to get more information
-	$response = $e->getResponse();
 }
 ```

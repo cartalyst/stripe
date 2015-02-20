@@ -7,7 +7,7 @@ You can also retrieve a list of the balance history, which contains a full list 
 #### Retrieve account balance
 
 ```php
-$balance = Stripe::balance()->current();
+$balance = $stripe->balance()->current();
 
 echo $balance['pending']['amount'];
 ```
@@ -15,7 +15,7 @@ echo $balance['pending']['amount'];
 #### Retrieve all the balance history
 
 ```php
-$history = Stripe::balance()->all();
+$history = $stripe->balance()->all();
 
 foreach ($history['data'] as $balance)
 {
@@ -26,7 +26,7 @@ foreach ($history['data'] as $balance)
 #### Retrieve a balance history
 
 ```php
-$balance = Stripe::balance()->history([
+$balance = $stripe->balance()->history([
 	'id' => 'txn_4EI2Pu1gPR27yT',
 ]);
 

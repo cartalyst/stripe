@@ -1,0 +1,100 @@
+### Features
+
+- Charges
+    - Can create a charge.
+    - Can retrieve a charge.
+    - Can update a charge.
+    - Can capture a charge.
+    - Can retrieve all charges.
+- Refunds
+    - Can create a refund.
+    - Can retrieve a refund.
+    - Can update a refund.
+    - Can retrieve all refunds.
+- Customers
+    - Can create a customer.
+    - Can retrieve a customer.
+    - Can update a customer.
+    - Can delete a customer.
+    - Can apply a discount to a customer.
+    - Can retrieve all customers.
+- Cards
+    - Can create a card.
+    - Can retrieve a card.
+    - Can update a card.
+    - Can delete a card.
+    - Can retrieve all cards.
+- Subscriptions
+    - Can create a subscription.
+    - Can retrieve a subscription.
+    - Can update a subscription.
+    - Can cancel a subscription.
+    - Can reactivate a canceled subscription.
+    - Can apply a discount to a subscription.
+    - Can retrieve all active subscriptions.
+- Plans
+    - Can create a plan.
+    - Can retrieve a plan.
+    - Can update a plan.
+    - Can delete a plan.
+    - Can retrieve all plans.
+- Coupons
+    - Can create a coupon.
+    - Can retrieve a coupon.
+    - Can update a coupon.
+    - Can delete a coupon.
+    - Can retrieve all coupons.
+- Invoices
+    - Can create an invoice.
+    - Can retrieve an invoice.
+    - Can retrieve an invoice line items.
+    - Can retireve the upcoming invoice.
+    - Can update an invoice.
+    - Can pay an invoice.
+    - Can retrieve all invoices.
+- Invoice Items
+    - Can create an invoice item.
+    - Can retrieve an invoice item.
+    - Can update an invoice item.
+    - Can delete an invoice item.
+    - Can retrieve all invoice items.
+- Disputes
+    - Can update a dispute.
+    - Can close a dispute.
+- Transfers
+    - Can create a transfer.
+    - Can retrieve a transfer.
+    - Can update a transfer.
+    - Can cancel a transfer.
+    - Can retrieve all transfers.
+- Recipients
+    - Can create a recipient.
+    - Can retrieve a recipient.
+    - Can update a recipient.
+    - Can delete a recipient.
+    - Can retrieve all recipients.
+- Application Fees
+    - Can retrieve an application fee.
+    - Can retrieve all application fees
+- Application Fee Refunds
+    - Can create an application fee refund.
+    - Can retrieve an application fee refund.
+    - Can update an application fee refund.
+    - Can retrieve all application fee refunds.
+- Acount
+    - Can retrieve account details.
+- Balance
+    - Can retrieve balance.
+    - Can retrieve the a balance transaction.
+    - Can retrieve all balance history.
+- Events
+    - Can retrieve an event.
+    - Can retrieve all events.
+- Tokens
+    - Can create a card token.
+    - Can create a bank account token.
+    - Can retrieve a token.
+- File Uploads
+    - Can create a file upload.
+    - Can retrieve a file upload.
+    - Can retrieve all file uploads.

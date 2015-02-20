@@ -7,7 +7,7 @@ Retrieve information about your Stripe account.
 ##### Example
 
 ```php
-$account = Stripe::account()->details();
+$account = $stripe->account()->details();
 
 echo $account['email'];
 ```
