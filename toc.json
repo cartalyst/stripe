@@ -109,6 +109,7 @@
         "application_fee_refunds/update",
         "application_fee_refunds/retrieve-all",
 
+        "account",
 
         "balance/index",
         "balance/retrieve-current",
@@ -119,6 +120,10 @@
         "events/retrieve-single",
         "events/retrieve-all",
 
+        "tokens/index",
+        "tokens/create-card",
+        "tokens/create-bank",
+        "tokens/retrieve",
 
         "exceptions",
         "pagination"

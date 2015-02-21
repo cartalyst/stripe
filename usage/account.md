@@ -4,7 +4,7 @@ This is an object representing your Stripe account. You can retrieve it to see p
 
 Retrieve information about your Stripe account.
 
-##### Example
+##### Usage
 
 ```php
 $account = $stripe->account()->details();

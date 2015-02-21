@@ -3,7 +3,9 @@
 ###### Retrieve all customers
 
 ```php
-$customers = Stripe::customers()->all();
+$stripe = Stripe::make('your-stripe-api-key');
+
+$customers = $stripe->customers()->all();
 
 foreach ($customers['data'] as $customer)
 {
@@ -14,7 +16,9 @@ foreach ($customers['data'] as $customer)
 ###### Retrieve a customer
 
 ```php
-$customer = Stripe::customers()->find('cus_4EBumIjyaKooft');
+$stripe = Stripe::make('your-stripe-api-key');
+
+$customer = $stripe->customers()->find('cus_4EBumIjyaKooft');
 
 echo $customer['email'];
 ```
