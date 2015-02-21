@@ -125,6 +125,11 @@
         "tokens/create-bank",
         "tokens/retrieve",
 
+        "bitcoin/index",
+        "bitcoin/create",
+        "bitcoin/retrieve-single",
+        "bitcoin/retrieve-all",
+
         "exceptions",
         "pagination"
 
