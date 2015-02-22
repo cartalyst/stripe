@@ -95,8 +95,7 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
             'User-Agent'      => "Cartalyst-Stripe/{$config->version}",
         ]);
 
-        foreach ($headers as $key => $value)
-        {
+        foreach ($headers as $key => $value) {
             $this->setDefaultOption("headers/{$key}", $value);
         }
     }

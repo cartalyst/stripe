@@ -22,6 +22,12 @@ namespace Cartalyst\Stripe;
 
 class Util
 {
+    /**
+     * Prepares the given parameters.
+     *
+     * @param  array  $parameters
+     * @return array
+     */
     public static function prepareParameters(array $parameters)
     {
         if (isset($parameters['amount'])) {
