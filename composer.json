@@ -38,9 +38,7 @@
         "phpunit/phpunit": "~4.4"
     },
     "autoload": {
-        "psr-4": {
-            "Cartalyst\\Stripe\\": "src/"
-        }
+        "psr-4": { "Cartalyst\\Stripe\\": "src/" }
     },
     "extra": {
         "component": "package",
