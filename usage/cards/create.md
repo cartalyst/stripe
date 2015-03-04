@@ -58,9 +58,7 @@ Creating a new credit card will not change the card owner's existing default cre
 ###### Through the Stripe.js Token (recommended)
 
 ```php
-$card = $stripe->cards()->create('cus_4EBumIjyaKooft', [
-    'card' => $_POST['stripeToken'],
-]);
+$card = $stripe->cards()->create('cus_4EBumIjyaKooft', $_POST['stripeToken']);
 ```
 
 ###### Manually
