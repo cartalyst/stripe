@@ -33,7 +33,7 @@ class Cards extends Api
     {
         $parameters = [ 'card' => $parameters ];
 
-        return $this->_post("customers/{$customerId}/cards", $parameters);
+        return $this->_post("customers/{$customerId}/sources", $parameters);
     }
 
     /**
@@ -45,7 +45,7 @@ class Cards extends Api
      */
     public function find($customerId, $cardId)
     {
-        return $this->_get("customers/{$customerId}/cards/{$cardId}");
+        return $this->_get("customers/{$customerId}/sources/{$cardId}");
     }
 
     /**
@@ -58,7 +58,7 @@ class Cards extends Api
      */
     public function update($customerId, $cardId, array $parameters = [])
     {
-        return $this->_post("customers/{$customerId}/cards/{$cardId}", $parameters);
+        return $this->_post("customers/{$customerId}/sources/{$cardId}", $parameters);
     }
 
     /**
@@ -70,7 +70,7 @@ class Cards extends Api
      */
     public function delete($customerId, $cardId)
     {
-        return $this->_delete("customers/{$customerId}/cards/{$cardId}");
+        return $this->_delete("customers/{$customerId}/sources/{$cardId}");
     }
 
     /**
@@ -82,6 +82,6 @@ class Cards extends Api
      */
     public function all($customerId, array $parameters = [])
     {
-        return $this->_get("customers/{$customerId}/cards", $parameters);
+        return $this->_get("customers/{$customerId}/sources", $parameters);
     }
 }

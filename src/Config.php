@@ -29,7 +29,7 @@ class Config extends Collection implements ConfigInterface
         parent::__construct([
             'version'     => $version,
             'api_key'     => $apiKey ?: getenv('STRIPE_API_KEY'),
-            'api_version' => $apiVersion ?: getenv('STRIPE_API_VERSION') ?: '2015-01-26',
+            'api_version' => $apiVersion ?: getenv('STRIPE_API_VERSION') ?: '2015-02-18',
         ]);
     }
 }
