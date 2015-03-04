@@ -26,11 +26,13 @@ class Cards extends Api
      * Creates a new card on the given customer.
      *
      * @param  string  $customerId
-     * @param  array  $parameters
+     * @param  string|array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function create($customerId, array $parameters = [])
+    public function create($customerId, $parameters = [])
     {
+        $parameters = [ 'card' => $parameters ];
+
         return $this->_post("customers/{$customerId}/cards", $parameters);
     }
 
