@@ -31,7 +31,9 @@ class Cards extends Api
      */
     public function create($customerId, $parameters = [])
     {
-        $parameters = [ 'card' => $parameters ];
+        if (is_array($parameters)) $parameters['object'] = 'card';
+
+        $parameters = [ 'source' => $parameters ];
 
         return $this->_post("customers/{$customerId}/sources", $parameters);
     }
