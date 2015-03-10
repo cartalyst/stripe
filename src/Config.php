@@ -24,18 +24,25 @@ use Cartalyst\Collections\Collection;
 
 class Config extends Collection implements ConfigInterface
 {
+    /**
+     * Constructor.
+     *
+     * @param  string  $version
+     * @param  string  $apiKey
+     * @param  string  $apiVersion
+     * @return void
+     * @throws \RuntimeException
+     */
     public function __construct($version, $apiKey, $apiVersion)
     {
-        $apiKey = $apiKey ?: getenv('STRIPE_API_KEY');
+        $api_key = $apiKey ?: getenv('STRIPE_API_KEY');
 
-        if ( ! $apiKey) {
+        $api_version = $apiVersion ?: getenv('STRIPE_API_VERSION') ?: '2015-02-18';
+
+        if ( ! $api_key) {
             throw new \RuntimeException('The Stripe API key is not defined!');
         }
 
-        parent::__construct([
-            'version'     => $version,
-            'api_key'     => $apiKey,
-            'api_version' => $apiVersion ?: getenv('STRIPE_API_VERSION') ?: '2015-02-18',
-        ]);
+        parent::__construct(compact('version', 'api_key', 'api_version'));
     }
 }
