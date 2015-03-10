@@ -6,7 +6,7 @@ A comprehensive [Stripe](https://stripe.com/) API package.
 
 The package requires PHP 5.4+ and follows the FIG standards PSR-1, PSR-2 and PSR-4 to ensure a high level of interoperability between shared PHP.
 
-Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](LICENSE). Code well, rock on.
+An open source package by [Cartalyst](https://cartalyst.com), code well, rock on!
 
 ## Documentation
 
@@ -39,6 +39,6 @@ Bug reports, feature requests, and pull requests can be submitted by following o
 
 ## License
 
-This software is released under the [Cartalyst PSL](LICENSE) License.
+This software is released under the [BSD 3-Clause](LICENSE) License.
 
 © 2011-2015 Cartalyst LLC, All rights reserved.
