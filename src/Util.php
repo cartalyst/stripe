@@ -52,6 +52,7 @@ class Util
         if (is_string($number) || is_float($number)) {
             return (int) ($number * 100);
         }
+
         return $number;
     }
 }
