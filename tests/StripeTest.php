@@ -81,16 +81,6 @@ class StripeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('new-stripe-api-key', $this->stripe->getApiKey());
     }
 
-    /** @test */
-    public function it_can_get_and_set_the_http_client()
-    {
-        $this->assertInstanceOf(
-            'Cartalyst\Stripe\HttpClient\ClientInterface', $this->stripe->getClient()
-        );
-
-        $this->stripe->setClient(m::mock('Cartalyst\Stripe\HttpClient\ClientInterface'));
-    }
-
     /**
      * @test
      * @expectedException \RuntimeException

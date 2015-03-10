@@ -26,9 +26,15 @@ class Config extends Collection implements ConfigInterface
 {
     public function __construct($version, $apiKey, $apiVersion)
     {
+        $apiKey = $apiKey ?: getenv('STRIPE_API_KEY');
+
+        if ( ! $apiKey) {
+            throw new \RuntimeException('The Stripe API key is not defined!');
+        }
+
         parent::__construct([
             'version'     => $version,
-            'api_key'     => $apiKey ?: getenv('STRIPE_API_KEY'),
+            'api_key'     => $apiKey,
             'api_version' => $apiVersion ?: getenv('STRIPE_API_VERSION') ?: '2015-02-18',
         ]);
     }
