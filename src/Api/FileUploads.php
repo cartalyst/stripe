@@ -41,9 +41,15 @@ class FileUploads extends Api
      */
     public function create($file, $purpose)
     {
-        $file = new PostFile($file);
+        $file = new PostFile('file', fopen($file, 'r'));
 
-        return $this->_post('files', compact('purpose'), compact('file'));
+        $client = $this->getClient();
+        $request = $client->createRequest('POST', 'v1/files');
+        $postBody = $request->getBody();
+        $postBody->setField('purpose', $purpose);
+        $postBody->addFile($file);
+
+        return $client->send($request);
     }
 
     /**

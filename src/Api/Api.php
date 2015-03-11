@@ -146,6 +146,16 @@ abstract class Api implements ApiInterface
     {
         $parameters = Util::prepareParameters($parameters);
 
-        return (new Client($this->config))->{$httpMethod}("v1/{$url}", [ 'query' => $parameters, 'body' => $body ]);
+        return $this->getClient()->{$httpMethod}("v1/{$url}", [ 'query' => $parameters, 'body' => $body ]);
+    }
+
+    /**
+     * Returns an Http client instance.
+     *
+     * @return \Cartalyst\Stripe\Http\Client
+     */
+    protected function getClient()
+    {
+        return new Client($this->config);
     }
 }
