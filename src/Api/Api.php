@@ -20,7 +20,7 @@
 
 namespace Cartalyst\Stripe\Api;
 
-use Cartalyst\Stripe\Util;
+use Cartalyst\Stripe\Utility;
 use Cartalyst\Stripe\Http\Client;
 use Cartalyst\Stripe\ConfigInterface;
 
@@ -144,7 +144,7 @@ abstract class Api implements ApiInterface
      */
     public function execute($httpMethod, $url, array $parameters = [], array $body = [])
     {
-        $parameters = Util::prepareParameters($parameters);
+        $parameters = Utility::prepareParameters($parameters);
 
         return $this->getClient()->{$httpMethod}("v1/{$url}", [ 'query' => $parameters, 'body' => $body ]);
     }

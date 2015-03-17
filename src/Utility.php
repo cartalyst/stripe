@@ -20,7 +20,7 @@
 
 namespace Cartalyst\Stripe;
 
-class Util
+class Utility
 {
     /**
      * Prepares the given parameters.
