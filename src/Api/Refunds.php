@@ -26,11 +26,14 @@ class Refunds extends Api
      * Creates a new refund for the given charge.
      *
      * @param  string  $chargeId
+     * @param  int  $amount
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function create($chargeId, array $parameters = [])
+    public function create($chargeId, $amount = null, array $parameters = [])
     {
+        $parameters = array_merge($parameters, array_filter(compact('amount')));
+
         return $this->_post("charges/{$chargeId}/refunds", $parameters);
     }
 

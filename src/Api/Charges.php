@@ -60,11 +60,14 @@ class Charges extends Api
      * Captures an existing charge.
      *
      * @param  string  $chargeId
+     * @param  int  $amount
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function capture($chargeId, array $parameters = [])
+    public function capture($chargeId, $amount = null, array $parameters = [])
     {
+        $parameters = array_merge($parameters, array_filter(compact('amount')));
+
         return $this->_post("charges/{$chargeId}/capture", $parameters);
     }
 
