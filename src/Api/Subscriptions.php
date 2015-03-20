@@ -70,7 +70,7 @@ class Subscriptions extends Api
     public function cancel($customerId, $subscriptionId, $atPeriodEnd = false)
     {
         return $this->_delete("customers/{$customerId}/subscriptions/{$subscriptionId}", [
-            'at_period_end' => $atPeriodEnd,
+            'at_period_end' => (bool) $atPeriodEnd,
         ]);
     }
 
