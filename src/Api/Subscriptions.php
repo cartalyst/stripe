@@ -79,15 +79,18 @@ class Subscriptions extends Api
      *
      * @param  string  $customerId
      * @param  string  $subscriptionId
+     * @param  array  $attributes
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function reactivate($customerId, $subscriptionId)
+    public function reactivate($customerId, $subscriptionId, array $attributes = [])
     {
-        $subscription = $this->find($customerId, $subscriptionId);
+        if ( ! isset($attributes['plan'])) {
+            $subscription = $this->find($customerId, $subscriptionId);
 
-        return $this->update($customerId, $subscriptionId, [
-            'plan' => $subscription['plan']['id'],
-        ]);
+            $attributes['plan'] = $subscription['plan']['id'];
+        }
+
+        return $this->update($customerId, $subscriptionId, $attributes);
     }
 
     /**
