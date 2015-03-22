@@ -23,51 +23,51 @@ Creating a new credit card will not change the card owner's existing default cre
             <td>The customer unique identifier.</td>
         </tr>
         <tr>
-            <td>$parameters</td>
-            <td>true</td>
-            <td>array</td>
-            <td>null</td>
-            <td>Please refer to the list below for a valid list of keys that can be passed on this array.</td>
-        </tr>
-    </tbody>
-</table>
-
-###### $parameters
-
-<table>
-    <thead>
-        <th>Key</th>
-        <th>Required</th>
-        <th>Type</th>
-        <th>Default</th>
-        <th>Description</th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>source</td>
+            <td>card</td>
             <td>true</td>
             <td>string | array</td>
             <td>null</td>
-            <td>The source can either be a token or a dictionary containing the source details.</td>
+            <td>The card can either be a token or a dictionary containing the card details.</td>
         </tr>
     </tbody>
 </table>
 
 ##### Usage
 
-###### Through the Stripe.js Token (recommended)
+You have 3 different but very similar ways to create cards on Stripe.
+
+###### Through a Stripe.js Token (recommended)
 
 ```php
-$card = $stripe->cards()->create('cus_4EBumIjyaKooft', $_POST['stripeToken']);
+$card = $stripe->cards()->create('cus_4EBumIjyaKooft', $_POST['stripe_token']);
 ```
 
-###### Manually
+> **Note:** The name of the `stripe_token` field might be different on your application!
+
+###### Through a Stripe API Token
+
+```php
+$token = $stripe->tokens()->create([
+    'card' => [
+        'number'    => '4242424242424242',
+        'exp_month' => 10,
+        'cvc'       => 314,
+        'exp_year'  => 2020,
+    ],
+]);
+
+$card = $stripe->cards()->create('cus_4EBumIjyaKooft', $token['id']);
+```
+
+> **Note:** Please refer to the [Token documentation](#tokens) for more information.
+
+###### Through an array
 
 ```php
 $card = $stripe->cards()->create('cus_4EBumIjyaKooft', [
     'number'    => '4242424242424242',
-    'exp_month' => 6,
-    'exp_year'  => 2015,
-    'cvc'       => '314',
+    'exp_month' => 10,
+    'cvc'       => 314,
+    'exp_year'  => 2020,
 ]);
 ```
