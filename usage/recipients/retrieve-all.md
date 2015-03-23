@@ -77,8 +77,7 @@ Returns a list of your recipients. The recipients are returned sorted by creatio
 ```php
 $recipients = $stripe->recipients()->all();
 
-foreach ($recipients['data'] as $recipient)
-{
+foreach ($recipients['data'] as $recipient) {
     var_dump($recipient['id']);
 }
 ```

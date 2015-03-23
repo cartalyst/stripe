@@ -105,8 +105,7 @@ Returns a list of transactions that have contributed to the Stripe account balan
 ```php
 $history = $stripe->balance()->all();
 
-foreach ($history['data'] as $balance)
-{
+foreach ($history['data'] as $balance) {
     var_dump($balance['id']);
 }
 ```

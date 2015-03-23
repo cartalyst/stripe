@@ -84,8 +84,7 @@ When retrieving an invoice, you'll get a lines property containing the total cou
 ```php
 $lines = $stripe->invoices()->invoiceLineItems('in_4EgP02zb8qxsLq');
 
-foreach ($lines['data'] as $line)
-{
+foreach ($lines['data'] as $line) {
     var_dump($line['id']);
 }
 ```

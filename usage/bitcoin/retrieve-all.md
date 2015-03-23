@@ -91,8 +91,7 @@ Returns a list of your receivers. Receivers are returned sorted by creation date
 ```php
 $receivers = $stripe->bitcoin()->all();
 
-foreach ($receivers['data'] as $receiver)
-{
+foreach ($receivers['data'] as $receiver) {
     var_dump($receiver['id']);
 }
 ```

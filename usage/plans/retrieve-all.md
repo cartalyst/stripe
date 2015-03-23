@@ -63,8 +63,7 @@ Returns a list of your plans.
 ```php
 $plans = $stripe->plans()->all();
 
-foreach ($plans['data'] as $plan)
-{
+foreach ($plans['data'] as $plan) {
     var_dump($plan['id']);
 }
 ```

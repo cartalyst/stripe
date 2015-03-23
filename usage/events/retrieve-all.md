@@ -82,8 +82,7 @@
 ```php
 $events = $stripe->events()->all();
 
-foreach ($events['data'] as $event)
-{
+foreach ($events['data'] as $event) {
     var_dump($event);
 }
 ```

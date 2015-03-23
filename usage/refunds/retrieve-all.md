@@ -70,8 +70,7 @@ You can see a list of the refunds belonging to a specific charge.
 ```php
 $refunds = $stripe->refunds()->all('ch_4ECWMVQp5SJKEx');
 
-foreach ($refunds['data'] as $refund)
-{
+foreach ($refunds['data'] as $refund) {
     var_dump($refund['id']);
 }
 ```

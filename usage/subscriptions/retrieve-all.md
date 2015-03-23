@@ -70,8 +70,7 @@ You can see a list of the customer's active subscriptions. Note that the 10 most
 ```php
 $subscriptions = $stripe->subscriptions()->all('cus_4EBumIjyaKooft');
 
-foreach ($subscriptions['data'] as $subscription)
-{
+foreach ($subscriptions['data'] as $subscription) {
     var_dump($subscription['id']);
 }
 ```

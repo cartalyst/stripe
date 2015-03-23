@@ -70,8 +70,7 @@ Returns a list of your customers. The customers are returned sorted by creation 
 ```php
 $customers = $stripe->customers()->all();
 
-foreach ($customers['data'] as $customer)
-{
+foreach ($customers['data'] as $customer) {
     var_dump($customer['id']);
 }
 ```

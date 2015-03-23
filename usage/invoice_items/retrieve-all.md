@@ -77,8 +77,7 @@ Returns a list of your invoice items. Invoice Items are returned sorted by creat
 ```php
 $invoiceItems = $stripe->invoiceItems()->all();
 
-foreach ($invoiceItems['data'] as $invoiceItem)
-{
+foreach ($invoiceItems['data'] as $invoiceItem) {
     var_dump($invoiceItem['id']);
 }
 ```

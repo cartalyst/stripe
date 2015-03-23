@@ -70,8 +70,7 @@ You can see a list of the cards belonging to a customer.
 ```php
 $cards = $stripe->cards()->all('cus_4EBumIjyaKooft');
 
-foreach ($cards['data'] as $card)
-{
+foreach ($cards['data'] as $card) {
     var_dump($card['id']);
 }
 ```

@@ -42,14 +42,11 @@ Here is the list of all the exceptions that the Stripe API throws with a brief d
 Below is an example of using the API to find a customer, but this customer doesn't exist, so it'll throw a `NotFoundException`.
 
 ```php
-try
-{
+try {
 	$customer = $stripe->customers()->find('foobar');
 
 	echo $customer['email'];
-}
-catch (Cartalyst\Stripe\Exception\NotFoundException $e)
-{
+} catch (Cartalyst\Stripe\Exception\NotFoundException $e) {
 	// Get the status code
 	$code = $e->getCode();
 

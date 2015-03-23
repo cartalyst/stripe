@@ -37,8 +37,7 @@ Note that when you are viewing an upcoming invoice, you are simply viewing a pre
 ```php
 $invoice = $stripe->invoices()->upcomingInvoice('cus_4EBumIjyaKooft');
 
-foreach ($invoice['lines']['data'] as $item)
-{
+foreach ($invoice['lines']['data'] as $item) {
     var_dump($item['id']);
 }
 ```

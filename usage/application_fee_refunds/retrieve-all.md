@@ -68,8 +68,7 @@
 ```php
 $fees = $stripe->applicationFees()->all('fee_4EUveQeJwxqxD4');
 
-foreach ($fees['data'] as $fee)
-{
+foreach ($fees['data'] as $fee) {
     var_dump($fee['id']);
 }
 ```

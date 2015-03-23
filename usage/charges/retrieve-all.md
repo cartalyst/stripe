@@ -77,8 +77,7 @@ Returns a list of charges you've previously created. The charges are returned in
 ```php
 $charges = $stripe->charges()->all();
 
-foreach ($charges['data'] as $charge)
-{
+foreach ($charges['data'] as $charge) {
     var_dump($charge['id']);
 }
 ```

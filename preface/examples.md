@@ -7,8 +7,7 @@ $stripe = Stripe::make('your-stripe-api-key');
 
 $customers = $stripe->customers()->all();
 
-foreach ($customers['data'] as $customer)
-{
+foreach ($customers['data'] as $customer) {
     var_dump($customer['email']);
 }
 ```

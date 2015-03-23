@@ -77,8 +77,7 @@ Returns a list of your coupons.
 ```php
 $coupons = $stripe->coupons()->all();
 
-foreach ($coupons['data'] as $coupon)
-{
+foreach ($coupons['data'] as $coupon) {
     var_dump($coupon['id']);
 }
 ```

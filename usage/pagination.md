@@ -7,8 +7,7 @@ Here is an example of grabbing all the customers:
 ```php
 $customers = $stripe->customersIterator();
 
-foreach ($customers as $customer)
-{
+foreach ($customers as $customer) {
 	var_dump($customer['id']);
 }
 ```
@@ -20,8 +19,7 @@ $customers = $stripe->customersIterator([
 	'created' => 123456789,
 ]);
 
-foreach ($customers as $customer)
-{
+foreach ($customers as $customer) {
 	var_dump($customer['id']);
 }
 ```

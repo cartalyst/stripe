@@ -91,8 +91,7 @@ Returns a list of existing transfers sent to third-party bank accounts or that S
 ```php
 $transfers = $stripe->transfers()->all();
 
-foreach ($transfers['data'] as $transfer)
-{
+foreach ($transfers['data'] as $transfer) {
     var_dump($transfer['id']);
 }
 ```

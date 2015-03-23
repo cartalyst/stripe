@@ -77,8 +77,7 @@ You can list all invoices, or list the invoices for a specific customer. The inv
 ```php
 $invoices = $stripe->invoices()->all();
 
-foreach ($invoices['data'] as $invoice)
-{
+foreach ($invoices['data'] as $invoice) {
     var_dump($invoice['id']);
 }
 ```
