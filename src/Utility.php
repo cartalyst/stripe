@@ -49,6 +49,8 @@ class Utility
      */
     protected static function convertToNumber($number)
     {
+        $number = number_format((float) $number, 2, '.', '');
+
         if (is_string($number) || is_float($number)) {
             return (int) ($number * 100);
         }
