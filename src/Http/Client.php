@@ -25,6 +25,7 @@ use GuzzleHttp\Event\BeforeEvent;
 use Cartalyst\Stripe\ConfigInterface;
 use Cartalyst\Stripe\Exception\Handler;
 use GuzzleHttp\Message\RequestInterface;
+use GuzzleHttp\Exception\ClientException;
 
 class Client extends \GuzzleHttp\Client implements ClientInterface
 {
@@ -75,7 +76,7 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
     {
         try {
             return parent::send($request);
-         } catch (\Exception $e) {
+         } catch (ClientException $e) {
             new Handler($e);
         }
     }
