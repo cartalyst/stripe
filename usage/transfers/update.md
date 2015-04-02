@@ -63,7 +63,7 @@ This request accepts only the description and metadata as arguments.
 ##### Usage
 
 ```php
-$transfer = $stripe->transfers()->update('tr_4EZer9REaUzJ76', [
+$transfer = $stripe->transfers()->update('tr_15nBIqJvzVWl1WTebSIGDfRv', [
     'description' => 'Transfer to John Doe',
 ]);
 

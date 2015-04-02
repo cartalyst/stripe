@@ -26,7 +26,7 @@ Retrieves the details of an existing transfer. Supply the unique transfer ID fro
 ##### Usage
 
 ```php
-$transfers = $stripe->transfers()->find('tr_4EZer9REaUzJ76');
+$transfer = $stripe->transfers()->find('tr_15nBIqJvzVWl1WTebSIGDfRv');
 
 echo $transfer['id'];
 ```

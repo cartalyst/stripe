@@ -89,7 +89,6 @@
         "transfers/create",
         "transfers/retrieve-single",
         "transfers/update",
-        "transfers/cancel",
         "transfers/retrieve-all",
 
         "transfer_reversals/index",
