@@ -92,6 +92,12 @@
         "transfers/cancel",
         "transfers/retrieve-all",
 
+        "transfer_reversals/index",
+        "transfer_reversals/create",
+        "transfer_reversals/retrieve-single",
+        "transfer_reversals/update",
+        "transfer_reversals/retrieve-all",
+
         "recipients/index",
         "recipients/create",
         "recipients/retrieve-single",
