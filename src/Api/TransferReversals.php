@@ -20,50 +20,54 @@
 
 namespace Cartalyst\Stripe\Api;
 
-class Transfers extends Api
+class TransferReversals extends Api
 {
     /**
-     * Creates a new transfer.
-     *
-     * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
-     */
-    public function create(array $parameters = [])
-    {
-        return $this->_post('transfers', $parameters);
-    }
-
-    /**
-     * Retrieves an existing transfer.
-     *
-     * @param  string  $transferId
-     * @return \GuzzleHttp\Message\ResponseInterface
-     */
-    public function find($transferId)
-    {
-        return $this->_get("transfers/{$transferId}");
-    }
-
-    /**
-     * Updates an existing transfer.
+     * Creates a new transfer reversal.
      *
      * @param  string  $transferId
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function update($transferId, array $parameters = [])
+    public function create($transferId, array $parameters = [])
     {
-        return $this->_post("transfers/{$transferId}", $parameters);
+        return $this->_post("transfers/{$transferId}/reversals", $parameters);
     }
 
     /**
-     * Lists all transfers.
+     * Retrieves an existing transfer reversal.
      *
+     * @param  string  $transferId
+     * @param  string  $transferReversalId
+     * @return \GuzzleHttp\Message\ResponseInterface
+     */
+    public function find($transferId, $transferReversalId)
+    {
+        return $this->_get("transfers/{$transferId}/reversals/{$transferReversalId}");
+    }
+
+    /**
+     * Updates an existing transfer reversal.
+     *
+     * @param  string  $transferId
+     * @param  string  $transferReversalId
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function all(array $parameters = [])
+    public function update($transferId, $transferReversalId, array $parameters = [])
     {
-        return $this->_get('transfers', $parameters);
+        return $this->_post("transfers/{$transferId}/reversals/{$transferReversalId}", $parameters);
+    }
+
+    /**
+     * Lists all transfer reversals.
+     *
+     * @param  string  $transferId
+     * @param  array  $parameters
+     * @return \GuzzleHttp\Message\ResponseInterface
+     */
+    public function all($transferId, array $parameters = [])
+    {
+        return $this->_get("transfers/{$transferId}/reversals", $parameters);
     }
 }

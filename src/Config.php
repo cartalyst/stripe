@@ -37,7 +37,7 @@ class Config extends Collection implements ConfigInterface
     {
         $api_key = $apiKey ?: getenv('STRIPE_API_KEY');
 
-        $api_version = $apiVersion ?: getenv('STRIPE_API_VERSION') ?: '2015-02-18';
+        $api_version = $apiVersion ?: getenv('STRIPE_API_VERSION') ?: '2015-03-24';
 
         if ( ! $api_key) {
             throw new \RuntimeException('The Stripe API key is not defined!');
