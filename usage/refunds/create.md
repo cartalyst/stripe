@@ -21,6 +21,13 @@ Creating a new refund will refund a charge that has previously been created but 
             <td>The charge unique identifier.</td>
         </tr>
         <tr>
+            <td>$amount</td>
+            <td>true</td>
+            <td>number</td>
+            <td>null</td>
+            <td>A positive amount representing how much of this charge to refund.</td>
+        </tr>
+        <tr>
             <td>$parameters</td>
             <td>false</td>
             <td>array</td>
@@ -41,13 +48,6 @@ Creating a new refund will refund a charge that has previously been created but 
         <th>Description</th>
     </thead>
     <tbody>
-        <tr>
-            <td>amount</td>
-            <td>false</td>
-            <td>number</td>
-            <td>null</td>
-            <td>A positive amount representing how much of this charge to refund.</td>
-        </tr>
         <tr>
             <td>refund_application_fee</td>
             <td>false</td>
