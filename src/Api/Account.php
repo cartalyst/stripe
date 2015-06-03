@@ -32,4 +32,49 @@ class Account extends Api
     {
         return $this->_get('account');
     }
+    
+    /**
+     * Creates a new account.
+     *
+     * @param  array  $parameters
+     * @return \GuzzleHttp\Message\ResponseInterface
+     */
+    public function create(array $parameters = [])
+    {
+    	return $this->_post('accounts', $parameters);
+    }
+    
+    /**
+     * Retrieves an existing account.
+     *
+     * @param  array  $parameters
+     * @return \GuzzleHttp\Message\ResponseInterface
+     */
+    public function find(array $parameters = [])
+    {
+        return $this->_get("account", $parameters);
+    }
+    
+    /**
+     * Updates an existing account.
+     *
+     * @param  string  $accountId
+     * @param  array  $parameters
+     * @return \GuzzleHttp\Message\ResponseInterface
+     */
+    public function update($accountId, array $parameters = [])
+    {
+        return $this->_post("accounts/{$accountId}", $parameters);
+    }
+    
+    /**
+     * Lists all accounts.
+     *
+     * @param  array  $parameters
+     * @return \GuzzleHttp\Message\ResponseInterface
+     */
+    public function all(array $parameters = [])
+    {
+        return $this->_get('accounts', $parameters);
+    }
 }
