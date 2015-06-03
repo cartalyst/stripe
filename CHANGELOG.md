@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+#### v1.0.1 - 2015-06-03
+
+`ADDED`
+
+- Added new methods to create and update an account and to retrieve all the connected accounts.
+
 #### v1.0.0 - 2015-04-02
 
 `INIT`
