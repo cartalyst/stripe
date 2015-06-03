@@ -23,16 +23,16 @@ namespace Cartalyst\Stripe\Api;
 class Account extends Api
 {
     /**
-     * Retrieves the details of the account, based on the
-     * API key that was used to make the request.
+     * Alias for the "find" method.
      *
+     * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function details()
+    public function details(array $parameters = [])
     {
-        return $this->_get('account');
+        return $this->find($parameters);
     }
-    
+
     /**
      * Creates a new account.
      *
@@ -43,7 +43,7 @@ class Account extends Api
     {
     	return $this->_post('accounts', $parameters);
     }
-    
+
     /**
      * Retrieves an existing account.
      *
@@ -52,9 +52,9 @@ class Account extends Api
      */
     public function find(array $parameters = [])
     {
-        return $this->_get("account", $parameters);
+        return $this->_get('account', $parameters);
     }
-    
+
     /**
      * Updates an existing account.
      *
@@ -66,9 +66,9 @@ class Account extends Api
     {
         return $this->_post("accounts/{$accountId}", $parameters);
     }
-    
+
     /**
-     * Lists all accounts.
+     * Returns a list of all the connected accounts.
      *
      * @param  array  $parameters
      * @return \GuzzleHttp\Message\ResponseInterface
