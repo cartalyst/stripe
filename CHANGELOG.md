@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+#### v1.0.2 - 2015-06-30
+
+`ADDED`
+
+- `.gitattributes` and `.travis.yml` file.
+
 #### v1.0.1 - 2015-06-03
 
 `ADDED`
