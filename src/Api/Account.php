@@ -47,12 +47,12 @@ class Account extends Api
     /**
      * Retrieves an existing account.
      *
-     * @param  array  $parameters
+     * @param  string  $accountId
      * @return \GuzzleHttp\Message\ResponseInterface
      */
-    public function find(array $parameters = [])
+    public function find($accountId)
     {
-        return $this->_get('account', $parameters);
+        return $this->_get("accounts/{$accountId}");
     }
 
     /**
