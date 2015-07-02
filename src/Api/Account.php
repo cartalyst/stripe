@@ -30,7 +30,7 @@ class Account extends Api
      */
     public function details()
     {
-         return $this->_get('account');
+        return $this->_get('account');
     }
 
     /**
