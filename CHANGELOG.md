@@ -11,6 +11,13 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+#### v1.0.3 - 2015-07-08
+
+`FIXED`
+
+- Wrong returns on some docblocks.
+- Incorrect coding standards.
+
 #### v1.0.2 - 2015-06-30
 
 `ADDED`
