@@ -27,7 +27,7 @@ class Cards extends Api
      *
      * @param  string  $customerId
      * @param  string|array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function create($customerId, $parameters = [])
     {
@@ -43,7 +43,7 @@ class Cards extends Api
      *
      * @param  string  $customerId
      * @param  string  $cardId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($customerId, $cardId)
     {
@@ -56,7 +56,7 @@ class Cards extends Api
      * @param  string  $customerId
      * @param  string  $cardId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function update($customerId, $cardId, array $parameters = [])
     {
@@ -68,7 +68,7 @@ class Cards extends Api
      *
      * @param  string  $customerId
      * @param  string  $cardId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function delete($customerId, $cardId)
     {
@@ -80,7 +80,7 @@ class Cards extends Api
      *
      * @param  string  $customerId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all($customerId, array $parameters = [])
     {

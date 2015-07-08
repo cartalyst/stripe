@@ -26,7 +26,7 @@ class Coupons extends Api
      * Creates a new coupon.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function create(array $parameters = [])
     {
@@ -37,7 +37,7 @@ class Coupons extends Api
      * Retrieves an existing coupon.
      *
      * @param  string  $couponId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($couponId)
     {
@@ -49,7 +49,7 @@ class Coupons extends Api
      *
      * @param  string  $couponId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function update($couponId, array $parameters = [])
     {
@@ -60,7 +60,7 @@ class Coupons extends Api
      * Deletes an existing coupon.
      *
      * @param  string  $couponId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function delete($couponId)
     {
@@ -71,7 +71,7 @@ class Coupons extends Api
      * Lists all coupons.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all(array $parameters = [])
     {

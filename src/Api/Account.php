@@ -26,7 +26,7 @@ class Account extends Api
      * Retrieves the details of the account, based on the
      * API key that was used to make the request.
      *
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function details()
     {
@@ -37,7 +37,7 @@ class Account extends Api
      * Creates a new account.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function create(array $parameters = [])
     {
@@ -48,7 +48,7 @@ class Account extends Api
      * Retrieves an existing account.
      *
      * @param  string  $accountId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($accountId)
     {
@@ -60,7 +60,7 @@ class Account extends Api
      *
      * @param  string  $accountId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function update($accountId, array $parameters = [])
     {
@@ -71,7 +71,7 @@ class Account extends Api
      * Returns a list of all the connected accounts.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all(array $parameters = [])
     {

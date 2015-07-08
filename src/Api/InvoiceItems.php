@@ -27,7 +27,7 @@ class InvoiceItems extends Api
      *
      * @param  string  $customerId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function create($customerId, array $parameters = [])
     {
@@ -42,7 +42,7 @@ class InvoiceItems extends Api
      * Retrieves an existing invoice item.
      *
      * @param  string  $invoiceItemId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($invoiceItemId)
     {
@@ -54,7 +54,7 @@ class InvoiceItems extends Api
      *
      * @param  string  $invoiceItemId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function update($invoiceItemId, array $parameters = [])
     {
@@ -65,7 +65,7 @@ class InvoiceItems extends Api
      * Deletes an existing invoice item.
      *
      * @param  string  $invoiceItemId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function delete($invoiceItemId)
     {
@@ -76,7 +76,7 @@ class InvoiceItems extends Api
      * Lists all invoice items.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all(array $parameters = [])
     {

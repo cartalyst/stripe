@@ -26,7 +26,7 @@ class ApplicationFees extends Api
      * Retrieves an existing application fee.
      *
      * @param  string  $applicationFeeId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($applicationFeeId)
     {
@@ -37,7 +37,7 @@ class ApplicationFees extends Api
      * Lists all application_fees.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all(array $parameters = [])
     {

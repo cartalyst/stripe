@@ -27,7 +27,7 @@ class TransferReversals extends Api
      *
      * @param  string  $transferId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function create($transferId, array $parameters = [])
     {
@@ -39,7 +39,7 @@ class TransferReversals extends Api
      *
      * @param  string  $transferId
      * @param  string  $transferReversalId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($transferId, $transferReversalId)
     {
@@ -52,7 +52,7 @@ class TransferReversals extends Api
      * @param  string  $transferId
      * @param  string  $transferReversalId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function update($transferId, $transferReversalId, array $parameters = [])
     {
@@ -64,7 +64,7 @@ class TransferReversals extends Api
      *
      * @param  string  $transferId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all($transferId, array $parameters = [])
     {

@@ -26,7 +26,7 @@ class Customers extends Api
      * Creates a new customer.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function create(array $parameters = [])
     {
@@ -37,7 +37,7 @@ class Customers extends Api
      * Retrieves an existing customer.
      *
      * @param  string  $customerId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($customerId)
     {
@@ -49,7 +49,7 @@ class Customers extends Api
      *
      * @param  string  $customerId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function update($customerId, array $parameters = [])
     {
@@ -60,7 +60,7 @@ class Customers extends Api
      * Deletes an existing customer.
      *
      * @param  string  $customerId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function delete($customerId)
     {
@@ -72,7 +72,7 @@ class Customers extends Api
      *
      * @param  string  $customerId
      * @param  string  $couponId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function applyDiscount($customerId, $couponId)
     {
@@ -85,7 +85,7 @@ class Customers extends Api
      * Deletes an existing customer discount.
      *
      * @param  string  $customerId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function deleteDiscount($customerId)
     {
@@ -96,7 +96,7 @@ class Customers extends Api
      * Lists all customers.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all(array $parameters = [])
     {

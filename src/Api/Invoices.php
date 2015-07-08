@@ -27,7 +27,7 @@ class Invoices extends Api
      *
      * @param  string  $customerId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function create($customerId, array $parameters = [])
     {
@@ -42,7 +42,7 @@ class Invoices extends Api
      * Retrieves an existing invoice.
      *
      * @param  string  $invoiceId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($invoiceId)
     {
@@ -54,7 +54,7 @@ class Invoices extends Api
      *
      * @param  string  $invoiceId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function lineItems($invoiceId, array $parameters = [])
     {
@@ -66,7 +66,7 @@ class Invoices extends Api
      *
      * @param  string  $customerId
      * @param  string  $subscriptionId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function upcomingInvoice($customerId, $subscriptionId = null)
     {
@@ -81,7 +81,7 @@ class Invoices extends Api
      *
      * @param  string  $invoiceId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function update($invoiceId, array $parameters = [])
     {
@@ -92,7 +92,7 @@ class Invoices extends Api
      * Pays the given invoice.
      *
      * @param  string  $invoiceId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function pay($invoiceId)
     {
@@ -103,7 +103,7 @@ class Invoices extends Api
      * Lists all invoices.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all(array $parameters = [])
     {

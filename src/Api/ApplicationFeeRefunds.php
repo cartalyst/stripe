@@ -27,7 +27,7 @@ class ApplicationFeeRefunds extends Api
      *
      * @param  string  $applicationFeeId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function create($applicationFeeId, array $parameters = [])
     {
@@ -39,7 +39,7 @@ class ApplicationFeeRefunds extends Api
      *
      * @param  string  $applicationFeeId
      * @param  string  $refundId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($applicationFeeId, $refundId)
     {
@@ -52,7 +52,7 @@ class ApplicationFeeRefunds extends Api
      * @param  string  $applicationFeeId
      * @param  string  $refundId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function update($applicationFeeId, $refundId, array $parameters = [])
     {
@@ -64,7 +64,7 @@ class ApplicationFeeRefunds extends Api
      *
      * @param  string  $applicationFeeId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all($applicationFeeId, array $parameters = [])
     {

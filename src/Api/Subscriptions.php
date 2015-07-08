@@ -27,7 +27,7 @@ class Subscriptions extends Api
      *
      * @param  string  $customerId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function create($customerId, array $parameters = [])
     {
@@ -39,7 +39,7 @@ class Subscriptions extends Api
      *
      * @param  string  $customerId
      * @param  string  $subscriptionId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($customerId, $subscriptionId)
     {
@@ -52,7 +52,7 @@ class Subscriptions extends Api
      * @param  string  $customerId
      * @param  string  $subscriptionId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function update($customerId, $subscriptionId, array $parameters = [])
     {
@@ -65,7 +65,7 @@ class Subscriptions extends Api
      * @param  string  $customerId
      * @param  string  $subscriptionId
      * @param  bool  $atPeriodEnd
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function cancel($customerId, $subscriptionId, $atPeriodEnd = false)
     {
@@ -80,7 +80,7 @@ class Subscriptions extends Api
      * @param  string  $customerId
      * @param  string  $subscriptionId
      * @param  array  $attributes
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function reactivate($customerId, $subscriptionId, array $attributes = [])
     {
@@ -99,7 +99,7 @@ class Subscriptions extends Api
      * @param  string  $customerId
      * @param  string  $subscriptionId
      * @param  string  $couponId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function applyDiscount($customerId, $subscriptionId, $couponId)
     {
@@ -113,7 +113,7 @@ class Subscriptions extends Api
      *
      * @param  string  $customerId
      * @param  string  $subscriptionId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function deleteDiscount($customerId, $subscriptionId)
     {
@@ -125,7 +125,7 @@ class Subscriptions extends Api
      *
      * @param  string  $customerId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all($customerId, array $parameters = [])
     {

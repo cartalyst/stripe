@@ -26,7 +26,7 @@ class Events extends Api
      * Retrieves an existing event.
      *
      * @param  string  $eventId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($eventId)
     {
@@ -37,7 +37,7 @@ class Events extends Api
      * Lists all events.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all(array $parameters = [])
     {

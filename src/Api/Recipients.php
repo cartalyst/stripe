@@ -26,7 +26,7 @@ class Recipients extends Api
      * Creates a new recipient.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function create(array $parameters = [])
     {
@@ -37,7 +37,7 @@ class Recipients extends Api
      * Retrieves an existing recipient.
      *
      * @param  string  $recipientId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($recipientId)
     {
@@ -49,7 +49,7 @@ class Recipients extends Api
      *
      * @param  string  $recipientId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function update($recipientId, array $parameters = [])
     {
@@ -60,7 +60,7 @@ class Recipients extends Api
      * Deletes an existing recipient.
      *
      * @param  string  $recipientId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function delete($recipientId)
     {
@@ -71,7 +71,7 @@ class Recipients extends Api
      * Lists all recipients.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all(array $parameters = [])
     {

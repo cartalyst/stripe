@@ -26,7 +26,7 @@ class Bitcoin extends Api
      * Creates a new bitcoin receiver.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function create(array $parameters = [])
     {
@@ -37,7 +37,7 @@ class Bitcoin extends Api
      * Retrieves the bitcoin receiver with the given ID.
      *
      * @param  string  $receiverId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($receiverId)
     {
@@ -48,7 +48,7 @@ class Bitcoin extends Api
      * Lists all bitcoin receivers.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all(array $parameters = [])
     {

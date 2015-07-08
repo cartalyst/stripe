@@ -26,7 +26,7 @@ class Transfers extends Api
      * Creates a new transfer.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function create(array $parameters = [])
     {
@@ -37,7 +37,7 @@ class Transfers extends Api
      * Retrieves an existing transfer.
      *
      * @param  string  $transferId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($transferId)
     {
@@ -49,7 +49,7 @@ class Transfers extends Api
      *
      * @param  string  $transferId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function update($transferId, array $parameters = [])
     {
@@ -60,7 +60,7 @@ class Transfers extends Api
      * Lists all transfers.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all(array $parameters = [])
     {

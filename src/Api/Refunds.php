@@ -28,7 +28,7 @@ class Refunds extends Api
      * @param  string  $chargeId
      * @param  int  $amount
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function create($chargeId, $amount = null, array $parameters = [])
     {
@@ -42,7 +42,7 @@ class Refunds extends Api
      *
      * @param  string  $chargeId
      * @param  string  $refundId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($chargeId, $refundId)
     {
@@ -55,7 +55,7 @@ class Refunds extends Api
      * @param  string  $chargeId
      * @param  string  $refundId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function update($chargeId, $refundId, array $parameters = [])
     {
@@ -67,7 +67,7 @@ class Refunds extends Api
      *
      * @param  string  $chargeId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all($chargeId, array $parameters = [])
     {

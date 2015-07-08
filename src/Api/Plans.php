@@ -26,7 +26,7 @@ class Plans extends Api
      * Creates a new plan.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function create(array $parameters = [])
     {
@@ -37,7 +37,7 @@ class Plans extends Api
      * Retrieves an existing plan.
      *
      * @param  string  $planId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($planId)
     {
@@ -49,7 +49,7 @@ class Plans extends Api
      *
      * @param  string  $planId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function update($planId, array $parameters = [])
     {
@@ -60,7 +60,7 @@ class Plans extends Api
      * Deletes an existing plan.
      *
      * @param  string  $planId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function delete($planId)
     {
@@ -71,7 +71,7 @@ class Plans extends Api
      * Lists all plans.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all(array $parameters = [])
     {

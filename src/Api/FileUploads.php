@@ -37,7 +37,7 @@ class FileUploads extends Api
      *
      * @param  string  $file
      * @param  string  $purpose
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function create($file, $purpose)
     {
@@ -56,7 +56,7 @@ class FileUploads extends Api
      * Retrieves an existing file upload.
      *
      * @param  string  $fileId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($fileId)
     {
@@ -67,7 +67,7 @@ class FileUploads extends Api
      * Lists all file uploads.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all(array $parameters = [])
     {

@@ -26,7 +26,7 @@ class Tokens extends Api
      * Creates a new token.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function create(array $parameters)
     {
@@ -37,7 +37,7 @@ class Tokens extends Api
      * Retrieves an existing token.
      *
      * @param  string  $tokenId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($tokenId)
     {

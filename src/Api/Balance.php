@@ -25,7 +25,7 @@ class Balance extends Api
     /**
      * Retrieives the current account balance.
      *
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function current()
     {
@@ -36,7 +36,7 @@ class Balance extends Api
      * Retrieves the balance transaction for the given id.
      *
      * @param  string  $transactionId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($transactionId)
     {
@@ -47,7 +47,7 @@ class Balance extends Api
      * Lists all transactions
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all(array $parameters = [])
     {

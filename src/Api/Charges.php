@@ -26,7 +26,7 @@ class Charges extends Api
      * Creates a new charge.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function create(array $parameters = [])
     {
@@ -37,7 +37,7 @@ class Charges extends Api
      * Retrieves an existing charge.
      *
      * @param  string  $chargeId
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function find($chargeId)
     {
@@ -49,7 +49,7 @@ class Charges extends Api
      *
      * @param  string  $chargeId
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function update($chargeId, array $parameters = [])
     {
@@ -62,7 +62,7 @@ class Charges extends Api
      * @param  string  $chargeId
      * @param  int  $amount
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function capture($chargeId, $amount = null, array $parameters = [])
     {
@@ -75,7 +75,7 @@ class Charges extends Api
      * Lists all charges.
      *
      * @param  array  $parameters
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return array
      */
     public function all(array $parameters = [])
     {
