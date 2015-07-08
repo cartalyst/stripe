@@ -1,6 +1,6 @@
 # Stripe
 
-[![Build Status](https://travis-ci.org/cartalyst/stripe.svg?branch=1.0)](https://travis-ci.org/cartalyst/stripe)
+[![Build Status](https://travis-ci.org/cartalyst/stripe.svg?branch=master)](https://travis-ci.org/cartalyst/stripe)
 
 A comprehensive [Stripe](https://stripe.com/) API package.
 
