@@ -108,7 +108,7 @@ class Handler
             $class = 'ApiLimitExceeded';
         } elseif ($statusCode === 400 && $errorType === 'invalid_request_error') {
             $class = 'MissingParameter';
-        } else if (array_key_exists($errorType, $this->exceptionsByErrorType)) {
+        } elseif (array_key_exists($errorType, $this->exceptionsByErrorType)) {
             $class = $this->exceptionsByErrorType[$errorType];
         } elseif (array_key_exists($statusCode, $this->exceptionsByStatusCode)) {
             $class = $this->exceptionsByStatusCode[$statusCode];

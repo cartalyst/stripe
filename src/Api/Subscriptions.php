@@ -84,7 +84,7 @@ class Subscriptions extends Api
      */
     public function reactivate($customerId, $subscriptionId, array $attributes = [])
     {
-        if ( ! isset($attributes['plan'])) {
+        if (! isset($attributes['plan'])) {
             $subscription = $this->find($customerId, $subscriptionId);
 
             $attributes['plan'] = $subscription['plan']['id'];

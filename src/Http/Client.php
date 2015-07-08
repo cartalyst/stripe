@@ -53,7 +53,7 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
         $this->prepareRequestHeaders();
 
         // Register some before events
-        $this->getEmitter()->on('before', function(BeforeEvent $event) {
+        $this->getEmitter()->on('before', function (BeforeEvent $event) {
             // Get the event request
             $request = $event->getRequest();
 
@@ -76,7 +76,7 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
     {
         try {
             return parent::send($request);
-         } catch (ClientException $e) {
+        } catch (ClientException $e) {
             new Handler($e);
         }
     }

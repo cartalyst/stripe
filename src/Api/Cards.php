@@ -31,7 +31,9 @@ class Cards extends Api
      */
     public function create($customerId, $parameters = [])
     {
-        if (is_array($parameters)) $parameters['object'] = 'card';
+        if (is_array($parameters)) {
+            $parameters['object'] = 'card';
+        }
 
         $parameters = [ 'source' => $parameters ];
 
