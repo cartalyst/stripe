@@ -31,7 +31,9 @@ class Utility
     public static function prepareParameters(array $parameters)
     {
         if (isset($parameters['amount'])) {
-            $parameters['amount'] = static::convertToNumber($parameters['amount']);
+            $parameters['amount'] = forward_static_call_array(
+                Stripe::getAmountConverter(), [ $parameters['amount'] ]
+            );
         }
 
         $parameters = array_map(function ($parameter) {
@@ -42,19 +44,23 @@ class Utility
     }
 
     /**
-     * Converts a number into an integer.
+     * Converts the given number into cents.
      *
      * @param  mixed  $number
-     * @return int
+     * @return string
      */
-    protected static function convertToNumber($number)
+    public static function convertToCents($number)
     {
-        $number = number_format((float) $number, 2, '.', '');
+        $match = preg_match('/^(.+)[^\d](\d{1,})*$/', $number);
 
-        if (is_string($number) || is_float($number)) {
-            return (int) ($number * 100);
+        if (is_double($number) && ! $match) {
+            $number = number_format($number, 2, '', '');
         }
 
-        return $number;
+        if ($match && $number * 100 != 0) {
+            $number = $number * 100;
+        }
+
+        return (string) $number;
     }
 }
