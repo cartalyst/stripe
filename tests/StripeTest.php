@@ -96,11 +96,11 @@ class StripeTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_get_and_set_the_api_version()
     {
-        $this->assertEquals('\\Cartalyst\\Stripe\\Utility::convertToCents', $this->stripe->getAmountConverter());
+        $this->assertEquals('2014-06-17', $this->stripe->getApiVersion());
 
-        $this->stripe->setAmountConverter('\\Cartalyst\\Stripe\\Utility::convertToCents');
+        $this->stripe->setApiVersion('2014-03-28');
 
-        $this->assertEquals('\\Cartalyst\\Stripe\\Utility::convertToCents', $this->stripe->getAmountConverter());
+        $this->assertEquals('2014-03-28', $this->stripe->getApiVersion());
     }
 
     /** @test */
@@ -112,11 +112,11 @@ class StripeTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_get_and_set_the_amount_converter()
     {
-        $this->assertEquals('2014-06-17', $this->stripe->getApiVersion());
+        $this->assertEquals('\\Cartalyst\\Stripe\\Utility::convertToCents', $this->stripe->getAmountConverter());
 
-        $this->stripe->setApiVersion('2014-03-28');
+        $this->stripe->setAmountConverter('\\Cartalyst\\Stripe\\Utility::convertToCents');
 
-        $this->assertEquals('2014-03-28', $this->stripe->getApiVersion());
+        $this->assertEquals('\\Cartalyst\\Stripe\\Utility::convertToCents', $this->stripe->getAmountConverter());
     }
 
     /** @test */
