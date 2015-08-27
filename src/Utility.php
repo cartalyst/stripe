@@ -42,25 +42,4 @@ class Utility
 
         return $parameters;
     }
-
-    /**
-     * Converts the given number into cents.
-     *
-     * @param  mixed  $number
-     * @return string
-     */
-    public static function convertToCents($number)
-    {
-        $match = preg_match('/^(.+)[^\d](\d{1,})*$/', $number);
-
-        if (is_double($number) && ! $match) {
-            $number = number_format($number, 2, '', '');
-        }
-
-        if ($match && $number * 100 != 0) {
-            $number = $number * 100;
-        }
-
-        return (string) $number;
-    }
 }

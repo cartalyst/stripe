@@ -41,7 +41,7 @@ class Stripe
      *
      * @var string
      */
-    protected static $amountConverter = '\\Cartalyst\\Stripe\\Utility::convertToCents';
+    protected static $amountConverter = '\\Cartalyst\\Stripe\\AmountConverter::convert';
 
     /**
      * Constructor.

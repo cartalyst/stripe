@@ -112,11 +112,11 @@ class StripeTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_get_and_set_the_amount_converter()
     {
-        $this->assertEquals('\\Cartalyst\\Stripe\\Utility::convertToCents', $this->stripe->getAmountConverter());
+        $this->assertEquals('\\Cartalyst\\Stripe\\AmountConverter::convert', $this->stripe->getAmountConverter());
 
-        $this->stripe->setAmountConverter('\\Cartalyst\\Stripe\\Utility::convertToCents');
+        $this->stripe->setAmountConverter('\\Cartalyst\\Stripe\\AmountConverter::convert');
 
-        $this->assertEquals('\\Cartalyst\\Stripe\\Utility::convertToCents', $this->stripe->getAmountConverter());
+        $this->assertEquals('\\Cartalyst\\Stripe\\AmountConverter::convert', $this->stripe->getAmountConverter());
     }
 
     /** @test */
