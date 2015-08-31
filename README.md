@@ -1,10 +1,10 @@
-# Stripe
+# PHP library for Stripe, by Cartalyst
 
 [![Build Status](https://travis-ci.org/cartalyst/stripe.svg?branch=1.0)](https://travis-ci.org/cartalyst/stripe)
 
-A comprehensive [Stripe](https://stripe.com/) API package.
+A comprehensive PHP Library for [Stripe](https://stripe.com/).
 
-The package requires PHP 5.4+ and follows the FIG standards PSR-1, PSR-2 and PSR-4 to ensure a high level of interoperability between shared PHP.
+This package is supported by Cartalyst and is not affiliated with [Stripe](https://stripe.com/). The package requires PHP 5.4+ and follows the FIG standards PSR-1, PSR-2 and PSR-4 to ensure a high level of interoperability between shared PHP.
 
 An open source package by [Cartalyst](https://cartalyst.com), code well, rock on!
 
