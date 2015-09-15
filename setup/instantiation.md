@@ -1,8 +1,6 @@
 ### Instantiation
 
-Creating a new Stripe instance is very and straightforward and there is only one argument that is required to be passed, an `api_key` and an optional `api_version`.
-
-#### Usage
+Creating a new Stripe instance is very easy and straightforward. Please check the examples below for further explanation.
 
 ```php
 $stripe = new Stripe('your-stripe-api-key', 'your-stripe-api-version');
@@ -23,9 +21,11 @@ putenv('STRIPE_API_VERSION=your-stripe-api-version');
 Then upon instantiation, Stripe will auto detect these and use accordingly.
 
 ```php
-$stripe = new Stripe;
+$stripe = new Stripe();
 ```
 
 ```php
 $stripe = Stripe::make();
 ```
+
+> **Note:** Please do note that the Stripe API KEY is always required to be defined, either through an environment variable or by passing it as the first argument.

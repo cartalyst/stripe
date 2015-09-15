@@ -23,7 +23,7 @@ Creating a new credit card will not change the card owner's existing default cre
             <td>The customer unique identifier.</td>
         </tr>
         <tr>
-            <td>card</td>
+            <td>$parameters</td>
             <td>true</td>
             <td>string | array</td>
             <td>null</td>

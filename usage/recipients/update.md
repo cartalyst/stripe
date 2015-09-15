@@ -34,8 +34,6 @@ If you update the name or tax ID, the identity verification will automatically b
 
 ###### $parameters
 
-###### $parameters
-
 <table>
     <thead>
         <th>Key</th>
