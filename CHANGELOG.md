@@ -11,6 +11,17 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.0.4 - 2015-09-18
+
+`FIXED`
+
+- Issue where the `amount` that was not being automatically converted properly.
+
+`ADDED`
+
+- A new `AmountConverter` class that automatically converts the `amount`.
+- A methods to the Stripe class to get and set the Amount Converter class easily.
+
 ### v1.0.3 - 2015-07-08
 
 `FIXED`
