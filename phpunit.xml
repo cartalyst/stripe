@@ -11,8 +11,8 @@
          syntaxCheck="false"
 >
     <testsuites>
-        <testsuite name="Stripe Package Test Suite">
-            <directory suffix=".php">./tests/</directory>
+        <testsuite name="Stripe Test Suite">
+            <directory suffix="Test.php">./tests/</directory>
         </testsuite>
     </testsuites>
     <filter>
