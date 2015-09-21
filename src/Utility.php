@@ -36,6 +36,12 @@ class Utility
             );
         }
 
+        if (isset($parameters['price'])) {
+            $parameters['price'] = forward_static_call_array(
+                Stripe::getAmountConverter(), [ $parameters['price'] ]
+            );
+        }
+
         $parameters = array_map(function ($parameter) {
             return is_bool($parameter) ? ($parameter === true ? 'true' : 'false') : $parameter;
         }, $parameters);
