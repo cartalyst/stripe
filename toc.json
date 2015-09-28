@@ -104,6 +104,25 @@
         "recipients/delete",
         "recipients/retrieve-all",
 
+        "products/index",
+        "products/create",
+        "products/retrieve-single",
+        "products/update",
+        "products/retrieve-all",
+
+        "skus/index",
+        "skus/create",
+        "skus/retrieve-single",
+        "skus/update",
+        "skus/retrieve-all",
+
+        "orders/index",
+        "orders/create",
+        "orders/retrieve-single",
+        "orders/update",
+        "orders/pay",
+        "orders/retrieve-all",
+
         "application_fees/index",
         "application_fees/retrieve-single",
         "application_fees/retrieve-all",
