@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.0.5 - 2015-09-29
+
+`ADDED`
+
+- [Relay](https://stripe.com/relay) endpoints.
+
 ### v1.0.4 - 2015-09-18
 
 `FIXED`
