@@ -40,11 +40,11 @@
             <td>A filter on the list based on the object created field.</td>
         </tr>
         <tr>
-            <td>customer</td>
+            <td>object_id</td>
             <td>false</td>
             <td>string</td>
             <td>null</td>
-            <td>The customer unique identifier.</td>
+            <td>The object identifier.</td>
         </tr>
         <tr>
             <td>ending_before</td>
