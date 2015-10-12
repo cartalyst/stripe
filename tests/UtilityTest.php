@@ -34,8 +34,12 @@ class UtilityTest extends PHPUnit_Framework_TestCase
         $this->assertSame([ 'bool' => 'false' ], Utility::prepareParameters([ 'bool' => false ]));
         $this->assertSame([ 'bool' => 'false' ], Utility::prepareParameters([ 'bool' => 'false' ]));
 
-        $this->assertSame([ 'amount' => '1299' ], Utility::prepareParameters([ 'amount' => 1299 ]));
+        $this->assertSame([ 'amount' => '012' ], Utility::prepareParameters([ 'amount' => 0.12 ]));
         $this->assertSame([ 'amount' => '1200' ], Utility::prepareParameters([ 'amount' => 12.00 ]));
         $this->assertSame([ 'amount' => '1299' ], Utility::prepareParameters([ 'amount' => 12.99 ]));
+
+        $this->assertSame([ 'price' => '012' ], Utility::prepareParameters([ 'price' => 0.12 ]));
+        $this->assertSame([ 'price' => '1200' ], Utility::prepareParameters([ 'price' => 12.00 ]));
+        $this->assertSame([ 'price' => '1299' ], Utility::prepareParameters([ 'price' => 12.99 ]));
     }
 }
