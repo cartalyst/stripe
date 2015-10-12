@@ -20,13 +20,6 @@ Retrieves the details of an existing recipient. You need only supply the unique 
             <td>null</td>
             <td>The recipient unique identifier.</td>
         </tr>
-        <tr>
-            <td>$cardId</td>
-            <td>true</td>
-            <td>string</td>
-            <td>null</td>
-            <td>The card unique identifier.</td>
-        </tr>
     </tbody>
 </table>
 
