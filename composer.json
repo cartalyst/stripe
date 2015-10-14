@@ -10,22 +10,8 @@
     "authors": [
         {
             "name": "Cartalyst LLC",
-            "email": "help@cartalyst.com"
-        },
-        {
-            "name": "Bruno Gaspar",
-            "email": "bruno.gaspar@cartalyst.com",
-            "role": "Developer"
-        },
-        {
-            "name": "Dan Syme",
-            "email": "dan.syme@cartalyst.com",
-            "role": "Project Lead"
-        },
-        {
-            "name": "Suhayb Wardany",
-            "email": "su.wardany@cartalyst.com",
-            "role": "Developer"
+            "email": "help@cartalyst.com",
+            "homepage": "https://cartalyst.com"
         }
     ],
     "require": {
@@ -35,12 +21,13 @@
     },
     "require-dev": {
         "mockery/mockery": "~0.9",
-        "phpunit/phpunit": "~4.5"
+        "phpunit/phpunit": "~4.8"
     },
     "autoload": {
-        "psr-4": {
-            "Cartalyst\\Stripe\\": "src/"
-        }
+        "psr-4": { "Cartalyst\\Stripe\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Cartalyst\\Stripe\\Tests\\": "tests/" }
     },
     "extra": {
         "component": "package",

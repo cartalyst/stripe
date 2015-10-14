@@ -31,7 +31,15 @@ class Utility
     public static function prepareParameters(array $parameters)
     {
         if (isset($parameters['amount'])) {
-            $parameters['amount'] = static::convertToNumber($parameters['amount']);
+            $parameters['amount'] = forward_static_call_array(
+                Stripe::getAmountConverter(), [ $parameters['amount'] ]
+            );
+        }
+
+        if (isset($parameters['price'])) {
+            $parameters['price'] = forward_static_call_array(
+                Stripe::getAmountConverter(), [ $parameters['price'] ]
+            );
         }
 
         $parameters = array_map(function ($parameter) {
@@ -39,22 +47,5 @@ class Utility
         }, $parameters);
 
         return $parameters;
-    }
-
-    /**
-     * Converts a number into an integer.
-     *
-     * @param  mixed  $number
-     * @return int
-     */
-    protected static function convertToNumber($number)
-    {
-        $number = number_format((float) $number, 2, '.', '');
-
-        if (is_string($number) || is_float($number)) {
-            return (int) ($number * 100);
-        }
-
-        return $number;
     }
 }

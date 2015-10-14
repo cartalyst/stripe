@@ -37,6 +37,13 @@ class Stripe
     protected $config;
 
     /**
+     * The amount converter class and method name.
+     *
+     * @var string
+     */
+    protected static $amountConverter = '\\Cartalyst\\Stripe\\AmountConverter::convert';
+
+    /**
      * Constructor.
      *
      * @param  string  $apiKey
@@ -150,6 +157,27 @@ class Stripe
         $this->config->idempotency_key = $idempotencyKey;
 
         return $this;
+    }
+
+    /**
+     * Returns the amount converter class and method name.
+     *
+     * @return string
+     */
+    public static function getAmountConverter()
+    {
+        return static::$amountConverter;
+    }
+
+    /**
+     * Sets the amount converter class and method name.
+     *
+     * @param  $amountConverter  string
+     * @return void
+     */
+    public static function setAmountConverter($amountConverter)
+    {
+        static::$amountConverter = $amountConverter;
     }
 
     /**

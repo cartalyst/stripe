@@ -11,8 +11,8 @@
          syntaxCheck="false"
 >
     <testsuites>
-        <testsuite name="Stripe Package Test Suite">
-            <directory suffix=".php">./tests/</directory>
+        <testsuite name="Stripe Test Suite">
+            <directory suffix="Test.php">./tests/</directory>
         </testsuite>
     </testsuites>
     <filter>
@@ -25,6 +25,6 @@
     </logging>
     <php>
         <env name="STRIPE_API_KEY" value="stripe-api-key"/>
-        <env name="STRIPE_API_VERSION" value="2014-03-28"/>
+        <env name="STRIPE_API_VERSION" value="2015-10-12"/>
     </php>
 </phpunit>
