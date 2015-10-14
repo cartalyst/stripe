@@ -11,6 +11,17 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.0.6 - 2015-10-14
+
+`FIXED`
+
+- Issue where the amount was not being converted properly if passed without decimals! This reverts the previous fix with a better fix.
+
+`ADDED`
+
+- Bank Accounts (ExternalAccounts) API.
+- API tests.
+
 ### v1.0.5 - 2015-09-29
 
 `ADDED`
