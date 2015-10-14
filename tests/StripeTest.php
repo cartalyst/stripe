@@ -66,16 +66,14 @@ class StripeTest extends PHPUnit_Framework_TestCase
     {
         $stripe = new Stripe;
 
-        $this->assertEquals('stripe-api-key', $stripe->getApiKey());
+        $this->assertEquals(getenv('STRIPE_API_KEY'), $stripe->getApiKey());
 
-        $this->assertEquals('2014-03-28', $stripe->getApiVersion());
+        $this->assertEquals(getenv('STRIPE_API_VERSION'), $stripe->getApiVersion());
     }
 
     /** @test */
     public function it_can_get_and_set_the_api_key()
     {
-        $this->assertEquals('stripe-api-key', $this->stripe->getApiKey());
-
         $this->stripe->setApiKey('new-stripe-api-key');
 
         $this->assertEquals('new-stripe-api-key', $this->stripe->getApiKey());
@@ -96,8 +94,6 @@ class StripeTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_get_and_set_the_api_version()
     {
-        $this->assertEquals('2014-06-17', $this->stripe->getApiVersion());
-
         $this->stripe->setApiVersion('2014-03-28');
 
         $this->assertEquals('2014-03-28', $this->stripe->getApiVersion());
