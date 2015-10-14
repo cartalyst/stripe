@@ -37,7 +37,7 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->stripe = new Stripe($key);
+        $this->stripe = new Stripe();
     }
 
     protected function createCoupon()
