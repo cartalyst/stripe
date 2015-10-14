@@ -125,12 +125,6 @@ class StripeTest extends PHPUnit_Framework_TestCase
         $this->stripe->customers();
     }
 
-    /** @test */
-    public function it_can_create_iterator_requests()
-    {
-        //$this->stripe->customersIterator();
-    }
-
     /**
      * @test
      * @expectedException \BadMethodCallException

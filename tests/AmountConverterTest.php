@@ -34,7 +34,7 @@ class AmountConverterTest extends PHPUnit_Framework_TestCase
         $this->assertSame('030', AmountConverter::convert('a0f.30'));
         $this->assertSame('1330', AmountConverter::convert('1a3f.30'));
 
-        // 1 cent  (0 U.S. dollars) + (1 U.S. cents) (this is not allowed by Stripe though)
+        // 1 cent (0 U.S. dollars) + (1 U.S. cents) (this is not allowed by Stripe though)
         $this->assertSame('010', AmountConverter::convert(.10));
         $this->assertSame('010', AmountConverter::convert(0.10));
         $this->assertSame('010', AmountConverter::convert(0.10001));

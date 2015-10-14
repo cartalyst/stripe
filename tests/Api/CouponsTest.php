@@ -1,0 +1,97 @@
+<?php
+
+/**
+ * Part of the Stripe package.
+ *
+ * NOTICE OF LICENSE
+ *
+ * Licensed under the 3-clause BSD License.
+ *
+ * This source file is subject to the 3-clause BSD License that is
+ * bundled with this package in the LICENSE file.
+ *
+ * @package    Stripe
+ * @version    1.0.5
+ * @author     Cartalyst LLC
+ * @license    BSD License (3-clause)
+ * @copyright  (c) 2011-2015, Cartalyst LLC
+ * @link       http://cartalyst.com
+ */
+
+namespace Cartalyst\Stripe\Tests\Api;
+
+use Cartalyst\Stripe\Tests\FunctionalTestCase;
+
+class CouponsTest extends FunctionalTestCase
+{
+    /** @test */
+    public function it_can_create_a_new_coupon()
+    {
+        $coupon = $this->createCoupon();
+
+        $this->assertSame('forever', $coupon['duration']);
+    }
+
+    /** @test */
+    public function it_can_find_an_existing_coupon()
+    {
+        $coupon = $this->createCoupon();
+
+        $coupon = $this->stripe->coupons()->find($coupon['id']);
+
+        $this->assertSame('forever', $coupon['duration']);
+    }
+
+    /**
+     * @test
+     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
+     */
+    public function it_will_throw_an_exception_when_searching_for_a_non_existing_coupon()
+    {
+        $this->stripe->coupons()->find(time().rand());
+    }
+
+    /** @test */
+    public function it_can_update_an_existing_coupon()
+    {
+        $coupon = $this->createCoupon();
+
+        $coupon = $this->stripe->coupons()->update($coupon['id'], [
+            'metadata' => [ 'description' => '50% Discount Forever' ]
+        ]);
+
+        $this->assertSame('forever', $coupon['duration']);
+        $this->assertSame('50% Discount Forever', $coupon['metadata']['description']);
+    }
+
+    /** @test */
+    public function it_can_delete_an_existing_coupon()
+    {
+        $coupon = $this->createCoupon();
+
+        $coupon = $this->stripe->coupons()->delete($coupon['id']);
+
+        $this->assertTrue($coupon['deleted']);
+    }
+
+    /** @test */
+    public function it_can_retrieve_all_coupons()
+    {
+        $this->createCoupon();
+
+        $coupons = $this->stripe->coupons()->all();
+
+        $this->assertNotEmpty($coupons['data']);
+        $this->assertInternalType('array', $coupons['data']);
+    }
+
+    /** @test */
+    public function it_can_iterate_all_coupons()
+    {
+        for ($i=0; $i < 5; $i++) {
+            $this->createCoupon();
+        }
+
+        $this->stripe->couponsIterator();
+    }
+}
