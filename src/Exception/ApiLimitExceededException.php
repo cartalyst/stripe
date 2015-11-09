@@ -20,7 +20,7 @@
 
 namespace Cartalyst\Stripe\Exception;
 
-class ApiLimitExceededException extends \RuntimeException
+class ApiLimitExceededException extends StripeException
 {
     /**
      * {@inheritDoc}
