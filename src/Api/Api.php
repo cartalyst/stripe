@@ -20,9 +20,13 @@
 
 namespace Cartalyst\Stripe\Api;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\HandlerStack;
 use Cartalyst\Stripe\Utility;
-use Cartalyst\Stripe\Http\Client;
 use Cartalyst\Stripe\ConfigInterface;
+use Psr\Http\Message\RequestInterface;
+use Cartalyst\Stripe\Exception\Handler;
 
 abstract class Api implements ApiInterface
 {
@@ -49,8 +53,6 @@ abstract class Api implements ApiInterface
     public function __construct(ConfigInterface $config)
     {
         $this->config = $config;
-
-        $this->config->base_url = $this->baseUrl();
     }
 
     /**
@@ -88,7 +90,7 @@ abstract class Api implements ApiInterface
             $parameters['limit'] = $this->perPage;
         }
 
-        return $this->execute('get', $url, $parameters)->json();
+        return $this->execute('get', $url, $parameters);
     }
 
     /**
@@ -104,7 +106,7 @@ abstract class Api implements ApiInterface
      */
     public function _delete($url = null, array $parameters = [])
     {
-        return $this->execute('delete', $url, $parameters)->json();
+        return $this->execute('delete', $url, $parameters);
     }
 
     /**
@@ -112,7 +114,7 @@ abstract class Api implements ApiInterface
      */
     public function _put($url = null, array $parameters = [])
     {
-        return $this->execute('put', $url, $parameters)->json();
+        return $this->execute('put', $url, $parameters);
     }
 
     /**
@@ -120,7 +122,7 @@ abstract class Api implements ApiInterface
      */
     public function _patch($url = null, array $parameters = [])
     {
-        return $this->execute('patch', $url, $parameters)->json();
+        return $this->execute('patch', $url, $parameters);
     }
 
     /**
@@ -128,7 +130,7 @@ abstract class Api implements ApiInterface
      */
     public function _post($url = null, array $parameters = [])
     {
-        return $this->execute('post', $url, $parameters)->json();
+        return $this->execute('post', $url, $parameters);
     }
 
     /**
@@ -136,7 +138,7 @@ abstract class Api implements ApiInterface
      */
     public function _options($url = null, array $parameters = [])
     {
-        return $this->execute('options', $url, $parameters)->json();
+        return $this->execute('options', $url, $parameters);
     }
 
     /**
@@ -144,18 +146,44 @@ abstract class Api implements ApiInterface
      */
     public function execute($httpMethod, $url, array $parameters = [], array $body = [])
     {
-        $parameters = Utility::prepareParameters($parameters);
+        try {
+            $parameters = Utility::prepareParameters($parameters);
 
-        return $this->getClient()->{$httpMethod}("v1/{$url}", [ 'query' => $parameters, 'body' => $body ]);
+            $response = $this->getClient()->{$httpMethod}('v1/'.$url, [ 'query' => $parameters, /*'body' => $body*/ ]);
+
+            return json_decode((string) $response->getBody(), true);
+        } catch (\Exception $e) {
+            new Handler($e);
+        }
     }
 
     /**
      * Returns an Http client instance.
      *
-     * @return \Cartalyst\Stripe\Http\Client
+     * @return \GuzzleHttp\Client
      */
     protected function getClient()
     {
-        return new Client($this->config);
+        return new Client([
+            'base_uri' => $this->baseUrl(), 'handler' => $this->createHandler()
+        ]);
+    }
+
+    protected function createHandler()
+    {
+        $handler = HandlerStack::create();
+
+        $handler->push(Middleware::mapRequest(function (RequestInterface $request) {
+            $config = $this->config;
+
+            return $request
+                ->withHeader('Stripe-Version', $config->getApiVersion())
+                ->withHeader('Idempotency-Key', $config->getIdempotencyKey())
+                ->withHeader('User-Agent', 'Cartalyst-Stripe/'.$config->getVersion())
+                ->withHeader('Authorization', 'Basic '.base64_encode($config->getApiKey()))
+            ;
+        }));
+
+        return $handler;
     }
 }
