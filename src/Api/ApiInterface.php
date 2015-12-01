@@ -113,8 +113,7 @@ interface ApiInterface
      * @param  string  $httpMethod
      * @param  string  $url
      * @param  array  $parameters
-     * @param  array  $body
      * @return array
      */
-    public function execute($httpMethod, $url, array $parameters = [], array $body = []);
+    public function execute($httpMethod, $url, array $parameters = []);
 }

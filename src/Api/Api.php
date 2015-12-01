@@ -144,12 +144,12 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritDoc}
      */
-    public function execute($httpMethod, $url, array $parameters = [], array $body = [])
+    public function execute($httpMethod, $url, array $parameters = [])
     {
         try {
             $parameters = Utility::prepareParameters($parameters);
 
-            $response = $this->getClient()->{$httpMethod}('v1/'.$url, [ 'query' => $parameters, /*'body' => $body*/ ]);
+            $response = $this->getClient()->{$httpMethod}('v1/'.$url, ['query' => $parameters]);
 
             return json_decode((string) $response->getBody(), true);
         } catch (\Exception $e) {
