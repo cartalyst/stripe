@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.0.7 - 2015-12-12
+
+`FIXED`
+
+- Issue when the rate limit was reached a wrong exception was being thrown.
+
 ### v1.0.6 - 2015-10-14
 
 `FIXED`
