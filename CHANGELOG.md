@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.0.0 - 2016-01-17
+
+`UPDATED`
+
+- Updated to Guzzle 6.
+
 ### v1.0.7 - 2015-12-12
 
 `FIXED`
