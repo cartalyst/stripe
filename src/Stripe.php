@@ -107,7 +107,7 @@ class Stripe
      */
     public function getApiKey()
     {
-        return $this->config->api_key;
+        return $this->config->getApiKey();
     }
 
     /**
@@ -118,7 +118,7 @@ class Stripe
      */
     public function setApiKey($apiKey)
     {
-        $this->config->api_key = $apiKey;
+        $this->config->setApiKey($apiKey);
 
         return $this;
     }
@@ -130,7 +130,7 @@ class Stripe
      */
     public function getApiVersion()
     {
-        return $this->config->api_version;
+        return $this->config->getApiVersion();
     }
 
     /**
@@ -141,7 +141,7 @@ class Stripe
      */
     public function setApiVersion($apiVersion)
     {
-        $this->config->api_version = $apiVersion;
+        $this->config->setApiVersion($apiVersion);
 
         return $this;
     }
@@ -154,7 +154,7 @@ class Stripe
      */
     public function idempotent($idempotencyKey)
     {
-        $this->config->idempotency_key = $idempotencyKey;
+        $this->config->setIdempotencyKey($idempotencyKey);
 
         return $this;
     }

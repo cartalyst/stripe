@@ -25,7 +25,7 @@ use GuzzleHttp\Post\PostFile;
 class FileUploads extends Api
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function baseUrl()
     {

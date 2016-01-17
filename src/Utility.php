@@ -30,22 +30,20 @@ class Utility
      */
     public static function prepareParameters(array $parameters)
     {
-        if (isset($parameters['amount'])) {
-            $parameters['amount'] = forward_static_call_array(
-                Stripe::getAmountConverter(), [ $parameters['amount'] ]
-            );
-        }
+        $toConvert = [ 'amount', 'price' ];
 
-        if (isset($parameters['price'])) {
-            $parameters['price'] = forward_static_call_array(
-                Stripe::getAmountConverter(), [ $parameters['price'] ]
-            );
+        foreach ($toConvert as $to) {
+            if (isset($parameters[$to])) {
+                $parameters[$to] = forward_static_call_array(
+                    Stripe::getAmountConverter(), [ $parameters[$to] ]
+                );
+            }
         }
 
         $parameters = array_map(function ($parameter) {
             return is_bool($parameter) ? ($parameter === true ? 'true' : 'false') : $parameter;
         }, $parameters);
 
-        return $parameters;
+        return preg_replace('/\%5B\d+\%5D/', '%5B%5D', http_build_query($parameters));;
     }
 }

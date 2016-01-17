@@ -23,7 +23,7 @@ namespace Cartalyst\Stripe\Exception;
 class ApiLimitExceededException extends StripeException
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function __construct()
     {
