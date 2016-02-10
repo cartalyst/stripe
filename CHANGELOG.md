@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.0.1 - 2016-02-10
+
+`FIXED`
+
+- Version constant on Stripe class.
+
 ### v2.0.0 - 2016-01-17
 
 `UPDATED`
