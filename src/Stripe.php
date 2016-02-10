@@ -187,7 +187,7 @@ class Stripe
      * @param  array  $parameters
      * @return \Cartalyst\Stripe\Api\ApiInterface
      */
-    public function __call($method, array $parameters = [])
+    public function __call($method, array $parameters)
     {
         if ($this->isIteratorRequest($method)) {
             $apiInstance = $this->getApiInstance(substr($method, 0, -8));
