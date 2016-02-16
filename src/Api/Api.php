@@ -27,6 +27,7 @@ use Cartalyst\Stripe\Utility;
 use Cartalyst\Stripe\ConfigInterface;
 use Psr\Http\Message\RequestInterface;
 use Cartalyst\Stripe\Exception\Handler;
+use GuzzleHttp\Exception\ClientException;
 
 abstract class Api implements ApiInterface
 {
@@ -152,7 +153,7 @@ abstract class Api implements ApiInterface
             $response = $this->getClient()->{$httpMethod}('v1/'.$url, [ 'query' => $parameters ]);
 
             return json_decode((string) $response->getBody(), true);
-        } catch (\Exception $e) {
+        } catch (ClientException $e) {
             new Handler($e);
         }
     }
