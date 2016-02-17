@@ -23,6 +23,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 - Updated to Guzzle 6.
 
+### v1.0.8 - 2016-02-17
+
+`FIXED`
+
+- Fixed `__call` method to work with Mockery.
+
 ### v1.0.7 - 2015-12-12
 
 `FIXED`
