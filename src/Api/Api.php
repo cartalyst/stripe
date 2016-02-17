@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.0.1
+ * @version    2.0.2
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -27,6 +27,7 @@ use Cartalyst\Stripe\Utility;
 use Cartalyst\Stripe\ConfigInterface;
 use Psr\Http\Message\RequestInterface;
 use Cartalyst\Stripe\Exception\Handler;
+use GuzzleHttp\Exception\ClientException;
 
 abstract class Api implements ApiInterface
 {
@@ -152,7 +153,7 @@ abstract class Api implements ApiInterface
             $response = $this->getClient()->{$httpMethod}('v1/'.$url, [ 'query' => $parameters ]);
 
             return json_decode((string) $response->getBody(), true);
-        } catch (\Exception $e) {
+        } catch (ClientException $e) {
             new Handler($e);
         }
     }
