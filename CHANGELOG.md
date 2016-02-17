@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.0.2 - 2016-02-17
+
+`FIXED`
+
+- Fixed exception handler to only handle client exceptions.
+
 ### v2.0.1 - 2016-02-10
 
 `FIXED`
