@@ -57,6 +57,17 @@ class Skus extends Api
     }
 
     /**
+     * Deletes an existing sku.
+     *
+     * @param  string  $skuId
+     * @return array
+     */
+    public function delete($skuId)
+    {
+        return $this->_delete("skus/{$skuId}");
+    }
+
+    /**
      * Returns a list of all the skus.
      *
      * @param  array  $parameters
