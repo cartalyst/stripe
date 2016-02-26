@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.0.2
+ * @version    2.0.3
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -54,6 +54,17 @@ class Skus extends Api
     public function update($skuId, array $parameters = [])
     {
         return $this->_post("skus/{$skuId}", $parameters);
+    }
+
+    /**
+     * Deletes an existing sku.
+     *
+     * @param  string  $skuId
+     * @return array
+     */
+    public function delete($skuId)
+    {
+        return $this->_delete("skus/{$skuId}");
     }
 
     /**

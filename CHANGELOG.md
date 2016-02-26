@@ -11,6 +11,13 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.0.3 - 2016-02-26
+
+`ADDED`
+
+- Country Specs API.
+- Delete endpoint to the Skus API.
+
 ### v2.0.2 - 2016-02-17
 
 `FIXED`
@@ -28,6 +35,13 @@ We do not give estimated times for completion on `Accepted` Proposals.
 `UPDATED`
 
 - Updated to Guzzle 6.
+
+### v1.0.9 - 2016-02-26
+
+`ADDED`
+
+- Country Specs API.
+- Delete endpoint to the Skus API.
 
 ### v1.0.8 - 2016-02-17
 

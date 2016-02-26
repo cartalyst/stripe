@@ -20,38 +20,27 @@
 
 namespace Cartalyst\Stripe\Api;
 
-class Bitcoin extends Api
+class CountrySpecs extends Api
 {
     /**
-     * Creates a new bitcoin receiver.
+     * Retrieves an existing country spec.
      *
-     * @param  array  $parameters
+     * @param  string  $country
      * @return array
      */
-    public function create(array $parameters = [])
+    public function find($country)
     {
-        return $this->_post('bitcoin/receivers', $parameters);
+        return $this->_get("country_specs/{$country}");
     }
 
     /**
-     * Retrieves the bitcoin receiver with the given ID.
-     *
-     * @param  string  $receiverId
-     * @return array
-     */
-    public function find($receiverId)
-    {
-        return $this->_get("bitcoin/receivers/{$receiverId}");
-    }
-
-    /**
-     * Lists all bitcoin receivers.
+     * Returns a list of all the connected country specs.
      *
      * @param  array  $parameters
      * @return array
      */
     public function all(array $parameters = [])
     {
-        return $this->_get('bitcoin/receivers', $parameters);
+        return $this->_get('country_specs', $parameters);
     }
 }

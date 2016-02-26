@@ -22,18 +22,21 @@ namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
 
-class EventsTest extends FunctionalTestCase
+class CountrySpecsTest extends FunctionalTestCase
 {
     /** @test */
-    public function it_can_retrieve_a_single_and_all_events()
+    public function it_can_get_a_country_spec()
     {
-        $this->createCustomer();
+        $countrySpec = $this->stripe->countrySpecs()->find('US');
 
-        $events = $this->stripe->events()->all();
+        $this->assertArrayHasKey('usd', $countrySpec['supported_bank_account_currencies']);
+    }
 
-        $this->assertNotEmpty($events['data']);
-        $this->assertInternalType('array', $events['data']);
+    /** @test */
+    public function it_can_get_all_country_specs()
+    {
+        $countrySpecs = $this->stripe->countrySpecs()->all();
 
-        $event = $this->stripe->events()->find($events['data'][0]['id']);
+        $this->assertGreaterThan(1, count($countrySpecs['data']));
     }
 }
