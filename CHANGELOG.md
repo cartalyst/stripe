@@ -11,6 +11,13 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.0.9 - 2016-02-26
+
+`ADDED`
+
+- Country Specs API.
+- Delete endpoint to the Skus API.
+
 ### v1.0.8 - 2016-02-17
 
 `FIXED`
