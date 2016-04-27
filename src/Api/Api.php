@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.0.3
+ * @version    2.0.4
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -27,7 +27,9 @@ use Cartalyst\Stripe\Utility;
 use Cartalyst\Stripe\ConfigInterface;
 use Psr\Http\Message\RequestInterface;
 use Cartalyst\Stripe\Exception\Handler;
+use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\TransferException;
 
 abstract class Api implements ApiInterface
 {
@@ -188,6 +190,12 @@ abstract class Api implements ApiInterface
                 ->withHeader('User-Agent', 'Cartalyst-Stripe/'.$config->getVersion())
                 ->withHeader('Authorization', 'Basic '.base64_encode($config->getApiKey()))
             ;
+        }));
+
+        $stack->push(Middleware::retry(function ($retries, RequestInterface $request, ResponseInterface $response = null, TransferException $exception = null) {
+            return $retries < 3 && ($exception instanceof ConnectException || ($response && $response->getStatusCode() >= 500));
+        }, function ($retries) {
+            return (int) pow(2, $retries) * 1000;
         }));
 
         return $stack;
