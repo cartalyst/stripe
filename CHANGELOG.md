@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.0.4 - 2016-04-27
+
+`ADDED`
+
+- Guzzle retry middleware.
+
 ### v2.0.3 - 2016-02-26
 
 `ADDED`
