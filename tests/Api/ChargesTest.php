@@ -36,6 +36,20 @@ class ChargesTest extends FunctionalTestCase
     }
 
     /** @test */
+    public function it_can_create_a_new_charge_with_a_currency_with_zero_decimals()
+    {
+        $customer = $this->createCustomer();
+
+        $charge = $this->createCharge($customer['id'], [
+            'currency' => 'JPY',
+            'amount'   => 80
+        ]);
+
+        $this->assertTrue($charge['captured']);
+        $this->assertSame(80, $charge['amount']);
+    }
+
+    /** @test */
     public function it_can_find_a_charge_from_an_existing_customer()
     {
         $customer = $this->createCustomer();

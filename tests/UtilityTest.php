@@ -38,13 +38,18 @@ class UtilityTest extends PHPUnit_Framework_TestCase
         $this->assertSame('amount=1200', Utility::prepareParameters([ 'amount' => 12.00 ]));
         $this->assertSame('amount=1299', Utility::prepareParameters([ 'amount' => 12.99 ]));
 
-        $this->assertSame('amount=12', Utility::prepareParameters([ 'amount' => 12, 'currency' => 'JPY' ]));
-        $this->assertSame('amount=1200', Utility::prepareParameters([ 'amount' => 12, 'currency' => 'USD' ]));
-        $this->assertSame('amount=500', Utility::prepareParameters([ 'amount' => 500, 'currency' => 'CLP' ]));
-        $this->assertSame('amount=50000', Utility::prepareParameters([ 'amount' => 500, 'currency' => 'SEK' ]));
-
         $this->assertSame('price=012', Utility::prepareParameters([ 'price' => 0.12 ]));
         $this->assertSame('price=1200', Utility::prepareParameters([ 'price' => 12.00 ]));
         $this->assertSame('price=1299', Utility::prepareParameters([ 'price' => 12.99 ]));
+
+        $this->assertSame('amount=12&currency=JPY', Utility::prepareParameters([ 'amount' => 12, 'currency' => 'JPY' ]));
+        $this->assertSame('amount=1200&currency=USD', Utility::prepareParameters([ 'amount' => 12, 'currency' => 'USD' ]));
+        $this->assertSame('amount=500&currency=CLP', Utility::prepareParameters([ 'amount' => 500, 'currency' => 'CLP' ]));
+        $this->assertSame('amount=50000&currency=SEK', Utility::prepareParameters([ 'amount' => 500, 'currency' => 'SEK' ]));
+
+        $this->assertSame('price=12&currency=JPY', Utility::prepareParameters([ 'price' => 12, 'currency' => 'JPY' ]));
+        $this->assertSame('price=1200&currency=USD', Utility::prepareParameters([ 'price' => 12, 'currency' => 'USD' ]));
+        $this->assertSame('price=500&currency=CLP', Utility::prepareParameters([ 'price' => 500, 'currency' => 'CLP' ]));
+        $this->assertSame('price=50000&currency=SEK', Utility::prepareParameters([ 'price' => 500, 'currency' => 'SEK' ]));
     }
 }
