@@ -29,6 +29,7 @@ use Psr\Http\Message\RequestInterface;
 use Cartalyst\Stripe\Exception\Handler;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\TransferException;
 
 abstract class Api implements ApiInterface
