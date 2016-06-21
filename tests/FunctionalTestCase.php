@@ -94,6 +94,50 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
         ]);
     }
 
+    protected function createCardToken()
+    {
+        return $this->stripe->tokens()->create([
+            'card' => [
+                'exp_month' => 10,
+                'cvc'       => 314,
+                'exp_year'  => 2020,
+                'number'    => '4242424242424242',
+            ],
+        ]);
+    }
+
+    protected function createBankAccountToken()
+    {
+        return $this->stripe->tokens()->create([
+            'bank_account' => [
+                'country'             => 'US',
+                'currency'            => 'usd',
+                'account_holder_name' => 'Jane Austen',
+                'account_holder_type' => 'individual',
+                'routing_number'      => '110000000',
+                'account_number'      => '000123456789',
+            ],
+        ]);
+    }
+
+    protected function createBankAccountThroughArray($customerId)
+    {
+        return $this->stripe->bankAccounts()->create($customerId, [
+            'country'             => 'US',
+            'currency'            => 'usd',
+            'account_holder_name' => 'Jane Austen',
+            'account_holder_type' => 'individual',
+            'routing_number'      => '110000000',
+            'account_number'      => '000123456789',
+        ]);
+    }
+
+    protected function createBankAccountThroughToken($customerId)
+    {
+        $token = $this->createBankAccountToken();
+
+        return $this->stripe->bankAccounts()->create($customerId, $token['id']);
+    }
 
     protected function createCardThroughArray($customerId)
     {
@@ -107,14 +151,7 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
 
     protected function createCardThroughToken($customerId)
     {
-        $token = $this->stripe->tokens()->create([
-            'card' => [
-                'exp_month' => 10,
-                'cvc'       => 314,
-                'exp_year'  => 2020,
-                'number'    => '4242424242424242',
-            ],
-        ]);
+        $token = $this->createCardToken();
 
         return $this->stripe->cards()->create($customerId, $token['id']);
     }
@@ -170,6 +207,34 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
             'name' => 'John Doe',
             'type' => 'individual',
         ]);
+    }
+
+    protected function createInvoice($customerId, array $parameters = [])
+    {
+        return $this->stripe->invoices()->create($customerId, $parameters);
+    }
+
+    protected function createInvoiceItem($customerId, array $parameters = [])
+    {
+        return $this->stripe->invoiceItems()->create($customerId, array_merge([
+            'amount'      => '10.00',
+            'currency'    => 'usd',
+            'description' => 'One-time setup fee.'
+        ], $parameters));
+    }
+
+    protected function createAnInvoiceAndInvoiceItems($customerId, $amountOfInvoiceItems = 2)
+    {
+        for ($i=0; $i < $amountOfInvoiceItems; $i++) {
+            $this->createInvoiceItem($customerId);
+        }
+
+        return $this->createInvoice($customerId);
+    }
+
+    protected function getRandomEmail()
+    {
+        return rand().time().'-john@doe.com';
     }
 
     // protected function createBankAccount()

@@ -20,8 +20,6 @@
 
 namespace Cartalyst\Stripe\Api;
 
-use GuzzleHttp\Post\PostFile;
-
 class FileUploads extends Api
 {
     /**
@@ -37,19 +35,20 @@ class FileUploads extends Api
      *
      * @param  string  $file
      * @param  string  $purpose
+     * @param  array  $headers
      * @return array
      */
-    public function create($file, $purpose)
+    public function create($file, $purpose, array $headers = [])
     {
-        $file = new PostFile('file', fopen($file, 'r'));
+        $response = $this->getClient()->request('POST', 'v1/files', [
+            'headers'   => $headers,
+            'multipart' => [
+                [ 'name' => 'purpose', 'contents' => $purpose ],
+                [ 'name' => 'file', 'contents' => fopen($file, 'r') ]
+            ],
+        ]);
 
-        $client = $this->getClient();
-        $request = $client->createRequest('POST', 'v1/files');
-        $postBody = $request->getBody();
-        $postBody->setField('purpose', $purpose);
-        $postBody->addFile($file);
-
-        return $client->send($request);
+        return json_decode($response->getBody(), true);
     }
 
     /**

@@ -32,11 +32,13 @@ class Utility
     {
         $toConvert = [ 'amount', 'price' ];
 
-        foreach ($toConvert as $to) {
-            if (isset($parameters[$to])) {
-                $parameters[$to] = forward_static_call_array(
-                    Stripe::getAmountConverter(), [ $parameters[$to] ]
-                );
+        if (self::needsAmountConversion($parameters)) {
+            foreach ($toConvert as $to) {
+                if (isset($parameters[$to])) {
+                    $parameters[$to] = forward_static_call_array(
+                        Stripe::getAmountConverter(), [ $parameters[$to] ]
+                    );
+                }
             }
         }
 
@@ -45,5 +47,18 @@ class Utility
         }, $parameters);
 
         return preg_replace('/\%5B\d+\%5D/', '%5B%5D', http_build_query($parameters));;
+    }
+
+    protected static function needsAmountConversion(array $parameters)
+    {
+        $hasCurrency = isset($parameters['currency']);
+
+        $currencies = [
+            'BIF', 'DJF', 'JPY', 'KRW', 'PYG',
+            'VND', 'XAF', 'XPF', 'CLP', 'GNF',
+            'KMF', 'MGA', 'RWF', 'VUV', 'XOF',
+        ];
+
+        return ! $hasCurrency || ($hasCurrency && ! in_array($parameters['currency'], $currencies));
     }
 }
