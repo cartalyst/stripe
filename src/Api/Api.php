@@ -90,8 +90,8 @@ abstract class Api implements ApiInterface
      */
     public function _get($url = null, $parameters = [])
     {
-        if ($this->perPage) {
-            $parameters['limit'] = $this->perPage;
+        if ($perPage = $this->getPerPage()) {
+            $parameters['limit'] = $perPage;
         }
 
         return $this->execute('get', $url, $parameters);

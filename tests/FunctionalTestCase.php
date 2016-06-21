@@ -172,6 +172,34 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
         ]);
     }
 
+    protected function createInvoice($customerId, array $parameters = [])
+    {
+        return $this->stripe->invoices()->create($customerId, $parameters);
+    }
+
+    protected function createInvoiceItem($customerId, array $parameters = [])
+    {
+        return $this->stripe->invoiceItems()->create($customerId, array_merge([
+            'amount'      => '10.00',
+            'currency'    => 'usd',
+            'description' => 'One-time setup fee.'
+        ], $parameters));
+    }
+
+    protected function createAnInvoiceAndInvoiceItems($customerId, $amountOfInvoiceItems = 2)
+    {
+        for ($i=0; $i < $amountOfInvoiceItems; $i++) {
+            $this->createInvoiceItem($customerId);
+        }
+
+        return $this->createInvoice($customerId);
+    }
+
+    protected function getRandomEmail()
+    {
+        return rand().time().'-john@doe.com';
+    }
+
     // protected function createBankAccount()
     // {
     //     $accountId = $this->stripe->account()->details()['id'];
