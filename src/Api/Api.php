@@ -49,8 +49,6 @@ abstract class Api implements ApiInterface
     public function __construct(ConfigInterface $config)
     {
         $this->config = $config;
-
-        $this->config->base_url = $this->baseUrl();
     }
 
     /**
@@ -84,8 +82,8 @@ abstract class Api implements ApiInterface
      */
     public function _get($url = null, $parameters = [])
     {
-        if ($this->perPage) {
-            $parameters['limit'] = $this->perPage;
+        if ($perPage = $this->getPerPage()) {
+            $parameters['limit'] = $perPage;
         }
 
         return $this->execute('get', $url, $parameters)->json();
@@ -156,6 +154,10 @@ abstract class Api implements ApiInterface
      */
     protected function getClient()
     {
-        return new Client($this->config);
+        $config = $this->config;
+
+        $config->base_url = $this->baseUrl();
+
+        return new Client($config);
     }
 }
