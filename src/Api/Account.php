@@ -68,6 +68,29 @@ class Account extends Api
     }
 
     /**
+     * Deletes an existing account.
+     *
+     * @param  string  $accountId
+     * @return array
+     */
+    public function delete($accountId)
+    {
+        return $this->_delete("accounts/{$accountId}");
+    }
+
+    /**
+     * Rejects an existing account.
+     *
+     * @param  string  $accountId
+     * @param  string  $reason
+     * @return array
+     */
+    public function reject($accountId, $reason)
+    {
+        return $this->_post("accounts/{$accountId}/reject", compact('reason'));
+    }
+
+    /**
      * Returns a list of all the connected accounts.
      *
      * @param  array  $parameters
