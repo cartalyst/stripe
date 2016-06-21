@@ -20,72 +20,12 @@
 
 namespace Cartalyst\Stripe\Api;
 
-class Cards extends Api
+class Cards extends Sources
 {
     /**
-     * Creates a new card on the given customer.
+     * The source type.
      *
-     * @param  string  $customerId
-     * @param  string|array  $parameters
-     * @return array
+     * @var string
      */
-    public function create($customerId, $parameters = [])
-    {
-        if (is_array($parameters)) {
-            $parameters['object'] = 'card';
-        }
-
-        $parameters = [ 'source' => $parameters ];
-
-        return $this->_post("customers/{$customerId}/sources", $parameters);
-    }
-
-    /**
-     * Retrieves an existing card from the given customer.
-     *
-     * @param  string  $customerId
-     * @param  string  $cardId
-     * @return array
-     */
-    public function find($customerId, $cardId)
-    {
-        return $this->_get("customers/{$customerId}/sources/{$cardId}");
-    }
-
-    /**
-     * Updates an existing card from the given customer.
-     *
-     * @param  string  $customerId
-     * @param  string  $cardId
-     * @param  array  $parameters
-     * @return array
-     */
-    public function update($customerId, $cardId, array $parameters = [])
-    {
-        return $this->_post("customers/{$customerId}/sources/{$cardId}", $parameters);
-    }
-
-    /**
-     * Deletes an existing card from the given customer.
-     *
-     * @param  string  $customerId
-     * @param  string  $cardId
-     * @return array
-     */
-    public function delete($customerId, $cardId)
-    {
-        return $this->_delete("customers/{$customerId}/sources/{$cardId}");
-    }
-
-    /**
-     * Lists all cards from the given customer.
-     *
-     * @param  string  $customerId
-     * @param  array  $parameters
-     * @return array
-     */
-    public function all($customerId, array $parameters = [])
-    {
-        return $this->_get("customers/{$customerId}/sources", $parameters);
-    }
+    protected $sourceType = 'card';
 }
