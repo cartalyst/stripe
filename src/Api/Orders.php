@@ -30,7 +30,7 @@ class Orders extends Api
      */
     public function create(array $parameters = [])
     {
-        return $this->_post('orders', $parameters);
+        return $this->queryAggregator(true)->_post('orders', $parameters);
     }
 
     /**
@@ -66,6 +66,18 @@ class Orders extends Api
     public function pay($orderId, array $parameters = [])
     {
         return $this->_post("orders/{$orderId}/pay", $parameters);
+    }
+
+    /**
+     * Returns the given order.
+     *
+     * @param  string  $orderId
+     * @param  array  $items
+     * @return array
+     */
+    public function return($orderId, array $items = [])
+    {
+        return $this->queryAggregator(true)->_post("orders/{$orderId}/returns", compact('items'));
     }
 
     /**
