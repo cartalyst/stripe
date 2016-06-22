@@ -37,6 +37,13 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
     protected $config;
 
     /**
+     * The query aggregator status.
+     *
+     * @var bool
+     */
+    protected $queryAggregator = false;
+
+    /**
      * Constructor.
      *
      * @param  \Cartalyst\Stripe\ConfigInterface  $config
@@ -64,9 +71,22 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
 
             // Set the query aggregator
             $request->getQuery()->setAggregator(
-                Query::phpAggregator(false)
+                Query::phpAggregator($this->queryAggregator)
             );
         });
+    }
+
+    /**
+     * Sets the query aggregator status.
+     *
+     * @param  bool  $status
+     * @return $this
+     */
+    public function queryAggregator($status)
+    {
+        $this->queryAggregator = $status;
+
+        return $this;
     }
 
     /**

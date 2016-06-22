@@ -41,6 +41,13 @@ abstract class Api implements ApiInterface
     protected $perPage;
 
     /**
+     * The query aggregator status.
+     *
+     * @var bool
+     */
+    protected $queryAggregator = false;
+
+    /**
      * Constructor.
      *
      * @param  \Cartalyst\Stripe\ConfigInterface  $client
@@ -148,6 +155,19 @@ abstract class Api implements ApiInterface
     }
 
     /**
+     * Sets the query aggregator status.
+     *
+     * @param  bool  $status
+     * @return $this
+     */
+    public function queryAggregator($status = false)
+    {
+        $this->queryAggregator = $status;
+
+        return $this;
+    }
+
+    /**
      * Returns an Http client instance.
      *
      * @return \Cartalyst\Stripe\Http\Client
@@ -158,6 +178,8 @@ abstract class Api implements ApiInterface
 
         $config->base_url = $this->baseUrl();
 
-        return new Client($config);
+        return (new Client($config))
+            ->queryAggregator($this->queryAggregator)
+        ;
     }
 }
