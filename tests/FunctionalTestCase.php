@@ -81,7 +81,7 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
     {
         return $this->stripe->skus()->create([
             'product'   => $productId,
-            'price'     => 1500,
+            'price'     => 15.00,
             'currency'  => 'usd',
             'inventory' => [
                 'type'     => 'finite',
@@ -178,16 +178,11 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
         ], $parameters));
     }
 
-    protected function createOrder($skuId)
+    protected function createOrder(array $items)
     {
         return $this->stripe->orders()->create([
             'currency' => 'usd',
-            'items' => [
-                [
-                    'type'   => 'sku',
-                    'parent' => $skuId,
-                ],
-            ],
+            'items' => $items,
             'shipping' => [
                 'name'    => 'Jenny Rosen',
                 'address' => [
