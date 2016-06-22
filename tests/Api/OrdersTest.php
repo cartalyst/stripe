@@ -139,7 +139,7 @@ class OrdersTest extends FunctionalTestCase
 
         $this->stripe->refunds()->create($order['charge']);
 
-        $this->stripe->orders()->return($orderId, [
+        $this->stripe->orders()->returnItems($orderId, [
             [ 'type' => 'sku', 'parent' => $sku2['id'] ]
         ]);
 
@@ -178,7 +178,7 @@ class OrdersTest extends FunctionalTestCase
 
         $this->stripe->refunds()->create($order['charge']);
 
-        $this->stripe->orders()->return($orderId);
+        $this->stripe->orders()->returnItems($orderId);
 
         $order = $this->stripe->orders()->find($orderId);
 

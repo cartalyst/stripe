@@ -75,7 +75,7 @@ class Orders extends Api
      * @param  array  $items
      * @return array
      */
-    public function return($orderId, array $items = [])
+    public function returnItems($orderId, array $items = [])
     {
         return $this->queryAggregator(true)->_post("orders/{$orderId}/returns", compact('items'));
     }
