@@ -51,7 +51,7 @@ class Disputes extends Api
      * @param  string  $dispute
      * @return array
      */
-    public function update($dispute)
+    public function close($dispute)
     {
         return $this->_post("disputes/{$dispute}/close");
     }
