@@ -54,7 +54,7 @@ class OrderReturnsTest extends FunctionalTestCase
 
         $this->stripe->refunds()->create($order['charge']);
 
-        $return = $this->stripe->orders()->return($orderId);
+        $return = $this->stripe->orders()->returnItems($orderId);
 
         $orderReturn = $this->stripe->orderReturns()->find($return['id']);
 
