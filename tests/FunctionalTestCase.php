@@ -146,6 +146,7 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
             'cvc'       => 314,
             'exp_year'  => 2020,
             'number'    => '4242424242424242',
+            'currency'  => 'usd',
         ]);
     }
 
