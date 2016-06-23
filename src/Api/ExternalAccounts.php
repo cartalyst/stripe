@@ -39,37 +39,37 @@ class ExternalAccounts extends Api
      * Retrieves an existing bank account from a connected account.
      *
      * @param  string  $accountId
-     * @param  string  $bankAccountId
+     * @param  string  $externalAccountId
      * @return array
      */
-    public function find($accountId, $bankAccountId)
+    public function find($accountId, $externalAccountId)
     {
-        return $this->_get("accounts/{$accountId}/external_accounts/{$bankAccountId}");
+        return $this->_get("accounts/{$accountId}/external_accounts/{$externalAccountId}");
     }
 
     /**
      * Updates an existing bank account on a connected account.
      *
      * @param  string  $accountId
-     * @param  string  $bankAccountId
+     * @param  string  $externalAccountId
      * @param  array  $parameters
      * @return array
      */
-    public function update($accountId, $bankAccountId, array $parameters = [])
+    public function update($accountId, $externalAccountId, array $parameters = [])
     {
-        return $this->_post("accounts/{$accountId}/external_accounts/{$bankAccountId}", $parameters);
+        return $this->_post("accounts/{$accountId}/external_accounts/{$externalAccountId}", $parameters);
     }
 
     /**
      * Deletes an existing bank account from a connected account.
      *
      * @param  string  $accountId
-     * @param  string  $bankAccountId
+     * @param  string  $externalAccountId
      * @return array
      */
-    public function delete($accountId, $bankAccountId)
+    public function delete($accountId, $externalAccountId)
     {
-        return $this->_delete("accounts/{$accountId}/external_accounts/{$bankAccountId}");
+        return $this->_delete("accounts/{$accountId}/external_accounts/{$externalAccountId}");
     }
 
     /**

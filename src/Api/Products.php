@@ -57,6 +57,17 @@ class Products extends Api
     }
 
     /**
+     * Deletes an existing product.
+     *
+     * @param  string  $productId
+     * @return array
+     */
+    public function delete($productId)
+    {
+        return $this->_delete("products/{$productId}");
+    }
+
+    /**
      * Returns a list of all the products.
      *
      * @param  array  $parameters

@@ -69,6 +69,18 @@ class Orders extends Api
     }
 
     /**
+     * Returns the given order.
+     *
+     * @param  string  $orderId
+     * @param  array  $items
+     * @return array
+     */
+    public function returnItems($orderId, array $items = [])
+    {
+        return $this->_post("orders/{$orderId}/returns", compact('items'));
+    }
+
+    /**
      * Returns a list of all the orders.
      *
      * @param  array  $parameters

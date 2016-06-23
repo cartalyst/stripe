@@ -65,6 +65,20 @@ class ProductsTest extends FunctionalTestCase
     }
 
     /** @test */
+    public function it_can_delete_an_existing_product()
+    {
+        $product = $this->createProduct();
+
+        $product = $this->stripe->products()->update($product['id'], [
+            'description' => 'Comfortable gray cotton t-shirt'
+        ]);
+
+        $product = $this->stripe->products()->delete($product['id']);
+
+        $this->assertTrue($product['deleted']);
+    }
+
+    /** @test */
     public function it_can_retrieve_all_products()
     {
         $this->createProduct();
