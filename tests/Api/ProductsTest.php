@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.0.4
+ * @version    2.0.5
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -62,6 +62,20 @@ class ProductsTest extends FunctionalTestCase
 
         $this->assertSame('T-shirt', $product['name']);
         $this->assertSame('Comfortable gray cotton t-shirt', $product['description']);
+    }
+
+    /** @test */
+    public function it_can_delete_an_existing_product()
+    {
+        $product = $this->createProduct();
+
+        $product = $this->stripe->products()->update($product['id'], [
+            'description' => 'Comfortable gray cotton t-shirt'
+        ]);
+
+        $product = $this->stripe->products()->delete($product['id']);
+
+        $this->assertTrue($product['deleted']);
     }
 
     /** @test */

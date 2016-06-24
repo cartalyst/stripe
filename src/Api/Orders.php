@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.0.4
+ * @version    2.0.5
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -66,6 +66,18 @@ class Orders extends Api
     public function pay($orderId, array $parameters = [])
     {
         return $this->_post("orders/{$orderId}/pay", $parameters);
+    }
+
+    /**
+     * Returns the given order.
+     *
+     * @param  string  $orderId
+     * @param  array  $items
+     * @return array
+     */
+    public function returnItems($orderId, array $items = [])
+    {
+        return $this->_post("orders/{$orderId}/returns", compact('items'));
     }
 
     /**

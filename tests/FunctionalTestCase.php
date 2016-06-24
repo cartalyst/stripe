@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.0.4
+ * @version    2.0.5
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -81,7 +81,7 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
     {
         return $this->stripe->skus()->create([
             'product'   => $productId,
-            'price'     => 1500,
+            'price'     => 15.00,
             'currency'  => 'usd',
             'inventory' => [
                 'type'     => 'finite',
@@ -146,6 +146,7 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
             'cvc'       => 314,
             'exp_year'  => 2020,
             'number'    => '4242424242424242',
+            'currency'  => 'usd',
         ]);
     }
 
@@ -178,16 +179,11 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
         ], $parameters));
     }
 
-    protected function createOrder($skuId)
+    protected function createOrder(array $items)
     {
         return $this->stripe->orders()->create([
             'currency' => 'usd',
-            'items' => [
-                [
-                    'type'   => 'sku',
-                    'parent' => $skuId,
-                ],
-            ],
+            'items' => $items,
             'shipping' => [
                 'name'    => 'Jenny Rosen',
                 'address' => [

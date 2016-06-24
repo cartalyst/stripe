@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    1.0.9
+ * @version    2.0.5
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -38,6 +38,7 @@ class InvoicesTest extends FunctionalTestCase
 
         $invoice = $this->createInvoice($customerId);
 
+        $this->assertFalse($invoice['paid']);
         $this->assertSame(2000, $invoice['amount_due']);
         $this->assertCount(2, $invoice['lines']['data']);
     }
@@ -60,6 +61,27 @@ class InvoicesTest extends FunctionalTestCase
 
         $this->assertSame(2000, $invoice['amount_due']);
         $this->assertCount(2, $invoice['lines']['data']);
+    }
+
+    /** @test */
+    public function it_can_update_an_invoice()
+    {
+        $customer = $this->createCustomer();
+
+        $customerId = $customer['id'];
+
+        $card = $this->createCardThroughToken($customerId);
+
+        $this->createInvoiceItem($customerId);
+        $this->createInvoiceItem($customerId);
+
+        $invoice = $this->createInvoice($customerId);
+
+        $invoice = $this->stripe->invoices()->update($invoice['id'], [
+            'description' => 'Pay for goods.',
+        ]);
+
+        $this->assertSame('Pay for goods.', $invoice['description']);
     }
 
     /** @test */
@@ -101,7 +123,22 @@ class InvoicesTest extends FunctionalTestCase
     /** @test */
     public function it_can_pay_an_invoice()
     {
-        //
+        $customer = $this->createCustomer();
+
+        $customerId = $customer['id'];
+
+        $card = $this->createCardThroughToken($customerId);
+
+        $this->createInvoiceItem($customerId);
+        $this->createInvoiceItem($customerId);
+
+        $invoice = $this->createInvoice($customerId);
+
+        $this->assertFalse($invoice['paid']);
+
+        $invoice = $this->stripe->invoices()->pay($invoice['id']);
+
+        $this->assertTrue($invoice['paid']);
     }
 
     /** @test */

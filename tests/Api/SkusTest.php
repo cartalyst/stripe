@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.0.4
+ * @version    2.0.5
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -31,7 +31,7 @@ class SkusTest extends FunctionalTestCase
 
         $sku = $this->createSku($product['id']);
 
-        $this->assertSame(150000, $sku['price']);
+        $this->assertSame(1500, $sku['price']);
     }
 
     /** @test */
@@ -43,7 +43,7 @@ class SkusTest extends FunctionalTestCase
 
         $sku = $this->stripe->skus()->find($sku['id']);
 
-        $this->assertSame(150000, $sku['price']);
+        $this->assertSame(1500, $sku['price']);
     }
 
     /**
@@ -66,8 +66,20 @@ class SkusTest extends FunctionalTestCase
             'metadata' => [ 'description' => 'Comfortable gray cotton t-shirt' ]
         ]);
 
-        $this->assertSame(150000, $sku['price']);
+        $this->assertSame(1500, $sku['price']);
         $this->assertSame('Comfortable gray cotton t-shirt', $sku['metadata']['description']);
+    }
+
+    /** @test */
+    public function it_can_delete_an_existing_sku()
+    {
+        $product = $this->createProduct();
+
+        $sku = $this->createSku($product['id']);
+
+        $sku = $this->stripe->skus()->delete($sku['id']);
+
+        $this->assertTrue($sku['deleted']);
     }
 
     /** @test */

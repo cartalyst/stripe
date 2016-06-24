@@ -20,27 +20,27 @@
 
 namespace Cartalyst\Stripe\Api;
 
-class Tokens extends Api
+class OrderReturns extends Api
 {
     /**
-     * Creates a new token.
+     * Retrieves an existing order return.
+     *
+     * @param  string  $orderReturnId
+     * @return array
+     */
+    public function find($orderReturnId)
+    {
+        return $this->_get("order_returns/{$orderReturnId}");
+    }
+
+    /**
+     * Returns a list of all the order returns.
      *
      * @param  array  $parameters
      * @return array
      */
-    public function create(array $parameters)
+    public function all(array $parameters = [])
     {
-        return $this->_post('tokens', $parameters);
-    }
-
-    /**
-     * Retrieves an existing token.
-     *
-     * @param  string  $tokenId
-     * @return array
-     */
-    public function find($tokenId)
-    {
-        return $this->_get("tokens/{$tokenId}");
+        return $this->_get('order_returns', $parameters);
     }
 }

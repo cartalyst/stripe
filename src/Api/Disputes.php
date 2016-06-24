@@ -20,50 +20,50 @@
 
 namespace Cartalyst\Stripe\Api;
 
-class Transfers extends Api
+class Disputes extends Api
 {
     /**
-     * Creates a new transfer.
+     * Retrieves an existing dispute.
      *
+     * @param  string  $disputeId
+     * @return array
+     */
+    public function find($disputeId)
+    {
+        return $this->_get("disputes/{$disputeId}");
+    }
+
+    /**
+     * Updates an existing dispute.
+     *
+     * @param  string  $dispute
      * @param  array  $parameters
      * @return array
      */
-    public function create(array $parameters = [])
+    public function update($dispute, array $parameters = [])
     {
-        return $this->_post('transfers', $parameters);
+        return $this->_post("disputes/{$dispute}", $parameters);
     }
 
     /**
-     * Retrieves an existing transfer.
+     * Closes an existing dispute.
      *
-     * @param  string  $transferId
+     * @param  string  $dispute
      * @return array
      */
-    public function find($transferId)
+    public function close($dispute)
     {
-        return $this->_get("transfers/{$transferId}");
+        return $this->_post("disputes/{$dispute}/close");
     }
 
     /**
-     * Updates an existing transfer.
-     *
-     * @param  string  $transferId
-     * @param  array  $parameters
-     * @return array
-     */
-    public function update($transferId, array $parameters = [])
-    {
-        return $this->_post("transfers/{$transferId}", $parameters);
-    }
-
-    /**
-     * Lists all transfers.
+     * Lists all disputes.
      *
      * @param  array  $parameters
      * @return array
      */
     public function all(array $parameters = [])
     {
-        return $this->_get('transfers', $parameters);
+        return $this->_get('disputes', $parameters);
     }
 }
