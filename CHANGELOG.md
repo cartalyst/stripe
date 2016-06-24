@@ -11,6 +11,22 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.0.10 - 2016-06-24
+
+`ADDED`
+
+- Method to verify a connected account.
+- Method to verify a bank account.
+- Various missing endpoints.
+
+`FIXED`
+
+- Create method on the File Uploads endpoint.
+
+`UPDATED`
+
+- Test coverage.
+
 ### v1.0.9 - 2016-02-26
 
 `ADDED`
