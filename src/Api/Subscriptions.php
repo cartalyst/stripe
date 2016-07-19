@@ -129,6 +129,8 @@ class Subscriptions extends Api
      */
     public function all($customerId, array $parameters = [])
     {
-        return $this->_get("customers/{$customerId}/subscriptions", $parameters);
+        return $this->_get('subscriptions', array_merge($parameters, [
+            'customer' => $customerId
+        ]));
     }
 }
