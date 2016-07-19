@@ -85,6 +85,12 @@ class Pager
 
             unset($parameters[0]);
 
+            if (isset($parameters[1])) {
+                $parameters = $parameters[1];
+
+                unset($parameters[1]);
+            }
+
             $parameters = [ $id, $parameters ];
         } else {
             $parameters = [ $parameters ];
