@@ -11,6 +11,18 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.0.6 - 2016-07-19
+
+`UPDATED`
+
+- Stripe API version to the latest.
+
+`FIXED`
+
+- Iterator not working as expected when passing parameters.
+- Issue where retrieving all subscriptions were not working as expected.
+- Fix issue with idempotency key.
+
 ### v2.0.5 - 2016-06-24
 
 `ADDED`
