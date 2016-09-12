@@ -81,7 +81,7 @@
     - Can retrieve an application fee refund.
     - Can update an application fee refund.
     - Can retrieve all application fee refunds.
-- Acount
+- Account
     - Can retrieve account details.
 - Balance
     - Can retrieve balance.
