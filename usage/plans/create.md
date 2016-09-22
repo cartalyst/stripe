@@ -91,7 +91,7 @@ You can create plans easily via the [plan management](https://dashboard.stripe.c
             <td>A set of key/value pairs that you can attach to a transfer object.</td>
         </tr>
         <tr>
-            <td>statement_description</td>
+            <td>statement_descriptor</td>
             <td>false</td>
             <td>string</td>
             <td>null</td>
@@ -109,7 +109,7 @@ $plan = $stripe->plans()->create([
     'amount'                => 30.00,
     'currency'              => 'USD',
     'interval'              => 'month',
-    'statement_description' => 'Monthly Subscription to Foo Bar Inc.',
+    'statement_descriptor' => 'Monthly Subscription to Foo Bar Inc.',
 ]);
 
 echo $plan['id'];

@@ -56,7 +56,7 @@ Updates the name of a plan. Other plan details (price, interval, etc.) are, by d
             <td>A set of key/value pairs that you can attach to a transfer object.</td>
         </tr>
         <tr>
-            <td>statement_description</td>
+            <td>statement_descriptor</td>
             <td>false</td>
             <td>string</td>
             <td>null</td>
