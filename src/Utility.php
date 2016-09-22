@@ -56,9 +56,9 @@ class Utility
         $currencies = [
             'BIF', 'DJF', 'JPY', 'KRW', 'PYG',
             'VND', 'XAF', 'XPF', 'CLP', 'GNF',
-            'KMF', 'MGA', 'RWF', 'VUV', 'XOF', 'USD',
+            'KMF', 'MGA', 'RWF', 'VUV', 'XOF',
         ];
 
-        return $hasCurrency && ! in_array($parameters['currency'], $currencies);
+        return !$hasCurrency && ! in_array($parameters['currency'], $currencies);
     }
 }
