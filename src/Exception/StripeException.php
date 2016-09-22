@@ -44,6 +44,13 @@ class StripeException extends \Exception
     protected $missingParameter;
 
     /**
+     * The raw output returned by Stripe in case of exception.
+     *
+     * @var string
+     */
+    protected $rawOutput;
+
+    /**
      * Returns the error type returned by Stripe.
      *
      * @return string
@@ -108,6 +115,29 @@ class StripeException extends \Exception
     public function setMissingParameter($missingParameter)
     {
         $this->missingParameter = $missingParameter;
+
+        return $this;
+    }
+
+    /**
+     * Returns raw output returned by Stripe in case of exception.
+     *
+     * @return string
+     */
+    public function getRawOutput()
+    {
+        return $this->rawOutput;
+    }
+
+    /**
+     * Sets the raw output parameter returned by Stripe in case of exception.
+     *
+     * @param  string  $rawOutput
+     * @return $this
+     */
+    public function setRawOutput($rawOutput)
+    {
+        $this->rawOutput = $rawOutput;
 
         return $this;
     }
