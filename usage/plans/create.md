@@ -104,11 +104,11 @@ You can create plans easily via the [plan management](https://dashboard.stripe.c
 
 ```php
 $plan = $stripe->plans()->create([
-    'id'                    => 'monthly',
-    'name'                  => 'Monthly (30$)',
-    'amount'                => 30.00,
-    'currency'              => 'USD',
-    'interval'              => 'month',
+    'id'                   => 'monthly',
+    'name'                 => 'Monthly (30$)',
+    'amount'               => 30.00,
+    'currency'             => 'USD',
+    'interval'             => 'month',
     'statement_descriptor' => 'Monthly Subscription to Foo Bar Inc.',
 ]);
 
