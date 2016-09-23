@@ -11,6 +11,16 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.0.7 - 2016-09-23
+
+`ADDED`
+
+- Method to disable the amount converter.
+
+`UPDATED`
+
+- Stripe Exception to retrieve the error response that Stripe returns.
+
 ### v2.0.6 - 2016-07-19
 
 `UPDATED`
