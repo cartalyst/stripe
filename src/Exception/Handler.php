@@ -76,7 +76,9 @@ class Handler
 
         $statusCode = $response->getStatusCode();
 
-        $error = json_decode($response->getBody(true), true)['error'];
+        $rawOutput = json_decode($response->getBody(true), true);
+
+        $error = isset($rawOutput['error']) ? $rawOutput['error'] : [];
 
         $errorCode = isset($error['code']) ? $error['code'] : null;
 
@@ -87,7 +89,7 @@ class Handler
         $missingParameter = isset($error['param']) ? $error['param'] : null;
 
         $this->handleException(
-            $message, $statusCode, $errorType, $errorCode, $missingParameter
+            $message, $statusCode, $errorType, $errorCode, $missingParameter, $rawOutput
         );
     }
 
@@ -102,7 +104,7 @@ class Handler
      * @return void
      * @throws \Cartalyst\Stripe\Exception\StripeException
      */
-    protected function handleException($message, $statusCode, $errorType, $errorCode, $missingParameter)
+    protected function handleException($message, $statusCode, $errorType, $errorCode, $missingParameter, $rawOutput)
     {
         if ($statusCode === 400 && $errorCode === 'rate_limit') {
             $class = 'ApiLimitExceeded';
@@ -123,6 +125,7 @@ class Handler
         $instance->setErrorCode($errorCode);
         $instance->setErrorType($errorType);
         $instance->setMissingParameter($missingParameter);
+        $instance->setRawOutput($rawOutput);
 
         throw $instance;
     }
