@@ -181,6 +181,38 @@ class Stripe
     }
 
     /**
+     * Disables the amount converter.
+     *
+     * @return void
+     */
+    public static function disableAmountConverter()
+    {
+        static::setAmountConverter(null);
+    }
+
+    /**
+     * Returns the default amount converter.
+     *
+     * @return string
+     */
+    public static function getDefaultAmountConverter()
+    {
+        return '\\Cartalyst\\Stripe\\AmountConverter::convert';
+    }
+
+    /**
+     * Sets the default amount converter;
+     *
+     * @return void
+     */
+    public static function setDefaultAmountConverter()
+    {
+        static::setAmountConverter(
+            static::getDefaultAmountConverter()
+        );
+    }
+
+    /**
      * Dynamically handle missing methods.
      *
      * @param  string  $method

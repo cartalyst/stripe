@@ -20,6 +20,7 @@
 
 namespace Cartalyst\Stripe\Tests;
 
+use Cartalyst\Stripe\Stripe;
 use Cartalyst\Stripe\Utility;
 use PHPUnit_Framework_TestCase;
 
@@ -51,5 +52,15 @@ class UtilityTest extends PHPUnit_Framework_TestCase
         $this->assertSame('price=1200&currency=USD', Utility::prepareParameters([ 'price' => 12, 'currency' => 'USD' ]));
         $this->assertSame('price=500&currency=CLP', Utility::prepareParameters([ 'price' => 500, 'currency' => 'CLP' ]));
         $this->assertSame('price=50000&currency=SEK', Utility::prepareParameters([ 'price' => 500, 'currency' => 'SEK' ]));
+
+        Stripe::disableAmountConverter();
+
+        $this->assertSame('amount=12', Utility::prepareParameters([ 'amount' => 12 ]));
+        $this->assertSame('amount=1200', Utility::prepareParameters([ 'amount' => 1200 ]));
+
+        Stripe::setDefaultAmountConverter();
+
+        $this->assertSame('price=012', Utility::prepareParameters([ 'price' => 0.12 ]));
+        $this->assertSame('price=1200', Utility::prepareParameters([ 'price' => 12.00 ]));
     }
 }

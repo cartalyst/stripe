@@ -30,7 +30,7 @@ class AmountConverter
      */
     public static function convert($number)
     {
-        $number = preg_replace('/\,/i', '' ,$number);
+        $number = preg_replace('/\,/i', '', $number);
 
         $number = preg_replace('/([^0-9\.\-])/i', '', $number);
 

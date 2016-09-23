@@ -33,11 +33,13 @@ class Utility
         $toConvert = [ 'amount', 'price' ];
 
         if (self::needsAmountConversion($parameters)) {
-            foreach ($toConvert as $to) {
-                if (isset($parameters[$to])) {
-                    $parameters[$to] = forward_static_call_array(
-                        Stripe::getAmountConverter(), [ $parameters[$to] ]
-                    );
+            if ($converter = Stripe::getAmountConverter()) {
+                foreach ($toConvert as $to) {
+                    if (isset($parameters[$to])) {
+                        $parameters[$to] = forward_static_call_array(
+                            $converter, [ $parameters[$to] ]
+                        );
+                    }
                 }
             }
         }
@@ -59,6 +61,6 @@ class Utility
             'KMF', 'MGA', 'RWF', 'VUV', 'XOF',
         ];
 
-        return !$hasCurrency || ($hasCurrency && ! in_array($parameters['currency'], $currencies));
+        return ! $hasCurrency || ($hasCurrency && ! in_array($parameters['currency'], $currencies));
     }
 }
