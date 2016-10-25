@@ -169,4 +169,22 @@ class AccountTest extends FunctionalTestCase
 
         $this->stripe->accountIterator();
     }
+
+    /** @test */
+    public function it_can_use_an_account_to_perform_actions()
+    {
+        $email = $this->getRandomEmail();
+
+        $accountId = $this->stripe->account()->create([
+            'managed' => true, 'email' => $email,
+        ])['id'];
+
+        $charges = $this->stripe->accountId($accountId)->charges()->all();
+
+        $this->assertEmpty($charges['data']);
+
+        $charges = $this->stripe->accountId(null)->charges()->all();
+
+        $this->assertNotEmpty($charges['data']);
+    }
 }

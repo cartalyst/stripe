@@ -160,6 +160,19 @@ class Stripe
     }
 
     /**
+     * Sets the account id.
+     *
+     * @param  string  $accountId
+     * @return $this
+     */
+    public function accountId($accountId)
+    {
+        $this->config->setAccountId($accountId);
+
+        return $this;
+    }
+
+    /**
      * Returns the amount converter class and method name.
      *
      * @return string

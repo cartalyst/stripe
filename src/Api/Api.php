@@ -189,6 +189,8 @@ abstract class Api implements ApiInterface
                 $request = $request->withHeader('Idempotency-Key', $idempotencykey);
             }
 
+            $request = $request->withHeader('Stripe-Account', $config->getAccountId());
+
             $request = $request->withHeader('Stripe-Version', $config->getApiVersion());
 
             $request = $request->withHeader('User-Agent', 'Cartalyst-Stripe/'.$config->getVersion());

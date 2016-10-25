@@ -51,6 +51,13 @@ class Config implements ConfigInterface
     protected $idempotencyKey;
 
     /**
+     * The managed account id.
+     *
+     * @var string
+     */
+    protected $accountId;
+
+    /**
      * Constructor.
      *
      * @param  string  $version
@@ -140,6 +147,29 @@ class Config implements ConfigInterface
     public function setIdempotencyKey($idempotencyKey)
     {
         $this->idempotencyKey = $idempotencyKey;
+
+        return $this;
+    }
+
+    /**
+     * Returns the managed account id.
+     *
+     * @return string
+     */
+    public function getAccountId()
+    {
+        return $this->accountId;
+    }
+
+    /**
+     * Sets the managed account id.
+     *
+     * @param  string  $accountId
+     * @return $this
+     */
+    public function setAccountId($accountId)
+    {
+        $this->accountId = $accountId;
 
         return $this;
     }
