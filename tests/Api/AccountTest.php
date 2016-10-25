@@ -179,12 +179,12 @@ class AccountTest extends FunctionalTestCase
             'managed' => true, 'email' => $email,
         ])['id'];
 
-        $charges = $this->stripe->accountId($accountId)->charges()->all();
+        $account = $this->stripe->accountId($accountId)->account()->details();
 
-        $this->assertEmpty($charges['data']);
+        $this->assertSame($accountId, $account['id']);
 
-        $charges = $this->stripe->accountId(null)->charges()->all();
+        $account = $this->stripe->accountId(null)->account()->details();
 
-        $this->assertNotEmpty($charges['data']);
+        $this->assertNotSame($accountId, $account['id']);
     }
 }
