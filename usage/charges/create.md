@@ -39,7 +39,7 @@ To charge a credit card, you need to create a new charge object. If your API key
             <td>true</td>
             <td>number</td>
             <td>null</td>
-            <td>A positive amount representing how much to charge the card.</td>
+            <td>A positive amount representing how much to charge the card. Note that this should be a dollar amount, and will automatically be converted in to cents for you before being transmitted to Stripe.</td>
         </tr>
         <tr>
             <td>currency</td>
