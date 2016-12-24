@@ -25,52 +25,49 @@ class Refunds extends Api
     /**
      * Creates a new refund for the given charge.
      *
-     * @param  string  $chargeId
-     * @param  int  $amount
+     * @param  string  $charge
+     * @param  int|null  $amount
      * @param  array  $parameters
      * @return array
      */
-    public function create($chargeId, $amount = null, array $parameters = [])
+    public function create($charge, $amount = null, array $parameters = [])
     {
-        $parameters = array_merge($parameters, array_filter(compact('amount')));
+        $parameters = array_merge($parameters, array_filter(compact('amount', 'charge')));
 
         return $this->_post("charges/{$chargeId}/refunds", $parameters);
     }
 
     /**
-     * Retrieves an existing refund from the given charge.
+     * Retrieves an existing refund.
      *
-     * @param  string  $chargeId
      * @param  string  $refundId
      * @return array
      */
-    public function find($chargeId, $refundId)
+    public function find($refundId)
     {
-        return $this->_get("charges/{$chargeId}/refunds/{$refundId}");
+        return $this->_get("refunds/{$refundId}");
     }
 
     /**
-     * Updates an existing refund on the given charge.
+     * Updates an existing refund.
      *
-     * @param  string  $chargeId
      * @param  string  $refundId
      * @param  array  $parameters
      * @return array
      */
-    public function update($chargeId, $refundId, array $parameters = [])
+    public function update($refundId, array $parameters = [])
     {
-        return $this->_post("charges/{$chargeId}/refunds/{$refundId}", $parameters);
+        return $this->_post("refunds/{$refundId}", $parameters);
     }
 
     /**
-     * Lists all refunds for the given charge.
+     * Lists all refunds.
      *
-     * @param  string  $chargeId
      * @param  array  $parameters
      * @return array
      */
-    public function all($chargeId, array $parameters = [])
+    public function all(array $parameters = [])
     {
-        return $this->_get("charges/{$chargeId}/refunds", $parameters);
+        return $this->_get("refunds", $parameters);
     }
 }
