@@ -84,7 +84,7 @@ To charge a credit card, you need to create a new charge object. If your API key
             <td>Whether or not to immediately capture the charge.</td>
         </tr>
         <tr>
-            <td>statement_description</td>
+            <td>statement_descriptor</td>
             <td>false</td>
             <td>string</td>
             <td>null</td>
