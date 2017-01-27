@@ -11,10 +11,10 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.0.5
+ * @version    2.0.8
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011-2016, Cartalyst LLC
+ * @copyright  (c) 2011-2017, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -42,6 +42,13 @@ class StripeException extends \Exception
      * @var string
      */
     protected $missingParameter;
+
+    /**
+     * The raw output returned by Stripe in case of exception.
+     *
+     * @var string
+     */
+    protected $rawOutput;
 
     /**
      * Returns the error type returned by Stripe.
@@ -108,6 +115,29 @@ class StripeException extends \Exception
     public function setMissingParameter($missingParameter)
     {
         $this->missingParameter = $missingParameter;
+
+        return $this;
+    }
+
+    /**
+     * Returns raw output returned by Stripe in case of exception.
+     *
+     * @return string
+     */
+    public function getRawOutput()
+    {
+        return $this->rawOutput;
+    }
+
+    /**
+     * Sets the raw output parameter returned by Stripe in case of exception.
+     *
+     * @param  string  $rawOutput
+     * @return $this
+     */
+    public function setRawOutput($rawOutput)
+    {
+        $this->rawOutput = $rawOutput;
 
         return $this;
     }

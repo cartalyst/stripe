@@ -11,10 +11,10 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.0.5
+ * @version    2.0.8
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011-2016, Cartalyst LLC
+ * @copyright  (c) 2011-2017, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -33,11 +33,13 @@ class Utility
         $toConvert = [ 'amount', 'price' ];
 
         if (self::needsAmountConversion($parameters)) {
-            foreach ($toConvert as $to) {
-                if (isset($parameters[$to])) {
-                    $parameters[$to] = forward_static_call_array(
-                        Stripe::getAmountConverter(), [ $parameters[$to] ]
-                    );
+            if ($converter = Stripe::getAmountConverter()) {
+                foreach ($toConvert as $to) {
+                    if (isset($parameters[$to])) {
+                        $parameters[$to] = forward_static_call_array(
+                            $converter, [ $parameters[$to] ]
+                        );
+                    }
                 }
             }
         }

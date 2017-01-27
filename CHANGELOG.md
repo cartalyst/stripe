@@ -11,6 +11,34 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.0.8 - 2017-01-27
+
+`ADDED`
+
+- Method to set the connected account.
+
+### v2.0.7 - 2016-09-23
+
+`ADDED`
+
+- Method to disable the amount converter.
+
+`UPDATED`
+
+- Stripe Exception to retrieve the error response that Stripe returns.
+
+### v2.0.6 - 2016-07-19
+
+`UPDATED`
+
+- Stripe API version to the latest.
+
+`FIXED`
+
+- Iterator not working as expected when passing parameters.
+- Issue where retrieving all subscriptions were not working as expected.
+- Fix issue with idempotency key.
+
 ### v2.0.5 - 2016-06-24
 
 `ADDED`

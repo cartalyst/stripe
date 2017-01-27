@@ -11,10 +11,10 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.0.5
+ * @version    2.0.8
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011-2016, Cartalyst LLC
+ * @copyright  (c) 2011-2017, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -27,7 +27,7 @@ class Stripe
      *
      * @var string
      */
-    const VERSION = '2.0.2';
+    const VERSION = '2.0.8';
 
     /**
      * The Config repository instance.
@@ -160,6 +160,19 @@ class Stripe
     }
 
     /**
+     * Sets the account id.
+     *
+     * @param  string  $accountId
+     * @return $this
+     */
+    public function accountId($accountId)
+    {
+        $this->config->setAccountId($accountId);
+
+        return $this;
+    }
+
+    /**
      * Returns the amount converter class and method name.
      *
      * @return string
@@ -178,6 +191,38 @@ class Stripe
     public static function setAmountConverter($amountConverter)
     {
         static::$amountConverter = $amountConverter;
+    }
+
+    /**
+     * Disables the amount converter.
+     *
+     * @return void
+     */
+    public static function disableAmountConverter()
+    {
+        static::setAmountConverter(null);
+    }
+
+    /**
+     * Returns the default amount converter.
+     *
+     * @return string
+     */
+    public static function getDefaultAmountConverter()
+    {
+        return '\\Cartalyst\\Stripe\\AmountConverter::convert';
+    }
+
+    /**
+     * Sets the default amount converter;
+     *
+     * @return void
+     */
+    public static function setDefaultAmountConverter()
+    {
+        static::setAmountConverter(
+            static::getDefaultAmountConverter()
+        );
     }
 
     /**

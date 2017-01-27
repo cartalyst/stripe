@@ -11,10 +11,10 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.0.5
+ * @version    2.0.8
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011-2016, Cartalyst LLC
+ * @copyright  (c) 2011-2017, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -162,11 +162,44 @@ class SubscriptionsTest extends FunctionalTestCase
     {
         $customer = $this->createCustomer();
 
-        $subscription = $this->createSubscription($customer['id']);
+        $this->createSubscription($customer['id']);
+        $this->createSubscription($customer['id']);
 
-        $subscriptions = $this->stripe->subscriptions()->all($customer['id']);
+        $subscriptions = $this->stripe->subscriptions()->all($customer['id'], [ 'status' => 'all' ]);
 
         $this->assertNotEmpty($subscriptions['data']);
+        $this->assertCount(2, $subscriptions['data']);
         $this->assertInternalType('array', $subscriptions['data']);
+    }
+
+    /** @test */
+    public function it_can_retrieve_all_subscriptions_using_the_iterator()
+    {
+        $customer = $this->createCustomer();
+
+        $this->createSubscription($customer['id']);
+        $this->createSubscription($customer['id']);
+
+        $subscription = $this->createSubscription($customer['id']);
+
+        $this->stripe->subscriptions()->cancel($customer['id'], $subscription['id']);
+
+        $subscriptions = $this->stripe->subscriptionsIterator($customer['id']);
+
+        $this->assertNotEmpty($subscriptions);
+        $this->assertCount(2, $subscriptions);
+        $this->assertInternalType('array', $subscriptions);
+
+        $subscriptions = $this->stripe->subscriptionsIterator($customer['id'], [ 'status' => 'canceled' ]);
+
+        $this->assertNotEmpty($subscriptions);
+        $this->assertCount(1, $subscriptions);
+        $this->assertInternalType('array', $subscriptions);
+
+        $subscriptions = $this->stripe->subscriptionsIterator($customer['id'], [ 'status' => 'all' ]);
+
+        $this->assertNotEmpty($subscriptions);
+        $this->assertCount(3, $subscriptions);
+        $this->assertInternalType('array', $subscriptions);
     }
 }

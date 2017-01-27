@@ -11,10 +11,10 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.0.5
+ * @version    2.0.8
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011-2016, Cartalyst LLC
+ * @copyright  (c) 2011-2017, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -88,19 +88,16 @@ class AccountTest extends FunctionalTestCase
 
     /**
      * @test
-     * @expectedException \Cartalyst\Stripe\Exception\UnauthorizedException
      */
     public function it_can_delete_an_account()
     {
         $email = $this->getRandomEmail();
 
         $account = $this->stripe->account()->create([
-            'managed' => true, 'email' => $email,
+            'email' => $email, 'managed' => true,
         ]);
 
         $this->stripe->account()->delete($account['id']);
-
-        $this->stripe->account()->find($account['id']);
     }
 
     /** @test */
@@ -168,5 +165,23 @@ class AccountTest extends FunctionalTestCase
         }
 
         $this->stripe->accountIterator();
+    }
+
+    /** @test */
+    public function it_can_use_an_account_to_perform_actions()
+    {
+        $email = $this->getRandomEmail();
+
+        $accountId = $this->stripe->account()->create([
+            'managed' => true, 'email' => $email,
+        ])['id'];
+
+        $account = $this->stripe->accountId($accountId)->account()->details();
+
+        $this->assertSame($accountId, $account['id']);
+
+        $account = $this->stripe->accountId(null)->account()->details();
+
+        $this->assertNotSame($accountId, $account['id']);
     }
 }
