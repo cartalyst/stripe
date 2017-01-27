@@ -88,19 +88,16 @@ class AccountTest extends FunctionalTestCase
 
     /**
      * @test
-     * @expectedException \Cartalyst\Stripe\Exception\UnauthorizedException
      */
     public function it_can_delete_an_account()
     {
         $email = $this->getRandomEmail();
 
         $account = $this->stripe->account()->create([
-            'managed' => true, 'email' => $email,
+            'email' => $email, 'managed' => true,
         ]);
 
         $this->stripe->account()->delete($account['id']);
-
-        $this->stripe->account()->find($account['id']);
     }
 
     /** @test */
