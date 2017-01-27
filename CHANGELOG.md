@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.0.8 - 2017-01-27
+
+`ADDED`
+
+- Method to set the connected account.
+
 ### v2.0.7 - 2016-09-23
 
 `ADDED`
