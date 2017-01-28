@@ -15,13 +15,13 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=5.6",
         "cartalyst/collections": "~1.0",
         "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
         "mockery/mockery": "~0.9",
-        "phpunit/phpunit": "~4.8"
+        "phpunit/phpunit": "~5.7"
     },
     "autoload": {
         "psr-4": { "Cartalyst\\Stripe\\": "src/" }
@@ -32,7 +32,7 @@
     "extra": {
         "component": "package",
         "branch-alias": {
-            "dev-master": "2.1.x-dev"
+            "dev-master": "3.0.x-dev"
         }
     },
     "minimum-stability": "stable"

@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.0.8
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2017, Cartalyst LLC
@@ -25,52 +25,49 @@ class Refunds extends Api
     /**
      * Creates a new refund for the given charge.
      *
-     * @param  string  $chargeId
+     * @param  string  $charge
      * @param  int  $amount
      * @param  array  $parameters
      * @return array
      */
-    public function create($chargeId, $amount = null, array $parameters = [])
+    public function create($charge, $amount = null, array $parameters = [])
     {
-        $parameters = array_merge($parameters, array_filter(compact('amount')));
+        $parameters = array_merge($parameters, array_filter(compact('charge', 'amount')));
 
-        return $this->_post("charges/{$chargeId}/refunds", $parameters);
+        return $this->_post('refunds', $parameters);
     }
 
     /**
-     * Retrieves an existing refund from the given charge.
+     * Retrieves an existing refund.
      *
-     * @param  string  $chargeId
      * @param  string  $refundId
      * @return array
      */
-    public function find($chargeId, $refundId)
+    public function find($refundId)
     {
-        return $this->_get("charges/{$chargeId}/refunds/{$refundId}");
+        return $this->_get("refunds/{$refundId}");
     }
 
     /**
      * Updates an existing refund on the given charge.
      *
-     * @param  string  $chargeId
      * @param  string  $refundId
      * @param  array  $parameters
      * @return array
      */
-    public function update($chargeId, $refundId, array $parameters = [])
+    public function update($refundId, array $parameters = [])
     {
-        return $this->_post("charges/{$chargeId}/refunds/{$refundId}", $parameters);
+        return $this->_post("refunds/{$refundId}", $parameters);
     }
 
     /**
      * Lists all refunds for the given charge.
      *
-     * @param  string  $chargeId
      * @param  array  $parameters
      * @return array
      */
-    public function all($chargeId, array $parameters = [])
+    public function all(array $parameters = [])
     {
-        return $this->_get("charges/{$chargeId}/refunds", $parameters);
+        return $this->_get('refunds', $parameters);
     }
 }

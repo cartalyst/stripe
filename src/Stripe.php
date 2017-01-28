@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.0.8
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2017, Cartalyst LLC
@@ -27,7 +27,7 @@ class Stripe
      *
      * @var string
      */
-    const VERSION = '2.0.8';
+    const VERSION = '3.0.0';
 
     /**
      * The Config repository instance.
@@ -35,13 +35,6 @@ class Stripe
      * @var \Cartalyst\Stripe\ConfigInterface
      */
     protected $config;
-
-    /**
-     * The amount converter class and method name.
-     *
-     * @var string
-     */
-    protected static $amountConverter = '\\Cartalyst\\Stripe\\AmountConverter::convert';
 
     /**
      * Constructor.
@@ -170,59 +163,6 @@ class Stripe
         $this->config->setAccountId($accountId);
 
         return $this;
-    }
-
-    /**
-     * Returns the amount converter class and method name.
-     *
-     * @return string
-     */
-    public static function getAmountConverter()
-    {
-        return static::$amountConverter;
-    }
-
-    /**
-     * Sets the amount converter class and method name.
-     *
-     * @param  $amountConverter  string
-     * @return void
-     */
-    public static function setAmountConverter($amountConverter)
-    {
-        static::$amountConverter = $amountConverter;
-    }
-
-    /**
-     * Disables the amount converter.
-     *
-     * @return void
-     */
-    public static function disableAmountConverter()
-    {
-        static::setAmountConverter(null);
-    }
-
-    /**
-     * Returns the default amount converter.
-     *
-     * @return string
-     */
-    public static function getDefaultAmountConverter()
-    {
-        return '\\Cartalyst\\Stripe\\AmountConverter::convert';
-    }
-
-    /**
-     * Sets the default amount converter;
-     *
-     * @return void
-     */
-    public static function setDefaultAmountConverter()
-    {
-        static::setAmountConverter(
-            static::getDefaultAmountConverter()
-        );
     }
 
     /**

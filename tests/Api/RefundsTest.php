@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.0.8
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2017, Cartalyst LLC
@@ -63,7 +63,7 @@ class RefundsTest extends FunctionalTestCase
 
         $refund = $this->stripe->refunds()->create($charge['id']);
 
-        $refund = $this->stripe->refunds()->find($charge['id'], $refund['id']);
+        $refund = $this->stripe->refunds()->find($refund['id']);
 
         $charge = $this->stripe->charges()->find($charge['id']);
 
@@ -77,11 +77,7 @@ class RefundsTest extends FunctionalTestCase
      */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_refund()
     {
-        $customer = $this->createCustomer();
-
-        $charge = $this->createCharge($customer['id']);
-
-        $this->stripe->refunds()->find($charge['id'], time().rand());
+        $this->stripe->refunds()->find(time().rand());
     }
 
     /** @test */
@@ -93,7 +89,7 @@ class RefundsTest extends FunctionalTestCase
 
         $refund = $this->stripe->refunds()->create($charge['id']);
 
-        $refund = $this->stripe->refunds()->update($charge['id'], $refund['id'], [
+        $refund = $this->stripe->refunds()->update($refund['id'], [
             'metadata' => [ 'reason' => 'Refunded the payment.' ]
         ]);
 
@@ -110,9 +106,11 @@ class RefundsTest extends FunctionalTestCase
 
         $this->stripe->refunds()->create($charge['id']);
 
-        $refunds = $this->stripe->refunds()->all($charge['id']);
+        $refunds = $this->stripe->refunds()->all([
+            'charge' => $charge['id']
+        ]);
 
-        $this->assertNotEmpty($refunds['data']);
+        $this->assertCount(1, $refunds['data']);
         $this->assertInternalType('array', $refunds['data']);
     }
 }
