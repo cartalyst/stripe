@@ -179,6 +179,11 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
         ], $parameters));
     }
 
+    protected function createSubscriptionItem($subscription, $plan)
+    {
+        return $this->stripe->subscriptionItems()->create($subscription['id'], $plan['id']);
+    }
+
     protected function createOrder(array $items)
     {
         return $this->stripe->orders()->create([
