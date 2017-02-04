@@ -16,12 +16,11 @@
     ],
     "require": {
         "php": ">=5.6",
-        "cartalyst/collections": "~1.0",
-        "guzzlehttp/guzzle": "~6.0"
+        "guzzlehttp/guzzle": "^6.0"
     },
     "require-dev": {
-        "mockery/mockery": "~0.9",
-        "phpunit/phpunit": "~5.7"
+        "mockery/mockery": "^0.9",
+        "phpunit/phpunit": "^5.7"
     },
     "autoload": {
         "psr-4": { "Cartalyst\\Stripe\\": "src/" }
