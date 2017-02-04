@@ -72,7 +72,7 @@ class Config implements ConfigInterface
 
         $this->setApiKey($apiKey ?: getenv('STRIPE_API_KEY'));
 
-        $this->setApiVersion($apiVersion ?: getenv('STRIPE_API_VERSION') ?: '2016-10-19');
+        $this->setApiVersion($apiVersion ?: getenv('STRIPE_API_VERSION') ?: '2017-01-27');
 
         if (! $this->apiKey) {
             throw new \RuntimeException('The Stripe API key is not defined!');
