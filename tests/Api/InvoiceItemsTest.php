@@ -54,7 +54,7 @@ class InvoiceItemsTest extends FunctionalTestCase
         $invoiceItem = $this->createInvoiceItem($customer['id']);
 
         $invoiceItem = $this->stripe->invoiceItems()->update($invoiceItem['id'], [
-            'amount' => '30.00',
+            'amount' => 3000,
         ]);
 
         $this->assertSame(3000, $invoiceItem['amount']);

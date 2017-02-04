@@ -46,7 +46,7 @@ class RefundsTest extends FunctionalTestCase
 
         $charge = $this->createCharge($customer['id']);
 
-        $refund = $this->stripe->refunds()->create($charge['id'], 20.00);
+        $refund = $this->stripe->refunds()->create($charge['id'], 2000);
 
         $charge = $this->stripe->charges()->find($charge['id']);
 

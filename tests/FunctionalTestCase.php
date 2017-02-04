@@ -59,7 +59,7 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
     protected function createPlan()
     {
         return $this->stripe->plans()->create([
-            'amount'               => 30.00,
+            'amount'               => 3000,
             'currency'             => 'USD',
             'interval'             => 'month',
             'name'                 => 'Monthly (30$)',
@@ -81,7 +81,7 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
     {
         return $this->stripe->skus()->create([
             'product'   => $productId,
-            'price'     => 15.00,
+            'price'     => 1500,
             'currency'  => 'usd',
             'inventory' => [
                 'type'     => 'finite',
@@ -163,7 +163,7 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
 
         return $this->stripe->charges()->create(array_merge([
             'currency' => 'USD',
-            'amount'   => 50.49,
+            'amount'   => 5049,
             'customer' => $customerId,
         ], $parameters));
     }
@@ -218,7 +218,7 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
     protected function createInvoiceItem($customerId, array $parameters = [])
     {
         return $this->stripe->invoiceItems()->create($customerId, array_merge([
-            'amount'      => '10.00',
+            'amount'      => 1000,
             'currency'    => 'usd',
             'description' => 'One-time setup fee.'
         ], $parameters));
@@ -237,38 +237,4 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
     {
         return rand().time().'-john@doe.com';
     }
-
-    // protected function createBankAccount()
-    // {
-    //     $accountId = $this->stripe->account()->details()['id'];
-
-    //     $bankAccountToken = $this->stripe->tokens()->create([
-    //         'bank_account' => [
-    //             'country'        => 'US',
-    //             'routing_number' => '110000000',
-    //             'account_number' => '000123456789',
-    //         ],
-    //     ]);
-
-    //     return $this->stripe->externalAccounts()->create($accountId, [
-    //         'external_account' => $bankAccountToken['id'],
-    //     ]);
-    // }
-
-    // protected function createTransfer()
-    // {
-    //     $bank = $this->createBankAccount();
-
-    //     $customer = $this->createCustomer();
-
-    //     for ($i=0; $i < 4; $i++) {
-    //         $this->createCharge($customer['id']);
-    //     }
-
-    //     return $this->stripe->transfers()->create([
-    //         'currency'    => 'USD',
-    //         'amount'      => 50.49,
-    //         'destination' => $bank['id'],
-    //     ]);
-    // }
 }
