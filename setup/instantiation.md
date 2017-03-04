@@ -3,10 +3,14 @@
 Creating a new Stripe instance is very easy and straightforward. Please check the examples below for further explanation.
 
 ```php
+use Cartalyst\Stripe\Stripe;
+
 $stripe = new Stripe('your-stripe-api-key', 'your-stripe-api-version');
 ```
 
 ```php
+use Cartalyst\Stripe\Stripe;
+
 $stripe = Stripe::make('your-stripe-api-key', 'your-stripe-api-version');
 ```
 
@@ -21,6 +25,8 @@ putenv('STRIPE_API_VERSION=your-stripe-api-version');
 Then upon instantiation, Stripe will auto detect these and use accordingly.
 
 ```php
+use Cartalyst\Stripe\Stripe;
+
 $stripe = new Stripe();
 ```
 
