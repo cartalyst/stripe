@@ -57,7 +57,7 @@ To charge a credit card, you need to create a new charge object. If your API key
         </tr>
         <tr>
             <td>source</td>
-            <td>true</td>
+            <td>false</td>
             <td>string | array</td>
             <td>null</td>
             <td>The source can either be a token or a dictionary containing the source details.</td>
