@@ -189,7 +189,9 @@ abstract class Api implements ApiInterface
                 $request = $request->withHeader('Idempotency-Key', $idempotencykey);
             }
 
-            $request = $request->withHeader('Stripe-Account', $config->getAccountId());
+            if ($accountId = $config->getAccountId()) {
+                $request = $request->withHeader('Stripe-Account', $accountId);
+            }
 
             $request = $request->withHeader('Stripe-Version', $config->getApiVersion());
 
