@@ -11,6 +11,16 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.0.9 - 2017-03-09
+
+`FIXED`
+
+- Issue with account id being invalid without being set.
+
+`UPDATED`
+
+- Account test to be more performant and faster to finish.
+
 ### v2.0.8 - 2017-01-27
 
 `ADDED`
