@@ -44,16 +44,19 @@ class AccountTest extends FunctionalTestCase
 
         $this->assertSame($email, $account['email']);
         $this->assertSame('unverified', $account['legal_entity']['verification']['status']);
+
+        return $account;
     }
 
-    /** @test */
-    public function it_can_retrieve_an_account()
+    /**
+     * @test
+     * @depends it_can_create_a_new_account
+     */
+    public function it_can_retrieve_an_account($account)
     {
-        $email = $this->getRandomEmail();
+        $email = $account['email'];
 
-        $accountId = $this->stripe->account()->create([
-            'managed' => true, 'email' => $email,
-        ])['id'];
+        $accountId = $account['id'];
 
         $account = $this->stripe->account()->find($accountId);
 
@@ -62,18 +65,13 @@ class AccountTest extends FunctionalTestCase
         $this->assertSame('unverified', $account['legal_entity']['verification']['status']);
     }
 
-    /** @test */
-    public function it_can_update_an_account()
+    /**
+     * @test
+     * @depends it_can_create_a_new_account
+     */
+    public function it_can_update_an_account($account)
     {
-        $email = $this->getRandomEmail();
-
-        $account = $this->stripe->account()->create([
-            'managed' => true, 'email' => $email,
-        ]);
-
         $accountId = $account['id'];
-
-        $this->assertSame($email, $account['email']);
 
         $email = $this->getRandomEmail();
 
@@ -88,48 +86,26 @@ class AccountTest extends FunctionalTestCase
 
     /**
      * @test
+     * @depends it_can_create_a_new_account
      */
-    public function it_can_delete_an_account()
+    public function it_can_reject_an_account($account)
     {
-        $email = $this->getRandomEmail();
-
-        $account = $this->stripe->account()->create([
-            'email' => $email, 'managed' => true,
-        ]);
-
-        $this->stripe->account()->delete($account['id']);
-    }
-
-    /** @test */
-    public function it_can_reject_an_account()
-    {
-        $email = $this->getRandomEmail();
-
-        $account = $this->stripe->account()->create([
-            'managed' => true, 'email' => $email,
-        ]);
-
         $accountId = $account['id'];
-
-        $this->assertSame($email, $account['email']);
 
         $this->stripe->account()->reject($accountId, 'other');
 
         $account = $this->stripe->account()->find($account['id']);
 
-        $this->assertSame('unverified', $account['legal_entity']['verification']['status']);
+        $this->assertSame('rejected.other', $account['verification']['disabled_reason']);
     }
 
-    /** @test */
-    public function it_can_verify_an_account()
+    /**
+     * @test
+     * @depends it_can_create_a_new_account
+     */
+    public function it_can_verify_an_account($account)
     {
         $filePath = realpath(__DIR__.'/../files/verify-account.jpg');
-
-        $email = $this->getRandomEmail();
-
-        $account = $this->stripe->account()->create([
-            'managed' => true, 'email' => $email,
-        ]);
 
         $this->assertSame('unverified', $account['legal_entity']['verification']['status']);
 
@@ -138,43 +114,34 @@ class AccountTest extends FunctionalTestCase
         $this->assertSame('verified', $account['legal_entity']['verification']['status']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @depends it_can_create_a_new_account
+     */
     public function it_can_retrieve_all_accounts()
     {
-        $email = $this->getRandomEmail();
-
-        $account = $this->stripe->account()->create([
-            'managed' => true, 'email' => $email,
-        ]);
-
         $accounts = $this->stripe->account()->all();
 
         $this->assertNotEmpty($accounts['data']);
         $this->assertInternalType('array', $accounts['data']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @depends it_can_create_a_new_account
+     */
     public function it_can_iterate_all_accounts()
     {
-        for ($i = 0; $i < 5; $i++) {
-            $email = $this->getRandomEmail();
-
-            $account = $this->stripe->account()->create([
-                'managed' => true, 'email' => $email,
-            ]);
-        }
-
         $this->stripe->accountIterator();
     }
 
-    /** @test */
-    public function it_can_use_an_account_to_perform_actions()
+    /**
+     * @test
+     * @depends it_can_create_a_new_account
+     */
+    public function it_can_use_an_account_to_perform_actions($account)
     {
-        $email = $this->getRandomEmail();
-
-        $accountId = $this->stripe->account()->create([
-            'managed' => true, 'email' => $email,
-        ])['id'];
+        $accountId = $account['id'];
 
         $account = $this->stripe->accountId($accountId)->account()->details();
 
@@ -183,5 +150,14 @@ class AccountTest extends FunctionalTestCase
         $account = $this->stripe->accountId(null)->account()->details();
 
         $this->assertNotSame($accountId, $account['id']);
+    }
+
+    /**
+     * @test
+     * @depends it_can_create_a_new_account
+     */
+    public function it_can_delete_an_account($account)
+    {
+        $this->stripe->account()->delete($account['id']);
     }
 }
