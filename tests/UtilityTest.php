@@ -27,12 +27,12 @@ use PHPUnit_Framework_TestCase;
 class UtilityTest extends PHPUnit_Framework_TestCase
 {
     /** @test */
-    public function it_can_prepare_the_parameters_for_the_request()
+    public function it_can_build_the_query_for_the_request()
     {
-        $this->assertSame('bool=true', Utility::prepareParameters([ 'bool' => true ]));
-        $this->assertSame('bool=true', Utility::prepareParameters([ 'bool' => 'true' ]));
+        $this->assertSame('bool=true', Utility::buildQuery([ 'bool' => true ]));
+        $this->assertSame('bool=true', Utility::buildQuery([ 'bool' => 'true' ]));
 
-        $this->assertSame('bool=false', Utility::prepareParameters([ 'bool' => false ]));
-        $this->assertSame('bool=false', Utility::prepareParameters([ 'bool' => 'false' ]));
+        $this->assertSame('bool=false', Utility::buildQuery([ 'bool' => false ]));
+        $this->assertSame('bool=false', Utility::buildQuery([ 'bool' => 'false' ]));
     }
 }
