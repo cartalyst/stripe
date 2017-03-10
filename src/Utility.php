@@ -31,7 +31,7 @@ class Utility
     public static function buildQuery(array $parameters)
     {
         $parameters = array_map(function ($parameter) {
-            return is_bool($parameter) ? ($parameter === true ? 'true' : 'false') : $parameter;
+            return is_bool($parameter) ? var_export($parameter, true) : $parameter;
         }, $parameters);
 
         return preg_replace('/\%5B\d+\%5D/', '%5B%5D', http_build_query($parameters));
