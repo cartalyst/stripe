@@ -45,7 +45,7 @@ class Stripe
      */
     public function __construct($apiKey = null, $apiVersion = null)
     {
-        $this->config = new Config(self::VERSION, $apiKey, $apiVersion);
+        $this->config = new Config($apiKey, $apiVersion);
     }
 
     /**

@@ -23,6 +23,7 @@ namespace Cartalyst\Stripe\Api;
 use GuzzleHttp\Client;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\HandlerStack;
+use Cartalyst\Stripe\Stripe;
 use Cartalyst\Stripe\Utility;
 use Cartalyst\Stripe\ConfigInterface;
 use Psr\Http\Message\RequestInterface;
@@ -195,7 +196,7 @@ abstract class Api implements ApiInterface
 
             $request = $request->withHeader('Stripe-Version', $config->getApiVersion());
 
-            $request = $request->withHeader('User-Agent', 'Cartalyst-Stripe/'.$config->getVersion());
+            $request = $request->withHeader('User-Agent', 'Cartalyst-Stripe/'.Stripe::getVersion());
 
             $request = $request->withHeader('Authorization', 'Basic '.base64_encode($config->getApiKey()));
 

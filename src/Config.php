@@ -23,13 +23,6 @@ namespace Cartalyst\Stripe;
 class Config implements ConfigInterface
 {
     /**
-     * The current package version.
-     *
-     * @var string
-     */
-    protected $version;
-
-    /**
      * The Stripe API key.
      *
      * @var string
@@ -60,16 +53,13 @@ class Config implements ConfigInterface
     /**
      * Constructor.
      *
-     * @param  string  $version
      * @param  string  $apiKey
      * @param  string  $apiVersion
      * @return void
      * @throws \RuntimeException
      */
-    public function __construct($version, $apiKey, $apiVersion)
+    public function __construct($apiKey, $apiVersion)
     {
-        $this->setVersion($version);
-
         $this->setApiKey($apiKey ?: getenv('STRIPE_API_KEY'));
 
         $this->setApiVersion($apiVersion ?: getenv('STRIPE_API_VERSION') ?: '2017-01-27');
@@ -77,24 +67,6 @@ class Config implements ConfigInterface
         if (! $this->apiKey) {
             throw new \RuntimeException('The Stripe API key is not defined!');
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getVersion()
-    {
-        return $this->version;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setVersion($version)
-    {
-        $this->version = $version;
-
-        return $this;
     }
 
     /**
