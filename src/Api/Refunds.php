@@ -40,24 +40,24 @@ class Refunds extends Api
     /**
      * Retrieves an existing refund.
      *
-     * @param  string  $refundId
+     * @param  string  $refund
      * @return array
      */
-    public function find($refundId)
+    public function find($refund)
     {
-        return $this->_get("refunds/{$refundId}");
+        return $this->_get("refunds/{$refund}");
     }
 
     /**
      * Updates an existing refund on the given charge.
      *
-     * @param  string  $refundId
+     * @param  string  $refund
      * @param  array  $parameters
      * @return array
      */
-    public function update($refundId, array $parameters = [])
+    public function update($refund, array $parameters = [])
     {
-        return $this->_post("refunds/{$refundId}", $parameters);
+        return $this->_post("refunds/{$refund}", $parameters);
     }
 
     /**

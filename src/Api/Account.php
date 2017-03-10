@@ -47,64 +47,64 @@ class Account extends Api
     /**
      * Retrieves an existing account.
      *
-     * @param  string  $accountId
+     * @param  string  $account
      * @return array
      */
-    public function find($accountId)
+    public function find($account)
     {
-        return $this->_get("accounts/{$accountId}");
+        return $this->_get("accounts/{$account}");
     }
 
     /**
      * Updates an existing account.
      *
-     * @param  string  $accountId
+     * @param  string  $account
      * @param  array  $parameters
      * @return array
      */
-    public function update($accountId, array $parameters = [])
+    public function update($account, array $parameters = [])
     {
-        return $this->_post("accounts/{$accountId}", $parameters);
+        return $this->_post("accounts/{$account}", $parameters);
     }
 
     /**
      * Deletes an existing account.
      *
-     * @param  string  $accountId
+     * @param  string  $account
      * @return array
      */
-    public function delete($accountId)
+    public function delete($account)
     {
-        return $this->_delete("accounts/{$accountId}");
+        return $this->_delete("accounts/{$account}");
     }
 
     /**
      * Rejects an existing account.
      *
-     * @param  string  $accountId
+     * @param  string  $account
      * @param  string  $reason
      * @return array
      */
-    public function reject($accountId, $reason)
+    public function reject($account, $reason)
     {
-        return $this->_post("accounts/{$accountId}/reject", compact('reason'));
+        return $this->_post("accounts/{$account}/reject", compact('reason'));
     }
 
     /**
      * Updates an existing account.
      *
-     * @param  string  $accountId
+     * @param  string  $account
      * @param  string  $file
-     * @param  array  $parameters
+     * @param  string  $purpose
      * @return array
      */
-    public function verify($accountId, $file, $purpose)
+    public function verify($account, $file, $purpose)
     {
         $upload = (new FileUploads($this->config))->create(
-            $file, $purpose, [ 'Stripe-Account' => $accountId ]
+            $file, $purpose, [ 'Stripe-Account' => $account ]
         );
 
-        $this->update($accountId, [
+        $this->update($account, [
             'legal_entity' => [
                 'verification' => [
                     'document' => $upload['id'],
@@ -112,7 +112,7 @@ class Account extends Api
             ],
         ]);
 
-        return $this->_get('accounts/'.$accountId);
+        return $this->_get('accounts/'.$account);
     }
 
     /**

@@ -25,12 +25,12 @@ class Disputes extends Api
     /**
      * Retrieves an existing dispute.
      *
-     * @param  string  $disputeId
+     * @param  string  $dispute
      * @return array
      */
-    public function find($disputeId)
+    public function find($dispute)
     {
-        return $this->_get("disputes/{$disputeId}");
+        return $this->_get("disputes/{$dispute}");
     }
 
     /**

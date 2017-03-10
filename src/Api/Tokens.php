@@ -36,11 +36,11 @@ class Tokens extends Api
     /**
      * Retrieves an existing token.
      *
-     * @param  string  $tokenId
+     * @param  string  $token
      * @return array
      */
-    public function find($tokenId)
+    public function find($token)
     {
-        return $this->_get("tokens/{$tokenId}");
+        return $this->_get("tokens/{$token}");
     }
 }

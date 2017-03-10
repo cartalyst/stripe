@@ -25,15 +25,13 @@ class Invoices extends Api
     /**
      * Creates a new invoice.
      *
-     * @param  string  $customerId
+     * @param  string  $customer
      * @param  array  $parameters
      * @return array
      */
-    public function create($customerId, array $parameters = [])
+    public function create($customer, array $parameters = [])
     {
-        $parameters = array_merge($parameters, [
-            'customer' => $customerId,
-        ]);
+        $parameters = array_merge($parameters, compact('customer'));
 
         return $this->_post('invoices', $parameters);
     }
@@ -41,40 +39,37 @@ class Invoices extends Api
     /**
      * Retrieves an existing invoice.
      *
-     * @param  string  $invoiceId
+     * @param  string  $invoice
      * @return array
      */
-    public function find($invoiceId)
+    public function find($invoice)
     {
-        return $this->_get("invoices/{$invoiceId}");
+        return $this->_get("invoices/{$invoice}");
     }
 
     /**
      * Retrieves an existing invoice line items.
      *
-     * @param  string  $invoiceId
+     * @param  string  $invoice
      * @param  array  $parameters
      * @return array
      */
-    public function lineItems($invoiceId, array $parameters = [])
+    public function lineItems($invoice, array $parameters = [])
     {
-        return $this->_get("invoices/{$invoiceId}/lines", $parameters);
+        return $this->_get("invoices/{$invoice}/lines", $parameters);
     }
 
     /**
      * Retrieves the given customer upcoming invoices.
      *
-     * @param  string  $customerId
-     * @param  string  $subscriptionId
+     * @param  string  $customer
+     * @param  string  $subscription
      * @param  array  $parameters
      * @return array
      */
-    public function upcomingInvoice($customerId, $subscriptionId = null, array $parameters = [])
+    public function upcomingInvoice($customer, $subscription = null, array $parameters = [])
     {
-        $parameters = array_merge($parameters, [
-            'customer'     => $customerId,
-            'subscription' => $subscriptionId,
-        ]);
+        $parameters = array_merge($parameters, compact('customer', 'subscription'));
 
         return $this->_get('invoices/upcoming', $parameters);
     }
@@ -82,24 +77,24 @@ class Invoices extends Api
     /**
      * Updates an existing invoice.
      *
-     * @param  string  $invoiceId
+     * @param  string  $invoice
      * @param  array  $parameters
      * @return array
      */
-    public function update($invoiceId, array $parameters = [])
+    public function update($invoice, array $parameters = [])
     {
-        return $this->_post("invoices/{$invoiceId}", $parameters);
+        return $this->_post("invoices/{$invoice}", $parameters);
     }
 
     /**
      * Pays the given invoice.
      *
-     * @param  string  $invoiceId
+     * @param  string  $invoice
      * @return array
      */
-    public function pay($invoiceId)
+    public function pay($invoice)
     {
-        return $this->_post("invoices/{$invoiceId}/pay");
+        return $this->_post("invoices/{$invoice}/pay");
     }
 
     /**

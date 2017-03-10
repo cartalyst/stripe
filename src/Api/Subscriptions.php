@@ -25,51 +25,51 @@ class Subscriptions extends Api
     /**
      * Creates a new subscription on the given customer.
      *
-     * @param  string  $customerId
+     * @param  string  $customer
      * @param  array  $parameters
      * @return array
      */
-    public function create($customerId, array $parameters = [])
+    public function create($customer, array $parameters = [])
     {
-        return $this->_post("customers/{$customerId}/subscriptions", $parameters);
+        return $this->_post("customers/{$customer}/subscriptions", $parameters);
     }
 
     /**
      * Retrieves an existing subscription from the given customer.
      *
-     * @param  string  $customerId
-     * @param  string  $subscriptionId
+     * @param  string  $customer
+     * @param  string  $subscription
      * @return array
      */
-    public function find($customerId, $subscriptionId)
+    public function find($customer, $subscription)
     {
-        return $this->_get("customers/{$customerId}/subscriptions/{$subscriptionId}");
+        return $this->_get("customers/{$customer}/subscriptions/{$subscription}");
     }
 
     /**
      * Updates an existing subscription from the given customer.
      *
-     * @param  string  $customerId
-     * @param  string  $subscriptionId
+     * @param  string  $customer
+     * @param  string  $subscription
      * @param  array  $parameters
      * @return array
      */
-    public function update($customerId, $subscriptionId, array $parameters = [])
+    public function update($customer, $subscription, array $parameters = [])
     {
-        return $this->_post("customers/{$customerId}/subscriptions/{$subscriptionId}", $parameters);
+        return $this->_post("customers/{$customer}/subscriptions/{$subscription}", $parameters);
     }
 
     /**
      * Cancels an existing subscription from the given customer.
      *
-     * @param  string  $customerId
-     * @param  string  $subscriptionId
+     * @param  string  $customer
+     * @param  string  $subscription
      * @param  bool  $atPeriodEnd
      * @return array
      */
-    public function cancel($customerId, $subscriptionId, $atPeriodEnd = false)
+    public function cancel($customer, $subscription, $atPeriodEnd = false)
     {
-        return $this->_delete("customers/{$customerId}/subscriptions/{$subscriptionId}", [
+        return $this->_delete("customers/{$customer}/subscriptions/{$subscription}", [
             'at_period_end' => (bool) $atPeriodEnd,
         ]);
     }
@@ -77,60 +77,58 @@ class Subscriptions extends Api
     /**
      * Reactivates an existing canceled subscription from the given customer.
      *
-     * @param  string  $customerId
-     * @param  string  $subscriptionId
+     * @param  string  $customer
+     * @param  string  $subscription
      * @param  array  $attributes
      * @return array
      */
-    public function reactivate($customerId, $subscriptionId, array $attributes = [])
+    public function reactivate($customer, $subscription, array $attributes = [])
     {
         if (! isset($attributes['plan'])) {
-            $subscription = $this->find($customerId, $subscriptionId);
+            $currentSubscription = $this->find($customer, $subscription);
 
-            $attributes['plan'] = $subscription['plan']['id'];
+            $attributes['plan'] = $currentSubscription['plan']['id'];
         }
 
-        return $this->update($customerId, $subscriptionId, $attributes);
+        return $this->update($customer, $subscription, $attributes);
     }
 
     /**
      * Applies the given discount on the given subscription.
      *
-     * @param  string  $customerId
-     * @param  string  $subscriptionId
-     * @param  string  $couponId
+     * @param  string  $customer
+     * @param  string  $subscription
+     * @param  string  $coupon
      * @return array
      */
-    public function applyDiscount($customerId, $subscriptionId, $couponId)
+    public function applyDiscount($customer, $subscription, $coupon)
     {
-        return $this->update($customerId, $subscriptionId, [
-            'coupon' => $couponId,
-        ]);
+        return $this->update($customer, $subscription, compact('coupon'));
     }
 
     /**
      * Deletes an existing subscription discount.
      *
-     * @param  string  $customerId
-     * @param  string  $subscriptionId
+     * @param  string  $customer
+     * @param  string  $subscription
      * @return array
      */
-    public function deleteDiscount($customerId, $subscriptionId)
+    public function deleteDiscount($customer, $subscription)
     {
-        return $this->_delete("customers/{$customerId}/subscriptions/{$subscriptionId}/discount");
+        return $this->_delete("customers/{$customer}/subscriptions/{$subscription}/discount");
     }
 
     /**
      * Lists all subscriptions from the given customer.
      *
-     * @param  string  $customerId
+     * @param  string  $customer
      * @param  array  $parameters
      * @return array
      */
-    public function all($customerId, array $parameters = [])
+    public function all($customer, array $parameters = [])
     {
-        return $this->_get('subscriptions', array_merge($parameters, [
-            'customer' => $customerId
-        ]));
+        $parameters = array_merge($parameters, compact('customer'));
+
+        return $this->_get('subscriptions', $parameters);
     }
 }

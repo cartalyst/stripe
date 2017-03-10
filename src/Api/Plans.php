@@ -36,35 +36,35 @@ class Plans extends Api
     /**
      * Retrieves an existing plan.
      *
-     * @param  string  $planId
+     * @param  string  $plan
      * @return array
      */
-    public function find($planId)
+    public function find($plan)
     {
-        return $this->_get("plans/{$planId}");
+        return $this->_get("plans/{$plan}");
     }
 
     /**
      * Updates an existing plan.
      *
-     * @param  string  $planId
+     * @param  string  $plan
      * @param  array  $parameters
      * @return array
      */
-    public function update($planId, array $parameters = [])
+    public function update($plan, array $parameters = [])
     {
-        return $this->_post("plans/{$planId}", $parameters);
+        return $this->_post("plans/{$plan}", $parameters);
     }
 
     /**
      * Deletes an existing plan.
      *
-     * @param  string  $planId
+     * @param  string  $plan
      * @return array
      */
-    public function delete($planId)
+    public function delete($plan)
     {
-        return $this->_delete("plans/{$planId}");
+        return $this->_delete("plans/{$plan}");
     }
 
     /**

@@ -35,12 +35,12 @@ class Balance extends Api
     /**
      * Retrieves the balance transaction for the given id.
      *
-     * @param  string  $transactionId
+     * @param  string  $transaction
      * @return array
      */
-    public function find($transactionId)
+    public function find($transaction)
     {
-        return $this->_get("balance/history/{$transactionId}");
+        return $this->_get("balance/history/{$transaction}");
     }
 
     /**

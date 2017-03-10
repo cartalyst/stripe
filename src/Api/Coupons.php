@@ -36,35 +36,35 @@ class Coupons extends Api
     /**
      * Retrieves an existing coupon.
      *
-     * @param  string  $couponId
+     * @param  string  $coupon
      * @return array
      */
-    public function find($couponId)
+    public function find($coupon)
     {
-        return $this->_get("coupons/{$couponId}");
+        return $this->_get("coupons/{$coupon}");
     }
 
     /**
      * Updates an existing coupon.
      *
-     * @param  string  $couponId
+     * @param  string  $coupon
      * @param  array  $parameters
      * @return array
      */
-    public function update($couponId, array $parameters = [])
+    public function update($coupon, array $parameters = [])
     {
-        return $this->_post("coupons/{$couponId}", $parameters);
+        return $this->_post("coupons/{$coupon}", $parameters);
     }
 
     /**
      * Deletes an existing coupon.
      *
-     * @param  string  $couponId
+     * @param  string  $coupon
      * @return array
      */
-    public function delete($couponId)
+    public function delete($coupon)
     {
-        return $this->_delete("coupons/{$couponId}");
+        return $this->_delete("coupons/{$coupon}");
     }
 
     /**

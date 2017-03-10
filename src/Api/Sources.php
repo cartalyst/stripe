@@ -25,11 +25,11 @@ class Sources extends Api
     /**
      * Creates a new source on the given customer.
      *
-     * @param  string  $customerId
+     * @param  string  $customer
      * @param  string|array  $parameters
      * @return array
      */
-    public function create($customerId, $parameters = [])
+    public function create($customer, $parameters = [])
     {
         if (is_array($parameters)) {
             $parameters['object'] = $this->sourceType;
@@ -37,55 +37,55 @@ class Sources extends Api
 
         $parameters = [ 'source' => $parameters ];
 
-        return $this->_post("customers/{$customerId}/sources", $parameters);
+        return $this->_post("customers/{$customer}/sources", $parameters);
     }
 
     /**
      * Retrieves an existing source from the given customer.
      *
-     * @param  string  $customerId
-     * @param  string  $sourceId
+     * @param  string  $customer
+     * @param  string  $source
      * @return array
      */
-    public function find($customerId, $sourceId)
+    public function find($customer, $source)
     {
-        return $this->_get("customers/{$customerId}/sources/{$sourceId}");
+        return $this->_get("customers/{$customer}/sources/{$source}");
     }
 
     /**
      * Updates an existing source from the given customer.
      *
-     * @param  string  $customerId
-     * @param  string  $sourceId
+     * @param  string  $customer
+     * @param  string  $source
      * @param  array  $parameters
      * @return array
      */
-    public function update($customerId, $sourceId, array $parameters = [])
+    public function update($customer, $source, array $parameters = [])
     {
-        return $this->_post("customers/{$customerId}/sources/{$sourceId}", $parameters);
+        return $this->_post("customers/{$customer}/sources/{$source}", $parameters);
     }
 
     /**
      * Deletes an existing source from the given customer.
      *
-     * @param  string  $customerId
-     * @param  string  $sourceId
+     * @param  string  $customer
+     * @param  string  $source
      * @return array
      */
-    public function delete($customerId, $sourceId)
+    public function delete($customer, $source)
     {
-        return $this->_delete("customers/{$customerId}/sources/{$sourceId}");
+        return $this->_delete("customers/{$customer}/sources/{$source}");
     }
 
     /**
      * Lists all sources from the given customer.
      *
-     * @param  string  $customerId
+     * @param  string  $customer
      * @param  array  $parameters
      * @return array
      */
-    public function all($customerId, array $parameters = [])
+    public function all($customer, array $parameters = [])
     {
-        return $this->_get("customers/{$customerId}/sources", $parameters);
+        return $this->_get("customers/{$customer}/sources", $parameters);
     }
 }

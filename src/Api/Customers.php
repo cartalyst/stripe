@@ -36,60 +36,58 @@ class Customers extends Api
     /**
      * Retrieves an existing customer.
      *
-     * @param  string  $customerId
+     * @param  string  $customer
      * @return array
      */
-    public function find($customerId)
+    public function find($customer)
     {
-        return $this->_get("customers/{$customerId}");
+        return $this->_get("customers/{$customer}");
     }
 
     /**
      * Updates an existing customer.
      *
-     * @param  string  $customerId
+     * @param  string  $customer
      * @param  array  $parameters
      * @return array
      */
-    public function update($customerId, array $parameters = [])
+    public function update($customer, array $parameters = [])
     {
-        return $this->_post("customers/{$customerId}", $parameters);
+        return $this->_post("customers/{$customer}", $parameters);
     }
 
     /**
      * Deletes an existing customer.
      *
-     * @param  string  $customerId
+     * @param  string  $customer
      * @return array
      */
-    public function delete($customerId)
+    public function delete($customer)
     {
-        return $this->_delete("customers/{$customerId}");
+        return $this->_delete("customers/{$customer}");
     }
 
     /**
      * Applies the given discount on the given customer.
      *
-     * @param  string  $customerId
-     * @param  string  $couponId
+     * @param  string  $customer
+     * @param  string  $coupon
      * @return array
      */
-    public function applyDiscount($customerId, $couponId)
+    public function applyDiscount($customer, $coupon)
     {
-        return $this->update($customerId, [
-            'coupon' => $couponId,
-        ]);
+        return $this->update($customer, compact('coupon'));
     }
 
     /**
      * Deletes an existing customer discount.
      *
-     * @param  string  $customerId
+     * @param  string  $customer
      * @return array
      */
-    public function deleteDiscount($customerId)
+    public function deleteDiscount($customer)
     {
-        return $this->_delete("customers/{$customerId}/discount");
+        return $this->_delete("customers/{$customer}/discount");
     }
 
     /**

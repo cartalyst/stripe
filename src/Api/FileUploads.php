@@ -54,12 +54,12 @@ class FileUploads extends Api
     /**
      * Retrieves an existing file upload.
      *
-     * @param  string  $fileId
+     * @param  string  $file
      * @return array
      */
-    public function find($fileId)
+    public function find($file)
     {
-        return $this->_get("files/{$fileId}");
+        return $this->_get("files/{$file}");
     }
 
     /**

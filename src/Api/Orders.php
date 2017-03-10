@@ -36,48 +36,48 @@ class Orders extends Api
     /**
      * Retrieves an existing order.
      *
-     * @param  string  $orderId
+     * @param  string  $order
      * @return array
      */
-    public function find($orderId)
+    public function find($order)
     {
-        return $this->_get("orders/{$orderId}");
+        return $this->_get("orders/{$order}");
     }
 
     /**
      * Updates an existing order.
      *
-     * @param  string  $orderId
+     * @param  string  $order
      * @param  array  $parameters
      * @return array
      */
-    public function update($orderId, array $parameters = [])
+    public function update($order, array $parameters = [])
     {
-        return $this->_post("orders/{$orderId}", $parameters);
+        return $this->_post("orders/{$order}", $parameters);
     }
 
     /**
      * Pays the given order.
      *
-     * @param  string  $orderId
+     * @param  string  $order
      * @param  array  $parameters
      * @return array
      */
-    public function pay($orderId, array $parameters = [])
+    public function pay($order, array $parameters = [])
     {
-        return $this->_post("orders/{$orderId}/pay", $parameters);
+        return $this->_post("orders/{$order}/pay", $parameters);
     }
 
     /**
      * Returns the given order.
      *
-     * @param  string  $orderId
+     * @param  string  $order
      * @param  array  $items
      * @return array
      */
-    public function returnItems($orderId, array $items = [])
+    public function returnItems($order, array $items = [])
     {
-        return $this->_post("orders/{$orderId}/returns", compact('items'));
+        return $this->_post("orders/{$order}/returns", compact('items'));
     }
 
     /**

@@ -32,16 +32,18 @@ class BankAccounts extends Sources
     /**
      * Verifies the given bank account.
      *
-     * @param  string  $customerId
-     * @param  string  $bankAccountId
+     * @param  string  $customer
+     * @param  string  $bank
      * @param  array  $amounts
      * @param  string  $verificationMethod
      * @return array
      */
-    public function verify($customerId, $bankAccountId, array $amounts, $verificationMethod = null)
+    public function verify($customer, $bank, array $amounts, $verificationMethod = null)
     {
-        return $this->_post("customers/{$customerId}/sources/{$bankAccountId}/verify", [
+        $parameters = [
             'amounts' => $amounts, 'verification_method' => $verificationMethod,
-        ]);
+        ];
+
+        return $this->_post("customers/{$customer}/sources/{$bank}/verify", $parameters);
     }
 }

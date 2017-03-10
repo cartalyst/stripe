@@ -25,49 +25,49 @@ class ApplicationFeeRefunds extends Api
     /**
      * Creates a new application fee refund.
      *
-     * @param  string  $applicationFeeId
+     * @param  string  $fee
      * @param  array  $parameters
      * @return array
      */
-    public function create($applicationFeeId, array $parameters = [])
+    public function create($fee, array $parameters = [])
     {
-        return $this->_post("application_fees/{$applicationFeeId}/refunds", $parameters);
+        return $this->_post("application_fees/{$fee}/refunds", $parameters);
     }
 
     /**
      * Retrieves an existing application fee refund.
      *
-     * @param  string  $applicationFeeId
-     * @param  string  $refundId
+     * @param  string  $fee
+     * @param  string  $refund
      * @return array
      */
-    public function find($applicationFeeId, $refundId)
+    public function find($fee, $refund)
     {
-        return $this->_get("application_fees/{$applicationFeeId}/refunds/{$refundId}");
+        return $this->_get("application_fees/{$fee}/refunds/{$refund}");
     }
 
     /**
      * Updates an existing application fee refund.
      *
-     * @param  string  $applicationFeeId
-     * @param  string  $refundId
+     * @param  string  $fee
+     * @param  string  $refund
      * @param  array  $parameters
      * @return array
      */
-    public function update($applicationFeeId, $refundId, array $parameters = [])
+    public function update($fee, $refund, array $parameters = [])
     {
-        return $this->_post("application_fees/{$applicationFeeId}/refunds/{$refundId}", $parameters);
+        return $this->_post("application_fees/{$fee}/refunds/{$refund}", $parameters);
     }
 
     /**
      * Lists all application fee refunds.
      *
-     * @param  string  $applicationFeeId
+     * @param  string  $fee
      * @param  array  $parameters
      * @return array
      */
-    public function all($applicationFeeId, array $parameters = [])
+    public function all($fee, array $parameters = [])
     {
-        return $this->_get("application_fees/{$applicationFeeId}/refunds", $parameters);
+        return $this->_get("application_fees/{$fee}/refunds", $parameters);
     }
 }

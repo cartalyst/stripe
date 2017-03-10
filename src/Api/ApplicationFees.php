@@ -25,12 +25,12 @@ class ApplicationFees extends Api
     /**
      * Retrieves an existing application fee.
      *
-     * @param  string  $applicationFeeId
+     * @param  string  $fee
      * @return array
      */
-    public function find($applicationFeeId)
+    public function find($fee)
     {
-        return $this->_get("application_fees/{$applicationFeeId}");
+        return $this->_get("application_fees/{$fee}");
     }
 
     /**

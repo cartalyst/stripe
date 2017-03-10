@@ -36,39 +36,39 @@ class Charges extends Api
     /**
      * Retrieves an existing charge.
      *
-     * @param  string  $chargeId
+     * @param  string  $charge
      * @return array
      */
-    public function find($chargeId)
+    public function find($charge)
     {
-        return $this->_get("charges/{$chargeId}");
+        return $this->_get("charges/{$charge}");
     }
 
     /**
      * Updates an existing charge.
      *
-     * @param  string  $chargeId
+     * @param  string  $charge
      * @param  array  $parameters
      * @return array
      */
-    public function update($chargeId, array $parameters = [])
+    public function update($charge, array $parameters = [])
     {
-        return $this->_post("charges/{$chargeId}", $parameters);
+        return $this->_post("charges/{$charge}", $parameters);
     }
 
     /**
      * Captures an existing charge.
      *
-     * @param  string  $chargeId
+     * @param  string  $charge
      * @param  int  $amount
      * @param  array  $parameters
      * @return array
      */
-    public function capture($chargeId, $amount = null, array $parameters = [])
+    public function capture($charge, $amount = null, array $parameters = [])
     {
         $parameters = array_merge($parameters, array_filter(compact('amount')));
 
-        return $this->_post("charges/{$chargeId}/capture", $parameters);
+        return $this->_post("charges/{$charge}/capture", $parameters);
     }
 
     /**

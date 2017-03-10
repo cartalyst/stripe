@@ -36,35 +36,35 @@ class Skus extends Api
     /**
      * Retrieves an existing sku.
      *
-     * @param  string  $skuId
+     * @param  string  $sku
      * @return array
      */
-    public function find($skuId)
+    public function find($sku)
     {
-        return $this->_get("skus/{$skuId}");
+        return $this->_get("skus/{$sku}");
     }
 
     /**
      * Updates an existing sku.
      *
-     * @param  string  $skuId
+     * @param  string  $sku
      * @param  array  $parameters
      * @return array
      */
-    public function update($skuId, array $parameters = [])
+    public function update($sku, array $parameters = [])
     {
-        return $this->_post("skus/{$skuId}", $parameters);
+        return $this->_post("skus/{$sku}", $parameters);
     }
 
     /**
      * Deletes an existing sku.
      *
-     * @param  string  $skuId
+     * @param  string  $sku
      * @return array
      */
-    public function delete($skuId)
+    public function delete($sku)
     {
-        return $this->_delete("skus/{$skuId}");
+        return $this->_delete("skus/{$sku}");
     }
 
     /**

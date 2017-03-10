@@ -36,35 +36,35 @@ class Products extends Api
     /**
      * Retrieves an existing product.
      *
-     * @param  string  $productId
+     * @param  string  $product
      * @return array
      */
-    public function find($productId)
+    public function find($product)
     {
-        return $this->_get("products/{$productId}");
+        return $this->_get("products/{$product}");
     }
 
     /**
      * Updates an existing product.
      *
-     * @param  string  $productId
+     * @param  string  $product
      * @param  array  $parameters
      * @return array
      */
-    public function update($productId, array $parameters = [])
+    public function update($product, array $parameters = [])
     {
-        return $this->_post("products/{$productId}", $parameters);
+        return $this->_post("products/{$product}", $parameters);
     }
 
     /**
      * Deletes an existing product.
      *
-     * @param  string  $productId
+     * @param  string  $product
      * @return array
      */
-    public function delete($productId)
+    public function delete($product)
     {
-        return $this->_delete("products/{$productId}");
+        return $this->_delete("products/{$product}");
     }
 
     /**

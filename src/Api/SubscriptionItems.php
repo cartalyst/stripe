@@ -40,35 +40,35 @@ class SubscriptionItems extends Api
     /**
      * Retrieves an existing subscription item.
      *
-     * @param  string  $itemId
+     * @param  string  $item
      * @return array
      */
-    public function find($itemId)
+    public function find($item)
     {
-        return $this->_get("subscription_items/{$itemId}");
+        return $this->_get("subscription_items/{$item}");
     }
 
     /**
      * Updates an existing subscription item.
      *
-     * @param  string  $itemId
+     * @param  string  $item
      * @param  array  $parameters
      * @return array
      */
-    public function update($itemId, array $parameters = [])
+    public function update($item, array $parameters = [])
     {
-        return $this->_post("subscription_items/{$itemId}", $parameters);
+        return $this->_post("subscription_items/{$item}", $parameters);
     }
 
     /**
      * Deletes an existing subscription item.
      *
-     * @param  string  $itemId
+     * @param  string  $item
      * @return array
      */
-    public function delete($itemId)
+    public function delete($item)
     {
-        return $this->_delete("subscription_items/{$itemId}");
+        return $this->_delete("subscription_items/{$item}");
     }
 
     /**

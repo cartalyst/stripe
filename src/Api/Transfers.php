@@ -36,24 +36,24 @@ class Transfers extends Api
     /**
      * Retrieves an existing transfer.
      *
-     * @param  string  $transferId
+     * @param  string  $transfer
      * @return array
      */
-    public function find($transferId)
+    public function find($transfer)
     {
-        return $this->_get("transfers/{$transferId}");
+        return $this->_get("transfers/{$transfer}");
     }
 
     /**
      * Updates an existing transfer.
      *
-     * @param  string  $transferId
+     * @param  string  $transfer
      * @param  array  $parameters
      * @return array
      */
-    public function update($transferId, array $parameters = [])
+    public function update($transfer, array $parameters = [])
     {
-        return $this->_post("transfers/{$transferId}", $parameters);
+        return $this->_post("transfers/{$transfer}", $parameters);
     }
 
     /**

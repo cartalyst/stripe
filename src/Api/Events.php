@@ -25,12 +25,12 @@ class Events extends Api
     /**
      * Retrieves an existing event.
      *
-     * @param  string  $eventId
+     * @param  string  $event
      * @return array
      */
-    public function find($eventId)
+    public function find($event)
     {
-        return $this->_get("events/{$eventId}");
+        return $this->_get("events/{$event}");
     }
 
     /**

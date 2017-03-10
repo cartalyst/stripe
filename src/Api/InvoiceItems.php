@@ -25,15 +25,13 @@ class InvoiceItems extends Api
     /**
      * Creates a new invoice item on the given customer
      *
-     * @param  string  $customerId
+     * @param  string  $customer
      * @param  array  $parameters
      * @return array
      */
-    public function create($customerId, array $parameters = [])
+    public function create($customer, array $parameters = [])
     {
-        $parameters = array_merge($parameters, [
-            'customer' => $customerId,
-        ]);
+        $parameters = array_merge($parameters, compact('customer'));
 
         return $this->_post('invoiceitems', $parameters);
     }
@@ -41,35 +39,35 @@ class InvoiceItems extends Api
     /**
      * Retrieves an existing invoice item.
      *
-     * @param  string  $invoiceItemId
+     * @param  string  $item
      * @return array
      */
-    public function find($invoiceItemId)
+    public function find($item)
     {
-        return $this->_get("invoiceitems/{$invoiceItemId}");
+        return $this->_get("invoiceitems/{$item}");
     }
 
     /**
      * Updates an existing invoice item.
      *
-     * @param  string  $invoiceItemId
+     * @param  string  $item
      * @param  array  $parameters
      * @return array
      */
-    public function update($invoiceItemId, array $parameters = [])
+    public function update($item, array $parameters = [])
     {
-        return $this->_post("invoiceitems/{$invoiceItemId}", $parameters);
+        return $this->_post("invoiceitems/{$item}", $parameters);
     }
 
     /**
      * Deletes an existing invoice item.
      *
-     * @param  string  $invoiceItemId
+     * @param  string  $item
      * @return array
      */
-    public function delete($invoiceItemId)
+    public function delete($item)
     {
-        return $this->_delete("invoiceitems/{$invoiceItemId}");
+        return $this->_delete("invoiceitems/{$item}");
     }
 
     /**

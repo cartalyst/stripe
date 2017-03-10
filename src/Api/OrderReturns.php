@@ -25,12 +25,12 @@ class OrderReturns extends Api
     /**
      * Retrieves an existing order return.
      *
-     * @param  string  $orderReturnId
+     * @param  string  $return
      * @return array
      */
-    public function find($orderReturnId)
+    public function find($return)
     {
-        return $this->_get("order_returns/{$orderReturnId}");
+        return $this->_get("order_returns/{$return}");
     }
 
     /**

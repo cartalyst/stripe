@@ -36,12 +36,12 @@ class Bitcoin extends Api
     /**
      * Retrieves the bitcoin receiver with the given ID.
      *
-     * @param  string  $receiverId
+     * @param  string  $receiver
      * @return array
      */
-    public function find($receiverId)
+    public function find($receiver)
     {
-        return $this->_get("bitcoin/receivers/{$receiverId}");
+        return $this->_get("bitcoin/receivers/{$receiver}");
     }
 
     /**

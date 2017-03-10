@@ -23,64 +23,63 @@ namespace Cartalyst\Stripe\Api;
 class ExternalAccounts extends Api
 {
     /**
-     * Create a new bank account on a connected account.
+     * Create a new bank account or debit card on a connected account.
      *
-     * @param  string  $accountId
-     * @param  string  $bankAccountId
+     * @param  string  $account
      * @param  array  $parameters
      * @return array
      */
-    public function create($accountId, array $parameters)
+    public function create($account, array $parameters)
     {
-        return $this->_post("accounts/{$accountId}/external_accounts", $parameters);
+        return $this->_post("accounts/{$account}/external_accounts", $parameters);
     }
 
     /**
-     * Retrieves an existing bank account from a connected account.
+     * Retrieves an existing bank account or debit card from a connected account.
      *
-     * @param  string  $accountId
-     * @param  string  $externalAccountId
+     * @param  string  $account
+     * @param  string  $object
      * @return array
      */
-    public function find($accountId, $externalAccountId)
+    public function find($account, $object)
     {
-        return $this->_get("accounts/{$accountId}/external_accounts/{$externalAccountId}");
+        return $this->_get("accounts/{$account}/external_accounts/{$object}");
     }
 
     /**
-     * Updates an existing bank account on a connected account.
+     * Updates an existing bank account or debit card on a connected account.
      *
-     * @param  string  $accountId
-     * @param  string  $externalAccountId
+     * @param  string  $account
+     * @param  string  $object
      * @param  array  $parameters
      * @return array
      */
-    public function update($accountId, $externalAccountId, array $parameters = [])
+    public function update($account, $object, array $parameters = [])
     {
-        return $this->_post("accounts/{$accountId}/external_accounts/{$externalAccountId}", $parameters);
+        return $this->_post("accounts/{$account}/external_accounts/{$object}", $parameters);
     }
 
     /**
-     * Deletes an existing bank account from a connected account.
+     * Deletes an existing bank account or debit card from a connected account.
      *
-     * @param  string  $accountId
-     * @param  string  $externalAccountId
+     * @param  string  $account
+     * @param  string  $object
      * @return array
      */
-    public function delete($accountId, $externalAccountId)
+    public function delete($account, $object)
     {
-        return $this->_delete("accounts/{$accountId}/external_accounts/{$externalAccountId}");
+        return $this->_delete("accounts/{$account}/external_accounts/{$object}");
     }
 
     /**
-     * Returns a list of all the bank accounts from a connected account.
+     * Returns a list of all the bank accounts or debit cards from a connected account.
      *
-     * @param  string  $accountId
+     * @param  string  $account
      * @param  array  $parameters
      * @return array
      */
-    public function all($accountId, array $parameters = [])
+    public function all($account, array $parameters = [])
     {
-        return $this->_get("accounts/{$accountId}/external_accounts", $parameters);
+        return $this->_get("accounts/{$account}/external_accounts", $parameters);
     }
 }
