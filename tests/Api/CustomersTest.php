@@ -65,6 +65,29 @@ class CustomersTest extends FunctionalTestCase
     }
 
     /** @test */
+    public function it_can_update_the_default_card_of_an_existing_customer()
+    {
+        $customer = $this->createCustomer();
+
+        $customerId = $customer['id'];
+
+        $card1 = $this->createCardThroughToken($customerId)['id'];
+        $card2 = $this->createCardThroughToken($customerId)['id'];
+
+        $customer = $this->stripe->customers()->find($customerId);
+
+        $this->assertSame($card1, $customer['default_source']);
+
+        $this->stripe->customers()->update($customerId, [
+            'default_source' => $card2,
+        ]);
+
+        $customer = $this->stripe->customers()->find($customerId);
+
+        $this->assertSame($card2, $customer['default_source']);
+    }
+
+    /** @test */
     public function it_can_delete_an_existing_customer()
     {
         $customer = $this->createCustomer();
