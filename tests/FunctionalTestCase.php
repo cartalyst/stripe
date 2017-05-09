@@ -271,4 +271,41 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
     //         'destination' => $bank['id'],
     //     ]);
     // }
+
+    protected function createTestManagedAccount()
+    {
+        return $this->stripe->account()->create([
+            'managed' => true,
+            'country' => 'US',
+            'payout_schedule' => [
+                'interval' => 'manual',
+            ],
+            'external_account' => [
+                'object' => 'bank_account',
+                'country' => 'US',
+                'currency' => 'usd',
+                'routing_number' => '110000000',
+                'account_number' => '000123456789',
+            ],
+            'legal_entity' => [
+                'type'               => 'individual',
+                'personal_id_number' => '000000000',
+                'type'               => 'individual',
+                'dob'                => [ 'year' => '1980', 'month' => '01', 'day' => '01'],
+                'first_name'         => 'John',
+                'last_name'          => 'Doe',
+                'address' => [
+                    'line1'       => '1234 Main Street',
+                    'postal_code' => '94110',
+                    'city'        => 'San Francisco',
+                ],
+                'personal_address' => [
+                    'line1'       => '1234 Main Street',
+                    'postal_code' => '94110',
+                    'city'        => 'San Francisco',
+                ],
+            ],
+            'tos_acceptance' => [ 'date' => time(), 'ip' => '127.0.0.1'],
+        ]);
+    }
 }

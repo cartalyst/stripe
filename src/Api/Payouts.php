@@ -63,7 +63,7 @@ class Payouts extends Api
      * @param  array  $parameters
      * @return array
      */
-    public function pay($payoutId, array $parameters = [])
+    public function cancel($payoutId, array $parameters = [])
     {
         return $this->_post("payouts/{$payoutId}/cancel", $parameters);
     }
