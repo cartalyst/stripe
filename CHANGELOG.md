@@ -11,6 +11,17 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.1.0 - 2017-05-10
+
+`ADDED`
+
+- PHP 7.1 support.
+- Add Payouts API endpoint.
+
+`REMOVED`
+
+- HHVM support.
+
 ### v2.0.9 - 2017-03-09
 
 `FIXED`

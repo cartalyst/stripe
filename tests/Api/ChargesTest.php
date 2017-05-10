@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.0.9
+ * @version    2.1.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2017, Cartalyst LLC
@@ -24,6 +24,34 @@ use Cartalyst\Stripe\Tests\FunctionalTestCase;
 
 class ChargesTest extends FunctionalTestCase
 {
+    /** @test */
+    public function it_can_create_a_new_charge()
+    {
+        $charge = $this->stripe->charges()->create([
+            'currency' => 'USD',
+            'amount'   => 50.49,
+            'card'     => 'tok_visa',
+        ]);
+
+        $this->assertTrue($charge['paid']);
+        $this->assertTrue($charge['captured']);
+        $this->assertFalse($charge['refunded']);
+        $this->assertSame(5049, $charge['amount']);
+    }
+
+    /**
+     * @test
+     * @expectedException \Cartalyst\Stripe\Exception\CardErrorException
+     */
+    public function a_charge_can_be_declined()
+    {
+        $charge = $this->stripe->charges()->create([
+            'currency' => 'USD',
+            'amount'   => 50.49,
+            'card'     => 'tok_chargeDeclined',
+        ]);
+    }
+
     /** @test */
     public function it_can_create_a_new_charge_on_an_existing_customer()
     {
