@@ -20,14 +20,74 @@
 
 namespace Cartalyst\Stripe\Api;
 
-class BankAccounts extends Sources
+class BankAccounts extends Api
 {
     /**
-     * The source type.
+     * Creates a new source on the given customer.
      *
-     * @var string
+     * @param  string  $customerId
+     * @param  string|array  $parameters
+     * @return array
      */
-    protected $sourceType = 'bank_account';
+    public function create($customerId, $parameters = [])
+    {
+        if (is_array($parameters)) {
+            $parameters['object'] = 'bank_account';
+        }
+
+        $parameters = [ 'source' => $parameters ];
+
+        return $this->_post("customers/{$customerId}/sources", $parameters);
+    }
+
+    /**
+     * Retrieves an existing source from the given customer.
+     *
+     * @param  string  $customerId
+     * @param  string  $sourceId
+     * @return array
+     */
+    public function find($customerId, $sourceId)
+    {
+        return $this->_get("customers/{$customerId}/sources/{$sourceId}");
+    }
+
+    /**
+     * Updates an existing source from the given customer.
+     *
+     * @param  string  $customerId
+     * @param  string  $sourceId
+     * @param  array  $parameters
+     * @return array
+     */
+    public function update($customerId, $sourceId, array $parameters = [])
+    {
+        return $this->_post("customers/{$customerId}/sources/{$sourceId}", $parameters);
+    }
+
+    /**
+     * Deletes an existing source from the given customer.
+     *
+     * @param  string  $customerId
+     * @param  string  $sourceId
+     * @return array
+     */
+    public function delete($customerId, $sourceId)
+    {
+        return $this->_delete("customers/{$customerId}/sources/{$sourceId}");
+    }
+
+    /**
+     * Lists all sources from the given customer.
+     *
+     * @param  string  $customerId
+     * @param  array  $parameters
+     * @return array
+     */
+    public function all($customerId, array $parameters = [])
+    {
+        return $this->_get("customers/{$customerId}/sources", $parameters);
+    }
 
     /**
      * Verifies the given bank account.
