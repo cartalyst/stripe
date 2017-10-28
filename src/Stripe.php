@@ -20,6 +20,8 @@
 
 namespace Cartalyst\Stripe;
 
+use ReflectionClass;
+
 class Stripe
 {
     /**
@@ -264,7 +266,7 @@ class Stripe
     {
         $class = "\\Cartalyst\\Stripe\\Api\\".ucwords($method);
 
-        if (class_exists($class)) {
+        if (class_exists($class) && ! (new ReflectionClass($class))->isAbstract()) {
             return new $class($this->config);
         }
 
