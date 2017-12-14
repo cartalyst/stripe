@@ -39,11 +39,11 @@ class AccountTest extends FunctionalTestCase
         $email = $this->getRandomEmail();
 
         $account = $this->stripe->account()->create([
-            'managed' => true, 'email' => $email,
+            'type' => 'custom', 'email' => $email,
         ]);
 
         $this->assertSame($email, $account['email']);
-        $this->assertSame('unverified', $account['legal_entity']['verification']['status']);
+        $this->assertSame('pending', $account['legal_entity']['verification']['status']);
 
         return $account;
     }
@@ -62,7 +62,7 @@ class AccountTest extends FunctionalTestCase
 
         $this->assertSame($accountId, $account['id']);
         $this->assertSame($email, $account['email']);
-        $this->assertSame('unverified', $account['legal_entity']['verification']['status']);
+        $this->assertSame('pending', $account['legal_entity']['verification']['status']);
     }
 
     /**
@@ -81,7 +81,7 @@ class AccountTest extends FunctionalTestCase
 
         $this->assertSame($accountId, $account['id']);
         $this->assertSame($email, $account['email']);
-        $this->assertSame('unverified', $account['legal_entity']['verification']['status']);
+        $this->assertSame('pending', $account['legal_entity']['verification']['status']);
     }
 
     /**
@@ -107,7 +107,7 @@ class AccountTest extends FunctionalTestCase
     {
         $filePath = realpath(__DIR__.'/../files/verify-account.jpg');
 
-        $this->assertSame('unverified', $account['legal_entity']['verification']['status']);
+        $this->assertSame('pending', $account['legal_entity']['verification']['status']);
 
         $account = $this->stripe->account()->verify($account['id'], $filePath, 'identity_document');
 

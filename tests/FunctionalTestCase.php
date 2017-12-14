@@ -275,7 +275,7 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
     protected function createTestManagedAccount()
     {
         return $this->stripe->account()->create([
-            'managed' => true,
+            'type' => 'custom',
             'country' => 'US',
             'payout_schedule' => [
                 'interval' => 'manual',

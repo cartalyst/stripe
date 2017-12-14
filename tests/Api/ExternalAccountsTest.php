@@ -30,7 +30,7 @@ class ExternalAccountsTest extends FunctionalTestCase
         $email = $this->getRandomEmail();
 
         $accountId = $this->stripe->account()->create([
-            'managed' => true, 'email' => $email,
+            'type' => 'custom', 'email' => $email,
         ])['id'];
 
         $token = $this->createBankAccountToken();
@@ -49,7 +49,7 @@ class ExternalAccountsTest extends FunctionalTestCase
         $email = $this->getRandomEmail();
 
         $accountId = $this->stripe->account()->create([
-            'managed' => true, 'email' => $email,
+            'type' => 'custom', 'email' => $email,
         ])['id'];
 
         $token = $this->createBankAccountToken();
@@ -70,7 +70,7 @@ class ExternalAccountsTest extends FunctionalTestCase
         $email = $this->getRandomEmail();
 
         $accountId = $this->stripe->account()->create([
-            'managed' => true, 'email' => $email,
+            'type' => 'custom', 'email' => $email,
         ])['id'];
 
         $token = $this->createBankAccountToken();
@@ -94,7 +94,7 @@ class ExternalAccountsTest extends FunctionalTestCase
         $email = $this->getRandomEmail();
 
         $accountId = $this->stripe->account()->create([
-            'managed' => true, 'email' => $email,
+            'type' => 'custom', 'email' => $email,
         ])['id'];
 
         $token = $this->createBankAccountToken();
@@ -120,7 +120,7 @@ class ExternalAccountsTest extends FunctionalTestCase
         $email = $this->getRandomEmail();
 
         $accountId = $this->stripe->account()->create([
-            'managed' => true, 'email' => $email,
+            'type' => 'custom', 'email' => $email,
         ])['id'];
 
         $token = $this->createBankAccountToken();
@@ -141,7 +141,7 @@ class ExternalAccountsTest extends FunctionalTestCase
         $email = $this->getRandomEmail();
 
         $accountId = $this->stripe->account()->create([
-            'managed' => true, 'email' => $email,
+            'type' => 'custom', 'email' => $email,
         ])['id'];
 
         $token = $this->createBankAccountToken();
