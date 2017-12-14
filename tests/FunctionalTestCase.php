@@ -123,12 +123,14 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
     protected function createBankAccountThroughArray($customerId)
     {
         return $this->stripe->bankAccounts()->create($customerId, [
-            'country'             => 'US',
-            'currency'            => 'usd',
-            'account_holder_name' => 'Jane Austen',
-            'account_holder_type' => 'individual',
-            'routing_number'      => '110000000',
-            'account_number'      => '000123456789',
+            'source' => [
+                'country'             => 'US',
+                'currency'            => 'usd',
+                'account_holder_name' => 'Jane Austen',
+                'account_holder_type' => 'individual',
+                'routing_number'      => '110000000',
+                'account_number'      => '000123456789',
+            ],
         ]);
     }
 
@@ -142,11 +144,14 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
     protected function createCardThroughArray($customerId)
     {
         return $this->stripe->cards()->create($customerId, [
-            'exp_month' => 10,
-            'cvc'       => 314,
-            'exp_year'  => 2020,
-            'number'    => '4242424242424242',
-            'currency'  => 'usd',
+            'source' => [
+                'exp_month' => 10,
+                'cvc'       => 314,
+                'exp_year'  => 2020,
+                'number'    => '4242424242424242',
+                'currency'  => 'usd',
+            ],
+            'metadata' => ['foo' => 'bar']
         ]);
     }
 

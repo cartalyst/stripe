@@ -31,11 +31,11 @@ class BankAccounts extends Api
      */
     public function create($customerId, $parameters = [])
     {
-        if (is_array($parameters)) {
-            $parameters['object'] = 'bank_account';
+        if (is_array($parameters) && isset($parameters['source'])) {
+            $parameters['source']['object'] = 'bank_account';
+        } elseif (is_string($parameters)) {
+            $parameters = ['source' => $parameters];
         }
-
-        $parameters = [ 'source' => $parameters ];
 
         return $this->_post("customers/{$customerId}/sources", $parameters);
     }
