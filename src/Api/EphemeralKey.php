@@ -28,7 +28,7 @@ class EphemeralKey extends Api
      * @param  string  $customer
      * @return array
      */
-    public function create(string $customer)
+    public function create($customer)
     {
         return $this->_post('ephemeral_keys', compact('customer'));
     }
@@ -39,7 +39,7 @@ class EphemeralKey extends Api
      * @param  string  $ephemeralKey
      * @return array
      */
-    public function delete(string $ephemeralKey)
+    public function delete($ephemeralKey)
     {
         return $this->_delete("ephemeral_keys/{$ephemeralKey}");
     }
