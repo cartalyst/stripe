@@ -11,6 +11,17 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.1.1 - 2018-01-12
+
+`FIXED`
+
+- Issue when creating a card and not being able to pass metadata or other attributes.
+- Sources API class to use the proper Stripe Sources endpoint.
+
+`ADDED`
+
+- Support for Ephemeral Keys.
+
 ### v2.1.0 - 2017-05-10
 
 `ADDED`
