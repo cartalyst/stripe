@@ -86,6 +86,7 @@ class Cards extends Api
      */
     public function all($customerId, array $parameters = [])
     {
+        $parameters['object'] = 'card';
         return $this->_get("customers/{$customerId}/sources", $parameters);
     }
 }
