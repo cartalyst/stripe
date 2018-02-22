@@ -11,6 +11,13 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.1.2 - 2018-02-22
+
+`FIXED`
+
+- Issue on `all()` method on Bank Accounts API to also return Cards.
+- Issue on `all()` method on Cards API to also return Bank Accounts.
+
 ### v2.1.1 - 2018-01-12
 
 `FIXED`
