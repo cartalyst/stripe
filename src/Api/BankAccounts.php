@@ -87,6 +87,7 @@ class BankAccounts extends Api
     public function all($customerId, array $parameters = [])
     {
         $parameters['object'] = 'bank_account';
+
         return $this->_get("customers/{$customerId}/sources", $parameters);
     }
 
