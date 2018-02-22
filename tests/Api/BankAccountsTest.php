@@ -132,10 +132,12 @@ class BankAccountsTest extends FunctionalTestCase
         $customerId = $customer['id'];
 
         $this->createBankAccountThroughToken($customerId);
+        $this->createCardThroughToken($customer['id']);
 
         $bankAccounts = $this->stripe->bankAccounts()->all($customerId);
 
         $this->assertNotEmpty($bankAccounts['data']);
+        $this->assertCount(1, $bankAccounts['data']);
         $this->assertInternalType('array', $bankAccounts['data']);
     }
 
@@ -147,6 +149,8 @@ class BankAccountsTest extends FunctionalTestCase
         $customerId = $customer['id'];
 
         $this->createBankAccountThroughToken($customerId);
+
+        $this->createCardThroughToken($customerId);
 
         $bankAccounts = $this->stripe->bankAccountsIterator($customerId);
 

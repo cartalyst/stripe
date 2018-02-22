@@ -108,10 +108,12 @@ class CardsTest extends FunctionalTestCase
         $customer = $this->createCustomer();
 
         $this->createCardThroughToken($customer['id']);
+        $this->createBankAccountThroughToken($customer['id']);
 
         $cards = $this->stripe->cards()->all($customer['id']);
 
         $this->assertNotEmpty($cards['data']);
+        $this->assertCount(1, $cards['data']);
         $this->assertInternalType('array', $cards['data']);
     }
 
@@ -120,11 +122,15 @@ class CardsTest extends FunctionalTestCase
     {
         $customer = $this->createCustomer();
 
+        $customerId = $customer['id'];
+
         for ($i=0; $i < 5; $i++) {
-            $this->createCardThroughToken($customer['id']);
+            $this->createCardThroughToken($customerId);
         }
 
-        $cards = $this->stripe->cardsIterator($customer['id']);
+        $this->createBankAccountThroughToken($customerId);
+
+        $cards = $this->stripe->cardsIterator($customerId);
 
         $this->assertCount(5, $cards);
     }
