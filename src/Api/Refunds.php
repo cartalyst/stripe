@@ -41,11 +41,15 @@ class Refunds extends Api
      * Retrieves an existing refund from the given charge.
      *
      * @param  string  $chargeId
-     * @param  string  $refundId
+     * @param  string|null  $refundId
      * @return array
      */
-    public function find($chargeId, $refundId)
+    public function find($chargeId, $refundId = null)
     {
+        if (! $refundId) {
+            return $this->_get("refunds/{$chargeId}");
+        }
+
         return $this->_get("charges/{$chargeId}/refunds/{$refundId}");
     }
 
@@ -63,14 +67,19 @@ class Refunds extends Api
     }
 
     /**
-     * Lists all refunds for the given charge.
+     * Lists all the refunds of the current Stripe account
+     * or lists all the refunds for the given charge.
      *
-     * @param  string  $chargeId
+     * @param  string|null  $chargeId
      * @param  array  $parameters
      * @return array
      */
-    public function all($chargeId, array $parameters = [])
+    public function all($chargeId = null, array $parameters = [])
     {
+        if (! $chargeId) {
+            return $this->_get('refunds', $parameters);
+        }
+
         return $this->_get("charges/{$chargeId}/refunds", $parameters);
     }
 }

@@ -71,6 +71,23 @@ class RefundsTest extends FunctionalTestCase
         $this->assertSame(5049, $refund['amount']);
     }
 
+    /** @test */
+    public function it_can_find_a_refund_without_passing_the_charge_id()
+    {
+        $customer = $this->createCustomer();
+
+        $charge = $this->createCharge($customer['id']);
+
+        $refund = $this->stripe->refunds()->create($charge['id']);
+
+        $refund = $this->stripe->refunds()->find($refund['id']);
+
+        $charge = $this->stripe->charges()->find($charge['id']);
+
+        $this->assertTrue($charge['refunded']);
+        $this->assertSame(5049, $refund['amount']);
+    }
+
     /**
      * @test
      * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
@@ -106,11 +123,31 @@ class RefundsTest extends FunctionalTestCase
     {
         $customer = $this->createCustomer();
 
-        $charge = $this->createCharge($customer['id']);
+        $charge1 = $this->createCharge($customer['id']);
+        $charge2 = $this->createCharge($customer['id']);
 
-        $this->stripe->refunds()->create($charge['id']);
+        $this->stripe->refunds()->create($charge1['id']);
+        $this->stripe->refunds()->create($charge2['id']);
 
-        $refunds = $this->stripe->refunds()->all($charge['id']);
+        $refunds = $this->stripe->refunds()->all($charge1['id']);
+
+        $this->assertNotEmpty($refunds['data']);
+        $this->assertCount(1, $refunds['data']);
+        $this->assertInternalType('array', $refunds['data']);
+    }
+
+    /** @test */
+    public function it_can_retrieve_all_refunds_without_passing_the_charge_id()
+    {
+        $customer = $this->createCustomer();
+
+        $charge1 = $this->createCharge($customer['id']);
+        $charge2 = $this->createCharge($customer['id']);
+
+        $this->stripe->refunds()->create($charge1['id']);
+        $this->stripe->refunds()->create($charge2['id']);
+
+        $refunds = $this->stripe->refunds()->all();
 
         $this->assertNotEmpty($refunds['data']);
         $this->assertInternalType('array', $refunds['data']);

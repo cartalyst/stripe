@@ -180,7 +180,10 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
         $plan = $this->createPlan();
 
         return $this->stripe->subscriptions()->create($customerId, array_merge([
-            'plan' => $plan['id']
+            // 'plan' => $plan['id'],
+            'items' => [
+                ['plan' => $plan['id']]
+            ],
         ], $parameters));
     }
 
