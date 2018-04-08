@@ -48,12 +48,15 @@ class AccountTest extends FunctionalTestCase
         return $account;
     }
 
-    /**
-     * @test
-     * @depends it_can_create_a_new_account
-     */
-    public function it_can_retrieve_an_account($account)
+    /** @test */
+    public function it_can_retrieve_an_account()
     {
+        $email = $this->getRandomEmail();
+
+        $account = $this->stripe->account()->create([
+            'type' => 'custom', 'email' => $email,
+        ]);
+
         $email = $account['email'];
 
         $accountId = $account['id'];
@@ -65,12 +68,15 @@ class AccountTest extends FunctionalTestCase
         $this->assertSame('pending', $account['legal_entity']['verification']['status']);
     }
 
-    /**
-     * @test
-     * @depends it_can_create_a_new_account
-     */
-    public function it_can_update_an_account($account)
+    /** @test */
+    public function it_can_update_an_account()
     {
+        $email = $this->getRandomEmail();
+
+        $account = $this->stripe->account()->create([
+            'type' => 'custom', 'email' => $email,
+        ]);
+
         $accountId = $account['id'];
 
         $email = $this->getRandomEmail();
@@ -84,12 +90,15 @@ class AccountTest extends FunctionalTestCase
         $this->assertSame('pending', $account['legal_entity']['verification']['status']);
     }
 
-    /**
-     * @test
-     * @depends it_can_create_a_new_account
-     */
-    public function it_can_reject_an_account($account)
+    /** @test */
+    public function it_can_reject_an_account()
     {
+        $email = $this->getRandomEmail();
+
+        $account = $this->stripe->account()->create([
+            'type' => 'custom', 'email' => $email,
+        ]);
+
         $accountId = $account['id'];
 
         $this->stripe->account()->reject($accountId, 'other');
@@ -99,17 +108,24 @@ class AccountTest extends FunctionalTestCase
         $this->assertSame('rejected.other', $account['verification']['disabled_reason']);
     }
 
-    /**
-     * @test
-     * @depends it_can_create_a_new_account
-     */
-    public function it_can_verify_an_account($account)
+    /** @test */
+    public function it_can_verify_an_account()
     {
+        $email = $this->getRandomEmail();
+
+        $account = $this->stripe->account()->create([
+            'type' => 'custom', 'email' => $email,
+        ]);
+
         $filePath = realpath(__DIR__.'/../files/verify-account.jpg');
 
         $this->assertSame('pending', $account['legal_entity']['verification']['status']);
 
         $account = $this->stripe->account()->verify($account['id'], $filePath, 'identity_document');
+
+        sleep(2);
+
+        $account = $this->stripe->account()->find($account['id']);
 
         $this->assertSame('verified', $account['legal_entity']['verification']['status']);
     }
