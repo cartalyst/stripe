@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.1.3 - 2018-04-08
+
+`UPDATED`
+
+- Some of the methods on the Account API class to allow the usage of the new Stripe API endpoints.
+
 ### v2.1.2 - 2018-02-22
 
 `FIXED`
