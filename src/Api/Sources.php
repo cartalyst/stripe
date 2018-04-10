@@ -69,4 +69,16 @@ class Sources extends Api
             'source' => $sourceId,
         ]);
     }
+
+    /**
+     * Detaches the given source from the customer.
+     *
+     * @param  string  $customerId
+     * @param  string  $sourceId
+     * @return array
+     */
+    public function detach($customerId, $sourceId)
+    {
+        return $this->_delete("customers/{$customerId}/sources/{$sourceId}");
+    }
 }

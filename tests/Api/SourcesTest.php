@@ -35,6 +35,7 @@ class SourcesTest extends FunctionalTestCase
             ],
         ]);
 
+        $this->assertSame('pending', $source['status']);
         $this->assertSame('john@doe.com', $source['owner']['email']);
 
         return $source['id'];
@@ -48,6 +49,7 @@ class SourcesTest extends FunctionalTestCase
     {
         $source = $this->stripe->sources()->find($sourceId);
 
+        $this->assertSame('pending', $source['status']);
         $this->assertSame('john@doe.com', $source['owner']['email']);
     }
 
@@ -63,6 +65,7 @@ class SourcesTest extends FunctionalTestCase
             ],
         ]);
 
+        $this->assertSame('pending', $source['status']);
         $this->assertSame('123456789', $source['metadata']['orderId']);
     }
 
@@ -76,6 +79,22 @@ class SourcesTest extends FunctionalTestCase
 
         $source = $this->stripe->sources()->attach($customer['id'], $sourceId);
 
+        $this->assertSame('chargeable', $source['status']);
         $this->assertSame($customer['id'], $source['customer']);
+
+        return [$customer['id'], $sourceId];
+    }
+
+    /**
+     * @test
+     * @depends a_source_can_be_attached_to_a_customer
+     */
+    public function a_source_can_be_detached_from_a_customer($parameters)
+    {
+        list($customerId, $sourceId) = $parameters;
+
+        $source = $this->stripe->sources()->detach($customerId, $sourceId);
+
+        $this->assertSame('consumed', $source['status']);
     }
 }
