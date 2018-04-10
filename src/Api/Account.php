@@ -125,4 +125,18 @@ class Account extends Api
     {
         return $this->_get('accounts', $parameters);
     }
+
+    /**
+     * Creates a login link.
+     *
+     * @param  string  $accountId
+     * @param  string|null  $redirectUrl
+     * @return array
+     */
+    public function createLoginLink($accountId, $redirectUrl = null)
+    {
+        return $this->_post("accounts/{$accountId}/login_links", [
+            'redirect_url' => $redirectUrl,
+        ]);
+    }
 }
