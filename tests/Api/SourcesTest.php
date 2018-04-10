@@ -65,4 +65,17 @@ class SourcesTest extends FunctionalTestCase
 
         $this->assertSame('123456789', $source['metadata']['orderId']);
     }
+
+    /**
+     * @test
+     * @depends a_source_can_be_created
+     */
+    public function a_source_can_be_attached_to_a_customer($sourceId)
+    {
+        $customer = $this->createCustomer();
+
+        $source = $this->stripe->sources()->attach($customer['id'], $sourceId);
+
+        $this->assertSame($customer['id'], $source['customer']);
+    }
 }

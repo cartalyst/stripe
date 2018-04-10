@@ -55,4 +55,18 @@ class Sources extends Api
     {
         return $this->_post("sources/{$sourceId}", $parameters);
     }
+
+    /**
+     * Attaches the given source to the customer.
+     *
+     * @param  string  $customerId
+     * @param  string  $sourceId
+     * @return array
+     */
+    public function attach($customerId, $sourceId)
+    {
+        return $this->_post("customers/{$customerId}/sources", [
+            'source' => $sourceId,
+        ]);
+    }
 }
