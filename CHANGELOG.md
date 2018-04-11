@@ -11,6 +11,18 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.1.4 - 2018-04-11
+
+`ADDED`
+
+- Method to the Sources API to attach a source to a customer.
+- Method to the Sources API to detach a source from a customer.
+- Method to the Account API to create a login link.
+- Sigma Scheduled Queries API
+    - Allows to find a scheduled query
+    - Allows to retrieve all scheduled queries
+- Usage Records API
+
 ### v2.1.3 - 2018-04-08
 
 `UPDATED`
