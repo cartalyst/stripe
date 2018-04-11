@@ -36,6 +36,7 @@ class SourcesTest extends FunctionalTestCase
         ]);
 
         $this->assertSame('pending', $source['status']);
+        $this->assertArrayNotHasKey('customer', $source);
         $this->assertSame('john@doe.com', $source['owner']['email']);
 
         return $source['id'];
@@ -50,6 +51,7 @@ class SourcesTest extends FunctionalTestCase
         $source = $this->stripe->sources()->find($sourceId);
 
         $this->assertSame('pending', $source['status']);
+        $this->assertArrayNotHasKey('customer', $source);
         $this->assertSame('john@doe.com', $source['owner']['email']);
     }
 
@@ -65,7 +67,7 @@ class SourcesTest extends FunctionalTestCase
             ],
         ]);
 
-        $this->assertSame('pending', $source['status']);
+        $this->assertArrayNotHasKey('customer', $source);
         $this->assertSame('123456789', $source['metadata']['orderId']);
     }
 
@@ -79,7 +81,6 @@ class SourcesTest extends FunctionalTestCase
 
         $source = $this->stripe->sources()->attach($customer['id'], $sourceId);
 
-        $this->assertSame('chargeable', $source['status']);
         $this->assertSame($customer['id'], $source['customer']);
 
         return [$customer['id'], $sourceId];

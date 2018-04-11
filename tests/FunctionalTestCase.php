@@ -56,16 +56,16 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
         ], $parameters));
     }
 
-    protected function createPlan()
+    protected function createPlan(array $parameters = [])
     {
-        return $this->stripe->plans()->create([
+        return $this->stripe->plans()->create(array_merge([
             'amount'               => 30.00,
             'currency'             => 'USD',
             'interval'             => 'month',
             'name'                 => 'Monthly (30$)',
             'statement_descriptor' => 'Monthly Subscription.',
             'id'                   => 'monthly-'.time().rand(),
-        ]);
+        ], $parameters));
     }
 
     protected function createProduct()
