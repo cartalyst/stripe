@@ -81,4 +81,16 @@ class Sources extends Api
     {
         return $this->_delete("customers/{$customerId}/sources/{$sourceId}");
     }
+
+    /**
+     * Lists all sources from the given customer.
+     *
+     * @param  string  $customerId
+     * @param  array  $parameters
+     * @return array
+     */
+    public function all($customerId, array $parameters = [])
+    {
+        return $this->_get("customers/{$customerId}/sources", $parameters);
+    }
 }
