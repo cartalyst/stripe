@@ -98,4 +98,30 @@ class SourcesTest extends FunctionalTestCase
 
         $this->assertSame('consumed', $source['status']);
     }
+
+    /** @test */
+    public function it_can_retrieve_all_sources()
+    {
+        $customer = $this->createCustomer();
+
+        $this->createCardThroughToken($customer['id']);
+        $this->createBankAccountThroughToken($customer['id']);
+        $this->stripe->sources()->create([
+            "type" => "sepa_debit",
+            "sepa_debit" => array("iban" => "DE89370400440532013000"),
+            "currency" => "eur",
+            'owner' => [
+                'name' => 'John Doe',
+                'email' => 'john@doe.com',
+            ],
+        ]);
+
+
+
+        $cards = $this->stripe->sources()->all($customer['id']);
+
+        $this->assertNotEmpty($cards['data']);
+        $this->assertCount(3, $cards['data']);
+        $this->assertInternalType('array', $cards['data']);
+    }
 }
