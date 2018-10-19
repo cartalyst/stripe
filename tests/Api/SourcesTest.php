@@ -28,9 +28,9 @@ class SourcesTest extends FunctionalTestCase
     public function a_source_can_be_created()
     {
         $source = $this->stripe->sources()->create([
-            'type'     => 'ach_credit_transfer',
+            'type' => 'ach_credit_transfer',
             'currency' => 'usd',
-            'owner'    => [
+            'owner' => [
                 'email' => 'john@doe.com',
             ],
         ]);
@@ -106,7 +106,7 @@ class SourcesTest extends FunctionalTestCase
 
         $this->createCardThroughToken($customer['id']);
         $this->createBankAccountThroughToken($customer['id']);
-        $this->stripe->sources()->create([
+        $source = $this->stripe->sources()->create([
             "type" => "sepa_debit",
             "sepa_debit" => array("iban" => "DE89370400440532013000"),
             "currency" => "eur",
@@ -116,12 +116,11 @@ class SourcesTest extends FunctionalTestCase
             ],
         ]);
 
+        $this->stripe->sources()->attach($customer['id'], $source['id']);
+        $sources = $this->stripe->sources()->all($customer['id']);
 
-
-        $cards = $this->stripe->sources()->all($customer['id']);
-
-        $this->assertNotEmpty($cards['data']);
-        $this->assertCount(3, $cards['data']);
-        $this->assertInternalType('array', $cards['data']);
+        $this->assertNotEmpty($sources['data']);
+        $this->assertCount(3, $sources['data']);
+        $this->assertInternalType('array', $sources['data']);
     }
 }
