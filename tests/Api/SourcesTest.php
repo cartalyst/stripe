@@ -28,9 +28,9 @@ class SourcesTest extends FunctionalTestCase
     public function a_source_can_be_created()
     {
         $source = $this->stripe->sources()->create([
-            'type'     => 'ach_credit_transfer',
+            'type' => 'ach_credit_transfer',
             'currency' => 'usd',
-            'owner'    => [
+            'owner' => [
                 'email' => 'john@doe.com',
             ],
         ]);
@@ -97,5 +97,30 @@ class SourcesTest extends FunctionalTestCase
         $source = $this->stripe->sources()->detach($customerId, $sourceId);
 
         $this->assertSame('consumed', $source['status']);
+    }
+
+    /** @test */
+    public function it_can_retrieve_all_sources()
+    {
+        $customer = $this->createCustomer();
+
+        $this->createCardThroughToken($customer['id']);
+        $this->createBankAccountThroughToken($customer['id']);
+        $source = $this->stripe->sources()->create([
+            "type" => "sepa_debit",
+            "sepa_debit" => array("iban" => "DE89370400440532013000"),
+            "currency" => "eur",
+            'owner' => [
+                'name' => 'John Doe',
+                'email' => 'john@doe.com',
+            ],
+        ]);
+
+        $this->stripe->sources()->attach($customer['id'], $source['id']);
+        $sources = $this->stripe->sources()->all($customer['id']);
+
+        $this->assertNotEmpty($sources['data']);
+        $this->assertCount(3, $sources['data']);
+        $this->assertInternalType('array', $sources['data']);
     }
 }
