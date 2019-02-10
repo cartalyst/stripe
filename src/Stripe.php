@@ -22,6 +22,43 @@ namespace Cartalyst\Stripe;
 
 use ReflectionClass;
 
+/**
+ * @method Api\Account account()
+ * @method Api\ApiInterface apiInterface()
+ * @method Api\ApplicationFeeRefunds applicationFeeRefunds()
+ * @method Api\ApplicationFees applicationFees()
+ * @method Api\Balance balance()
+ * @method Api\BankAccounts bankAccounts()
+ * @method Api\Bitcoin bitcoin()
+ * @method Api\Cards cards()
+ * @method Api\Charges charges()
+ * @method Api\CountrySpecs countrySpecs()
+ * @method Api\Coupons coupons()
+ * @method Api\Customers customers()
+ * @method Api\Disputes disputes()
+ * @method Api\EphemeralKey ephemeralKey()
+ * @method Api\Events events()
+ * @method Api\ExternalAccounts externalAccounts()
+ * @method Api\FileUploads fileUploads()
+ * @method Api\InvoiceItems invoiceItems()
+ * @method Api\Invoices invoices()
+ * @method Api\OrderReturns orderReturns()
+ * @method Api\Orders orders()
+ * @method Api\Payouts payouts()
+ * @method Api\Plans plans()
+ * @method Api\Products products()
+ * @method Api\Recipients recipients()
+ * @method Api\Refunds refunds()
+ * @method Api\ScheduledQueries scheduledQueries()
+ * @method Api\Skus skus()
+ * @method Api\Sources sources()
+ * @method Api\SubscriptionItems subscriptionItems()
+ * @method Api\Subscriptions subscriptions()
+ * @method Api\Tokens tokens()
+ * @method Api\TransferReversals transferReversals()
+ * @method Api\Transfers transfers()
+ * @method Api\UsageRecords usageRecords()
+ */
 class Stripe
 {
     /**
