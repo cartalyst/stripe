@@ -202,8 +202,6 @@ class OrdersTest extends FunctionalTestCase
 
         $sku = $this->createSku($product['id']);
 
-        $timestamp = time();
-
         $ids = [];
 
         for ($i=0; $i < 5; $i++) {
@@ -212,13 +210,8 @@ class OrdersTest extends FunctionalTestCase
             ])['id'];
         }
 
-        $orders = $this->stripe->ordersIterator([
-            'created' => [
-                'gte' => $timestamp,
-            ],
-            'ending_before' => current($ids),
-        ]);
+        $orders = $this->stripe->ordersIterator(['ids' => $ids]);
 
-        $this->assertCount(4, $orders);
+        $this->assertCount(5, $orders);
     }
 }

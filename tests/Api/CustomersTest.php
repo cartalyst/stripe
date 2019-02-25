@@ -141,21 +141,14 @@ class CustomersTest extends FunctionalTestCase
     /** @test */
     public function it_can_iterate_all_customers()
     {
-        $timestamp = time();
-
-        $ids = [];
+        $email = rand().'@'.time();
 
         for ($i=0; $i < 5; $i++) {
-            $ids[] = $this->createCustomer()['id'];
+            $this->createCustomer(['email' => $email]);
         }
 
-        $customers = $this->stripe->customersIterator([
-            'created' => [
-                'gte' => $timestamp,
-            ],
-            'ending_before' => current($ids),
-        ]);
+        $customers = $this->stripe->customersIterator(['email' => $email]);
 
-        $this->assertCount(4, $customers);
+        $this->assertCount(5, $customers);
     }
 }
