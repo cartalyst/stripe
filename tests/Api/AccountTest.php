@@ -184,6 +184,11 @@ class AccountTest extends FunctionalTestCase
             'type' => 'custom', 'email' => $email,
         ]);
 
-        $this->stripe->account()->delete($account['id']);
+        $accountId = $account['id'];
+
+        $response = $this->stripe->account()->delete($accountId);
+
+        $this->assertSame($accountId, $response['id']);
+        $this->assertTrue($response['deleted']);
     }
 }

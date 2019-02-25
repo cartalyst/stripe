@@ -106,21 +106,11 @@ class SourcesTest extends FunctionalTestCase
 
         $this->createCardThroughToken($customer['id']);
         $this->createBankAccountThroughToken($customer['id']);
-        $source = $this->stripe->sources()->create([
-            "type" => "sepa_debit",
-            "sepa_debit" => array("iban" => "DE89370400440532013000"),
-            "currency" => "eur",
-            'owner' => [
-                'name' => 'John Doe',
-                'email' => 'john@doe.com',
-            ],
-        ]);
 
-        $this->stripe->sources()->attach($customer['id'], $source['id']);
         $sources = $this->stripe->sources()->all($customer['id']);
 
         $this->assertNotEmpty($sources['data']);
-        $this->assertCount(3, $sources['data']);
+        $this->assertCount(2, $sources['data']);
         $this->assertInternalType('array', $sources['data']);
     }
 }

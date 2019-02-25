@@ -202,12 +202,20 @@ class OrdersTest extends FunctionalTestCase
 
         $sku = $this->createSku($product['id']);
 
+        $timestamp = time();
+
         for ($i=0; $i < 5; $i++) {
             $this->createOrder([
                 [ 'type' => 'sku', 'parent' => $sku['id'] ],
             ]);
         }
 
-        $this->stripe->ordersIterator();
+        $orders = $this->stripe->ordersIterator([
+            'created' => [
+                'gte' => $timestamp,
+            ],
+        ]);
+
+        $this->assertCount(5, $orders);
     }
 }

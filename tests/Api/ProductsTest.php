@@ -92,10 +92,18 @@ class ProductsTest extends FunctionalTestCase
     /** @test */
     public function it_can_iterate_all_products()
     {
+        $timestamp = time();
+
         for ($i=0; $i < 5; $i++) {
             $this->createProduct();
         }
 
-        $this->stripe->productsIterator();
+        $products = $this->stripe->productsIterator([
+            'created' => [
+                'gte' => $timestamp,
+            ],
+        ]);
+
+        $this->assertCount(5, $products);
     }
 }

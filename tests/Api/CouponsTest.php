@@ -88,10 +88,18 @@ class CouponsTest extends FunctionalTestCase
     /** @test */
     public function it_can_iterate_all_coupons()
     {
+        $timestamp = time();
+
         for ($i=0; $i < 5; $i++) {
             $this->createCoupon();
         }
 
-        $this->stripe->couponsIterator();
+        $coupons = $this->stripe->couponsIterator([
+            'created' => [
+                'gte' => $timestamp,
+            ],
+        ]);
+
+        $this->assertCount(5, $coupons);
     }
 }

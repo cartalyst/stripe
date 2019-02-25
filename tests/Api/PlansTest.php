@@ -88,10 +88,18 @@ class PlansTest extends FunctionalTestCase
     /** @test */
     public function it_can_iterate_all_plans()
     {
+        $timestamp = time();
+
         for ($i=0; $i < 5; $i++) {
             $this->createPlan();
         }
 
-        $this->stripe->plansIterator();
+        $plans = $this->stripe->plansIterator([
+            'created' => [
+                'gte' => $timestamp,
+            ],
+        ]);
+
+        $this->assertCount(5, $plans);
     }
 }

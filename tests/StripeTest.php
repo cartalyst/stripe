@@ -102,7 +102,9 @@ class StripeTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_get_the_current_package_version()
     {
-        $this->stripe->getVersion();
+        $version = $this->stripe->getVersion();
+
+        $this->assertSame('2.1.4', $version);
     }
 
     /** @test */
@@ -118,7 +120,9 @@ class StripeTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_create_requests()
     {
-        $this->stripe->customers();
+        $class = $this->stripe->customers();
+
+        $this->assertInstanceOf('Cartalyst\\Stripe\\Api\\Customers', $class);
     }
 
     /**

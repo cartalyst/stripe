@@ -64,12 +64,20 @@ class FileUploadsTest extends FunctionalTestCase
     /** @test */
     public function it_can_iterate_all_uploaded_files()
     {
+        $timestamp = time();
+
         $filePath = realpath(__DIR__.'/../files/verify-account.jpg');
 
         for ($i=0; $i < 5; $i++) {
             $this->stripe->fileUploads()->create($filePath, 'identity_document');
         }
 
-        $this->stripe->fileUploadsIterator();
+        $files = $this->stripe->fileUploadsIterator([
+            'created' => [
+                'gte' => $timestamp,
+            ],
+        ]);
+
+        $this->assertCount(5, $files);
     }
 }

@@ -186,6 +186,8 @@ class PayoutsTest extends FunctionalTestCase
             'source'   => $token,
         ]);
 
+        $timestamp = time();
+
         for ($i=0; $i < 5; $i++) {
             $payout = $this->stripe->payouts()->create([
                 'amount' => 2000,
@@ -193,6 +195,12 @@ class PayoutsTest extends FunctionalTestCase
             ]);
         }
 
-        $this->stripe->payoutsIterator();
+        $payouts = $this->stripe->payoutsIterator([
+            'created' => [
+                'gte' => $timestamp,
+            ],
+        ]);
+
+        $this->assertCount(5, $payouts);
     }
 }

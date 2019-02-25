@@ -74,6 +74,14 @@ class OrderReturnsTest extends FunctionalTestCase
     /** @test */
     public function it_can_iterate_all_order_returns()
     {
-        $this->stripe->orderReturnsIterator();
+        $timestamp = time();
+
+        $orderReturns = $this->stripe->orderReturnsIterator([
+            'created' => [
+                'gte' => $timestamp,
+            ],
+        ]);
+
+        $this->assertCount(0, $orderReturns);
     }
 }
