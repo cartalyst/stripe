@@ -90,16 +90,19 @@ class PlansTest extends FunctionalTestCase
     {
         $timestamp = time();
 
+        $ids = [];
+
         for ($i=0; $i < 5; $i++) {
-            $this->createPlan();
+            $ids[] = $this->createPlan()['id'];
         }
 
         $plans = $this->stripe->plansIterator([
             'created' => [
                 'gte' => $timestamp,
             ],
+            'ending_before' => current($ids),
         ]);
 
-        $this->assertCount(5, $plans);
+        $this->assertCount(4, $plans);
     }
 }

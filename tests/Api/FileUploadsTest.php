@@ -66,18 +66,21 @@ class FileUploadsTest extends FunctionalTestCase
     {
         $timestamp = time();
 
+        $ids = [];
+
         $filePath = realpath(__DIR__.'/../files/verify-account.jpg');
 
         for ($i=0; $i < 5; $i++) {
-            $this->stripe->fileUploads()->create($filePath, 'identity_document');
+            $ids[] = $this->stripe->fileUploads()->create($filePath, 'identity_document')['id'];
         }
 
         $files = $this->stripe->fileUploadsIterator([
             'created' => [
                 'gte' => $timestamp,
             ],
+            'ending_before' => current($ids),
         ]);
 
-        $this->assertCount(5, $files);
+        $this->assertCount(4, $files);
     }
 }

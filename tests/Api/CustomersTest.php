@@ -143,16 +143,19 @@ class CustomersTest extends FunctionalTestCase
     {
         $timestamp = time();
 
+        $ids = [];
+
         for ($i=0; $i < 5; $i++) {
-            $this->createCustomer();
+            $ids[] = $this->createCustomer()['id'];
         }
 
         $customers = $this->stripe->customersIterator([
             'created' => [
                 'gte' => $timestamp,
             ],
+            'ending_before' => current($ids),
         ]);
 
-        $this->assertCount(5, $customers);
+        $this->assertCount(4, $customers);
     }
 }

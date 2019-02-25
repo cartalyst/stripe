@@ -90,16 +90,19 @@ class CouponsTest extends FunctionalTestCase
     {
         $timestamp = time();
 
+        $ids = [];
+
         for ($i=0; $i < 5; $i++) {
-            $this->createCoupon();
+            $ids[] = $this->createCoupon()['id'];
         }
 
         $coupons = $this->stripe->couponsIterator([
             'created' => [
                 'gte' => $timestamp,
             ],
+            'ending_before' => current($ids),
         ]);
 
-        $this->assertCount(5, $coupons);
+        $this->assertCount(4, $coupons);
     }
 }
