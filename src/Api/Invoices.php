@@ -103,6 +103,17 @@ class Invoices extends Api
     }
 
     /**
+     * Sends the given invoice.
+     *
+     * @param  string  $invoiceId
+     * @return array
+     */
+    public function send($invoiceId)
+    {
+        return $this->_post("invoices/{$invoiceId}/send");
+    }
+
+    /**
      * Lists all invoices.
      *
      * @param  array  $parameters

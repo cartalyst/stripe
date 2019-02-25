@@ -142,6 +142,30 @@ class InvoicesTest extends FunctionalTestCase
     }
 
     /** @test */
+    public function it_can_send_an_invoice()
+    {
+        $customer = $this->createCustomer();
+
+        $customerId = $customer['id'];
+
+        $card = $this->createCardThroughToken($customerId);
+
+        $this->createInvoiceItem($customerId);
+        $this->createInvoiceItem($customerId);
+
+        $invoice = $this->createInvoice($customerId, [
+            'billing'        => 'send_invoice',
+            'days_until_due' => 1,
+        ]);
+
+        $this->assertFalse($invoice['paid']);
+
+        $invoice = $this->stripe->invoices()->send($invoice['id']);
+
+        $this->assertFalse($invoice['paid']);
+    }
+
+    /** @test */
     public function it_can_retrieve_all_invoices()
     {
         $customer = $this->createCustomer();
