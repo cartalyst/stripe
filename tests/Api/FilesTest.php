@@ -22,14 +22,14 @@ namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
 
-class FileUploadsTest extends FunctionalTestCase
+class FilesTest extends FunctionalTestCase
 {
     /** @test */
     public function it_can_upload_a_file()
     {
         $filePath = realpath(__DIR__.'/../files/verify-account.jpg');
 
-        $upload = $this->stripe->fileUploads()->create($filePath, 'identity_document');
+        $upload = $this->stripe->files()->create($filePath, 'identity_document');
 
         $this->assertSame('jpg', $upload['type']);
     }
@@ -39,9 +39,9 @@ class FileUploadsTest extends FunctionalTestCase
     {
         $filePath = realpath(__DIR__.'/../files/verify-account.jpg');
 
-        $uploadedFileId = $this->stripe->fileUploads()->create($filePath, 'identity_document')['id'];
+        $uploadedFileId = $this->stripe->files()->create($filePath, 'identity_document')['id'];
 
-        $upload = $this->stripe->fileUploads()->find($uploadedFileId);
+        $upload = $this->stripe->files()->find($uploadedFileId);
 
         $this->assertSame('jpg', $upload['type']);
     }
@@ -51,11 +51,11 @@ class FileUploadsTest extends FunctionalTestCase
     {
         $filePath = realpath(__DIR__.'/../files/verify-account.jpg');
 
-        $this->stripe->fileUploads()->create($filePath, 'identity_document');
-        $this->stripe->fileUploads()->create($filePath, 'identity_document');
-        $this->stripe->fileUploads()->create($filePath, 'identity_document');
+        $this->stripe->files()->create($filePath, 'identity_document');
+        $this->stripe->files()->create($filePath, 'identity_document');
+        $this->stripe->files()->create($filePath, 'identity_document');
 
-        $uploadedFiles = $this->stripe->fileUploads()->all();
+        $uploadedFiles = $this->stripe->files()->all();
 
         $this->assertNotEmpty($uploadedFiles['data']);
         $this->assertInternalType('array', $uploadedFiles['data']);
@@ -67,10 +67,10 @@ class FileUploadsTest extends FunctionalTestCase
         $filePath = realpath(__DIR__.'/../files/verify-account.jpg');
 
         for ($i=0; $i < 5; $i++) {
-            $this->stripe->fileUploads()->create($filePath, 'identity_document');
+            $this->stripe->files()->create($filePath, 'identity_document');
         }
 
-        $files = $this->stripe->fileUploadsIterator();
+        $files = $this->stripe->filesIterator();
 
         $this->assertNotEmpty($files);
     }
