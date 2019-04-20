@@ -139,4 +139,14 @@ class Account extends Api
             'redirect_url' => $redirectUrl,
         ]);
     }
+
+    /**
+     * Returns an account persons api instance.
+     *
+     * @return \Cartalyst\Stripe\Api\Account\Persons
+     */
+    public function persons()
+    {
+        return new Account\Persons($this->config);
+    }
 }
