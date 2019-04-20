@@ -132,12 +132,18 @@ class PaymentIntentsTest extends FunctionalTestCase
     /** @test */
     public function it_can_retrieve_all_payment_intents()
     {
+        $timestamp = time();
+
         $this->stripe->paymentIntents()->create([
             'amount' => 3000,
             'currency' => 'USD',
         ]);
 
-        $paymentIntents = $this->stripe->paymentIntents()->all();
+        $paymentIntents = $this->stripe->paymentIntents()->all([
+            'created' => [
+                'gte' => $timestamp,
+            ],
+        ]);
 
         $this->assertNotEmpty($paymentIntents['data']);
         $this->assertInternalType('array', $paymentIntents['data']);
@@ -161,6 +167,6 @@ class PaymentIntentsTest extends FunctionalTestCase
             ],
         ]);
 
-        $this->assertCount(5, $paymentIntents);
+        $this->assertNotEmpty($paymentIntents);
     }
 }
