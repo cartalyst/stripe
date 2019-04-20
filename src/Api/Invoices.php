@@ -92,6 +92,29 @@ class Invoices extends Api
     }
 
     /**
+     * Deletes the given draft invoice.
+     *
+     * @param  string  $invoiceId
+     * @return array
+     */
+    public function delete($invoiceId)
+    {
+        return $this->_delete("invoices/{$invoiceId}");
+    }
+
+    /**
+     * Finalizes the given invoice.
+     *
+     * @param  string  $invoiceId
+     * @param  array  $parameters
+     * @return array
+     */
+    public function finalize($invoiceId, array $parameters = [])
+    {
+        return $this->_post("invoices/{$invoiceId}/finalize", $parameters);
+    }
+
+    /**
      * Pays the given invoice.
      *
      * @param  string  $invoiceId
@@ -111,6 +134,28 @@ class Invoices extends Api
     public function send($invoiceId)
     {
         return $this->_post("invoices/{$invoiceId}/send");
+    }
+
+    /**
+     * Voids the given invoice.
+     *
+     * @param  string  $invoiceId
+     * @return array
+     */
+    public function void($invoiceId)
+    {
+        return $this->_post("invoices/{$invoiceId}/void");
+    }
+
+    /**
+     * Voids the given invoice.
+     *
+     * @param  string  $invoiceId
+     * @return array
+     */
+    public function markUncollectible($invoiceId)
+    {
+        return $this->_post("invoices/{$invoiceId}/mark_uncollectible");
     }
 
     /**

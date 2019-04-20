@@ -121,6 +121,52 @@ class InvoicesTest extends FunctionalTestCase
     }
 
     /** @test */
+    public function it_can_delete_a_draft_invoice()
+    {
+        $customer = $this->createCustomer();
+
+        $customerId = $customer['id'];
+
+        $card = $this->createCardThroughToken($customerId);
+
+        $this->createInvoiceItem($customerId);
+
+        $invoice = $this->createInvoice($customerId, [
+            'auto_advance' => false,
+        ]);
+
+        $this->assertFalse($invoice['paid']);
+
+        $invoice = $this->stripe->invoices()->delete($invoice['id']);
+
+        $this->assertTrue($invoice['deleted']);
+    }
+
+    /** @test */
+    public function it_can_finalize_an_invoice()
+    {
+        $customer = $this->createCustomer();
+
+        $customerId = $customer['id'];
+
+        $card = $this->createCardThroughToken($customerId);
+
+        $this->createInvoiceItem($customerId);
+
+        $invoice = $this->createInvoice($customerId, [
+            'auto_advance' => false,
+        ]);
+
+        $this->assertFalse($invoice['paid']);
+
+        $invoice = $this->stripe->invoices()->finalize($invoice['id']);
+
+        $this->assertSame('open', $invoice['status']);
+        $this->assertNotNull($invoice['status_transitions']['finalized_at']);
+        $this->assertNull($invoice['status_transitions']['voided_at']);
+    }
+
+    /** @test */
     public function it_can_pay_an_invoice()
     {
         $customer = $this->createCustomer();
@@ -139,6 +185,52 @@ class InvoicesTest extends FunctionalTestCase
         $invoice = $this->stripe->invoices()->pay($invoice['id']);
 
         $this->assertTrue($invoice['paid']);
+    }
+
+    /** @test */
+    public function it_can_void_an_invoice()
+    {
+        $customer = $this->createCustomer();
+
+        $customerId = $customer['id'];
+
+        $card = $this->createCardThroughToken($customerId);
+
+        $this->createInvoiceItem($customerId);
+
+        $invoice = $this->createInvoice($customerId);
+
+        $this->stripe->invoices()->finalize($invoice['id']);
+
+        $this->assertFalse($invoice['paid']);
+
+        $invoice = $this->stripe->invoices()->void($invoice['id']);
+
+        $this->assertSame('void', $invoice['status']);
+        $this->assertNotNull($invoice['status_transitions']['voided_at']);
+    }
+
+    /** @test */
+    public function it_can_mark_an_invoice_as_uncollectible()
+    {
+        $customer = $this->createCustomer();
+
+        $customerId = $customer['id'];
+
+        $card = $this->createCardThroughToken($customerId);
+
+        $this->createInvoiceItem($customerId);
+
+        $invoice = $this->createInvoice($customerId);
+
+        $this->stripe->invoices()->finalize($invoice['id']);
+
+        $this->assertFalse($invoice['paid']);
+
+        $invoice = $this->stripe->invoices()->markUncollectible($invoice['id']);
+
+        $this->assertSame('uncollectible', $invoice['status']);
+        $this->assertNotNull($invoice['status_transitions']['marked_uncollectible_at']);
     }
 
     /** @test */
