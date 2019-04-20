@@ -77,9 +77,15 @@ class PlansTest extends FunctionalTestCase
     /** @test */
     public function it_can_retrieve_all_plans()
     {
+        $timestamp = time();
+
         $this->createPlan();
 
-        $plans = $this->stripe->plans()->all();
+        $plans = $this->stripe->plans()->all([
+            'created' => [
+                'gte' => $timestamp,
+            ],
+        ]);
 
         $this->assertNotEmpty($plans['data']);
         $this->assertInternalType('array', $plans['data']);
@@ -88,11 +94,17 @@ class PlansTest extends FunctionalTestCase
     /** @test */
     public function it_can_iterate_all_plans()
     {
+        $timestamp = time();
+
         for ($i=0; $i < 5; $i++) {
             $this->createPlan();
         }
 
-        $plans = $this->stripe->plansIterator();
+        $plans = $this->stripe->plansIterator([
+            'created' => [
+                'gte' => $timestamp,
+            ],
+        ]);
 
         $this->assertNotEmpty($plans);
     }
