@@ -33,4 +33,16 @@ class UsageRecords extends Api
     {
         return $this->_post("subscription_items/{$itemId}/usage_records", $parameters);
     }
+
+    /**
+     * Lists all usage records of a subscription item.
+     *
+     * @param  string  $itemId
+     * @param  array  $parameters
+     * @return array
+     */
+    public function all($itemId, array $parameters = [])
+    {
+        return $this->_get("subscription_items/{$itemId}/usage_record_summaries", $parameters);
+    }
 }

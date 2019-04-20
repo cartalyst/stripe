@@ -45,4 +45,28 @@ class UsageRecordsTest extends FunctionalTestCase
 
         $this->assertSame($subscriptionItem['id'], $usageRecord['subscription_item']);
     }
+
+    /** @test */
+    public function it_can_retrieve_all_usage_records_of_a_subscription_item()
+    {
+        $plan = $this->createPlan([
+            'usage_type' => 'metered',
+        ]);
+
+        $customer = $this->createCustomer();
+
+        $subscription = $this->createSubscription($customer['id']);
+
+        $subscriptionItem = $this->createSubscriptionItem($subscription, $plan);
+
+        $this->stripe->usageRecords()->create($subscriptionItem['id'], [
+            'quantity'  => 10,
+            'timestamp' => strtotime('+3days', $subscription['current_period_start']),
+            'action'    => 'set'
+        ]);
+
+        $usageRecords = $this->stripe->usageRecords()->all($subscriptionItem['id']);
+
+        $this->assertCount(1, $usageRecords['data']);
+    }
 }
