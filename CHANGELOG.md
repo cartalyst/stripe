@@ -11,6 +11,40 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.2.0 - 2019-04-21
+
+`ADDED`
+
+- Account > Persons API
+- Checkout > Sessions API
+- CreditNotes API
+- FileLinks API
+- PaymentMethods API
+- PaymentIntents API
+- Radar > Reviews API
+- Radar > Value Lists API
+- Radar > Value List Items API
+- SubscriptionSchedules API
+- SubscriptionScheduleRevisions API
+- Terminal > Connection Tokens
+- Terminal > Locations
+- Terminal > Readers
+- Top-ups API
+- WebhookEndpoints API
+- Method to the Sources API to retrieve all sources of a customer
+- Method to the Invoices API to send the invoice to the customer
+- Method to the Invoices API to delete a draft invoice
+- Method to the Invoices API to finalize an invoice
+- Method to the Invoices API to void an invoice
+- Method to the Invoices API to mark an invoice as uncollectible
+- Method to the UsageRecords API to retrieves all usage record summary
+
+`UPDATED`
+
+- Added extra $parameters argument to the `upcomingInvoice` method
+- Rename FileUploads to Files (backward compatible)
+- Remove parameters argument from Payouts Cancel endpoint
+
 ### v2.1.4 - 2018-04-11
 
 `ADDED`
