@@ -79,18 +79,6 @@ class StripeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('new-stripe-api-key', $this->stripe->getApiKey());
     }
 
-    /**
-     * @test
-     * @expectedException \RuntimeException
-     */
-    public function it_throws_an_exception_when_the_api_key_is_not_set()
-    {
-        // Unset the environment variable
-        putenv('STRIPE_API_KEY');
-
-        new Stripe;
-    }
-
     /** @test */
     public function it_can_get_and_set_the_api_version()
     {
@@ -132,5 +120,33 @@ class StripeTest extends PHPUnit_Framework_TestCase
     public function it_throws_an_exception_when_the_request_is_invalid()
     {
         $this->stripe->foo();
+    }
+
+    /** @test*/
+    public function can_retrieve_the_stripe_headers_from_thrown_exception()
+    {
+        try {
+            $stripe = new Stripe();
+
+            $stripe->customers()->find('non-existent-customer-'.time());
+        } catch (\Exception $e) {
+            $headers = $e->getHeaders();
+
+            $this->assertNotNull($headers['stripe-version']);
+        }
+    }
+
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     */
+    public function it_throws_an_exception_when_the_api_key_is_not_set()
+    {
+        $currentKey = getenv('STRIPE_API_KEY');
+
+        // Unset the environment variable
+        putenv('STRIPE_API_KEY');
+
+        new Stripe;
     }
 }

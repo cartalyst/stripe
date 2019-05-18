@@ -23,6 +23,13 @@ namespace Cartalyst\Stripe\Exception;
 class StripeException extends \Exception
 {
     /**
+     * The response headers sent by Stripe.
+     *
+     * @var array
+     */
+    protected $headers = [];
+
+    /**
      * The error code returned by Stripe.
      *
      * @var string
@@ -49,6 +56,29 @@ class StripeException extends \Exception
      * @var string
      */
     protected $rawOutput;
+
+    /**
+     * Returns the response headers sent by Stripe.
+     *
+     * @return array
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    /**
+     * Sets the response headers sent by Stripe.
+     *
+     * @param  array  $headers
+     * @return $this
+     */
+    public function setHeaders(array $headers)
+    {
+        $this->headers = $headers;
+
+        return $this;
+    }
 
     /**
      * Returns the error type returned by Stripe.
