@@ -21,6 +21,8 @@ Raw files can be found via this projects docs/version branch.
 
 Important versions listed below. Refer to the [Change Log](CHANGELOG.md) for a full history of the project.
 
+- [2.2](CHANGELOG.md) - 2019-04-21
+- [2.1](CHANGELOG.md) - 2017-05-10
 - [2.0](CHANGELOG.md) - 2016-01-17
 - [1.0](CHANGELOG.md) - 2015-04-02
 

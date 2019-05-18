@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.2.1 - 2019-05-15
+
+`ADDED`
+
+- Stripe response headers to the StripeException object
+
 ### v2.2.0 - 2019-04-21
 
 `ADDED`
