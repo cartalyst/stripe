@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.2.2 - 2019-06-16
+
+`FIXED`
+
+- Version constant.
+
 ### v2.2.1 - 2019-05-15
 
 `ADDED`
