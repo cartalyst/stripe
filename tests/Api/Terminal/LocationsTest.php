@@ -84,6 +84,12 @@ class LocationsTest extends FunctionalTestCase
 
         $location = $this->stripe->terminal()->locations()->update($location['id'], [
             'display_name' => 'My Store',
+            'address' => [
+                'line1'       => '1234 Main Street',
+                'city'        => 'San Francisco',
+                'country'     => 'US',
+                'postal_code' => '94111',
+            ],
         ]);
 
         $this->assertSame('My Store', $location['display_name']);
