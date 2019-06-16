@@ -92,7 +92,7 @@ class StripeTest extends PHPUnit_Framework_TestCase
     {
         $version = $this->stripe->getVersion();
 
-        $this->assertSame('2.1.4', $version);
+        $this->assertSame('2.2.2', $version);
     }
 
     /** @test */
