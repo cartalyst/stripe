@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.2.3 - 2019-06-29
+
+`UPDATED`
+
+- Subscriptions API endpoint to use the current supported one.
+
 ### v2.2.2 - 2019-06-16
 
 `FIXED`
