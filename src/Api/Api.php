@@ -49,6 +49,13 @@ abstract class Api implements ApiInterface
     protected $perPage;
 
     /**
+     * The idempotency key.
+     *
+     * @var string
+     */
+    protected $idempotencyKey;
+
+    /**
      * Constructor.
      *
      * @param  \Cartalyst\Stripe\ConfigInterface  $client
@@ -81,6 +88,16 @@ abstract class Api implements ApiInterface
     public function setPerPage($perPage)
     {
         $this->perPage = (int) $perPage;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function idempotent($idempotencyKey)
+    {
+        $this->idempotencyKey = $idempotencyKey;
 
         return $this;
     }
@@ -185,7 +202,9 @@ abstract class Api implements ApiInterface
         $stack->push(Middleware::mapRequest(function (RequestInterface $request) {
             $config = $this->config;
 
-            if ($idempotencykey = $config->getIdempotencyKey()) {
+            $idempotencykey = $this->idempotencyKey ?: $config->getIdempotencyKey();
+
+            if ($idempotencykey) {
                 $request = $request->withHeader('Idempotency-Key', $idempotencykey);
             }
 

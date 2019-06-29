@@ -45,6 +45,14 @@ interface ApiInterface
     public function setPerPage($perPage);
 
     /**
+     * Sets the idempotency key.
+     *
+     * @param  string  $idempotencyKey
+     * @return $this
+     */
+    public function idempotent($idempotencyKey);
+
+    /**
      * Send a GET request.
      *
      * @param  string  $url
