@@ -31,7 +31,9 @@ class Subscriptions extends Api
      */
     public function create($customerId, array $parameters = [])
     {
-        return $this->_post("customers/{$customerId}/subscriptions", $parameters);
+        $parameters['customer'] = $customerId;
+
+        return $this->_post('subscriptions', $parameters);
     }
 
     /**
@@ -43,7 +45,7 @@ class Subscriptions extends Api
      */
     public function find($customerId, $subscriptionId)
     {
-        return $this->_get("customers/{$customerId}/subscriptions/{$subscriptionId}");
+        return $this->_get("subscriptions/{$subscriptionId}");
     }
 
     /**
@@ -56,7 +58,7 @@ class Subscriptions extends Api
      */
     public function update($customerId, $subscriptionId, array $parameters = [])
     {
-        return $this->_post("customers/{$customerId}/subscriptions/{$subscriptionId}", $parameters);
+        return $this->_post("subscriptions/{$subscriptionId}", $parameters);
     }
 
     /**
@@ -69,7 +71,7 @@ class Subscriptions extends Api
      */
     public function cancel($customerId, $subscriptionId, $atPeriodEnd = false)
     {
-        return $this->_delete("customers/{$customerId}/subscriptions/{$subscriptionId}", [
+        return $this->_delete("subscriptions/{$subscriptionId}", [
             'at_period_end' => (bool) $atPeriodEnd,
         ]);
     }
@@ -117,7 +119,7 @@ class Subscriptions extends Api
      */
     public function deleteDiscount($customerId, $subscriptionId)
     {
-        return $this->_delete("customers/{$customerId}/subscriptions/{$subscriptionId}/discount");
+        return $this->_delete("subscriptions/{$subscriptionId}/discount");
     }
 
     /**
