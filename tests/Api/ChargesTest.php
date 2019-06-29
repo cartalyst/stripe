@@ -39,6 +39,21 @@ class ChargesTest extends FunctionalTestCase
         $this->assertSame(5049, $charge['amount']);
     }
 
+    /** @test */
+    public function it_can_create_a_new_charge_with_an_idempotency_key()
+    {
+        $chargePayload = [
+            'currency' => 'USD',
+            'amount'   => 50.49,
+            'card'     => 'tok_visa',
+        ];
+
+        $charge1 = $this->stripe->charges()->idempotent('charge123')->create($chargePayload);
+        $charge2 = $this->stripe->charges()->idempotent('charge123')->create($chargePayload);
+
+        $this->assertSame($charge1['id'], $charge2['id']);
+    }
+
     /**
      * @test
      * @expectedException \Cartalyst\Stripe\Exception\CardErrorException
