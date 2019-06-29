@@ -23,6 +23,16 @@ namespace Cartalyst\Stripe\Api;
 class Radar extends Api
 {
     /**
+     * Returns a radar early fraud warning api instance.
+     *
+     * @return \Cartalyst\Stripe\Api\Radar\Reviews
+     */
+    public function earlyFraudWarning()
+    {
+        return new Radar\EarlyFraudWarning($this->config);
+    }
+
+    /**
      * Returns a radar reviews api instance.
      *
      * @return \Cartalyst\Stripe\Api\Radar\Reviews
