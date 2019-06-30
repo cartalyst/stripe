@@ -11,6 +11,18 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.2.4 - 2019-06-30
+
+`ADDED`
+
+- Add Customer Tax Ids API
+- Add Radar Early Fraud Warning API
+- Add Tax Rates API
+
+`UPDATED`
+
+- Improved Idempotency support
+
 ### v2.2.3 - 2019-06-29
 
 `UPDATED`
