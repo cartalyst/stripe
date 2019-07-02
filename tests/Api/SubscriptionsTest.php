@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use DateTime;
 
 class SubscriptionsTest extends FunctionalTestCase
 {
@@ -166,6 +167,25 @@ class SubscriptionsTest extends FunctionalTestCase
         $this->createSubscription($customer['id']);
 
         $subscriptions = $this->stripe->subscriptions()->all($customer['id'], [ 'status' => 'all' ]);
+
+        $this->assertNotEmpty($subscriptions['data']);
+        $this->assertCount(2, $subscriptions['data']);
+        $this->assertInternalType('array', $subscriptions['data']);
+    }
+
+    /** @test */
+    public function it_can_retrieve_all_subscriptions_without_customer()
+    {
+        sleep(1);
+        $date = new DateTime();
+
+        $customer1 = $this->createCustomer();
+        $customer2 = $this->createCustomer();
+
+        $this->createSubscription($customer1['id']);
+        $this->createSubscription($customer2['id']);
+
+        $subscriptions = $this->stripe->subscriptions()->all(null, [ 'status' => 'all', 'created' => [ 'gte' => $date->getTimestamp() ] ]);
 
         $this->assertNotEmpty($subscriptions['data']);
         $this->assertCount(2, $subscriptions['data']);
