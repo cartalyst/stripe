@@ -123,7 +123,8 @@ class Subscriptions extends Api
     }
 
     /**
-     * Lists all subscriptions from the given customer, or otherwise.
+     * Lists all subscriptions for the given customer or
+     * all the subscriptions for the Stripe account.
      *
      * @param  string|null  $customerId
      * @param  array  $parameters

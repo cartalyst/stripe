@@ -159,7 +159,7 @@ class SubscriptionsTest extends FunctionalTestCase
     }
 
     /** @test */
-    public function it_can_retrieve_all_subscriptions()
+    public function it_can_retrieve_all_subscriptions_that_belongs_to_a_customer()
     {
         $customer = $this->createCustomer();
 
@@ -174,9 +174,8 @@ class SubscriptionsTest extends FunctionalTestCase
     }
 
     /** @test */
-    public function it_can_retrieve_all_subscriptions_without_customer()
+    public function it_can_retrieve_all_subscriptions()
     {
-        sleep(1);
         $date = new DateTime();
 
         $customer1 = $this->createCustomer();
@@ -185,10 +184,15 @@ class SubscriptionsTest extends FunctionalTestCase
         $this->createSubscription($customer1['id']);
         $this->createSubscription($customer2['id']);
 
-        $subscriptions = $this->stripe->subscriptions()->all(null, [ 'status' => 'all', 'created' => [ 'gte' => $date->getTimestamp() ] ]);
+        $subscriptions = $this->stripe->subscriptions()->all(null, [
+            'status' => 'all', 'created' => [ 'gte' => $date->getTimestamp() ],
+        ]);
 
         $this->assertNotEmpty($subscriptions['data']);
-        $this->assertCount(2, $subscriptions['data']);
+
+        $this->assertSame($customer2['id'], $subscriptions['data'][0]['customer']);
+        $this->assertSame($customer1['id'], $subscriptions['data'][1]['customer']);
+
         $this->assertInternalType('array', $subscriptions['data']);
     }
 
