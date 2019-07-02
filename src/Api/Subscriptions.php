@@ -123,16 +123,20 @@ class Subscriptions extends Api
     }
 
     /**
-     * Lists all subscriptions from the given customer.
+     * Lists all subscriptions from the given customer, or otherwise.
      *
-     * @param  string  $customerId
+     * @param  string|null  $customerId
      * @param  array  $parameters
      * @return array
      */
-    public function all($customerId, array $parameters = [])
+    public function all($customerId = null, array $parameters = [])
     {
-        return $this->_get('subscriptions', array_merge($parameters, [
-            'customer' => $customerId
-        ]));
+        if ($customerId !== null) {
+            $parameters = array_merge($parameters, [
+                'customer' => $customerId,
+            ]);
+        }
+
+        return $this->_get('subscriptions', $parameters);
     }
 }
