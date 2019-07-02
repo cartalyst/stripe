@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.2.5 - 2019-07-03
+
+`UPDATED`
+
+- Subscriptions API list method to allow to retrieve all subscriptions from the Stripe account instead of only the subscriptions of a customer.
+
 ### v2.2.4 - 2019-06-30
 
 `ADDED`
