@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.2.6 - 2019-07-03
+
+`ADDED`
+
+- Add SetupIntents API
+
 ### v2.2.5 - 2019-07-03
 
 `UPDATED`
