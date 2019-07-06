@@ -185,6 +185,31 @@ class InvoicesTest extends FunctionalTestCase
         $invoice = $this->stripe->invoices()->pay($invoice['id']);
 
         $this->assertTrue($invoice['paid']);
+        $this->assertNotNull($invoice['charge']);
+    }
+
+    /** @test */
+    public function it_can_pay_an_invoice_and_provide_arguments()
+    {
+        $customer = $this->createCustomer();
+
+        $customerId = $customer['id'];
+
+        $card = $this->createCardThroughToken($customerId);
+
+        $this->createInvoiceItem($customerId);
+        $this->createInvoiceItem($customerId);
+
+        $invoice = $this->createInvoice($customerId);
+
+        $this->assertFalse($invoice['paid']);
+
+        $invoice = $this->stripe->invoices()->pay($invoice['id'], [
+            'paid_out_of_band' => true,
+        ]);
+
+        $this->assertTrue($invoice['paid']);
+        $this->assertNull($invoice['charge']);
     }
 
     /** @test */

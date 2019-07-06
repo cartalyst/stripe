@@ -118,11 +118,12 @@ class Invoices extends Api
      * Pays the given invoice.
      *
      * @param  string  $invoiceId
+     * @param  array  $parameters
      * @return array
      */
-    public function pay($invoiceId)
+    public function pay($invoiceId, array $parameters = [])
     {
-        return $this->_post("invoices/{$invoiceId}/pay");
+        return $this->_post("invoices/{$invoiceId}/pay", $parameters);
     }
 
     /**
