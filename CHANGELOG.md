@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.2.7 = 2019-07-06
+
+`UPDATED`
+
+- Invoices API `pay()` method to allow parameters to be passed as the second argument when paying an invoice.
+
 ### v2.2.6 - 2019-07-03
 
 `ADDED`
