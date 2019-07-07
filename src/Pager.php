@@ -80,15 +80,13 @@ class Pager
             $parameters['starting_after'] = $this->nextToken;
         }
 
-        if (isset($parameters[0])) {
+        if (array_key_exists($parameters, 0)) {
             $id = $parameters[0];
 
             unset($parameters[0]);
 
             if (isset($parameters[1])) {
                 $parameters = $parameters[1];
-
-                unset($parameters[1]);
             }
 
             $parameters = [ $id, $parameters ];
