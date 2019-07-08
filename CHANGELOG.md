@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.2.9 - 2019-07-08
+
+`ADDED`
+
+- Add CustomerBalanceTransactions API
+
 ### v2.2.8 - 2019-07-08
 
 `FIXED`

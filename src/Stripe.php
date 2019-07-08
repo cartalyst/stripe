@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.2.8
+ * @version    2.2.9
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2019, Cartalyst LLC
@@ -29,7 +29,7 @@ class Stripe
      *
      * @var string
      */
-    const VERSION = '2.2.8';
+    const VERSION = '2.2.9';
 
     /**
      * The Config repository instance.
