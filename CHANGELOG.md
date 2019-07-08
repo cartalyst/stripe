@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.2.8 - 2019-07-08
+
+`FIXED`
+
+- Issue with Pager where ids could be nullable.
+
 ### v2.2.7 = 2019-07-06
 
 `UPDATED`
