@@ -175,6 +175,30 @@ class Stripe
     }
 
     /**
+     * Returns the application's information.
+     *
+     * @return array|null
+     */
+    public function getAppInfo()
+    {
+        return $this->config->getAppInfo();
+    }
+
+    /**
+     * Sets the application's information.
+     *
+     * @param string $appName
+     * @param string $appVersion
+     * @param string $appUrl
+     * @param string $appPartnerId
+     * @return $this
+     */
+    public function setAppInfo($appName, $appVersion = null, $appUrl = null, $appPartnerId = null)
+    {
+        return $this->config->setAppInfo($appName, $appVersion, $appUrl, $appPartnerId);
+    }
+
+    /**
      * Returns the amount converter class and method name.
      *
      * @return string

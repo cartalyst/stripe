@@ -212,11 +212,13 @@ abstract class Api implements ApiInterface
                 $request = $request->withHeader('Stripe-Account', $accountId);
             }
 
+            $request = $request->withHeader('User-Agent', $this->generateUserAgent());
+
             $request = $request->withHeader('Stripe-Version', $config->getApiVersion());
 
-            $request = $request->withHeader('User-Agent', 'Cartalyst-Stripe/'.$config->getVersion());
-
             $request = $request->withHeader('Authorization', 'Basic '.base64_encode($config->getApiKey()));
+
+            $request = $request->withHeader('X-Stripe-Client-User-Agent', $this->generateClientUserAgentHeader());
 
             return $request;
         }));
@@ -228,5 +230,55 @@ abstract class Api implements ApiInterface
         }));
 
         return $stack;
+    }
+
+    /**
+     * Generates the main user agent string.
+     *
+     * @return string
+     */
+    protected function generateUserAgent()
+    {
+        $appInfo = $this->config->getAppInfo();
+
+        $userAgent = 'Cartalyst-Stripe/'.$this->config->getVersion();
+
+        if ($appInfo || ! empty($appInfo)) {
+            $userAgent .= ' '.$appInfo['name'];
+
+            if ($appVersion = $appInfo['version']) {
+                $userAgent .= "/{$appVersion}";
+            }
+
+            if ($appUrl = $appInfo['url']) {
+                $userAgent .= " ({$appUrl})";
+            }
+        }
+
+        return $userAgent;
+    }
+
+    /**
+     * Generates the client user agent header value.
+     *
+     * @return string
+     */
+    protected function generateClientUserAgentHeader()
+    {
+        $appInfo = $this->config->getAppInfo();
+
+        $userAgent = [
+            'bindings_version' => $this->config->getVersion(),
+            'lang'             => 'php',
+            'lang_version'     => phpversion(),
+            'publisher'        => 'cartalyst',
+            'uname'            => php_uname(),
+        ];
+
+        if ($appInfo || ! empty($appInfo)) {
+            $userAgent['application'] = $appInfo;
+        }
+
+        return json_encode($userAgent);
     }
 }
