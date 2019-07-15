@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.2.10 - 2019-07-15
+
+`ADDED`
+
+- Add methods to get and set the application information on the user agent headers.
+
 ### v2.2.9 - 2019-07-08
 
 `ADDED`
