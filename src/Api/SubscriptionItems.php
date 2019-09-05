@@ -64,11 +64,12 @@ class SubscriptionItems extends Api
      * Deletes an existing subscription item.
      *
      * @param  string  $itemId
+     * @param  array  $parameters
      * @return array
      */
-    public function delete($itemId)
+    public function delete($itemId, array $parameters = [])
     {
-        return $this->_delete("subscription_items/{$itemId}");
+        return $this->_delete("subscription_items/{$itemId}", $parameters);
     }
 
     /**

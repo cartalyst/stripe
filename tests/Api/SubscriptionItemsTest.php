@@ -94,7 +94,9 @@ class SubscriptionItemsTest extends FunctionalTestCase
 
         $this->assertSame($plan['id'], $subscriptionItem['plan']['id']);
 
-        $this->stripe->subscriptionItems()->delete($itemId);
+        $this->stripe->subscriptionItems()->delete($itemId, [
+            'prorate' => false,
+        ]);
 
         $this->stripe->subscriptionItems()->find($itemId);
     }
