@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.2.11 - 2019-09-05
+
+`FIXED`
+
+- Not being able to pass extra parameters when deleting a Subscription Item.
+
 ### v2.2.10 - 2019-07-15
 
 `ADDED`
