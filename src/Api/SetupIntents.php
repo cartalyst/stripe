@@ -79,4 +79,15 @@ class SetupIntents extends Api
     {
         return $this->_post("setup_intents/{$setupIntentId}/cancel", $parameters);
     }
+
+    /**
+     * Lists all setup intents.
+     *
+     * @param  array  $parameters
+     * @return array
+     */
+    public function all(array $parameters = [])
+    {
+        return $this->_get('setup_intents', $parameters);
+    }
 }

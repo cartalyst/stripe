@@ -316,4 +316,9 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
             'tos_acceptance' => [ 'date' => time(), 'ip' => '127.0.0.1'],
         ]);
     }
+
+    public function createSetupIntent(array $parameters = [])
+    {
+        return $this->stripe->setupIntents()->create($parameters);
+    }
 }

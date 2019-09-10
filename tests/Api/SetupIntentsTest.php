@@ -135,4 +135,23 @@ class SetupIntentsTest extends FunctionalTestCase
 
         $this->assertSame('canceled', $setupIntent['status']);
     }
+
+    /** @test */
+    public function it_can_retrieve_all_setup_intents()
+    {
+        $customer1 = $this->createCustomer();
+        $customer2 = $this->createCustomer();
+
+        $this->createSetupIntent();
+        $this->createSetupIntent(['customer' => $customer1['id']]);
+        $this->createSetupIntent();
+        $this->createSetupIntent(['customer' => $customer2['id']]);
+
+        $setupIntents1 = $this->stripe->setupIntents()->all(['customer' => $customer1['id']]);
+        $setupIntents2 = $this->stripe->setupIntents()->all(['customer' => $customer1['id']]);
+
+        $this->assertCount(1, $setupIntents1['data']);
+
+        $this->assertCount(1, $setupIntents2['data']);
+    }
 }
