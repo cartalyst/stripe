@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.2.12 - 2019-09-10
+
+`ADDED`
+
+- Add all method to the Setup Intents API
+
 ### v2.2.11 - 2019-09-05
 
 `FIXED`
