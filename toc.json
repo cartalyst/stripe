@@ -42,6 +42,14 @@
         "cards/delete",
         "cards/retrieve-all",
 
+        "payment_methods/index",
+        "payment_methods/create",
+        "payment_methods/retrieve-single",
+        "payment_methods/update",
+        "payment_methods/retrieve-all",
+        "payment_methods/attach",
+        "payment_methods/detach",
+
         "subscriptions/index",
         "subscriptions/create",
         "subscriptions/retrieve-single",
