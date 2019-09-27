@@ -20,6 +20,7 @@
 
 namespace Cartalyst\Stripe\Api;
 
+use RuntimeException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\HandlerStack;
@@ -194,9 +195,14 @@ abstract class Api implements ApiInterface
      * Create the client handler.
      *
      * @return \GuzzleHttp\HandlerStack
+     * @throws \RuntimeException
      */
     protected function createHandler()
     {
+        if (! $this->config->getApiKey()) {
+            throw new RuntimeException('The Stripe API key is not defined!');
+        }
+
         $stack = HandlerStack::create();
 
         $stack->push(Middleware::mapRequest(function (RequestInterface $request) {

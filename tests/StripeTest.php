@@ -142,11 +142,10 @@ class StripeTest extends PHPUnit_Framework_TestCase
      */
     public function it_throws_an_exception_when_the_api_key_is_not_set()
     {
-        $currentKey = getenv('STRIPE_API_KEY');
-
-        // Unset the environment variable
         putenv('STRIPE_API_KEY');
 
-        new Stripe;
+        $stripe = new Stripe();
+
+        $stripe->account()->details();
     }
 }
