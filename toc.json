@@ -82,8 +82,10 @@
         "invoice_items/retrieve-all",
 
         "disputes/index",
+        "disputes/retrieve-single",
         "disputes/update",
         "disputes/close",
+        "disputes/retrieve-all",
 
         "transfers/index",
         "transfers/create",

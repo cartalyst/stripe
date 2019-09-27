@@ -57,6 +57,13 @@ Depending on your dispute type, different evidence fields will give you a better
             <td>[]</td>
             <td>A set of key/value pairs that you can attach to a charge object.</td>
         </tr>
+        <tr>
+            <td>submit</td>
+            <td>false</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td>Whether to immediately submit evidence to the bank. If `false`, evidence is staged on the dispute. Staged evidence is visible in the API and Dashboard, and can be submitted to the bank by making another request with this attribute set to `true` (the default).</td>
+        </tr>
     </tbody>
 </table>
 
