@@ -35,11 +35,18 @@ Creates a new customer object.
     </thead>
     <tbody>
         <tr>
-            <td>account_balance</td>
+            <td>address</td>
+            <td>false</td>
+            <td>array</td>
+            <td>[]</td>
+            <td>The customer’s address.</td>
+        </tr>
+        <tr>
+            <td>balance</td>
             <td>false</td>
             <td>number</td>
             <td>null</td>
-            <td>A positive amount that is the starting account balance for your customer.</td>
+            <td>Current balance, if any, being stored on the customer. If negative, the customer has credit to apply to their next invoice. If positive, the customer has an amount owed that will be added to their next invoice.</td>
         </tr>
         <tr>
             <td>coupon</td>
@@ -63,6 +70,20 @@ Creates a new customer object.
             <td>Customer’s email address.</td>
         </tr>
         <tr>
+            <td>invoice_prefix</td>
+            <td>false</td>
+            <td>string</td>
+            <td>null</td>
+            <td>The prefix for the customer used to generate unique invoice numbers.</td>
+        </tr>
+        <tr>
+            <td>invoice_settings</td>
+            <td>false</td>
+            <td>array</td>
+            <td>[]</td>
+            <td>Default invoice settings for this customer.</td>
+        </tr>
+        <tr>
             <td>metadata</td>
             <td>false</td>
             <td>array</td>
@@ -70,25 +91,39 @@ Creates a new customer object.
             <td>A set of key/value pairs that you can attach to a customer object.</td>
         </tr>
         <tr>
-            <td>plan</td>
+            <td>name</td>
             <td>false</td>
             <td>string</td>
             <td>null</td>
-            <td>Plan for the customer.</td>
+            <td>The customer’s full name or business name.</td>
         </tr>
         <tr>
-            <td>quantity</td>
+            <td>payment_method</td>
             <td>false</td>
-            <td>integer</td>
+            <td>string</td>
             <td>null</td>
-            <td>Quantity you'd like to apply to the subscription you're creating.</td>
+            <td>ID of the PaymentMethod to attach to the customer.</td>
         </tr>
         <tr>
-            <td>trial_end</td>
+            <td>phone</td>
             <td>false</td>
-            <td>integer</td>
+            <td>string</td>
             <td>null</td>
-            <td>UTC integer timestamp representing the end of the trial period the customer will get before being charged for the first time.</td>
+            <td>The customer’s phone number.</td>
+        </tr>
+        <tr>
+            <td>preferred_locales</td>
+            <td>false</td>
+            <td>array</td>
+            <td>[]</td>
+            <td>Customer’s preferred languages, ordered by preference.</td>
+        </tr>
+        <tr>
+            <td>shipping</td>
+            <td>false</td>
+            <td>array</td>
+            <td>[]</td>
+            <td>Mailing and shipping address for the customer. Appears on invoices emailed to this customer.</td>
         </tr>
         <tr>
             <td>source</td>
@@ -96,6 +131,20 @@ Creates a new customer object.
             <td>string | array</td>
             <td>null</td>
             <td>The source can either be a token or a dictionary containing the source details.</td>
+        </tr>
+        <tr>
+            <td>tax_exempt</td>
+            <td>false</td>
+            <td>string</td>
+            <td>null</td>
+            <td>Describes the customer’s tax exemption status</td>
+        </tr>
+        <tr>
+            <td>tax_id_data</td>
+            <td>false</td>
+            <td>string</td>
+            <td>null</td>
+            <td>The customer’s tax IDs.</td>
         </tr>
     </tbody>
 </table>

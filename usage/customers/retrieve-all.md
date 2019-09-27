@@ -42,6 +42,13 @@ Returns a list of your customers. The customers are returned sorted by creation 
             <td>A filter on the list based on the object created field.</td>
         </tr>
         <tr>
+            <td>email</td>
+            <td>false</td>
+            <td>string</td>
+            <td>null</td>
+            <td>A filter on the list based on the customer’s email field.</td>
+        </tr>
+        <tr>
             <td>ending_before</td>
             <td>false</td>
             <td>string</td>
