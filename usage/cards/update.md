@@ -55,56 +55,70 @@ When you update a card, Stripe will automatically validate the card.
             <td>false</td>
             <td>string</td>
             <td>null</td>
-            <td>The card holder address city.</td>
+            <td>City/District/Suburb/Town/Village.</td>
+        </tr>
+        <tr>
+            <td>address_country</td>
+            <td>false</td>
+            <td>string</td>
+            <td>null</td>
+            <td>Billing address country, if provided when creating card.</td>
         </tr>
         <tr>
             <td>address_line1</td>
             <td>false</td>
             <td>string</td>
             <td>null</td>
-            <td>The card holder address line 1.</td>
+            <td>Address line 1 (Street address/PO Box/Company name). </td>
         </tr>
         <tr>
             <td>address_line2</td>
             <td>false</td>
             <td>string</td>
             <td>null</td>
-            <td>The card holder address line 2.</td>
+            <td>Address line 2 (Apartment/Suite/Unit/Building).</td>
         </tr>
         <tr>
             <td>address_state</td>
             <td>false</td>
             <td>string</td>
             <td>null</td>
-            <td>The card holder address state.</td>
+            <td>State/County/Province/Region.</td>
         </tr>
         <tr>
             <td>address_zip</td>
             <td>false</td>
             <td>string</td>
             <td>null</td>
-            <td>The card holder address zip code.</td>
+            <td>ZIP or postal code.</td>
         </tr>
         <tr>
             <td>exp_month</td>
             <td>false</td>
             <td>string</td>
             <td>null</td>
-            <td>The card expiration month.</td>
+            <td>Two digit number representing the card’s expiration month.</td>
         </tr>
         <tr>
             <td>exp_year</td>
             <td>false</td>
             <td>string</td>
             <td>null</td>
-            <td>The card expiration year.</td>
+            <td>Four digit number representing the card’s expiration year.</td>
+        </tr>
+        <tr>
+            <td>metadata</td>
+            <td>false</td>
+            <td>array</td>
+            <td>[]</td>
+            <td>A set of key/value pairs that you can attach to a card object.</td>
         </tr>
         <tr>
             <td>name</td>
             <td>false</td>
             <td>string</td>
             <td>null</td>
-            <td>The card holder name.</td>
+            <td>Cardholder name.</td>
         </tr>
     </tbody>
 </table>
