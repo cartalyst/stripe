@@ -49,18 +49,11 @@ Creating a new refund will refund a charge that has previously been created but 
     </thead>
     <tbody>
         <tr>
-            <td>refund_application_fee</td>
+            <td>amount</td>
             <td>false</td>
-            <td>boolean</td>
-            <td>false</td>
-            <td>Boolean indicating whether the application fee should be refunded when refunding this refund.</td>
-        </tr>
-        <tr>
-            <td>reason</td>
-            <td>false</td>
-            <td>string</td>
+            <td>number</td>
             <td>null</td>
-            <td>String indicating the reason for the refund. If set, possible values are `duplicate`, `fraudulent`, and `requested_by_customer`.</td>
+            <td>A positive integer in cents representing how much of this charge to refund. </td>
         </tr>
         <tr>
             <td>metadata</td>
@@ -68,6 +61,27 @@ Creating a new refund will refund a charge that has previously been created but 
             <td>array</td>
             <td>[]</td>
             <td>A set of key/value pairs that you can attach to a refund object.</td>
+        </tr>
+        <tr>
+            <td>reason</td>
+            <td>false</td>
+            <td>string</td>
+            <td>null</td>
+            <td>String indicating the reason for the refund. If set, possible values are `duplicate`, `fraudulent`, and `requested_by_customer`. Connect only.</td>
+        </tr>
+        <tr>
+            <td>refund_application_fee</td>
+            <td>false</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Boolean indicating whether the application fee should be refunded when refunding this refund.</td>
+        </tr>
+        <tr>
+            <td>reverse_transfer</td>
+            <td>false</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Boolean indicating whether the transfer should be reversed when refunding this charge.</td>
         </tr>
     </tbody>
 </table>

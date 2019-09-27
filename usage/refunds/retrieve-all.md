@@ -42,6 +42,20 @@ You can see a list of the refunds belonging to a specific charge.
     </thead>
     <tbody>
         <tr>
+            <td>charge</td>
+            <td>false</td>
+            <td>string</td>
+            <td>null</td>
+            <td>Only return refunds for the charge specified by this charge ID.</td>
+        </tr>
+        <tr>
+            <td>created</td>
+            <td>false</td>
+            <td>string</td>
+            <td>null</td>
+            <td>A filter on the list based on the object created field.</td>
+        </tr>
+        <tr>
             <td>ending_before</td>
             <td>false</td>
             <td>string</td>
