@@ -1,4 +1,4 @@
-#### Update a payment method
+#### Update a setup intent
 
 Updates a Payment Method object. A PaymentMethod must be attached a customer to be updated.
 
@@ -14,11 +14,11 @@ Updates a Payment Method object. A PaymentMethod must be attached a customer to 
     </thead>
     <tbody>
         <tr>
-            <td>$paymentMethodId</td>
+            <td>$setupIntentId</td>
             <td>true</td>
             <td>string</td>
             <td>null</td>
-            <td>The payment method unique identifier.</td>
+            <td>The setup intent unique identifier.</td>
         </tr>
         <tr>
             <td>$parameters</td>
@@ -42,25 +42,39 @@ Updates a Payment Method object. A PaymentMethod must be attached a customer to 
     </thead>
     <tbody>
         <tr>
-            <td>billing_details</td>
+            <td>customer</td>
             <td>true</td>
             <td>array</td>
             <td>null</td>
-            <td>Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.</td>
+            <td>ID of the Customer this Setup Intent belongs to, if one exists.</td>
         </tr>
         <tr>
-            <td>card</td>
+            <td>description</td>
             <td>false</td>
-            <td>integer</td>
+            <td>string</td>
             <td>null</td>
-            <td>If this is a card PaymentMethod, this array should contains the user’s card details.</td>
+            <td>An arbitrary string attached to the object. Often useful for displaying to users.</td>
         </tr>
         <tr>
             <td>metadata</td>
             <td>false</td>
             <td>array</td>
             <td>[]</td>
-            <td>A set of key/value pairs that you can attach to a payment method object.</td>
+            <td>A set of key/value pairs that you can attach to a setup intent object.</td>
+        </tr>
+        <tr>
+            <td>payment_method</td>
+            <td>false</td>
+            <td>string</td>
+            <td>null</td>
+            <td>ID of the payment method (a PaymentMethod, Card, BankAccount, or saved Source object) to attach to this Setup Intent.</td>
+        </tr>
+        <tr>
+            <td>payment_method_types</td>
+            <td>false</td>
+            <td>array</td>
+            <td>["card"</td>
+            <td>The list of payment method types (e.g. card) that this Setup Intent is allowed to set up. If this is not provided, defaults to ["card"].</td>
         </tr>
     </tbody>
 </table>
@@ -68,7 +82,7 @@ Updates a Payment Method object. A PaymentMethod must be attached a customer to 
 ##### Usage
 
 ```php
-$paymentMethod = $stripe->paymentMethods()->update('pm_1FNPtF2eZvKYlo2Cc72xxtPl', [
+$setupIntent = $stripe->setupIntents()->update('seti_123456789', [
     'metadata' => [
         'order_id' => '123456',
     ],

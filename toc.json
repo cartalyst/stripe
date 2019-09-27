@@ -50,6 +50,14 @@
         "payment_methods/attach",
         "payment_methods/detach",
 
+        "setup_intents/index",
+        "setup_intents/create",
+        "setup_intents/retrieve-single",
+        "setup_intents/update",
+        "setup_intents/retrieve-all",
+        "setup_intents/confirm",
+        "setup_intents/cancel",
+
         "subscriptions/index",
         "subscriptions/create",
         "subscriptions/retrieve-single",
