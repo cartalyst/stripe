@@ -146,6 +146,11 @@
         "events/retrieve-single",
         "events/retrieve-all",
 
+        "files/index",
+        "files/create",
+        "files/retrieve-single",
+        "files/retrieve-all",
+
         "tokens/index",
         "tokens/create-card",
         "tokens/create-bank",
