@@ -46,7 +46,21 @@ To charge a credit card, you need to create a new charge object. If your API key
             <td>true</td>
             <td>string</td>
             <td>null</td>
-            <td>3-letter ISO code for currency.</td>
+            <td>Three-letter ISO currency code, in lowercase.</td>
+        </tr>
+        <tr>
+            <td>application_fee_amount</td>
+            <td>false</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>A fee in cents that will be applied to the charge and transferred to the application owner’s Stripe account.</td>
+        </tr>
+        <tr>
+            <td>capture</td>
+            <td>false</td>
+            <td>bool</td>
+            <td>null</td>
+            <td>Whether to immediately capture the charge.</td>
         </tr>
         <tr>
             <td>customer</td>
@@ -56,18 +70,11 @@ To charge a credit card, you need to create a new charge object. If your API key
             <td>The customer unique identifier.</td>
         </tr>
         <tr>
-            <td>source</td>
-            <td>false</td>
-            <td>string | array</td>
-            <td>null</td>
-            <td>The source can either be a token or a dictionary containing the source details.</td>
-        </tr>
-        <tr>
             <td>description</td>
             <td>false</td>
             <td>string</td>
             <td>null</td>
-            <td>An arbitrary string which you can attach to a charge object.</td>
+            <td>An arbitrary string which you can attach to a Charge object.</td>
         </tr>
         <tr>
             <td>metadata</td>
@@ -77,11 +84,32 @@ To charge a credit card, you need to create a new charge object. If your API key
             <td>A set of key/value pairs that you can attach to a charge object.</td>
         </tr>
         <tr>
-            <td>capture</td>
+            <td>on_behalf_of</td>
             <td>false</td>
-            <td>bool</td>
+            <td>string</td>
             <td>null</td>
-            <td>Whether or not to immediately capture the charge.</td>
+            <td>The Stripe account ID for which these funds are intended.</td>
+        </tr>
+        <tr>
+            <td>receipt_email</td>
+            <td>false</td>
+            <td>string</td>
+            <td>null</td>
+            <td>The email address to which this charge’s receipt will be sent.</td>
+        </tr>
+        <tr>
+            <td>shipping</td>
+            <td>false</td>
+            <td>array</td>
+            <td>[]</td>
+            <td>Shipping information for the charge. Helps prevent fraud on charges for physical goods.</td>
+        </tr>
+        <tr>
+            <td>source</td>
+            <td>false</td>
+            <td>string | array</td>
+            <td>null</td>
+            <td>The source can either be a token or a dictionary containing the source details.</td>
         </tr>
         <tr>
             <td>statement_descriptor</td>
@@ -91,25 +119,25 @@ To charge a credit card, you need to create a new charge object. If your API key
             <td>An arbitrary string to be displayed alongside your company name on your customer's credit card statement.</td>
         </tr>
         <tr>
-            <td>receipt_email</td>
+            <td>statement_descriptor_suffix</td>
             <td>false</td>
             <td>string</td>
             <td>null</td>
-            <td>The email address to send this charge’s receipt to.</td>
+            <td>Provides information about the charge that customers see on their statements.</td>
         </tr>
         <tr>
-            <td>application_fee</td>
-            <td>false</td>
-            <td>integer</td>
-            <td>null</td>
-            <td>An application fee to add on to this charge.</td>
-        </tr>
-        <tr>
-            <td>shipping</td>
+            <td>transfer_data</td>
             <td>false</td>
             <td>array</td>
             <td>[]</td>
-            <td>Shipping information for the charge. Helps prevent fraud on charges for physical goods.</td>
+            <td>An arbitrary string to be used as the dynamic portion of the full descriptor displayed on your customer’s credit card statement.</td>
+        </tr>
+        <tr>
+            <td>transfer_group</td>
+            <td>false</td>
+            <td>string</td>
+            <td>null</td>
+            <td>A string that identifies this transaction as part of a group.</td>
         </tr>
     </tbody>
 </table>

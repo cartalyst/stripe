@@ -52,11 +52,11 @@ Uncaptured payments expire exactly seven days after they are created. If they ar
             <td>A positive amount for the transaction.</td>
         </tr>
         <tr>
-            <td>application_fee</td>
+            <td>application_fee_amount</td>
             <td>false</td>
             <td>string</td>
             <td>null</td>
-            <td>An application fee to add on to this charge. Can only be used with Stripe Connect.</td>
+            <td>An application fee amount to add on to this charge, which must be less than or equal to the original amount. Can only be used with Stripe Connect.</td>
         </tr>
         <tr>
             <td>receipt_email</td>
@@ -64,6 +64,34 @@ Uncaptured payments expire exactly seven days after they are created. If they ar
             <td>string</td>
             <td>null</td>
             <td>The email address to send this charge’s receipt to.</td>
+        </tr>
+        <tr>
+            <td>statement_descriptor</td>
+            <td>false</td>
+            <td>string</td>
+            <td>null</td>
+            <td>An arbitrary string to be displayed alongside your company name on your customer's credit card statement.</td>
+        </tr>
+        <tr>
+            <td>statement_descriptor_suffix</td>
+            <td>false</td>
+            <td>string</td>
+            <td>null</td>
+            <td>Provides information about the charge that customers see on their statements.</td>
+        </tr>
+        <tr>
+            <td>transfer_data</td>
+            <td>false</td>
+            <td>array</td>
+            <td>[]</td>
+            <td>An optional dictionary including the account to automatically transfer to as part of a destination charge</td>
+        </tr>
+        <tr>
+            <td>transfer_group</td>
+            <td>false</td>
+            <td>string</td>
+            <td>null</td>
+            <td>A string that identifies this transaction as part of a group.</td>
         </tr>
     </tbody>
 </table>

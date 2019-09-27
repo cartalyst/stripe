@@ -63,11 +63,25 @@ Returns a list of charges you've previously created. The charges are returned in
             <td>A limit on the number of objects to be returned.</td>
         </tr>
         <tr>
+            <td>payment_intent</td>
+            <td>false</td>
+            <td>string</td>
+            <td>null</td>
+            <td>Only return charges that were created by the PaymentIntent specified by this PaymentIntent ID.</td>
+        </tr>
+        <tr>
             <td>starting_after</td>
             <td>false</td>
             <td>string</td>
             <td>null</td>
             <td>A cursor to be used in pagination.</td>
+        </tr>
+        <tr>
+            <td>transfer_group</td>
+            <td>false</td>
+            <td>string</td>
+            <td>null</td>
+            <td>Only return charges for this transfer group.</td>
         </tr>
     </tbody>
 </table>
