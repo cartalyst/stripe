@@ -40,6 +40,13 @@
             <td>A filter on the list based on the object created field.</td>
         </tr>
         <tr>
+            <td>delivery_success</td>
+            <td>false</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td>Filter events by whether all webhooks were successfully delivered.</td>
+        </tr>
+        <tr>
             <td>object_id</td>
             <td>false</td>
             <td>string</td>
@@ -73,6 +80,13 @@
             <td>string</td>
             <td>null</td>
             <td>A string containing a specific event name, or group of events using * as a wildcard.</td>
+        </tr>
+        <tr>
+            <td>types</td>
+            <td>false</td>
+            <td>array</td>
+            <td>[]</td>
+            <td>An array of up to 20 strings containing specific event names.</td>
         </tr>
     </tbody>
 </table>
