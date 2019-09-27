@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.3.0 - 2019-09-27
+
+`UPDATED`
+
+- Api Key checker moved to the create handler method.
+
 ### v2.2.12 - 2019-09-10
 
 `ADDED`
