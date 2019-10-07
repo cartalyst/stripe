@@ -83,6 +83,12 @@
         "subscriptions/delete-discount",
         "subscriptions/retrieve-all",
 
+        "tax_rates/index",
+        "tax_rates/create",
+        "tax_rates/retrieve-single",
+        "tax_rates/update",
+        "tax_rates/retrieve-all",
+
         "plans/index",
         "plans/create",
         "plans/retrieve-single",
