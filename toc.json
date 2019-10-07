@@ -35,13 +35,6 @@
         "customers/delete-discount",
         "customers/retrieve-all",
 
-        "cards/index",
-        "cards/create",
-        "cards/retrieve-single",
-        "cards/update",
-        "cards/delete",
-        "cards/retrieve-all",
-
         "payment_methods/index",
         "payment_methods/create",
         "payment_methods/retrieve-single",
@@ -49,6 +42,20 @@
         "payment_methods/retrieve-all",
         "payment_methods/attach",
         "payment_methods/detach",
+
+        "cards/index",
+        "cards/create",
+        "cards/retrieve-single",
+        "cards/update",
+        "cards/delete",
+        "cards/retrieve-all",
+
+        "sources/index",
+        "sources/create",
+        "sources/retrieve-single",
+        "sources/update",
+        "sources/attach",
+        "sources/detach",
 
         "payment_intents/index",
         "payment_intents/create",

@@ -1,6 +1,6 @@
-#### Detach a payment method
+#### Retrieve a source
 
-Detaches the Payment Method from a Customer.
+Retrieves a Source object.
 
 ##### Arguments
 
@@ -14,11 +14,11 @@ Detaches the Payment Method from a Customer.
     </thead>
     <tbody>
         <tr>
-            <td>$paymentMethodId</td>
+            <td>$sourceId</td>
             <td>true</td>
             <td>string</td>
             <td>null</td>
-            <td>The payment method unique identifier.</td>
+            <td>The source unique identifier.</td>
         </tr>
     </tbody>
 </table>
@@ -26,5 +26,5 @@ Detaches the Payment Method from a Customer.
 ##### Usage
 
 ```php
-$paymentMethod = $stripe->paymentMethods()->detach('pm_1FNPdU2eZvKYlo2C09r77g4w');
+$source = $stripe->sources()->find('src_1FR3sfEind3TueVhD5ZyAvz8');
 ```

@@ -37,7 +37,7 @@ Creates a Payment Method object. Read the [Stripe.js reference](https://stripe.c
         <tr>
             <td>type</td>
             <td>true</td>
-            <td>number</td>
+            <td>string</td>
             <td>null</td>
             <td>The type of the PaymentMethod, one of: `card`.</td>
         </tr>
