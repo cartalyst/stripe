@@ -91,31 +91,6 @@ class Account extends Api
     }
 
     /**
-     * Updates an existing account.
-     *
-     * @param  string  $accountId
-     * @param  string  $file
-     * @param  array  $parameters
-     * @return array
-     */
-    public function verify($accountId, $file, $purpose)
-    {
-        $upload = (new FileUploads($this->config))->create(
-            $file, $purpose, [ 'Stripe-Account' => $accountId ]
-        );
-
-        $this->update($accountId, [
-            'legal_entity' => [
-                'verification' => [
-                    'document' => $upload['id'],
-                ],
-            ],
-        ]);
-
-        return $this->_get('accounts/'.$accountId);
-    }
-
-    /**
      * Returns a list of all the connected accounts.
      *
      * @param  array  $parameters

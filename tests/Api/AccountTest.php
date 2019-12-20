@@ -107,26 +107,6 @@ class AccountTest extends FunctionalTestCase
     }
 
     /** @test */
-    public function it_can_verify_an_account()
-    {
-        $email = $this->getRandomEmail();
-
-        $account = $this->stripe->account()->create([
-            'type' => 'custom', 'email' => $email,
-        ]);
-
-        $filePath = realpath(__DIR__.'/../files/verify-account.jpg');
-
-        $this->assertSame('unverified', $account['legal_entity']['verification']['status']);
-
-        $account = $this->stripe->account()->verify($account['id'], $filePath, 'identity_document');
-
-        // $account = $this->stripe->account()->find($account['id']);
-
-        // $this->assertSame('verified', $account['legal_entity']['verification']['status']);
-    }
-
-    /** @test */
     public function it_can_retrieve_all_accounts()
     {
         $email = $this->getRandomEmail();
