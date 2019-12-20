@@ -16,7 +16,6 @@
     ],
     "require": {
         "php": ">=5.5.9",
-        "cartalyst/collections": "~1.0",
         "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
