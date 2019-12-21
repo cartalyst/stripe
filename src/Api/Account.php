@@ -134,4 +134,14 @@ class Account extends Api
     {
         return new Account\AccountLink($this->config);
     }
+
+    /**
+     * Returns an account capabilities api instance.
+     *
+     * @return \Cartalyst\Stripe\Api\Account\Capabilities
+     */
+    public function capabilities()
+    {
+        return new Account\Capabilities($this->config);
+    }
 }
