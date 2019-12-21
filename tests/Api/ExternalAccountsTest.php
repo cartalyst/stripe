@@ -29,9 +29,16 @@ class ExternalAccountsTest extends FunctionalTestCase
     {
         $email = $this->getRandomEmail();
 
-        $accountId = $this->stripe->account()->create([
-            'type' => 'custom', 'email' => $email,
-        ])['id'];
+        $account = $this->stripe->account()->create([
+            'type'                   => 'custom',
+            'email'                  => $email,
+            'requested_capabilities' => [
+                'card_payments',
+                'transfers',
+            ],
+        ]);
+
+        $accountId = $account['id'];
 
         $token = $this->createBankAccountToken();
 
@@ -48,9 +55,16 @@ class ExternalAccountsTest extends FunctionalTestCase
     {
         $email = $this->getRandomEmail();
 
-        $accountId = $this->stripe->account()->create([
-            'type' => 'custom', 'email' => $email,
-        ])['id'];
+        $account = $this->stripe->account()->create([
+            'type'                   => 'custom',
+            'email'                  => $email,
+            'requested_capabilities' => [
+                'card_payments',
+                'transfers',
+            ],
+        ]);
+
+        $accountId = $account['id'];
 
         $token = $this->createBankAccountToken();
 
@@ -69,9 +83,16 @@ class ExternalAccountsTest extends FunctionalTestCase
     {
         $email = $this->getRandomEmail();
 
-        $accountId = $this->stripe->account()->create([
-            'type' => 'custom', 'email' => $email,
-        ])['id'];
+        $account = $this->stripe->account()->create([
+            'type'                   => 'custom',
+            'email'                  => $email,
+            'requested_capabilities' => [
+                'card_payments',
+                'transfers',
+            ],
+        ]);
+
+        $accountId = $account['id'];
 
         $token = $this->createBankAccountToken();
 
@@ -93,9 +114,16 @@ class ExternalAccountsTest extends FunctionalTestCase
     {
         $email = $this->getRandomEmail();
 
-        $accountId = $this->stripe->account()->create([
-            'type' => 'custom', 'email' => $email,
-        ])['id'];
+        $account = $this->stripe->account()->create([
+            'type'                   => 'custom',
+            'email'                  => $email,
+            'requested_capabilities' => [
+                'card_payments',
+                'transfers',
+            ],
+        ]);
+
+        $accountId = $account['id'];
 
         $token = $this->createBankAccountToken();
 
@@ -119,9 +147,16 @@ class ExternalAccountsTest extends FunctionalTestCase
     {
         $email = $this->getRandomEmail();
 
-        $accountId = $this->stripe->account()->create([
-            'type' => 'custom', 'email' => $email,
-        ])['id'];
+        $account = $this->stripe->account()->create([
+            'type'                   => 'custom',
+            'email'                  => $email,
+            'requested_capabilities' => [
+                'card_payments',
+                'transfers',
+            ],
+        ]);
+
+        $accountId = $account['id'];
 
         $token = $this->createBankAccountToken();
 
@@ -140,9 +175,16 @@ class ExternalAccountsTest extends FunctionalTestCase
     {
         $email = $this->getRandomEmail();
 
-        $accountId = $this->stripe->account()->create([
-            'type' => 'custom', 'email' => $email,
-        ])['id'];
+        $account = $this->stripe->account()->create([
+            'type'                   => 'custom',
+            'email'                  => $email,
+            'requested_capabilities' => [
+                'card_payments',
+                'transfers',
+            ],
+        ]);
+
+        $accountId = $account['id'];
 
         $token = $this->createBankAccountToken();
 

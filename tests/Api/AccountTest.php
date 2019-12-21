@@ -39,7 +39,12 @@ class AccountTest extends FunctionalTestCase
         $email = $this->getRandomEmail();
 
         $account = $this->stripe->account()->create([
-            'type' => 'custom', 'email' => $email,
+            'type'                   => 'custom',
+            'email'                  => $email,
+            'requested_capabilities' => [
+                'card_payments',
+                'transfers',
+            ],
         ]);
 
         $this->assertSame($email, $account['email']);
@@ -52,7 +57,12 @@ class AccountTest extends FunctionalTestCase
         $email = $this->getRandomEmail();
 
         $account = $this->stripe->account()->create([
-            'type' => 'custom', 'email' => $email,
+            'type'                   => 'custom',
+            'email'                  => $email,
+            'requested_capabilities' => [
+                'card_payments',
+                'transfers',
+            ],
         ]);
 
         $email = $account['email'];
@@ -72,7 +82,12 @@ class AccountTest extends FunctionalTestCase
         $email = $this->getRandomEmail();
 
         $account = $this->stripe->account()->create([
-            'type' => 'custom', 'email' => $email,
+            'type'                   => 'custom',
+            'email'                  => $email,
+            'requested_capabilities' => [
+                'card_payments',
+                'transfers',
+            ],
         ]);
 
         $accountId = $account['id'];
@@ -94,7 +109,12 @@ class AccountTest extends FunctionalTestCase
         $email = $this->getRandomEmail();
 
         $account = $this->stripe->account()->create([
-            'type' => 'custom', 'email' => $email,
+            'type'                   => 'custom',
+            'email'                  => $email,
+            'requested_capabilities' => [
+                'card_payments',
+                'transfers',
+            ],
         ]);
 
         $accountId = $account['id'];
@@ -112,7 +132,12 @@ class AccountTest extends FunctionalTestCase
         $email = $this->getRandomEmail();
 
         $this->stripe->account()->create([
-            'type' => 'custom', 'email' => $email,
+            'type'                   => 'custom',
+            'email'                  => $email,
+            'requested_capabilities' => [
+                'card_payments',
+                'transfers',
+            ],
         ]);
 
         $accounts = $this->stripe->account()->all();
@@ -127,7 +152,12 @@ class AccountTest extends FunctionalTestCase
         $email = $this->getRandomEmail();
 
         $this->stripe->account()->create([
-            'type' => 'custom', 'email' => $email,
+            'type'                   => 'custom',
+            'email'                  => $email,
+            'requested_capabilities' => [
+                'card_payments',
+                'transfers',
+            ],
         ]);
 
         $accounts = $this->stripe->accountIterator();
@@ -141,7 +171,12 @@ class AccountTest extends FunctionalTestCase
         $email = $this->getRandomEmail();
 
         $account = $this->stripe->account()->create([
-            'type' => 'custom', 'email' => $email,
+            'type'                   => 'custom',
+            'email'                  => $email,
+            'requested_capabilities' => [
+                'card_payments',
+                'transfers',
+            ],
         ]);
 
         $accountId = $account['id'];
@@ -161,7 +196,12 @@ class AccountTest extends FunctionalTestCase
         $email = $this->getRandomEmail();
 
         $account = $this->stripe->account()->create([
-            'type' => 'custom', 'email' => $email,
+            'type'                   => 'custom',
+            'email'                  => $email,
+            'requested_capabilities' => [
+                'card_payments',
+                'transfers',
+            ],
         ]);
 
         $accountId = $account['id'];

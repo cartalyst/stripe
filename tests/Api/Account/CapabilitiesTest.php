@@ -34,6 +34,7 @@ class CapabilitiesTest extends FunctionalTestCase
             'email'                  => $email,
             'requested_capabilities' => [
                 'card_payments',
+                'transfers',
             ],
         ]);
 
@@ -74,6 +75,7 @@ class CapabilitiesTest extends FunctionalTestCase
             'email'                  => $email,
             'requested_capabilities' => [
                 'card_payments',
+                'transfers',
             ],
         ]);
 
