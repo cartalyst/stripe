@@ -11,6 +11,20 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.4.0 - 2019-12-21
+
+`ADDED`
+
+- Account Links API
+- Account Capabilities API
+- Balance Transactions API
+
+`REMOVED`
+
+- Cartalyst Collections dependency, since it was no longer being used.
+- Subscription Schedule Revisions API since it was fully removed from the Stripe API
+- The `verify()` method from the Account API. Stripe made it more difficult to make this verification more straightforward, so this method was unfortunately redundant.
+
 ### v2.3.0 - 2019-09-27
 
 `UPDATED`
