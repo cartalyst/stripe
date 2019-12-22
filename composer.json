@@ -23,10 +23,19 @@
         "phpunit/phpunit": "~4.8"
     },
     "autoload": {
-        "psr-4": { "Cartalyst\\Stripe\\": "src/" }
+        "psr-4": {
+            "Cartalyst\\Stripe\\": "src/"
+        }
     },
     "autoload-dev": {
-        "psr-4": { "Cartalyst\\Stripe\\Tests\\": "tests/" }
+        "psr-4": {
+            "Cartalyst\\Stripe\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
     },
     "extra": {
         "component": "package",
