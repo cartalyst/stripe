@@ -208,10 +208,8 @@ abstract class Api implements ApiInterface
         $stack->push(Middleware::mapRequest(function (RequestInterface $request) {
             $config = $this->config;
 
-            $idempotencykey = $this->idempotencyKey ?: $config->getIdempotencyKey();
-
-            if ($idempotencykey) {
-                $request = $request->withHeader('Idempotency-Key', $idempotencykey);
+            if ($this->idempotencyKey) {
+                $request = $request->withHeader('Idempotency-Key', $this->idempotencyKey);
             }
 
             if ($accountId = $config->getAccountId()) {

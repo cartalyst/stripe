@@ -44,13 +44,6 @@ class Config implements ConfigInterface
     protected $apiVersion;
 
     /**
-     * The idempotency key.
-     *
-     * @var string
-     */
-    protected $idempotencyKey;
-
-    /**
      * The managed account id.
      *
      * @var string
@@ -150,24 +143,6 @@ class Config implements ConfigInterface
     public function setApiVersion($apiVersion)
     {
         $this->apiVersion = $apiVersion;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIdempotencyKey()
-    {
-        return $this->idempotencyKey;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setIdempotencyKey($idempotencyKey)
-    {
-        $this->idempotencyKey = $idempotencyKey;
 
         return $this;
     }

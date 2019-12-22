@@ -142,19 +142,6 @@ class Stripe
     }
 
     /**
-     * Sets the idempotency key.
-     *
-     * @param  string  $idempotencyKey
-     * @return $this
-     */
-    public function idempotent($idempotencyKey)
-    {
-        $this->config->setIdempotencyKey($idempotencyKey);
-
-        return $this;
-    }
-
-    /**
      * Sets the account id.
      *
      * @param  string  $accountId

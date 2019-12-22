@@ -66,19 +66,4 @@ interface ConfigInterface
      * @return $this
      */
     public function setApiVersion($apiVersion);
-
-    /**
-     * Returns the idempotency key.
-     *
-     * @return string
-     */
-    public function getIdempotencyKey();
-
-    /**
-     * Sets the idempotency key.
-     *
-     * @param  string  $idempotencyKey
-     * @return $this
-     */
-    public function setIdempotencyKey($idempotencyKey);
 }
