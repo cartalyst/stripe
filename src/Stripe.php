@@ -39,13 +39,6 @@ class Stripe
     protected $config;
 
     /**
-     * The amount converter class and method name.
-     *
-     * @var string
-     */
-    protected static $amountConverter = '\\Cartalyst\\Stripe\\AmountConverter::convert';
-
-    /**
      * Constructor.
      *
      * @param  string  $apiKey
@@ -196,59 +189,6 @@ class Stripe
     public function setAppInfo($appName, $appVersion = null, $appUrl = null, $appPartnerId = null)
     {
         return $this->config->setAppInfo($appName, $appVersion, $appUrl, $appPartnerId);
-    }
-
-    /**
-     * Returns the amount converter class and method name.
-     *
-     * @return string
-     */
-    public static function getAmountConverter()
-    {
-        return static::$amountConverter;
-    }
-
-    /**
-     * Sets the amount converter class and method name.
-     *
-     * @param  $amountConverter  string
-     * @return void
-     */
-    public static function setAmountConverter($amountConverter)
-    {
-        static::$amountConverter = $amountConverter;
-    }
-
-    /**
-     * Disables the amount converter.
-     *
-     * @return void
-     */
-    public static function disableAmountConverter()
-    {
-        static::setAmountConverter(null);
-    }
-
-    /**
-     * Returns the default amount converter.
-     *
-     * @return string
-     */
-    public static function getDefaultAmountConverter()
-    {
-        return '\\Cartalyst\\Stripe\\AmountConverter::convert';
-    }
-
-    /**
-     * Sets the default amount converter;
-     *
-     * @return void
-     */
-    public static function setDefaultAmountConverter()
-    {
-        static::setAmountConverter(
-            static::getDefaultAmountConverter()
-        );
     }
 
     /**
