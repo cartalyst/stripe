@@ -19,6 +19,7 @@
         "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
+        "cartalyst/php-cs-fixer-config": "^1.0",
         "mockery/mockery": "~0.9",
         "phpunit/phpunit": "~4.8"
     },
