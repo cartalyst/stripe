@@ -66,4 +66,37 @@ interface ConfigInterface
      * @return $this
      */
     public function setApiVersion($apiVersion);
+
+    /**
+     * Returns the managed account id.
+     *
+     * @return string
+     */
+    public function getAccountId();
+
+    /**
+     * Sets the managed account id.
+     *
+     * @param  string  $accountId
+     * @return $this
+     */
+    public function setAccountId($accountId);
+
+    /**
+     * Returns the application's information.
+     *
+     * @return array|null
+     */
+    public function getAppInfo();
+
+    /**
+     * Sets the application's information.
+     *
+     * @param string $appName
+     * @param string $appVersion
+     * @param string $appUrl
+     * @param string $appPartnerId
+     * @return $this
+     */
+    public function setAppInfo($appName, $appVersion = null, $appUrl = null, $appPartnerId = null);
 }

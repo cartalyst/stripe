@@ -129,9 +129,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * Returns the managed account id.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getAccountId()
     {
@@ -139,10 +137,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * Sets the managed account id.
-     *
-     * @param  string  $accountId
-     * @return $this
+     * {@inheritdoc}
      */
     public function setAccountId($accountId)
     {
@@ -152,9 +147,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * Returns the application's information.
-     *
-     * @return array|null
+     * {@inheritdoc}
      */
     public function getAppInfo()
     {
@@ -162,13 +155,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * Sets the application's information.
-     *
-     * @param string $appName
-     * @param string $appVersion
-     * @param string $appUrl
-     * @param string $appPartnerId
-     * @return $this
+     * {@inheritdoc}
      */
     public function setAppInfo($appName, $appVersion = null, $appUrl = null, $appPartnerId = null)
     {
