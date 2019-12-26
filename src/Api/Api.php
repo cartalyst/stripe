@@ -59,7 +59,7 @@ abstract class Api implements ApiInterface
     /**
      * Constructor.
      *
-     * @param  \Cartalyst\Stripe\ConfigInterface  $client
+     * @param  \Cartalyst\Stripe\ConfigInterface  $config
      * @return void
      */
     public function __construct(ConfigInterface $config)
@@ -201,6 +201,10 @@ abstract class Api implements ApiInterface
     {
         if (! $this->config->getApiKey()) {
             throw new RuntimeException('The Stripe API key is not defined!');
+        }
+
+        if (! $this->config->getApiVersion()) {
+            throw new RuntimeException('The Stripe API version is not defined!');
         }
 
         $stack = HandlerStack::create();
