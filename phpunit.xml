@@ -32,8 +32,4 @@
         <log type="coverage-text" target="./build/coverage.txt" showUncoveredFiles="true"/>
         <log type="coverage-clover" target="./build/logs/clover.xml" showUncoveredFiles="true"/>
     </logging>
-    <php>
-        <env name="STRIPE_API_KEY" value="stripe-api-key"/>
-        <env name="STRIPE_API_VERSION" value="2017-06-05"/>
-    </php>
 </phpunit>
