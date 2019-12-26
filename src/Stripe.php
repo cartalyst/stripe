@@ -51,18 +51,6 @@ class Stripe
     }
 
     /**
-     * Create a new Stripe API instance.
-     *
-     * @param  string  $apiKey
-     * @param  string  $apiVersion
-     * @return \Cartalyst\Stripe\Stripe
-     */
-    public static function make($apiKey = null, $apiVersion = null)
-    {
-        return new static($apiKey, $apiVersion);
-    }
-
-    /**
      * Returns the current package version.
      *
      * @return string

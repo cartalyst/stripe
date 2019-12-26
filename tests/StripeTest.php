@@ -54,14 +54,6 @@ class StripeTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function it_can_create_a_new_instance_using_the_make_method()
-    {
-        $stripe = Stripe::make('stripe-api-key');
-
-        $this->assertEquals('stripe-api-key', $stripe->getApiKey());
-    }
-
-    /** @test */
     public function it_can_create_a_new_instance_using_enviroment_variables()
     {
         $stripe = new Stripe;
