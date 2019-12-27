@@ -17,6 +17,8 @@ matrix:
     - dist: bionic
       php: 7.4
 
-install: travis_retry composer install
+install:
+  - travis_retry composer install
 
-script: vendor/bin/phpunit
+script:
+  - vendor/bin/phpunit
