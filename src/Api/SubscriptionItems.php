@@ -32,7 +32,10 @@ class SubscriptionItems extends Api
      */
     public function create($subscription, $plan, array $parameters = [])
     {
-        $parameters = array_merge($parameters, compact('plan', 'subscription'));
+        $parameters = array_merge($parameters, [
+            'subscription' => $subscription,
+            'plan'         => $plan,
+        ]);
 
         return $this->_post('subscription_items', $parameters);
     }
@@ -81,7 +84,9 @@ class SubscriptionItems extends Api
      */
     public function all($subscription, array $parameters = [])
     {
-        $parameters = array_merge($parameters, compact('subscription'));
+        $parameters = array_merge($parameters, [
+            'subscription' => $subscription,
+        ]);
 
         return $this->_get('subscription_items', $parameters);
     }

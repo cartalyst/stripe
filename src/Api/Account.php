@@ -87,7 +87,9 @@ class Account extends Api
      */
     public function reject($accountId, $reason)
     {
-        return $this->_post("accounts/{$accountId}/reject", compact('reason'));
+        return $this->_post("accounts/{$accountId}/reject", [
+            'reason' => $reason,
+        ]);
     }
 
     /**

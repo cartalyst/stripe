@@ -77,7 +77,9 @@ class Orders extends Api
      */
     public function returnItems($orderId, array $items = [])
     {
-        return $this->_post("orders/{$orderId}/returns", compact('items'));
+        return $this->_post("orders/{$orderId}/returns", [
+            'items' => $items,
+        ]);
     }
 
     /**

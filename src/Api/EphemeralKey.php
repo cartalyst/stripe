@@ -30,7 +30,9 @@ class EphemeralKey extends Api
      */
     public function create($customer)
     {
-        return $this->_post('ephemeral_keys', compact('customer'));
+        return $this->_post('ephemeral_keys', [
+            'customer' => $customer,
+        ]);
     }
 
     /**

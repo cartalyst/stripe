@@ -32,7 +32,9 @@ class Refunds extends Api
      */
     public function create($chargeId, $amount = null, array $parameters = [])
     {
-        $parameters = array_merge($parameters, array_filter(compact('amount')));
+        $parameters = array_merge($parameters, array_filter([
+            'amount' => $amount,
+        ]));
 
         return $this->_post("charges/{$chargeId}/refunds", $parameters);
     }
