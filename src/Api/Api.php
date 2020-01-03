@@ -137,7 +137,7 @@ abstract class Api implements ApiInterface
     public function execute($httpMethod, $url, array $parameters = [])
     {
         try {
-            $parameters = Utility::prepareParameters($parameters);
+            $parameters = $this->prepareParameters($parameters);
 
             $response = $this->getClient()->{$httpMethod}('v1/'.$url, [ 'query' => $parameters ]);
 
@@ -256,5 +256,28 @@ abstract class Api implements ApiInterface
         }
 
         return json_encode($userAgent);
+    }
+
+    /**
+     * Prepares the given parameters.
+     *
+     * @param  array  $parameters
+     * @return array
+     */
+    protected function prepareParameters(array $parameters)
+    {
+        $parameters = array_map(function ($parameter) {
+            if (is_bool($parameter)) {
+                $parameter = $parameter ? 'true' : 'false';
+            }
+
+            if ($parameter === null) {
+                $parameter = '';
+            }
+
+            return $parameter;
+        }, $parameters);
+
+        return preg_replace('/\%5B\d+\%5D/', '%5B%5D', http_build_query($parameters));
     }
 }
