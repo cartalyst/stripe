@@ -25,6 +25,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 - Subscription Schedule Revisions API since it was fully removed from the Stripe API
 - The `verify()` method from the Account API. Stripe made it more difficult to make this verification more straightforward, so this method was unfortunately redundant.
 
+### v2.3.1 - 2020-01-02
+
+`SECURITY`
+
+- Remove usage of the unsafe `getenv` method outside of CLI
+
 ### v2.3.0 - 2019-09-27
 
 `UPDATED`

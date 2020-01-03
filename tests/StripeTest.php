@@ -14,7 +14,7 @@
  * @version    2.4.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011-2019, Cartalyst LLC
+ * @copyright  (c) 2011-2020, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -142,6 +142,7 @@ class StripeTest extends PHPUnit_Framework_TestCase
      */
     public function it_throws_an_exception_when_the_api_key_is_not_set()
     {
+        unset($_SERVER['STRIPE_API_KEY']);
         putenv('STRIPE_API_KEY');
 
         $stripe = new Stripe();

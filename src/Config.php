@@ -14,7 +14,7 @@
  * @version    2.4.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011-2019, Cartalyst LLC
+ * @copyright  (c) 2011-2020, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -76,9 +76,28 @@ class Config implements ConfigInterface
     {
         $this->setVersion($version);
 
-        $this->setApiKey($apiKey ?: getenv('STRIPE_API_KEY'));
+        $this->setApiKey($apiKey ?: self::getEnvVariable('STRIPE_API_KEY', ''));
 
-        $this->setApiVersion($apiVersion ?: getenv('STRIPE_API_VERSION') ?: '2017-06-05');
+        $this->setApiVersion($apiVersion ?: self::getEnvVariable('STRIPE_API_VERSION', '2017-06-05'));
+    }
+
+    /**
+     * @param string      $name
+     * @param string|null $default
+     *
+     * @return string|null
+     */
+    private static function getEnvVariable($name, $default = null)
+    {
+        if (isset($_SERVER[$name])) {
+            return (string) $_SERVER[$name];
+        }
+
+        if (PHP_SAPI === 'cli' && ($value = getenv($name)) !== false) {
+            return (string) $value;
+        }
+
+        return $default;
     }
 
     /**
