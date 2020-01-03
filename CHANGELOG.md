@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.4.1 - 2020-01-03
+
+`SECURITY`
+
+- Remove usage of the unsafe `getenv` method outside of CLI
+
 ### v2.4.0 - 2019-12-21
 
 `ADDED`
