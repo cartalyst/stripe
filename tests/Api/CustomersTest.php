@@ -54,14 +54,21 @@ class CustomersTest extends FunctionalTestCase
     /** @test */
     public function it_can_update_an_existing_customer()
     {
-        $customer = $this->createCustomer();
+        $customer = $this->createCustomer([
+            'address' => [
+                'line1' => 'Line 1',
+            ],
+        ]);
 
         $customer = $this->stripe->customers()->update($customer['id'], [
             'metadata' => [ 'name' => 'John Doe' ],
+            'address' => null,
         ]);
 
         $this->assertSame('john@doe.com', $customer['email']);
         $this->assertSame('John Doe', $customer['metadata']['name']);
+
+        $this->assertNull($customer['address']);
     }
 
     /** @test */

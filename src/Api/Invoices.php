@@ -65,15 +65,13 @@ class Invoices extends Api
      * Retrieves the given customer upcoming invoices.
      *
      * @param  string  $customerId
-     * @param  string  $subscriptionId
      * @param  array  $parameters
      * @return array
      */
-    public function upcomingInvoice($customerId, $subscriptionId = null, array $parameters = [])
+    public function upcomingInvoice($customerId, array $parameters = [])
     {
         $parameters = array_merge($parameters, [
-            'customer'     => $customerId,
-            'subscription' => $subscriptionId,
+            'customer' => $customerId,
         ]);
 
         return $this->_get('invoices/upcoming', $parameters);

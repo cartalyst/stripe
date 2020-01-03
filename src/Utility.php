@@ -31,9 +31,17 @@ class Utility
     public static function prepareParameters(array $parameters)
     {
         $parameters = array_map(function ($parameter) {
-            return is_bool($parameter) ? ($parameter === true ? 'true' : 'false') : $parameter;
+            if (is_bool($parameter)) {
+                $parameter = $parameter ? 'true' : 'false';
+            }
+
+            if ($parameter === null) {
+                $parameter = '';
+            }
+
+            return $parameter;
         }, $parameters);
 
-        return preg_replace('/\%5B\d+\%5D/', '%5B%5D', http_build_query($parameters));;
+        return preg_replace('/\%5B\d+\%5D/', '%5B%5D', http_build_query($parameters));
     }
 }

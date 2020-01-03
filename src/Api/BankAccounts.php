@@ -102,8 +102,11 @@ class BankAccounts extends Api
      */
     public function verify($customerId, $bankAccountId, array $amounts, $verificationMethod = null)
     {
-        return $this->_post("customers/{$customerId}/sources/{$bankAccountId}/verify", [
-            'amounts' => $amounts, 'verification_method' => $verificationMethod,
+        $parameters = array_filter([
+            'amounts'             => $amounts,
+            'verification_method' => $verificationMethod,
         ]);
+
+        return $this->_post("customers/{$customerId}/sources/{$bankAccountId}/verify", $parameters);
     }
 }
