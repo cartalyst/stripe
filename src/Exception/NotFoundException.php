@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Part of the Stripe package.
  *
@@ -15,7 +17,7 @@
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
- * @link       http://cartalyst.com
+ * @link       https://cartalyst.com
  */
 
 namespace Cartalyst\Stripe\Exception;

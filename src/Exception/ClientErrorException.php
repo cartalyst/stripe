@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Part of the Stripe package.
  *
@@ -22,6 +20,6 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Exception;
 
-class ApiLimitExceededException extends ClientErrorException
+class ClientErrorException extends StripeException
 {
 }

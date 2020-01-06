@@ -15,11 +15,11 @@
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
- * @link       http://cartalyst.com
+ * @link       https://cartalyst.com
  */
 
 namespace Cartalyst\Stripe\Exception;
 
-class MissingParameterException extends StripeException
+class ValidationFailedException extends ClientErrorException
 {
 }

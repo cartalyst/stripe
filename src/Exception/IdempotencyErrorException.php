@@ -22,6 +22,6 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Exception;
 
-class ApiLimitExceededException extends ClientErrorException
+class IdempotencyErrorException extends ClientErrorException
 {
 }
