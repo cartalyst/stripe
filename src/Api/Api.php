@@ -137,11 +137,15 @@ abstract class Api implements ApiInterface
     public function execute($httpMethod, $url, array $parameters = [])
     {
         try {
-            $parameters = $this->prepareParameters($parameters);
+            $response = $this->getClient()->{$httpMethod}('v1/'.$url, [
+                'query' => $this->buildHttpQuery($parameters),
+            ]);
 
-            $response = $this->getClient()->{$httpMethod}('v1/'.$url, [ 'query' => $parameters ]);
+            $headers = $response->getHeaders();
 
-            return json_decode((string) $response->getBody(), true);
+            $body = json_decode((string) $response->getBody(), true);
+
+            return new ApiResponse($body, $headers);
         } catch (ClientException $e) {
             new Handler($e);
         }
@@ -259,12 +263,12 @@ abstract class Api implements ApiInterface
     }
 
     /**
-     * Prepares the given parameters.
+     * Builds the Http Query.
      *
      * @param  array  $parameters
-     * @return array
+     * @return string
      */
-    protected function prepareParameters(array $parameters)
+    protected function buildHttpQuery(array $parameters): string
     {
         $parameters = array_map(function ($parameter) {
             if (is_bool($parameter)) {
