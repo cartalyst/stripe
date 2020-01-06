@@ -25,22 +25,6 @@ namespace Cartalyst\Stripe;
 interface ConfigInterface
 {
     /**
-     * Returns the current package version.
-     *
-     * @return string
-     */
-    public function getVersion(): string;
-
-    /**
-     * Sets the current package version.
-     *
-     * @param string $version
-     *
-     * @return \Cartalyst\Config\ConfigInterface
-     */
-    public function setVersion(string $version): ConfigInterface;
-
-    /**
      * Returns the Stripe API key.
      *
      * @return string

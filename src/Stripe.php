@@ -41,13 +41,14 @@ class Stripe
     /**
      * Constructor.
      *
-     * @param  string  $apiKey
-     * @param  string  $apiVersion
+     * @param string $apiKey
+     * @param string $apiVersion
+     *
      * @return void
      */
-    public function __construct($apiKey = null, $apiVersion = null)
+    public function __construct(string $apiKey, string $apiVersion)
     {
-        $this->config = new Config(self::VERSION, $apiKey, $apiVersion);
+        $this->config = new Config($apiKey, $apiVersion);
     }
 
     /**

@@ -23,8 +23,8 @@ namespace Cartalyst\Stripe\Api;
 use RuntimeException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Middleware;
+use Cartalyst\Stripe\Stripe;
 use GuzzleHttp\HandlerStack;
-use Cartalyst\Stripe\Utility;
 use Cartalyst\Stripe\ConfigInterface;
 use Psr\Http\Message\RequestInterface;
 use Cartalyst\Stripe\Exception\Handler;
@@ -221,7 +221,7 @@ abstract class Api implements ApiInterface
     {
         $appInfo = $this->config->getAppInfo();
 
-        $userAgent = 'Cartalyst-Stripe/'.$this->config->getVersion();
+        $userAgent = 'Cartalyst-Stripe/'.Stripe::getVersion();
 
         if ($appInfo || ! empty($appInfo)) {
             $userAgent .= ' '.$appInfo['name'];
@@ -248,7 +248,7 @@ abstract class Api implements ApiInterface
         $appInfo = $this->config->getAppInfo();
 
         $userAgent = [
-            'bindings_version' => $this->config->getVersion(),
+            'bindings_version' => Stripe::getVersion(),
             'lang'             => 'php',
             'lang_version'     => phpversion(),
             'publisher'        => 'cartalyst',

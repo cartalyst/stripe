@@ -25,13 +25,6 @@ namespace Cartalyst\Stripe;
 class Config implements ConfigInterface
 {
     /**
-     * The current package version.
-     *
-     * @var string
-     */
-    protected $version;
-
-    /**
      * The Stripe API key.
      *
      * @var string
@@ -62,37 +55,16 @@ class Config implements ConfigInterface
     /**
      * Constructor.
      *
-     * @param string $version
      * @param string $apiKey
      * @param string $apiVersion
      *
      * @return void
      */
-    public function __construct(string $version, string $apiKey, string $apiVersion)
+    public function __construct(string $apiKey, string $apiVersion)
     {
-        $this->setVersion($version);
-
         $this->setApiKey($apiKey);
 
         $this->setApiVersion($apiVersion);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getVersion(): string
-    {
-        return $this->version;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setVersion(string $version): ConfigInterface
-    {
-        $this->version = $version;
-
-        return $this;
     }
 
     /**
