@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Part of the Stripe package.
  *
@@ -15,7 +17,7 @@
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
- * @link       http://cartalyst.com
+ * @link       https://cartalyst.com
  */
 
 namespace Cartalyst\Stripe;
@@ -27,76 +29,81 @@ interface ConfigInterface
      *
      * @return string
      */
-    public function getVersion();
+    public function getVersion(): string;
 
     /**
      * Sets the current package version.
      *
-     * @param  string  $version
-     * @return $this
+     * @param string $version
+     *
+     * @return \Cartalyst\Config\ConfigInterface
      */
-    public function setVersion($version);
+    public function setVersion(string $version): ConfigInterface;
 
     /**
      * Returns the Stripe API key.
      *
      * @return string
      */
-    public function getApiKey();
+    public function getApiKey(): string;
 
     /**
      * Sets the Stripe API key.
      *
-     * @param  string  $apiKey
-     * @return $this
+     * @param string $apiKey
+     *
+     * @return \Cartalyst\Config\ConfigInterface
      */
-    public function setApiKey($apiKey);
+    public function setApiKey(string $apiKey): ConfigInterface;
 
     /**
      * Returns the Stripe API version.
      *
      * @return string
      */
-    public function getApiVersion();
+    public function getApiVersion(): string;
 
     /**
      * Sets the Stripe API version.
      *
-     * @param  string  $apiVersion
-     * @return $this
+     * @param string $apiVersion
+     *
+     * @return \Cartalyst\Config\ConfigInterface
      */
-    public function setApiVersion($apiVersion);
+    public function setApiVersion(string $apiVersion): ConfigInterface;
 
     /**
      * Returns the managed account id.
      *
-     * @return string
+     * @return string|null
      */
-    public function getAccountId();
+    public function getAccountId(): ?string;
 
     /**
      * Sets the managed account id.
      *
-     * @param  string  $accountId
-     * @return $this
+     * @param string|null $accountId
+     *
+     * @return \Cartalyst\Config\ConfigInterface
      */
-    public function setAccountId($accountId);
+    public function setAccountId(?string $accountId): ConfigInterface;
 
     /**
      * Returns the application's information.
      *
      * @return array|null
      */
-    public function getAppInfo();
+    public function getAppInfo(): ?array;
 
     /**
      * Sets the application's information.
      *
-     * @param string $appName
-     * @param string $appVersion
-     * @param string $appUrl
-     * @param string $appPartnerId
-     * @return $this
+     * @param string      $appName
+     * @param string|null $appVersion
+     * @param string|null $appUrl
+     * @param string|null $appPartnerId
+     *
+     * @return \Cartalyst\Config\ConfigInterface
      */
-    public function setAppInfo($appName, $appVersion = null, $appUrl = null, $appPartnerId = null);
+    public function setAppInfo(string $appName, ?string $appVersion = null, ?string $appUrl = null, ?string $appPartnerId = null): ConfigInterface;
 }

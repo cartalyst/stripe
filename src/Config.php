@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Part of the Stripe package.
  *
@@ -15,7 +17,7 @@
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
- * @link       http://cartalyst.com
+ * @link       https://cartalyst.com
  */
 
 namespace Cartalyst\Stripe;
@@ -46,7 +48,7 @@ class Config implements ConfigInterface
     /**
      * The managed account id.
      *
-     * @var string
+     * @var string|null
      */
     protected $accountId;
 
@@ -60,12 +62,13 @@ class Config implements ConfigInterface
     /**
      * Constructor.
      *
-     * @param  string  $version
-     * @param  string  $apiKey
-     * @param  string  $apiVersion
+     * @param string $version
+     * @param string $apiKey
+     * @param string $apiVersion
+     *
      * @return void
      */
-    public function __construct($version, $apiKey, $apiVersion)
+    public function __construct(string $version, string $apiKey, string $apiVersion)
     {
         $this->setVersion($version);
 
@@ -77,7 +80,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->version;
     }
@@ -85,7 +88,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setVersion($version)
+    public function setVersion(string $version): ConfigInterface
     {
         $this->version = $version;
 
@@ -95,7 +98,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getApiKey()
+    public function getApiKey(): string
     {
         return $this->apiKey;
     }
@@ -103,7 +106,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setApiKey($apiKey)
+    public function setApiKey(string $apiKey): ConfigInterface
     {
         $this->apiKey = $apiKey;
 
@@ -113,7 +116,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getApiVersion()
+    public function getApiVersion(): string
     {
         return $this->apiVersion;
     }
@@ -121,7 +124,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setApiVersion($apiVersion)
+    public function setApiVersion(string $apiVersion): ConfigInterface
     {
         $this->apiVersion = $apiVersion;
 
@@ -131,7 +134,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getAccountId()
+    public function getAccountId(): ?string
     {
         return $this->accountId;
     }
@@ -139,7 +142,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setAccountId($accountId)
+    public function setAccountId(?string $accountId): ConfigInterface
     {
         $this->accountId = $accountId;
 
@@ -149,7 +152,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getAppInfo()
+    public function getAppInfo(): ?array
     {
         return $this->appInfo;
     }
@@ -157,7 +160,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setAppInfo($appName, $appVersion = null, $appUrl = null, $appPartnerId = null)
+    public function setAppInfo(string $appName, ?string $appVersion = null, ?string $appUrl = null, ?string $appPartnerId = null): ConfigInterface
     {
         $this->appInfo = [
             'name'       => $appName,
