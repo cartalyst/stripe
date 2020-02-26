@@ -38,6 +38,20 @@ interface ConfigInterface
     public function setVersion($version);
 
     /**
+     * Returns the managed account id.
+     *
+     * @return string
+     */
+    public function getAccountId();
+
+    /**
+     * Sets the managed account id.
+     *
+     * @return string
+     */
+    public function setAccountId($accountId);
+
+    /**
      * Returns the Stripe API key.
      *
      * @return string
