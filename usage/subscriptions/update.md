@@ -67,7 +67,7 @@ Updates an existing subscription on a customer to match the specified parameters
             <td>false</td>
             <td>boolean</td>
             <td>null</td>
-            <td>The coupon unique identifier.</td>
+            <td>Set to true to charge for an upgrade immediately otherwise false to disable proration.</td>
         </tr>
         <tr>
             <td>trial_end</td>
