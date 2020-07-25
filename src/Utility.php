@@ -48,7 +48,7 @@ class Utility
             return is_bool($parameter) ? ($parameter === true ? 'true' : 'false') : $parameter;
         }, $parameters);
 
-        return preg_replace('/\%5B\d+\%5D/', '%5B%5D', http_build_query($parameters));;
+        return http_build_query($parameters);
     }
 
     protected static function needsAmountConversion(array $parameters)

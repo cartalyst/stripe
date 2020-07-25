@@ -25,7 +25,7 @@ use Cartalyst\Stripe\Tests\FunctionalTestCase;
 class SessionsTest extends FunctionalTestCase
 {
     /** @test */
-    public function it_can_create_a_new_session()
+    public function it_can_create_a_new_session_with_a_single_item()
     {
         $session = $this->stripe->checkout()->sessions()->create([
             'cancel_url' => 'http://example.com/cancel',
@@ -43,6 +43,42 @@ class SessionsTest extends FunctionalTestCase
         ]);
 
         $this->assertCount(1, $session['display_items']);
+        $this->assertSame('http://example.com/cancel', $session['cancel_url']);
+        $this->assertSame('http://example.com/success', $session['success_url']);
+    }
+
+    /** @test */
+    public function it_can_create_a_new_session_with_multiple_items()
+    {
+        $session = $this->stripe->checkout()->sessions()->create([
+            'cancel_url' => 'http://example.com/cancel',
+            'success_url' => 'http://example.com/success',
+            'payment_method_types' => ['card'],
+            'mode' => 'payment',
+            'line_items' => [
+                [
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'product_data' => [
+                            'name' => 'T-shirt',
+                        ],
+                        'unit_amount' => 2000,
+                    ],
+                    'quantity' => 1,
+                ],
+                [
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'product_data' => [
+                            'name' => 'T-shirt',
+                        ],
+                        'unit_amount' => 2000,
+                    ],
+                    'quantity' => 1,
+                ],
+            ],
+        ]);
+
         $this->assertSame('http://example.com/cancel', $session['cancel_url']);
         $this->assertSame('http://example.com/success', $session['success_url']);
     }
