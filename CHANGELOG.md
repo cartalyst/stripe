@@ -11,6 +11,16 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.4.2 - 2020-07-26
+
+`ADDED`
+
+- Support for Guzzle 7
+
+`FIXED`
+
+- Issue with the payload being sent to Stripe
+
 ### v2.4.1 - 2020-01-03
 
 `SECURITY`
