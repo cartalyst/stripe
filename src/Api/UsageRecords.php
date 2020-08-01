@@ -30,7 +30,7 @@ class UsageRecords extends Api
      * @param string $itemId
      * @param array  $parameters
      *
-     * @return void
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
     public function create(string $itemId, array $parameters): ApiResponse
     {

@@ -36,9 +36,9 @@ interface ConfigInterface
      *
      * @param string $apiKey
      *
-     * @return \Cartalyst\Config\ConfigInterface
+     * @return self
      */
-    public function setApiKey(string $apiKey): ConfigInterface;
+    public function setApiKey(string $apiKey): self;
 
     /**
      * Returns the Stripe API version.
@@ -52,9 +52,9 @@ interface ConfigInterface
      *
      * @param string $apiVersion
      *
-     * @return \Cartalyst\Config\ConfigInterface
+     * @return self
      */
-    public function setApiVersion(string $apiVersion): ConfigInterface;
+    public function setApiVersion(string $apiVersion): self;
 
     /**
      * Returns the managed account id.
@@ -68,9 +68,9 @@ interface ConfigInterface
      *
      * @param string|null $accountId
      *
-     * @return \Cartalyst\Config\ConfigInterface
+     * @return self
      */
-    public function setAccountId(?string $accountId): ConfigInterface;
+    public function setAccountId(?string $accountId): self;
 
     /**
      * Returns the application's information.
@@ -87,7 +87,7 @@ interface ConfigInterface
      * @param string|null $appUrl
      * @param string|null $appPartnerId
      *
-     * @return \Cartalyst\Config\ConfigInterface
+     * @return self
      */
-    public function setAppInfo(string $appName, ?string $appVersion = null, ?string $appUrl = null, ?string $appPartnerId = null): ConfigInterface;
+    public function setAppInfo(string $appName, ?string $appVersion = null, ?string $appUrl = null, ?string $appPartnerId = null): self;
 }

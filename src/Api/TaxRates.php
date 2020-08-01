@@ -40,7 +40,6 @@ class TaxRates extends Api
      * Retrieves an existing tax rate.
      *
      * @param string $taxRateId
-     * @param array  $parameters
      *
      * @return \Cartalyst\Stripe\Api\ApiResponse
      */
@@ -53,6 +52,7 @@ class TaxRates extends Api
      * Updates an existing tax rate.
      *
      * @param string $taxRateId
+     * @param array  $parameters
      *
      * @return \Cartalyst\Stripe\Api\ApiResponse
      */
