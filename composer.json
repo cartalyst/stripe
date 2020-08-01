@@ -16,10 +16,19 @@
     ],
     "require": {
         "php": "^7.2",
-        "guzzlehttp/guzzle": "^7.0"
+        "php-http/client-common": "^2.3",
+        "php-http/discovery": "^1.9",
+        "php-http/httplug": "^2.1",
+        "php-http/multipart-stream-builder": "^1.1",
+        "psr/http-client-implementation": "^1.0",
+        "psr/http-factory-implementation": "^1.0",
+        "psr/http-message": "^1.0",
+        "symfony/polyfill-php73": "^1.17"
     },
     "require-dev": {
         "cartalyst/php-cs-fixer-config": "^1.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "http-interop/http-factory-guzzle": "^1.0",
         "phpunit/phpunit": "^8.0"
     },
     "autoload": {

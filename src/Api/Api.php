@@ -22,18 +22,16 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Middleware;
-use Cartalyst\Stripe\Stripe;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\ClientInterface;
+use RuntimeException;
 use Cartalyst\Stripe\ConfigInterface;
-use Psr\Http\Message\RequestInterface;
-use Cartalyst\Stripe\Exception\Handler;
 use Psr\Http\Message\ResponseInterface;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\TransferException;
+use Cartalyst\Stripe\HttpClient\Builder;
+use Http\Client\Common\Plugin\RetryPlugin;
+use Http\Client\Common\Plugin\RedirectPlugin;
+use Cartalyst\Stripe\HttpClient\HttpClientInterface;
+use Cartalyst\Stripe\HttpClient\Plugin\StripeHeaders;
+use Cartalyst\Stripe\HttpClient\Message\ResponseMediator;
+use Cartalyst\Stripe\HttpClient\Plugin\StripeExceptionThrower;
 
 abstract class Api implements ApiInterface
 {
@@ -45,18 +43,25 @@ abstract class Api implements ApiInterface
     protected $config;
 
     /**
+     * The HTTP headers plugin instance.
+     *
+     * @var \Cartalyst\Stripe\HttpClient\Plugin\StripeHeaders
+     */
+    protected $headers;
+
+    /**
+     * The HTTP client builder instance.
+     *
+     * @var \Cartalyst\Stripe\HttpClient\Builder
+     */
+    protected $builder;
+
+    /**
      * Number of items to return per page.
      *
      * @var int|null
      */
     protected $perPage;
-
-    /**
-     * The idempotency key.
-     *
-     * @var string
-     */
-    protected $idempotencyKey;
 
     /**
      * Constructor.
@@ -67,7 +72,26 @@ abstract class Api implements ApiInterface
      */
     public function __construct(ConfigInterface $config)
     {
-        $this->config = $config;
+        $this->config  = $config;
+        $this->headers = new StripeHeaders($config);
+        $this->builder = $this->makeClientBuilder();
+    }
+
+    /**
+     * Create an HTTP client builder.
+     *
+     * @return \Cartalyst\Stripe\HttpClient\Builder
+     */
+    protected function makeClientBuilder(): Builder
+    {
+        $builder = new Builder();
+
+        $builder->addPlugin($this->headers);
+        $builder->addPlugin(new StripeExceptionThrower());
+        $builder->addPlugin(new RedirectPlugin());
+        $builder->addPlugin(new RetryPlugin(['retries' => 2]));
+
+        return $builder;
     }
 
     /**
@@ -99,9 +123,9 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function idempotent(string $idempotencyKey): ApiInterface
+    public function idempotent(?string $idempotencyKey): ApiInterface
     {
-        $this->idempotencyKey = $idempotencyKey;
+        $this->headers->setIdempotencyKey($idempotencyKey);
 
         return $this;
     }
@@ -109,45 +133,57 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function _get(string $url, array $parameters = []): ApiResponse
+    public function _get(string $uri, array $query = []): ApiResponse
     {
         if ($perPage = $this->getPerPage()) {
-            $parameters['limit'] = $perPage;
+            $query['limit'] = $perPage;
         }
 
-        return $this->sendRequest('get', $url, $parameters);
+        return $this->sendRequest('get', $uri, $query);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function _delete(string $url, array $parameters = []): ApiResponse
+    public function _delete(string $uri, array $query = []): ApiResponse
     {
-        return $this->sendRequest('delete', $url, $parameters);
+        return $this->sendRequest('delete', $uri, $query);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function _post(string $url, array $parameters = []): ApiResponse
+    public function _post(string $uri, array $query = []): ApiResponse
     {
-        return $this->sendRequest('post', $url, $parameters);
+        return $this->sendRequest('post', $uri, $query);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function sendRequest(string $httpMethod, string $url, array $parameters = []): ApiResponse
+    public function _postMultipart(string $uri, array $params, array $files, array $headers = []): ApiResponse
     {
-        try {
-            $response = $this->getClient()->request($httpMethod, 'v1/'.$url, [
-                'query' => $this->buildHttpQuery($parameters),
-            ]);
+        return $this->sendMultipartRequest('post', $uri, $params, $files, $headers);
+    }
 
-            return $this->buildResponse($response);
-        } catch (ClientException $e) {
-            new Handler($e);
-        }
+    /**
+     * {@inheritdoc}
+     */
+    public function sendRequest(string $method, string $uri, array $query = []): ApiResponse
+    {
+        return $this->buildResponse(
+            $this->getClient()->send($method, $this->baseUrl().'/v1/'.$uri, $query)
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sendMultipartRequest(string $method, string $uri, array $params, array $files, array $headers = []): ApiResponse
+    {
+        return $this->buildResponse(
+            $this->getClient()->sendMultipart($method, $this->baseUrl().'/v1/'.$uri, $params, $files, [], $headers)
+        );
     }
 
     /**
@@ -159,135 +195,27 @@ abstract class Api implements ApiInterface
      */
     protected function buildResponse(ResponseInterface $response): ApiResponse
     {
-        $headers = $response->getHeaders();
-
-        $body = json_decode((string) $response->getBody(), true);
-
-        return new ApiResponse($body, $headers);
+        return new ApiResponse(
+            ResponseMediator::getContent($response),
+            $response->getHeaders()
+        );
     }
 
     /**
-     * Returns an Http client instance.
+     * Returns an HTTP client instance.
      *
-     * @return \GuzzleHttp\ClientInterface
+     * @return \Cartalyst\Stripe\HttpClient\HttpClientInterface
      */
-    protected function getClient(): ClientInterface
+    protected function getClient(): HttpClientInterface
     {
-        return new Client([
-            'base_uri' => $this->baseUrl(),
-            'handler'  => $this->createHandler(),
-        ]);
-    }
-
-    /**
-     * Create the client handler.
-     *
-     * @return \GuzzleHttp\HandlerStack
-     */
-    protected function createHandler(): HandlerStack
-    {
-        $stack = HandlerStack::create();
-
-        $stack->push(Middleware::mapRequest(function (RequestInterface $request) {
-            $config = $this->config;
-
-            if ($this->idempotencyKey) {
-                $request = $request->withHeader('Idempotency-Key', $this->idempotencyKey);
-            }
-
-            if ($accountId = $config->getAccountId()) {
-                $request = $request->withHeader('Stripe-Account', $accountId);
-            }
-
-            $request = $request->withHeader('User-Agent', $this->generateUserAgent());
-
-            $request = $request->withHeader('Stripe-Version', $config->getApiVersion());
-
-            $request = $request->withHeader('Authorization', 'Basic '.base64_encode($config->getApiKey()));
-
-            return $request->withHeader('X-Stripe-Client-User-Agent', $this->generateClientUserAgentHeader());
-        }));
-
-        $stack->push(Middleware::retry(function ($retries, RequestInterface $request, ResponseInterface $response = null, TransferException $exception = null) {
-            return $retries < 3 && ($exception instanceof ConnectException || ($response && $response->getStatusCode() >= 500));
-        }, function ($retries) {
-            return (int) pow(2, $retries) * 1000;
-        }));
-
-        return $stack;
-    }
-
-    /**
-     * Generates the main user agent string.
-     *
-     * @return string
-     */
-    protected function generateUserAgent(): string
-    {
-        $appInfo = $this->config->getAppInfo();
-
-        $userAgent = 'Cartalyst-Stripe/'.Stripe::getVersion();
-
-        if ($appInfo || ! empty($appInfo)) {
-            $userAgent .= ' '.$appInfo['name'];
-
-            if ($appVersion = $appInfo['version']) {
-                $userAgent .= "/{$appVersion}";
-            }
-
-            if ($appUrl = $appInfo['url']) {
-                $userAgent .= " ({$appUrl})";
-            }
+        if (! $this->config->getApiKey()) {
+            throw new RuntimeException('The Stripe API key is not defined!');
         }
 
-        return $userAgent;
-    }
-
-    /**
-     * Generates the client user agent header value.
-     *
-     * @return string
-     */
-    protected function generateClientUserAgentHeader(): string
-    {
-        $appInfo = $this->config->getAppInfo();
-
-        $userAgent = [
-            'bindings_version' => Stripe::getVersion(),
-            'lang'             => 'php',
-            'lang_version'     => phpversion(),
-            'publisher'        => 'cartalyst',
-            'uname'            => php_uname(),
-        ];
-
-        if ($appInfo || ! empty($appInfo)) {
-            $userAgent['application'] = $appInfo;
+        if (! $this->config->getApiVersion()) {
+            throw new RuntimeException('The Stripe API version is not defined!');
         }
 
-        return json_encode($userAgent);
-    }
-
-    /**
-     * Builds the Http Query.
-     *
-     * @param array $parameters
-     *
-     * @return string
-     */
-    protected function buildHttpQuery(array $parameters): string
-    {
-        $parameters = array_map(function ($parameter) {
-            if (is_bool($parameter)) {
-                $parameter = $parameter ? 'true' : 'false';
-            }
-
-            if ($parameter === null) {
-                $parameter = '';
-            }
-
-            return $parameter;
-        }, $parameters);
-
-        return http_build_query($parameters);
+        return $this->builder->getHttpClient();
     }
 }

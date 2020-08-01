@@ -45,55 +45,80 @@ interface ApiInterface
      *
      * @return \Cartalyst\Stripe\Api\ApiInterface
      */
-    public function setPerPage(?int $perPage): ApiInterface;
+    public function setPerPage(?int $perPage): self;
 
     /**
      * Sets the idempotency key.
      *
-     * @param string $idempotencyKey
+     * @param string|null $idempotencyKey
      *
      * @return \Cartalyst\Stripe\Api\ApiInterface
      */
-    public function idempotent(string $idempotencyKey): ApiInterface;
+    public function idempotent(?string $idempotencyKey): self;
 
     /**
      * Sends a GET request.
      *
-     * @param string $url
-     * @param array  $parameters
+     * @param string $uri
+     * @param array  $query
      *
      * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function _get(string $url, array $parameters = []): ApiResponse;
+    public function _get(string $uri, array $query = []): ApiResponse;
 
     /**
      * Sends a DELETE request.
      *
-     * @param string $url
-     * @param array  $parameters
+     * @param string $uri
+     * @param array  $query
      *
      * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function _delete(string $url, array $parameters = []): ApiResponse;
+    public function _delete(string $uri, array $query = []): ApiResponse;
 
     /**
      * Sends a POST request.
      *
-     * @param string $url
-     * @param array  $parameters
+     * @param string $uri
+     * @param array  $query
      *
      * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function _post(string $url, array $parameters = []): ApiResponse;
+    public function _post(string $uri, array $query = []): ApiResponse;
+
+    /**
+     * Sends a POST multipart request.
+     *
+     * @param string $uri
+     * @param array  $params
+     * @param array  $files
+     * @param array  $headers
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
+     */
+    public function _postMultipart(string $uri, array $params, array $files, array $headers = []): ApiResponse;
 
     /**
      * Sends the HTTP request.
      *
-     * @param string $httpMethod
-     * @param string $url
-     * @param array  $parameters
+     * @param string $method
+     * @param string $uri
+     * @param array  $query
      *
      * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function sendRequest(string $httpMethod, string $url, array $parameters = []): ApiResponse;
+    public function sendRequest(string $method, string $uri, array $query = []): ApiResponse;
+
+    /**
+     * Sends the HTTP request.
+     *
+     * @param string $method
+     * @param string $uri
+     * @param array  $params
+     * @param array  $files
+     * @param array  $headers
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
+     */
+    public function sendMultipartRequest(string $method, string $uri, array $params, array $files, array $headers = []): ApiResponse;
 }
