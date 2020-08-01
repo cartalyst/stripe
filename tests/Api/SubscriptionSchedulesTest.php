@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,6 +23,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class SubscriptionSchedulesTest extends FunctionalTestCase
 {
@@ -32,9 +35,9 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
         $plan = $this->createPlan();
 
         $subscriptionSchedule = $this->stripe->subscriptionSchedules()->create([
-            'customer' => $customer['id'],
+            'customer'   => $customer['id'],
             'start_date' => time(),
-            'phases' => [
+            'phases'     => [
                 [
                     'plans' => [
                         ['plan' => $plan['id'], 'quantity' => 1],
@@ -42,7 +45,7 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
                     'iterations' => 12,
                 ],
             ],
-            'renewal_behavior' => 'none',
+            // 'end_behavior' => 'none',
         ]);
 
         $this->assertSame($customer['id'], $subscriptionSchedule['customer']);
@@ -57,9 +60,9 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
         $plan = $this->createPlan();
 
         $subscriptionSchedule = $this->stripe->subscriptionSchedules()->create([
-            'customer' => $customer['id'],
+            'customer'   => $customer['id'],
             'start_date' => time(),
-            'phases' => [
+            'phases'     => [
                 [
                     'plans' => [
                         ['plan' => $plan['id'], 'quantity' => 1],
@@ -67,7 +70,7 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
                     'iterations' => 12,
                 ],
             ],
-            'renewal_behavior' => 'none',
+            // 'end_behavior' => 'none',
         ]);
 
         $subscriptionSchedule = $this->stripe->subscriptionSchedules()->find($subscriptionSchedule['id']);
@@ -76,13 +79,12 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
         $this->assertSame('active', $subscriptionSchedule['status']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_subscription_schedule()
     {
-        $this->stripe->subscriptionSchedules()->find(time().rand());
+        $this->expectException(NotFoundException::class);
+
+        $this->stripe->subscriptionSchedules()->find('not_found');
     }
 
     /** @test */
@@ -93,9 +95,9 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
         $plan = $this->createPlan();
 
         $subscriptionSchedule = $this->stripe->subscriptionSchedules()->create([
-            'customer' => $customer['id'],
+            'customer'   => $customer['id'],
             'start_date' => time(),
-            'phases' => [
+            'phases'     => [
                 [
                     'plans' => [
                         ['plan' => $plan['id'], 'quantity' => 1],
@@ -103,7 +105,7 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
                     'iterations' => 12,
                 ],
             ],
-            'renewal_behavior' => 'none',
+            // 'end_behavior' => 'none',
         ]);
 
         $this->assertSame([], $subscriptionSchedule['metadata']);
@@ -123,9 +125,9 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
         $plan = $this->createPlan();
 
         $subscriptionSchedule = $this->stripe->subscriptionSchedules()->create([
-            'customer' => $customer['id'],
+            'customer'   => $customer['id'],
             'start_date' => time(),
-            'phases' => [
+            'phases'     => [
                 [
                     'plans' => [
                         ['plan' => $plan['id'], 'quantity' => 1],
@@ -133,7 +135,7 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
                     'iterations' => 12,
                 ],
             ],
-            'renewal_behavior' => 'none',
+            // 'end_behavior' => 'none',
         ]);
 
         $subscriptionSchedule = $this->stripe->subscriptionSchedules()->cancel($subscriptionSchedule['id']);
@@ -151,9 +153,9 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
         $plan = $this->createPlan();
 
         $subscriptionSchedule = $this->stripe->subscriptionSchedules()->create([
-            'customer' => $customer['id'],
+            'customer'   => $customer['id'],
             'start_date' => time(),
-            'phases' => [
+            'phases'     => [
                 [
                     'plans' => [
                         ['plan' => $plan['id'], 'quantity' => 1],
@@ -161,7 +163,7 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
                     'iterations' => 12,
                 ],
             ],
-            'renewal_behavior' => 'none',
+            // 'end_behavior' => 'none',
         ]);
 
         $subscriptionSchedule = $this->stripe->subscriptionSchedules()->release($subscriptionSchedule['id']);
@@ -179,9 +181,9 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
         $plan = $this->createPlan();
 
         $subscriptionSchedule = $this->stripe->subscriptionSchedules()->create([
-            'customer' => $customer['id'],
+            'customer'   => $customer['id'],
             'start_date' => time(),
-            'phases' => [
+            'phases'     => [
                 [
                     'plans' => [
                         ['plan' => $plan['id'], 'quantity' => 1],
@@ -189,7 +191,7 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
                     'iterations' => 12,
                 ],
             ],
-            'renewal_behavior' => 'none',
+            // 'end_behavior' => 'none',
         ]);
 
         $subscriptionSchedules = $this->stripe->subscriptionSchedules()->all([
@@ -197,7 +199,7 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
         ]);
 
         $this->assertNotEmpty($subscriptionSchedules['data']);
-        $this->assertInternalType('array', $subscriptionSchedules['data']);
+        $this->assertIsArray($subscriptionSchedules['data']);
     }
 
     /** @test */
@@ -207,11 +209,11 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
 
         $plan = $this->createPlan();
 
-        for ($i=0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $this->stripe->subscriptionSchedules()->create([
-                'customer' => $customer['id'],
+                'customer'   => $customer['id'],
                 'start_date' => time(),
-                'phases' => [
+                'phases'     => [
                     [
                         'plans' => [
                             ['plan' => $plan['id'], 'quantity' => 1],
@@ -219,7 +221,7 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
                         'iterations' => 12,
                     ],
                 ],
-                'renewal_behavior' => 'none',
+                // 'end_behavior' => 'none',
             ]);
         }
 

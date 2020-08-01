@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,6 +23,8 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
+use Cartalyst\Stripe\Exception\CardErrorException;
 
 class ChargesTest extends FunctionalTestCase
 {
@@ -29,7 +33,7 @@ class ChargesTest extends FunctionalTestCase
     {
         $charge = $this->stripe->charges()->create([
             'currency' => 'USD',
-            'amount'   => 50.49,
+            'amount'   => 5049,
             'card'     => 'tok_visa',
         ]);
 
@@ -42,27 +46,41 @@ class ChargesTest extends FunctionalTestCase
     /** @test */
     public function it_can_create_a_new_charge_with_an_idempotency_key()
     {
+        $customer = $this->createCustomer();
+
+        $this->createCardThroughToken($customer['id']);
+
         $chargePayload = [
             'currency' => 'USD',
-            'amount'   => 50.49,
-            'card'     => 'tok_visa',
+            'amount'   => 5049,
+            'customer' => $customer['id'],
         ];
 
-        $charge1 = $this->stripe->charges()->idempotent('charge123')->create($chargePayload);
-        $charge2 = $this->stripe->charges()->idempotent('charge123')->create($chargePayload);
+        $idempotencyKey = 'charge-'.time();
 
-        $this->assertSame($charge1['id'], $charge2['id']);
+        $charge1 = $this->stripe->charges()->idempotent($idempotencyKey)->create($chargePayload);
+        $charge2 = $this->stripe->charges()->create($chargePayload);
+        $charge3 = $this->stripe->charges()->idempotent($idempotencyKey)->create($chargePayload);
+
+        $charges = $this->stripe->charges()->all(['customer' => $customer['id']]);
+
+        $this->assertSame($charge1['id'], $charge3['id']);
+
+        $this->assertNotSame($charge1['id'], $charge2['id']);
+        $this->assertNotSame($charge3['id'], $charge2['id']);
+
+        $this->assertCount(2, $charges['data']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\CardErrorException
-     */
+    /** @test */
     public function a_charge_can_be_declined()
     {
-        $charge = $this->stripe->charges()->create([
+        $this->expectException(CardErrorException::class);
+        $this->expectExceptionMessage('Your card was declined.');
+
+        $this->stripe->charges()->create([
             'currency' => 'USD',
-            'amount'   => 50.49,
+            'amount'   => 5049,
             'card'     => 'tok_chargeDeclined',
         ]);
     }
@@ -85,7 +103,7 @@ class ChargesTest extends FunctionalTestCase
 
         $charge = $this->createCharge($customer['id'], [
             'currency' => 'JPY',
-            'amount'   => 80
+            'amount'   => 80,
         ]);
 
         $this->assertTrue($charge['captured']);
@@ -105,13 +123,12 @@ class ChargesTest extends FunctionalTestCase
         $this->assertSame(5049, $charge['amount']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_charge()
     {
-        $this->stripe->charges()->find(time().rand());
+        $this->expectException(NotFoundException::class);
+
+        $this->stripe->charges()->find('ch_not_found');
     }
 
     /** @test */
@@ -121,7 +138,7 @@ class ChargesTest extends FunctionalTestCase
 
         $charge = $this->createCharge($customer['id']);
 
-        $charge = $this->stripe->charges()->update($charge['id'], [ 'description' => 'PHP Book Payment' ]);
+        $charge = $this->stripe->charges()->update($charge['id'], ['description' => 'PHP Book Payment']);
 
         $this->assertTrue($charge['captured']);
         $this->assertSame(5049, $charge['amount']);
@@ -133,7 +150,7 @@ class ChargesTest extends FunctionalTestCase
     {
         $customer = $this->createCustomer();
 
-        $charge = $this->createCharge($customer['id'], [ 'capture' => false ]);
+        $charge = $this->createCharge($customer['id'], ['capture' => false]);
 
         $this->assertFalse($charge['captured']);
         $this->assertSame(5049, $charge['amount']);
@@ -154,7 +171,7 @@ class ChargesTest extends FunctionalTestCase
         $charges = $this->stripe->charges()->all();
 
         $this->assertNotEmpty($charges['data']);
-        $this->assertInternalType('array', $charges['data']);
+        $this->assertIsArray($charges['data']);
     }
 
     /** @test */
@@ -162,11 +179,11 @@ class ChargesTest extends FunctionalTestCase
     {
         $customer = $this->createCustomer();
 
-        for ($i=0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $this->createCharge($customer['id']);
         }
 
-        $charges = $this->stripe->chargesIterator([ 'customer' => $customer['id'] ]);
+        $charges = $this->stripe->chargesIterator(['customer' => $customer['id']]);
 
         $this->assertCount(5, $charges);
     }

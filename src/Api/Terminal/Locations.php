@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,16 +23,18 @@
 namespace Cartalyst\Stripe\Api\Terminal;
 
 use Cartalyst\Stripe\Api\Api;
+use Cartalyst\Stripe\Api\ApiResponse;
 
 class Locations extends Api
 {
     /**
      * Creates a new terminal location.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('terminal/locations', $parameters);
     }
@@ -38,10 +42,11 @@ class Locations extends Api
     /**
      * Retrieves an existing terminal location.
      *
-     * @param  string  $locationId
-     * @return array
+     * @param string $locationId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($locationId)
+    public function find(string $locationId): ApiResponse
     {
         return $this->_get("terminal/locations/{$locationId}");
     }
@@ -49,11 +54,12 @@ class Locations extends Api
     /**
      * Updates an existing terminal location.
      *
-     * @param  string  $locationId
-     * @param  array  $parameters
-     * @return array
+     * @param string $locationId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($locationId, array $parameters = [])
+    public function update(string $locationId, array $parameters = []): ApiResponse
     {
         return $this->_post("terminal/locations/{$locationId}", $parameters);
     }
@@ -61,10 +67,11 @@ class Locations extends Api
     /**
      * Deletes an existing terminal location.
      *
-     * @param  string  $locationId
-     * @return array
+     * @param string $locationId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function delete($locationId)
+    public function delete(string $locationId): ApiResponse
     {
         return $this->_delete("terminal/locations/{$locationId}");
     }
@@ -72,10 +79,11 @@ class Locations extends Api
     /**
      * Lists all terminal locations.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('terminal/locations', $parameters);
     }

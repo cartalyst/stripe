@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class ScheduledQueries extends Api
     /**
      * Retrieves an existing scheduled query.
      *
-     * @param  string  $scheduleQueryRun
-     * @return array
+     * @param string $scheduleQueryRun
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($scheduleQueryRun)
+    public function find($scheduleQueryRun): ApiResponse
     {
         return $this->_get("sigma/scheduled_query_runs/{$scheduleQueryRun}");
     }
@@ -36,10 +39,11 @@ class ScheduledQueries extends Api
     /**
      * Returns a list of all the scheduled queries.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('sigma/scheduled_query_runs', $parameters);
     }

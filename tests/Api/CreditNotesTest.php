@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,6 +23,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class CreditNotesTest extends FunctionalTestCase
 {
@@ -30,7 +33,7 @@ class CreditNotesTest extends FunctionalTestCase
         $customer = $this->createCustomer();
 
         $this->createInvoiceItem($customer['id'], [
-            'amount' => 1000
+            'amount' => 1000,
         ]);
 
         $invoice = $this->createInvoice($customer['id']);
@@ -38,11 +41,11 @@ class CreditNotesTest extends FunctionalTestCase
         $invoice = $this->stripe->invoices()->finalize($invoice['id']);
 
         $creditNote = $this->stripe->creditNotes()->create([
-            'amount' => 500,
+            'amount'  => 500,
             'invoice' => $invoice['id'],
         ]);
 
-        $this->assertSame(50000, $creditNote['amount']);
+        $this->assertSame(500, $creditNote['amount']);
         $this->assertSame('issued', $creditNote['status']);
     }
 
@@ -52,7 +55,7 @@ class CreditNotesTest extends FunctionalTestCase
         $customer = $this->createCustomer();
 
         $this->createInvoiceItem($customer['id'], [
-            'amount' => 1000
+            'amount' => 1000,
         ]);
 
         $invoice = $this->createInvoice($customer['id']);
@@ -60,23 +63,22 @@ class CreditNotesTest extends FunctionalTestCase
         $invoice = $this->stripe->invoices()->finalize($invoice['id']);
 
         $creditNote = $this->stripe->creditNotes()->create([
-            'amount' => 500,
+            'amount'  => 500,
             'invoice' => $invoice['id'],
         ]);
 
         $creditNote = $this->stripe->creditNotes()->find($creditNote['id']);
 
-        $this->assertSame(50000, $creditNote['amount']);
+        $this->assertSame(500, $creditNote['amount']);
         $this->assertSame('issued', $creditNote['status']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_credit_note()
     {
-        $this->stripe->creditNotes()->find(time().rand());
+        $this->expectException(NotFoundException::class);
+
+        $this->stripe->creditNotes()->find('not_found');
     }
 
     /** @test */
@@ -85,7 +87,7 @@ class CreditNotesTest extends FunctionalTestCase
         $customer = $this->createCustomer();
 
         $this->createInvoiceItem($customer['id'], [
-            'amount' => 1000
+            'amount' => 1000,
         ]);
 
         $invoice = $this->createInvoice($customer['id']);
@@ -93,7 +95,7 @@ class CreditNotesTest extends FunctionalTestCase
         $invoice = $this->stripe->invoices()->finalize($invoice['id']);
 
         $creditNote = $this->stripe->creditNotes()->create([
-            'amount' => 500,
+            'amount'  => 500,
             'invoice' => $invoice['id'],
         ]);
 
@@ -110,7 +112,7 @@ class CreditNotesTest extends FunctionalTestCase
         $customer = $this->createCustomer();
 
         $this->createInvoiceItem($customer['id'], [
-            'amount' => 1000
+            'amount' => 1000,
         ]);
 
         $invoice = $this->createInvoice($customer['id']);
@@ -118,13 +120,13 @@ class CreditNotesTest extends FunctionalTestCase
         $invoice = $this->stripe->invoices()->finalize($invoice['id']);
 
         $creditNote = $this->stripe->creditNotes()->create([
-            'amount' => 500,
+            'amount'  => 500,
             'invoice' => $invoice['id'],
         ]);
 
         $creditNote = $this->stripe->creditNotes()->void($creditNote['id']);
 
-        $this->assertSame(50000, $creditNote['amount']);
+        $this->assertSame(500, $creditNote['amount']);
         $this->assertSame('void', $creditNote['status']);
     }
 
@@ -134,7 +136,7 @@ class CreditNotesTest extends FunctionalTestCase
         $customer = $this->createCustomer();
 
         $this->createInvoiceItem($customer['id'], [
-            'amount' => 1000
+            'amount' => 1000,
         ]);
 
         $invoice = $this->createInvoice($customer['id']);
@@ -142,12 +144,12 @@ class CreditNotesTest extends FunctionalTestCase
         $invoice = $this->stripe->invoices()->finalize($invoice['id']);
 
         $this->stripe->creditNotes()->create([
-            'amount' => 500,
+            'amount'  => 500,
             'invoice' => $invoice['id'],
         ]);
 
         $this->stripe->creditNotes()->create([
-            'amount' => 100,
+            'amount'  => 100,
             'invoice' => $invoice['id'],
         ]);
 

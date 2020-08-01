@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,11 +27,12 @@ class Invoices extends Api
     /**
      * Creates a new invoice.
      *
-     * @param  string  $customerId
-     * @param  array  $parameters
-     * @return array
+     * @param string $customerId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create($customerId, array $parameters = [])
+    public function create(string $customerId, array $parameters = []): ApiResponse
     {
         $parameters = array_merge($parameters, [
             'customer' => $customerId,
@@ -41,10 +44,11 @@ class Invoices extends Api
     /**
      * Retrieves an existing invoice.
      *
-     * @param  string  $invoiceId
-     * @return array
+     * @param string $invoiceId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($invoiceId)
+    public function find(string $invoiceId): ApiResponse
     {
         return $this->_get("invoices/{$invoiceId}");
     }
@@ -52,11 +56,12 @@ class Invoices extends Api
     /**
      * Retrieves an existing invoice line items.
      *
-     * @param  string  $invoiceId
-     * @param  array  $parameters
-     * @return array
+     * @param string $invoiceId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function lineItems($invoiceId, array $parameters = [])
+    public function lineItems(string $invoiceId, array $parameters = []): ApiResponse
     {
         return $this->_get("invoices/{$invoiceId}/lines", $parameters);
     }
@@ -64,16 +69,15 @@ class Invoices extends Api
     /**
      * Retrieves the given customer upcoming invoices.
      *
-     * @param  string  $customerId
-     * @param  string  $subscriptionId
-     * @param  array  $parameters
-     * @return array
+     * @param string $customerId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function upcomingInvoice($customerId, $subscriptionId = null, array $parameters = [])
+    public function upcomingInvoice(string $customerId, array $parameters = []): ApiResponse
     {
         $parameters = array_merge($parameters, [
-            'customer'     => $customerId,
-            'subscription' => $subscriptionId,
+            'customer' => $customerId,
         ]);
 
         return $this->_get('invoices/upcoming', $parameters);
@@ -82,11 +86,12 @@ class Invoices extends Api
     /**
      * Updates an existing invoice.
      *
-     * @param  string  $invoiceId
-     * @param  array  $parameters
-     * @return array
+     * @param string $invoiceId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($invoiceId, array $parameters = [])
+    public function update(string $invoiceId, array $parameters = []): ApiResponse
     {
         return $this->_post("invoices/{$invoiceId}", $parameters);
     }
@@ -94,10 +99,11 @@ class Invoices extends Api
     /**
      * Deletes the given draft invoice.
      *
-     * @param  string  $invoiceId
-     * @return array
+     * @param string $invoiceId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function delete($invoiceId)
+    public function delete(string $invoiceId): ApiResponse
     {
         return $this->_delete("invoices/{$invoiceId}");
     }
@@ -105,11 +111,12 @@ class Invoices extends Api
     /**
      * Finalizes the given invoice.
      *
-     * @param  string  $invoiceId
-     * @param  array  $parameters
-     * @return array
+     * @param string $invoiceId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function finalize($invoiceId, array $parameters = [])
+    public function finalize(string $invoiceId, array $parameters = []): ApiResponse
     {
         return $this->_post("invoices/{$invoiceId}/finalize", $parameters);
     }
@@ -117,11 +124,12 @@ class Invoices extends Api
     /**
      * Pays the given invoice.
      *
-     * @param  string  $invoiceId
-     * @param  array  $parameters
-     * @return array
+     * @param string $invoiceId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function pay($invoiceId, array $parameters = [])
+    public function pay(string $invoiceId, array $parameters = []): ApiResponse
     {
         return $this->_post("invoices/{$invoiceId}/pay", $parameters);
     }
@@ -129,10 +137,11 @@ class Invoices extends Api
     /**
      * Sends the given invoice.
      *
-     * @param  string  $invoiceId
-     * @return array
+     * @param string $invoiceId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function send($invoiceId)
+    public function send(string $invoiceId): ApiResponse
     {
         return $this->_post("invoices/{$invoiceId}/send");
     }
@@ -140,10 +149,11 @@ class Invoices extends Api
     /**
      * Voids the given invoice.
      *
-     * @param  string  $invoiceId
-     * @return array
+     * @param string $invoiceId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function void($invoiceId)
+    public function void(string $invoiceId): ApiResponse
     {
         return $this->_post("invoices/{$invoiceId}/void");
     }
@@ -151,10 +161,11 @@ class Invoices extends Api
     /**
      * Voids the given invoice.
      *
-     * @param  string  $invoiceId
-     * @return array
+     * @param string $invoiceId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function markUncollectible($invoiceId)
+    public function markUncollectible(string $invoiceId): ApiResponse
     {
         return $this->_post("invoices/{$invoiceId}/mark_uncollectible");
     }
@@ -162,10 +173,11 @@ class Invoices extends Api
     /**
      * Lists all invoices.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('invoices', $parameters);
     }

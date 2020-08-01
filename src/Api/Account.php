@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -20,15 +22,19 @@
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\Api\Account\Persons;
+use Cartalyst\Stripe\Api\Account\AccountLink;
+use Cartalyst\Stripe\Api\Account\Capabilities;
+
 class Account extends Api
 {
     /**
      * Retrieves the details of the account, based on the
      * API key that was used to make the request.
      *
-     * @return array
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function details()
+    public function details(): ApiResponse
     {
         return $this->_get('account');
     }
@@ -36,10 +42,11 @@ class Account extends Api
     /**
      * Creates a new account.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('accounts', $parameters);
     }
@@ -47,10 +54,11 @@ class Account extends Api
     /**
      * Retrieves an existing account.
      *
-     * @param  string  $accountId
-     * @return array
+     * @param string $accountId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($accountId)
+    public function find(string $accountId): ApiResponse
     {
         return $this->_get("accounts/{$accountId}");
     }
@@ -58,11 +66,12 @@ class Account extends Api
     /**
      * Updates an existing account.
      *
-     * @param  string  $accountId
-     * @param  array  $parameters
-     * @return array
+     * @param string $accountId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($accountId, array $parameters = [])
+    public function update(string $accountId, array $parameters = []): ApiResponse
     {
         return $this->_post("accounts/{$accountId}", $parameters);
     }
@@ -70,10 +79,11 @@ class Account extends Api
     /**
      * Deletes an existing account.
      *
-     * @param  string  $accountId
-     * @return array
+     * @param string $accountId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function delete($accountId)
+    public function delete(string $accountId): ApiResponse
     {
         return $this->_delete("accounts/{$accountId}");
     }
@@ -81,22 +91,26 @@ class Account extends Api
     /**
      * Rejects an existing account.
      *
-     * @param  string  $accountId
-     * @param  string  $reason
-     * @return array
+     * @param string $accountId
+     * @param string $reason
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function reject($accountId, $reason)
+    public function reject(string $accountId, string $reason): ApiResponse
     {
-        return $this->_post("accounts/{$accountId}/reject", compact('reason'));
+        return $this->_post("accounts/{$accountId}/reject", [
+            'reason' => $reason,
+        ]);
     }
 
     /**
      * Returns a list of all the connected accounts.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('accounts', $parameters);
     }
@@ -104,11 +118,12 @@ class Account extends Api
     /**
      * Creates a login link.
      *
-     * @param  string  $accountId
-     * @param  string|null  $redirectUrl
-     * @return array
+     * @param string      $accountId
+     * @param string|null $redirectUrl
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function createLoginLink($accountId, $redirectUrl = null)
+    public function createLoginLink(string $accountId, ?string $redirectUrl = null): ApiResponse
     {
         return $this->_post("accounts/{$accountId}/login_links", [
             'redirect_url' => $redirectUrl,
@@ -116,23 +131,13 @@ class Account extends Api
     }
 
     /**
-     * Returns an account persons api instance.
-     *
-     * @return \Cartalyst\Stripe\Api\Account\Persons
-     */
-    public function persons()
-    {
-        return new Account\Persons($this->config);
-    }
-
-    /**
      * Returns an account links api instance.
      *
-     * @return \Cartalyst\Stripe\Api\Account\Persons
+     * @return \Cartalyst\Stripe\Api\Account\AccountLink
      */
-    public function accountLinks()
+    public function accountLinks(): AccountLink
     {
-        return new Account\AccountLink($this->config);
+        return new AccountLink($this->config);
     }
 
     /**
@@ -140,8 +145,18 @@ class Account extends Api
      *
      * @return \Cartalyst\Stripe\Api\Account\Capabilities
      */
-    public function capabilities()
+    public function capabilities(): Capabilities
     {
-        return new Account\Capabilities($this->config);
+        return new Capabilities($this->config);
+    }
+
+    /**
+     * Returns an account persons api instance.
+     *
+     * @return \Cartalyst\Stripe\Api\Account\Persons
+     */
+    public function persons(): Persons
+    {
+        return new Persons($this->config);
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -27,101 +29,71 @@ interface ApiInterface
      *
      * @return string
      */
-    public function baseUrl();
+    public function baseUrl(): string;
 
     /**
      * Returns the number of items to return per page.
      *
-     * @return void
+     * @return int|null
      */
-    public function getPerPage();
+    public function getPerPage(): ?int;
 
     /**
      * Sets the number of items to return per page.
      *
-     * @param  int  $perPage
-     * @return $this
+     * @param int|null $perPage
+     *
+     * @return \Cartalyst\Stripe\Api\ApiInterface
      */
-    public function setPerPage($perPage);
+    public function setPerPage(?int $perPage): ApiInterface;
 
     /**
      * Sets the idempotency key.
      *
-     * @param  string  $idempotencyKey
-     * @return $this
+     * @param string $idempotencyKey
+     *
+     * @return \Cartalyst\Stripe\Api\ApiInterface
      */
-    public function idempotent($idempotencyKey);
+    public function idempotent(string $idempotencyKey): ApiInterface;
 
     /**
-     * Send a GET request.
+     * Sends a GET request.
      *
-     * @param  string  $url
-     * @param  array  $parameters
-     * @return array
+     * @param string $url
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function _get($url = null, $parameters = []);
+    public function _get(string $url, array $parameters = []): ApiResponse;
 
     /**
-     * Send a HEAD request.
+     * Sends a DELETE request.
      *
-     * @param  string  $url
-     * @param  array  $parameters
-     * @return array
+     * @param string $url
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function _head($url = null, array $parameters = []);
+    public function _delete(string $url, array $parameters = []): ApiResponse;
 
     /**
-     * Send a DELETE request.
+     * Sends a POST request.
      *
-     * @param  string  $url
-     * @param  array  $parameters
-     * @return array
+     * @param string $url
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function _delete($url = null, array $parameters = []);
+    public function _post(string $url, array $parameters = []): ApiResponse;
 
     /**
-     * Send a PUT request.
+     * Sends the HTTP request.
      *
-     * @param  string  $url
-     * @param  array  $parameters
-     * @return array
-     */
-    public function _put($url = null, array $parameters = []);
-
-    /**
-     * Send a PATCH request.
+     * @param string $httpMethod
+     * @param string $url
+     * @param array  $parameters
      *
-     * @param  string  $url
-     * @param  array  $parameters
-     * @return array
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function _patch($url = null, array $parameters = []);
-
-    /**
-     * Send a POST request.
-     *
-     * @param  string  $url
-     * @param  array  $parameters
-     * @return array
-     */
-    public function _post($url = null, array $parameters = []);
-
-    /**
-     * Send an OPTIONS request.
-     *
-     * @param  string  $url
-     * @param  array  $parameters
-     * @return array
-     */
-    public function _options($url = null, array $parameters = []);
-
-    /**
-     * Executes the HTTP request.
-     *
-     * @param  string  $httpMethod
-     * @param  string  $url
-     * @param  array  $parameters
-     * @return array
-     */
-    public function execute($httpMethod, $url, array $parameters = []);
+    public function sendRequest(string $httpMethod, string $url, array $parameters = []): ApiResponse;
 }

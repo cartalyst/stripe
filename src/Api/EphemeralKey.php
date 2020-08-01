@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,21 +27,25 @@ class EphemeralKey extends Api
     /**
      * Creates a new Ephemeral Key.
      *
-     * @param  string  $customer
-     * @return array
+     * @param string $customerId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create($customer)
+    public function create(string $customerId): ApiResponse
     {
-        return $this->_post('ephemeral_keys', compact('customer'));
+        return $this->_post('ephemeral_keys', [
+            'customer' => $customerId,
+        ]);
     }
 
     /**
      * Deletes the given Ephemeral Key.
      *
-     * @param  string  $ephemeralKey
-     * @return array
+     * @param string $ephemeralKey
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function delete($ephemeralKey)
+    public function delete(string $ephemeralKey): ApiResponse
     {
         return $this->_delete("ephemeral_keys/{$ephemeralKey}");
     }

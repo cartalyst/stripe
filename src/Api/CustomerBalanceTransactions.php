@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,11 +27,12 @@ class CustomerBalanceTransactions extends Api
     /**
      * Creates a new customer balance transaction.
      *
-     * @param  string  $customerId
-     * @param  array  $parameters
-     * @return array
+     * @param string $customerId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create($customerId, array $parameters = [])
+    public function create(string $customerId, array $parameters = []): ApiResponse
     {
         return $this->_post("customers/{$customerId}/balance_transactions", $parameters);
     }
@@ -37,11 +40,12 @@ class CustomerBalanceTransactions extends Api
     /**
      * Retrieves an existing customer balance transaction.
      *
-     * @param  string  $customerId
-     * @param  string  $transactionId
-     * @return array
+     * @param string $customerId
+     * @param string $transactionId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($customerId, $transactionId)
+    public function find(string $customerId, string $transactionId): ApiResponse
     {
         return $this->_get("customers/{$customerId}/balance_transactions/{$transactionId}");
     }
@@ -49,12 +53,13 @@ class CustomerBalanceTransactions extends Api
     /**
      * Updates an existing customer balance transaction.
      *
-     * @param  string  $customerId
-     * @param  string  $transactionId
-     * @param  array  $parameters
-     * @return array
+     * @param string $customerId
+     * @param string $transactionId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($customerId, $transactionId, array $parameters = [])
+    public function update(string $customerId, string $transactionId, array $parameters = []): ApiResponse
     {
         return $this->_post("customers/{$customerId}/balance_transactions/{$transactionId}", $parameters);
     }
@@ -62,11 +67,12 @@ class CustomerBalanceTransactions extends Api
     /**
      * Lists all the balance transactions for the given customer.
      *
-     * @param  string  $customerId
-     * @param  array  $parameters
-     * @return array
+     * @param string $customerId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all($customerId, array $parameters = [])
+    public function all(string $customerId, array $parameters = []): ApiResponse
     {
         return $this->_get("customers/{$customerId}/balance_transactions", $parameters);
     }

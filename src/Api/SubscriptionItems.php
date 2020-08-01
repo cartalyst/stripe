@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,14 +27,18 @@ class SubscriptionItems extends Api
     /**
      * Creates a new item an existing subscription.
      *
-     * @param  string  $subscription
-     * @param  string  $plan
-     * @param  array  $parameters
-     * @return array
+     * @param string $subscriptionId
+     * @param string $planId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create($subscription, $plan, array $parameters = [])
+    public function create(string $subscriptionId, string $planId, array $parameters = []): ApiResponse
     {
-        $parameters = array_merge($parameters, compact('plan', 'subscription'));
+        $parameters = array_merge($parameters, [
+            'subscription' => $subscriptionId,
+            'plan'         => $planId,
+        ]);
 
         return $this->_post('subscription_items', $parameters);
     }
@@ -40,10 +46,11 @@ class SubscriptionItems extends Api
     /**
      * Retrieves an existing subscription item.
      *
-     * @param  string  $itemId
-     * @return array
+     * @param string $itemId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($itemId)
+    public function find(string $itemId): ApiResponse
     {
         return $this->_get("subscription_items/{$itemId}");
     }
@@ -51,11 +58,12 @@ class SubscriptionItems extends Api
     /**
      * Updates an existing subscription item.
      *
-     * @param  string  $itemId
-     * @param  array  $parameters
-     * @return array
+     * @param string $itemId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($itemId, array $parameters = [])
+    public function update(string $itemId, array $parameters = []): ApiResponse
     {
         return $this->_post("subscription_items/{$itemId}", $parameters);
     }
@@ -63,11 +71,12 @@ class SubscriptionItems extends Api
     /**
      * Deletes an existing subscription item.
      *
-     * @param  string  $itemId
-     * @param  array  $parameters
-     * @return array
+     * @param string $itemId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function delete($itemId, array $parameters = [])
+    public function delete(string $itemId, array $parameters = []): ApiResponse
     {
         return $this->_delete("subscription_items/{$itemId}", $parameters);
     }
@@ -75,13 +84,16 @@ class SubscriptionItems extends Api
     /**
      * Lists all subscription items.
      *
-     * @param  string  $subscription
-     * @param  array  $parameters
-     * @return array
+     * @param string $subscriptionId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all($subscription, array $parameters = [])
+    public function all(string $subscriptionId, array $parameters = []): ApiResponse
     {
-        $parameters = array_merge($parameters, compact('subscription'));
+        $parameters = array_merge($parameters, [
+            'subscription' => $subscriptionId,
+        ]);
 
         return $this->_get('subscription_items', $parameters);
     }

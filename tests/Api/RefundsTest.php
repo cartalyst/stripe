@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,6 +23,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class RefundsTest extends FunctionalTestCase
 {
@@ -46,7 +49,7 @@ class RefundsTest extends FunctionalTestCase
 
         $charge = $this->createCharge($customer['id']);
 
-        $refund = $this->stripe->refunds()->create($charge['id'], 20.00);
+        $refund = $this->stripe->refunds()->create($charge['id'], 2000);
 
         $charge = $this->stripe->charges()->find($charge['id']);
 
@@ -63,23 +66,6 @@ class RefundsTest extends FunctionalTestCase
 
         $refund = $this->stripe->refunds()->create($charge['id']);
 
-        $refund = $this->stripe->refunds()->find($charge['id'], $refund['id']);
-
-        $charge = $this->stripe->charges()->find($charge['id']);
-
-        $this->assertTrue($charge['refunded']);
-        $this->assertSame(5049, $refund['amount']);
-    }
-
-    /** @test */
-    public function it_can_find_a_refund_without_passing_the_charge_id()
-    {
-        $customer = $this->createCustomer();
-
-        $charge = $this->createCharge($customer['id']);
-
-        $refund = $this->stripe->refunds()->create($charge['id']);
-
         $refund = $this->stripe->refunds()->find($refund['id']);
 
         $charge = $this->stripe->charges()->find($charge['id']);
@@ -88,17 +74,16 @@ class RefundsTest extends FunctionalTestCase
         $this->assertSame(5049, $refund['amount']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_refund()
     {
+        $this->expectException(NotFoundException::class);
+
         $customer = $this->createCustomer();
 
         $charge = $this->createCharge($customer['id']);
 
-        $this->stripe->refunds()->find($charge['id'], time().rand());
+        $this->stripe->refunds()->find($charge['id'], 'not_found');
     }
 
     /** @test */
@@ -110,8 +95,8 @@ class RefundsTest extends FunctionalTestCase
 
         $refund = $this->stripe->refunds()->create($charge['id']);
 
-        $refund = $this->stripe->refunds()->update($charge['id'], $refund['id'], [
-            'metadata' => [ 'reason' => 'Refunded the payment.' ]
+        $refund = $this->stripe->refunds()->update($refund['id'], [
+            'metadata' => ['reason' => 'Refunded the payment.'],
         ]);
 
         $this->assertSame(5049, $refund['amount']);
@@ -129,11 +114,13 @@ class RefundsTest extends FunctionalTestCase
         $this->stripe->refunds()->create($charge1['id']);
         $this->stripe->refunds()->create($charge2['id']);
 
-        $refunds = $this->stripe->refunds()->all($charge1['id']);
+        $refunds = $this->stripe->refunds()->all([
+            'charge' => $charge1['id'],
+        ]);
 
         $this->assertNotEmpty($refunds['data']);
         $this->assertCount(1, $refunds['data']);
-        $this->assertInternalType('array', $refunds['data']);
+        $this->assertIsArray($refunds['data']);
     }
 
     /** @test */
@@ -150,6 +137,6 @@ class RefundsTest extends FunctionalTestCase
         $refunds = $this->stripe->refunds()->all();
 
         $this->assertNotEmpty($refunds['data']);
-        $this->assertInternalType('array', $refunds['data']);
+        $this->assertIsArray($refunds['data']);
     }
 }

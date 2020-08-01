@@ -1,50 +1,45 @@
 # PHP library for Stripe, by Cartalyst
 
-[![Build Status](https://travis-ci.org/cartalyst/stripe.svg?branch=2.4)](https://travis-ci.org/cartalyst/stripe)
+[![Build Status][icon-travis]][link-travis]
+[![Software License][icon-license]][link-license]
+[![Latest Version on Packagist][icon-version]][link-packagist]
+[![Total Downloads][icon-downloads]][link-packagist]
 
-A comprehensive PHP Library for [Stripe](https://stripe.com/).
+A comprehensive and modern PHP Library for [Stripe](https://stripe.com/).
 
-This package is supported by Cartalyst and is not affiliated with [Stripe](https://stripe.com/). The package requires PHP 5.5.9+ and follows the FIG standards PSR-1, PSR-2 and PSR-4 to ensure a high level of interoperability between shared PHP.
+This package is supported by Cartalyst and is not affiliated with [Stripe](https://stripe.com/). The package requires PHP 7.2+ and follows the FIG standards PSR-1, PSR-2 and PSR-4 to ensure a high level of interoperability between shared PHP.
 
 An open source package by [Cartalyst](https://cartalyst.com), code well, rock on!
 
 ## Documentation
 
-Reader-friendly Documentation can be found [here](https://cartalyst.com/manual/stripe/2.0).
+Reader-friendly documentation can be found [here][link-docs].
 
-Raw files can be found via this projects docs/version branch.
+Using the package, but you're stuck? Found a bug? Have a question or suggestion for improving this package? Feel free to create an issue on GitHub, we'll try to address it as soon as possible.
 
-- [2.0](https://github.com/cartalyst/stripe/tree/docs/2.0)
-- [1.0](https://github.com/cartalyst/stripe/tree/docs/1.0)
+## Contributing
 
-## Change Log
+Thank you for your interest, here are some of the many ways to contribute.
 
-Important versions listed below. Refer to the [Change Log](CHANGELOG.md) for a full history of the project.
+- Check out our [contributing guide](/.github/CONTRIBUTING.md)
+- Look at our [code of conduct](/.github/CODE_OF_CONDUCT.md)
 
-- [2.4](CHANGELOG.md) - 2019-12-21
-- [2.3](CHANGELOG.md) - 2019-09-27
-- [2.2](CHANGELOG.md) - 2019-04-21
-- [2.1](CHANGELOG.md) - 2017-05-10
-- [2.0](CHANGELOG.md) - 2016-01-17
-- [1.0](CHANGELOG.md) - 2015-04-02
+## Security
 
-## Support
-
-The following support channels can be used for contact.
-
-- [Twitter](https://twitter.com/cartalyst)
-- [Email](mailto:help@cartalyst.com)
-
-Bug reports, feature requests, and pull requests can be submitted by following our [Contribution Guide](CONTRIBUTING.md).
-
-## Contributing & Protocols
-
-- [Versioning](CONTRIBUTING.md#versioning)
-- [Coding Standards](CONTRIBUTING.md#coding-standards)
-- [Pull Requests](CONTRIBUTING.md#pull-requests)
+If you discover any security related issues, please email help@cartalyst.com instead of using the issue tracker.
 
 ## License
 
 This software is released under the [BSD 3-Clause](LICENSE) License.
 
 © 2011-2020 Cartalyst LLC, All rights reserved.
+
+[link-docs]:      https://cartalyst.com/manual/stripe
+[link-travis]:    https://travis-ci.org/cartalyst/stripe
+[link-license]:   https://opensource.org/licenses/MIT
+[link-packagist]: https://packagist.org/packages/cartalyst/stripe
+
+[icon-travis]:    https://travis-ci.org/cartalyst/stripe.svg?branch=3.x
+[icon-license]:   https://poser.pugx.org/cartalyst/stripe/license
+[icon-version]:   https://poser.pugx.org/cartalyst/stripe/version
+[icon-downloads]: https://poser.pugx.org/cartalyst/stripe/downloads

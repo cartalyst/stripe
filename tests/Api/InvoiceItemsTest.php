@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,6 +23,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class InvoiceItemsTest extends FunctionalTestCase
 {
@@ -54,18 +57,17 @@ class InvoiceItemsTest extends FunctionalTestCase
         $invoiceItem = $this->createInvoiceItem($customer['id']);
 
         $invoiceItem = $this->stripe->invoiceItems()->update($invoiceItem['id'], [
-            'amount' => '30.00',
+            'amount' => 3000,
         ]);
 
         $this->assertSame(3000, $invoiceItem['amount']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_can_delete_an_existing_invoice_item()
     {
+        $this->expectException(NotFoundException::class);
+
         $customer = $this->createCustomer();
 
         $invoiceItem = $this->createInvoiceItem($customer['id']);
@@ -89,7 +91,7 @@ class InvoiceItemsTest extends FunctionalTestCase
         $invoiceItems = $this->stripe->invoiceItems()->all();
 
         $this->assertNotEmpty($invoiceItems['data']);
-        $this->assertInternalType('array', $invoiceItems['data']);
+        $this->assertIsArray($invoiceItems['data']);
     }
 
     /** @test */
@@ -97,11 +99,11 @@ class InvoiceItemsTest extends FunctionalTestCase
     {
         $customer = $this->createCustomer();
 
-        for ($i=0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $this->createInvoiceItem($customer['id']);
         }
 
-        $invoiceItems = $this->stripe->invoiceItemsIterator([ 'customer' => $customer['id'] ]);
+        $invoiceItems = $this->stripe->invoiceItemsIterator(['customer' => $customer['id']]);
 
         $this->assertCount(5, $invoiceItems);
     }

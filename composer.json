@@ -1,6 +1,6 @@
 {
     "name": "cartalyst/stripe",
-    "description": "A comprehensive Stripe API package.",
+    "description": "A comprehensive and modern PHP Library for Stripe.",
     "keywords": [
         "php",
         "cartalyst",
@@ -15,24 +15,38 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
-        "guzzlehttp/guzzle": "~6.0|~7.0"
+        "php": "^7.2",
+        "guzzlehttp/guzzle": "^7.0"
     },
     "require-dev": {
-        "mockery/mockery": "~0.9",
-        "phpunit/phpunit": "~4.8"
+        "cartalyst/php-cs-fixer-config": "^1.0",
+        "phpunit/phpunit": "^8.0"
     },
     "autoload": {
-        "psr-4": { "Cartalyst\\Stripe\\": "src/" }
+        "psr-4": {
+            "Cartalyst\\Stripe\\": "src/"
+        }
     },
     "autoload-dev": {
-        "psr-4": { "Cartalyst\\Stripe\\Tests\\": "tests/" }
+        "psr-4": {
+            "Cartalyst\\Stripe\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
     },
     "extra": {
         "component": "package",
         "branch-alias": {
-            "dev-master": "2.4.x-dev"
+            "dev-master": "3.0.x-dev"
         }
+    },
+    "scripts": {
+        "cs:check": "./vendor/bin/php-cs-fixer fix --verbose --ansi --show-progress=estimating --diff --dry-run --config .php_cs.php",
+        "cs:fix": "./vendor/bin/php-cs-fixer fix --verbose --ansi --show-progress=estimating --config .php_cs.php",
+        "test": "./vendor/bin/phpunit --verbose --colors=always"
     },
     "minimum-stability": "stable"
 }

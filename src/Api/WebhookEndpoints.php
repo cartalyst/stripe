@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class WebhookEndpoints extends Api
     /**
      * Creates a new webhook endpoint.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('webhook_endpoints', $parameters);
     }
@@ -36,10 +39,11 @@ class WebhookEndpoints extends Api
     /**
      * Retrieves an existing webhook endpoint.
      *
-     * @param  string  $webhookEndpointId
-     * @return array
+     * @param string $webhookEndpointId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($webhookEndpointId)
+    public function find(string $webhookEndpointId): ApiResponse
     {
         return $this->_get("webhook_endpoints/{$webhookEndpointId}");
     }
@@ -47,11 +51,12 @@ class WebhookEndpoints extends Api
     /**
      * Updates an existing webhook endpoint.
      *
-     * @param  string  $webhookEndpointId
-     * @param  array  $parameters
-     * @return array
+     * @param string $webhookEndpointId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($webhookEndpointId, array $parameters = [])
+    public function update(string $webhookEndpointId, array $parameters = []): ApiResponse
     {
         return $this->_post("webhook_endpoints/{$webhookEndpointId}", $parameters);
     }
@@ -59,10 +64,11 @@ class WebhookEndpoints extends Api
     /**
      * Deletes an existing webhook endpoint.
      *
-     * @param  string  $webhookEndpointId
-     * @return array
+     * @param string $webhookEndpointId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function delete($webhookEndpointId)
+    public function delete(string $webhookEndpointId): ApiResponse
     {
         return $this->_delete("webhook_endpoints/{$webhookEndpointId}");
     }
@@ -70,10 +76,11 @@ class WebhookEndpoints extends Api
     /**
      * Lists all webhook endpoints.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('webhook_endpoints', $parameters);
     }

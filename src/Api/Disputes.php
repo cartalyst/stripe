@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class Disputes extends Api
     /**
      * Retrieves an existing dispute.
      *
-     * @param  string  $disputeId
-     * @return array
+     * @param string $disputeId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($disputeId)
+    public function find(string $disputeId): ApiResponse
     {
         return $this->_get("disputes/{$disputeId}");
     }
@@ -36,33 +39,36 @@ class Disputes extends Api
     /**
      * Updates an existing dispute.
      *
-     * @param  string  $dispute
-     * @param  array  $parameters
-     * @return array
+     * @param string $disputeId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($dispute, array $parameters = [])
+    public function update(string $disputeId, array $parameters = []): ApiResponse
     {
-        return $this->_post("disputes/{$dispute}", $parameters);
+        return $this->_post("disputes/{$disputeId}", $parameters);
     }
 
     /**
      * Closes an existing dispute.
      *
-     * @param  string  $dispute
-     * @return array
+     * @param string $disputeId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function close($dispute)
+    public function close(string $disputeId): ApiResponse
     {
-        return $this->_post("disputes/{$dispute}/close");
+        return $this->_post("disputes/{$disputeId}/close");
     }
 
     /**
      * Lists all disputes.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('disputes', $parameters);
     }

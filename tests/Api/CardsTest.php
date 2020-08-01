@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,6 +23,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class CardsTest extends FunctionalTestCase
 {
@@ -29,7 +32,7 @@ class CardsTest extends FunctionalTestCase
     {
         $customer = $this->createCustomer();
 
-        $card = $this->createCardThroughArray($customer['id']);
+        $this->createCardThroughArray($customer['id']);
 
         $customer = $this->stripe->customers()->find($customer['id']);
 
@@ -41,7 +44,7 @@ class CardsTest extends FunctionalTestCase
     {
         $customer = $this->createCustomer();
 
-        $card = $this->createCardThroughToken($customer['id']);
+        $this->createCardThroughToken($customer['id']);
 
         $customer = $this->stripe->customers()->find($customer['id']);
 
@@ -60,15 +63,14 @@ class CardsTest extends FunctionalTestCase
         $this->assertSame('4242', $card['last4']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_card()
     {
+        $this->expectException(NotFoundException::class);
+
         $customer = $this->createCustomer();
 
-        $this->stripe->cards()->find($customer['id'], time().rand());
+        $this->stripe->cards()->find($customer['id'], 'not_found');
     }
 
     /** @test */
@@ -78,7 +80,7 @@ class CardsTest extends FunctionalTestCase
 
         $card = $this->createCardThroughToken($customer['id']);
 
-        $card = $this->stripe->cards()->update($customer['id'], $card['id'], [ 'name' => 'John Doe' ]);
+        $card = $this->stripe->cards()->update($customer['id'], $card['id'], ['name' => 'John Doe']);
 
         $this->assertSame('4242', $card['last4']);
         $this->assertSame('John Doe', $card['name']);
@@ -114,7 +116,7 @@ class CardsTest extends FunctionalTestCase
 
         $this->assertNotEmpty($cards['data']);
         $this->assertCount(1, $cards['data']);
-        $this->assertInternalType('array', $cards['data']);
+        $this->assertIsArray($cards['data']);
     }
 
     /** @test */
@@ -124,7 +126,7 @@ class CardsTest extends FunctionalTestCase
 
         $customerId = $customer['id'];
 
-        for ($i=0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $this->createCardThroughToken($customerId);
         }
 

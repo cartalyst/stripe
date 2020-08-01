@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -271,8 +273,8 @@ class InvoicesTest extends FunctionalTestCase
         $this->createInvoiceItem($customerId);
 
         $invoice = $this->createInvoice($customerId, [
-            'billing'        => 'send_invoice',
-            'days_until_due' => 1,
+            'collection_method' => 'send_invoice',
+            'days_until_due'    => 1,
         ]);
 
         $this->assertFalse($invoice['paid']);
@@ -297,7 +299,7 @@ class InvoicesTest extends FunctionalTestCase
         $invoices = $this->stripe->invoices()->all();
 
         $this->assertNotEmpty($invoices['data']);
-        $this->assertInternalType('array', $invoices['data']);
+        $this->assertIsArray($invoices['data']);
         $this->assertSame(6000, ($invoice1['total'] + $invoice2['total']));
         $this->assertSame(
             6, ($invoice1['lines']['total_count'] + $invoice2['lines']['total_count'])
@@ -316,7 +318,7 @@ class InvoicesTest extends FunctionalTestCase
         $invoice1 = $this->createAnInvoiceAndInvoiceItems($customerId, 4);
         $invoice2 = $this->createAnInvoiceAndInvoiceItems($customerId, 2);
 
-        $invoices = $this->stripe->invoicesIterator([ 'customer' => $customerId ]);
+        $invoices = $this->stripe->invoicesIterator(['customer' => $customerId]);
 
         $this->assertCount(2, $invoices);
         $this->assertSame(6000, ($invoice1['total'] + $invoice2['total']));

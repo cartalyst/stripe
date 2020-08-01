@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -40,7 +42,7 @@ class UsageRecordsTest extends FunctionalTestCase
         $usageRecord = $this->stripe->usageRecords()->create($subscriptionItem['id'], [
             'quantity'  => 10,
             'timestamp' => strtotime('+3days', $subscription['current_period_start']),
-            'action'    => 'set'
+            'action'    => 'set',
         ]);
 
         $this->assertSame($subscriptionItem['id'], $usageRecord['subscription_item']);
@@ -62,7 +64,7 @@ class UsageRecordsTest extends FunctionalTestCase
         $this->stripe->usageRecords()->create($subscriptionItem['id'], [
             'quantity'  => 10,
             'timestamp' => strtotime('+3days', $subscription['current_period_start']),
-            'action'    => 'set'
+            'action'    => 'set',
         ]);
 
         $usageRecords = $this->stripe->usageRecords()->all($subscriptionItem['id']);

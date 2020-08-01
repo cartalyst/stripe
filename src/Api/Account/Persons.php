@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,17 +23,19 @@
 namespace Cartalyst\Stripe\Api\Account;
 
 use Cartalyst\Stripe\Api\Api;
+use Cartalyst\Stripe\Api\ApiResponse;
 
 class Persons extends Api
 {
     /**
      * Creates a new person.
      *
-     * @param  string  $accountId
-     * @param  array  $parameters
-     * @return array
+     * @param string $accountId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create($accountId, array $parameters = [])
+    public function create(string $accountId, array $parameters = []): ApiResponse
     {
         return $this->_post("accounts/{$accountId}/persons", $parameters);
     }
@@ -39,48 +43,52 @@ class Persons extends Api
     /**
      * Retrieves an existing person.
      *
-     * @param  string  $accountId
-     * @param  string  $personId
-     * @return array
+     * @param string $accountId
+     * @param string $personId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($accountId, $personId)
+    public function find(string $accountId, string $personId): ApiResponse
     {
         return $this->_get("accounts/{$accountId}/persons/{$personId}");
     }
 
     /**
-     * Updates an existing coupon.
+     * Updates an existing person.
      *
-     * @param  string  $accountId
-     * @param  string  $personId
-     * @param  array  $parameters
-     * @return array
+     * @param string $accountId
+     * @param string $personId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($accountId, $personId, array $parameters = [])
+    public function update(string $accountId, string $personId, array $parameters = []): ApiResponse
     {
         return $this->_post("accounts/{$accountId}/persons/{$personId}", $parameters);
     }
 
     /**
-     * Deletes an existing coupon.
+     * Deletes an existing person.
      *
-     * @param  string  $accountId
-     * @param  string  $personId
-     * @return array
+     * @param string $accountId
+     * @param string $personId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function delete($accountId, $personId)
+    public function delete(string $accountId, string $personId): ApiResponse
     {
         return $this->_delete("accounts/{$accountId}/persons/{$personId}");
     }
 
     /**
-     * Lists all persons.
+     * Lists all persons of the given account.
      *
-     * @param  string  $accountId
-     * @param  array  $parameters
-     * @return array
+     * @param string $accountId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all($accountId, array $parameters = [])
+    public function all(string $accountId, array $parameters = []): ApiResponse
     {
         return $this->_get("accounts/{$accountId}/persons", $parameters);
     }

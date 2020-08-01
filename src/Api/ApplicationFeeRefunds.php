@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,11 +27,12 @@ class ApplicationFeeRefunds extends Api
     /**
      * Creates a new application fee refund.
      *
-     * @param  string  $applicationFeeId
-     * @param  array  $parameters
-     * @return array
+     * @param string $applicationFeeId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create($applicationFeeId, array $parameters = [])
+    public function create(string $applicationFeeId, array $parameters = []): ApiResponse
     {
         return $this->_post("application_fees/{$applicationFeeId}/refunds", $parameters);
     }
@@ -37,11 +40,12 @@ class ApplicationFeeRefunds extends Api
     /**
      * Retrieves an existing application fee refund.
      *
-     * @param  string  $applicationFeeId
-     * @param  string  $refundId
-     * @return array
+     * @param string $applicationFeeId
+     * @param string $refundId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($applicationFeeId, $refundId)
+    public function find(string $applicationFeeId, string $refundId): ApiResponse
     {
         return $this->_get("application_fees/{$applicationFeeId}/refunds/{$refundId}");
     }
@@ -49,12 +53,13 @@ class ApplicationFeeRefunds extends Api
     /**
      * Updates an existing application fee refund.
      *
-     * @param  string  $applicationFeeId
-     * @param  string  $refundId
-     * @param  array  $parameters
-     * @return array
+     * @param string $applicationFeeId
+     * @param string $refundId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($applicationFeeId, $refundId, array $parameters = [])
+    public function update(string $applicationFeeId, string $refundId, array $parameters = []): ApiResponse
     {
         return $this->_post("application_fees/{$applicationFeeId}/refunds/{$refundId}", $parameters);
     }
@@ -62,11 +67,12 @@ class ApplicationFeeRefunds extends Api
     /**
      * Lists all application fee refunds.
      *
-     * @param  string  $applicationFeeId
-     * @param  array  $parameters
-     * @return array
+     * @param string $applicationFeeId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all($applicationFeeId, array $parameters = [])
+    public function all(string $applicationFeeId, array $parameters = []): ApiResponse
     {
         return $this->_get("application_fees/{$applicationFeeId}/refunds", $parameters);
     }

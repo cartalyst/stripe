@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,6 +23,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class SkusTest extends FunctionalTestCase
 {
@@ -29,7 +32,7 @@ class SkusTest extends FunctionalTestCase
     {
         $product = $this->createProduct();
 
-        $sku = $this->createSku($product['id']);
+        $sku = $this->createProductSku($product['id']);
 
         $this->assertSame(1500, $sku['price']);
     }
@@ -39,20 +42,19 @@ class SkusTest extends FunctionalTestCase
     {
         $product = $this->createProduct();
 
-        $sku = $this->createSku($product['id']);
+        $sku = $this->createProductSku($product['id']);
 
         $sku = $this->stripe->skus()->find($sku['id']);
 
         $this->assertSame(1500, $sku['price']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_sku()
     {
-        $this->stripe->skus()->find(time());
+        $this->expectException(NotFoundException::class);
+
+        $this->stripe->skus()->find('not_found');
     }
 
     /** @test */
@@ -60,10 +62,10 @@ class SkusTest extends FunctionalTestCase
     {
         $product = $this->createProduct();
 
-        $sku = $this->createSku($product['id']);
+        $sku = $this->createProductSku($product['id']);
 
         $sku = $this->stripe->skus()->update($sku['id'], [
-            'metadata' => [ 'description' => 'Comfortable gray cotton t-shirt' ]
+            'metadata' => ['description' => 'Comfortable gray cotton t-shirt'],
         ]);
 
         $this->assertSame(1500, $sku['price']);
@@ -75,7 +77,7 @@ class SkusTest extends FunctionalTestCase
     {
         $product = $this->createProduct();
 
-        $sku = $this->createSku($product['id']);
+        $sku = $this->createProductSku($product['id']);
 
         $sku = $this->stripe->skus()->delete($sku['id']);
 
@@ -87,11 +89,11 @@ class SkusTest extends FunctionalTestCase
     {
         $product = $this->createProduct();
 
-        $this->createSku($product['id']);
+        $this->createProductSku($product['id']);
 
         $skus = $this->stripe->skus()->all();
 
         $this->assertNotEmpty($skus['data']);
-        $this->assertInternalType('array', $skus['data']);
+        $this->assertIsArray($skus['data']);
     }
 }

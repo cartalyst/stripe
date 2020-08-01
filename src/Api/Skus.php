@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class Skus extends Api
     /**
      * Creates a new sku.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('skus', $parameters);
     }
@@ -36,10 +39,11 @@ class Skus extends Api
     /**
      * Retrieves an existing sku.
      *
-     * @param  string  $skuId
-     * @return array
+     * @param string $skuId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($skuId)
+    public function find(string $skuId): ApiResponse
     {
         return $this->_get("skus/{$skuId}");
     }
@@ -47,11 +51,12 @@ class Skus extends Api
     /**
      * Updates an existing sku.
      *
-     * @param  string  $skuId
-     * @param  array  $parameters
-     * @return array
+     * @param string $skuId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($skuId, array $parameters = [])
+    public function update(string $skuId, array $parameters = []): ApiResponse
     {
         return $this->_post("skus/{$skuId}", $parameters);
     }
@@ -59,10 +64,11 @@ class Skus extends Api
     /**
      * Deletes an existing sku.
      *
-     * @param  string  $skuId
-     * @return array
+     * @param string $skuId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function delete($skuId)
+    public function delete(string $skuId): ApiResponse
     {
         return $this->_delete("skus/{$skuId}");
     }
@@ -70,10 +76,11 @@ class Skus extends Api
     /**
      * Returns a list of all the skus.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('skus', $parameters);
     }

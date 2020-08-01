@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -48,7 +50,9 @@ class AccountTest extends FunctionalTestCase
         ]);
 
         $this->assertSame($email, $account['email']);
-        $this->assertSame('unverified', $account['legal_entity']['verification']['status']);
+        $this->assertFalse($account['charges_enabled']);
+        $this->assertFalse($account['payouts_enabled']);
+        $this->assertSame('requirements.past_due', $account['requirements']['disabled_reason']);
     }
 
     /** @test */
@@ -73,7 +77,9 @@ class AccountTest extends FunctionalTestCase
 
         $this->assertSame($accountId, $account['id']);
         $this->assertSame($email, $account['email']);
-        $this->assertSame('unverified', $account['legal_entity']['verification']['status']);
+        $this->assertFalse($account['charges_enabled']);
+        $this->assertFalse($account['payouts_enabled']);
+        $this->assertSame('requirements.past_due', $account['requirements']['disabled_reason']);
     }
 
     /** @test */
@@ -92,15 +98,19 @@ class AccountTest extends FunctionalTestCase
 
         $accountId = $account['id'];
 
-        $email = $this->getRandomEmail();
+        $newEmail = $this->getRandomEmail();
 
-        $this->stripe->account()->update($accountId, compact('email'));
+        $this->stripe->account()->update($accountId, [
+            'email' => $newEmail,
+        ]);
 
         $account = $this->stripe->account()->find($accountId);
 
         $this->assertSame($accountId, $account['id']);
-        $this->assertSame($email, $account['email']);
-        $this->assertSame('unverified', $account['legal_entity']['verification']['status']);
+        $this->assertSame($newEmail, $account['email']);
+        $this->assertFalse($account['charges_enabled']);
+        $this->assertFalse($account['payouts_enabled']);
+        $this->assertSame('requirements.past_due', $account['requirements']['disabled_reason']);
     }
 
     /** @test */
@@ -123,7 +133,11 @@ class AccountTest extends FunctionalTestCase
 
         $account = $this->stripe->account()->find($account['id']);
 
-        $this->assertSame('rejected.other', $account['verification']['disabled_reason']);
+        $this->assertSame($accountId, $account['id']);
+        $this->assertSame($email, $account['email']);
+        $this->assertFalse($account['charges_enabled']);
+        $this->assertFalse($account['payouts_enabled']);
+        $this->assertSame('rejected.other', $account['requirements']['disabled_reason']);
     }
 
     /** @test */
@@ -143,7 +157,7 @@ class AccountTest extends FunctionalTestCase
         $accounts = $this->stripe->account()->all();
 
         $this->assertNotEmpty($accounts['data']);
-        $this->assertInternalType('array', $accounts['data']);
+        $this->assertIsArray($accounts['data']);
     }
 
     /** @test */

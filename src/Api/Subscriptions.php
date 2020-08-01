@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,11 +27,12 @@ class Subscriptions extends Api
     /**
      * Creates a new subscription on the given customer.
      *
-     * @param  string  $customerId
-     * @param  array  $parameters
-     * @return array
+     * @param string $customerId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create($customerId, array $parameters = [])
+    public function create(string $customerId, array $parameters = []): ApiResponse
     {
         $parameters['customer'] = $customerId;
 
@@ -39,11 +42,11 @@ class Subscriptions extends Api
     /**
      * Retrieves an existing subscription from the given customer.
      *
-     * @param  string  $customerId
-     * @param  string  $subscriptionId
-     * @return array
+     * @param string $subscriptionId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($customerId, $subscriptionId)
+    public function find(string $subscriptionId): ApiResponse
     {
         return $this->_get("subscriptions/{$subscriptionId}");
     }
@@ -51,12 +54,12 @@ class Subscriptions extends Api
     /**
      * Updates an existing subscription from the given customer.
      *
-     * @param  string  $customerId
-     * @param  string  $subscriptionId
-     * @param  array  $parameters
-     * @return array
+     * @param string $subscriptionId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($customerId, $subscriptionId, array $parameters = [])
+    public function update(string $subscriptionId, array $parameters = []): ApiResponse
     {
         return $this->_post("subscriptions/{$subscriptionId}", $parameters);
     }
@@ -64,48 +67,53 @@ class Subscriptions extends Api
     /**
      * Cancels an existing subscription from the given customer.
      *
-     * @param  string  $customerId
-     * @param  string  $subscriptionId
-     * @param  bool  $atPeriodEnd
-     * @return array
+     * @param string $subscriptionId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function cancel($customerId, $subscriptionId, $atPeriodEnd = false)
+    public function cancel(string $subscriptionId, $parameters = []): ApiResponse
     {
-        return $this->_delete("subscriptions/{$subscriptionId}", [
-            'at_period_end' => (bool) $atPeriodEnd,
-        ]);
+        return $this->_delete("subscriptions/{$subscriptionId}", $parameters);
+    }
+
+    public function cancelAtPeriodEnd(string $subscriptionId): ApiResponse
+    {
+        return $this->update($subscriptionId, ['cancel_at_period_end' => true]);
     }
 
     /**
-     * Reactivates an existing canceled subscription from the given customer.
+     * Reactivates a canceled subscription.
      *
-     * @param  string  $customerId
-     * @param  string  $subscriptionId
-     * @param  array  $attributes
-     * @return array
+     * @param string $subscriptionId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function reactivate($customerId, $subscriptionId, array $attributes = [])
+    public function reactivate(string $subscriptionId, array $parameters = []): ApiResponse
     {
-        if (! isset($attributes['plan'])) {
-            $subscription = $this->find($customerId, $subscriptionId);
+        if (! isset($parameters['plan'])) {
+            $subscription = $this->find($subscriptionId);
 
-            $attributes['plan'] = $subscription['plan']['id'];
+            $parameters['plan'] = $subscription['plan']['id'];
         }
 
-        return $this->update($customerId, $subscriptionId, $attributes);
+        $parameters['cancel_at_period_end'] = false;
+
+        return $this->update($subscriptionId, $parameters);
     }
 
     /**
      * Applies the given discount on the given subscription.
      *
-     * @param  string  $customerId
-     * @param  string  $subscriptionId
-     * @param  string  $couponId
-     * @return array
+     * @param string $subscriptionId
+     * @param string $couponId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function applyDiscount($customerId, $subscriptionId, $couponId)
+    public function applyDiscount(string $subscriptionId, string $couponId): ApiResponse
     {
-        return $this->update($customerId, $subscriptionId, [
+        return $this->update($subscriptionId, [
             'coupon' => $couponId,
         ]);
     }
@@ -113,31 +121,24 @@ class Subscriptions extends Api
     /**
      * Deletes an existing subscription discount.
      *
-     * @param  string  $customerId
-     * @param  string  $subscriptionId
-     * @return array
+     * @param string $subscriptionId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function deleteDiscount($customerId, $subscriptionId)
+    public function deleteDiscount(string $subscriptionId): ApiResponse
     {
         return $this->_delete("subscriptions/{$subscriptionId}/discount");
     }
 
     /**
-     * Lists all subscriptions for the given customer or
-     * all the subscriptions for the Stripe account.
+     * Lists all subscriptions.
      *
-     * @param  string|null  $customerId
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all($customerId = null, array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
-        if ($customerId !== null) {
-            $parameters = array_merge($parameters, [
-                'customer' => $customerId,
-            ]);
-        }
-
         return $this->_get('subscriptions', $parameters);
     }
 }

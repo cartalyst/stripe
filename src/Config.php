@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -22,13 +24,6 @@ namespace Cartalyst\Stripe;
 
 class Config implements ConfigInterface
 {
-    /**
-     * The current package version.
-     *
-     * @var string
-     */
-    protected $version;
-
     /**
      * The Stripe API key.
      *
@@ -44,16 +39,9 @@ class Config implements ConfigInterface
     protected $apiVersion;
 
     /**
-     * The idempotency key.
-     *
-     * @var string
-     */
-    protected $idempotencyKey;
-
-    /**
      * The managed account id.
      *
-     * @var string
+     * @var string|null
      */
     protected $accountId;
 
@@ -67,61 +55,22 @@ class Config implements ConfigInterface
     /**
      * Constructor.
      *
-     * @param  string  $version
-     * @param  string  $apiKey
-     * @param  string  $apiVersion
+     * @param string $apiKey
+     * @param string $apiVersion
+     *
      * @return void
      */
-    public function __construct($version, $apiKey, $apiVersion)
+    public function __construct(string $apiKey, string $apiVersion)
     {
-        $this->setVersion($version);
+        $this->setApiKey($apiKey);
 
-        $this->setApiKey($apiKey ?: self::getEnvVariable('STRIPE_API_KEY', ''));
-
-        $this->setApiVersion($apiVersion ?: self::getEnvVariable('STRIPE_API_VERSION', '2017-06-05'));
-    }
-
-    /**
-     * @param string      $name
-     * @param string|null $default
-     *
-     * @return string|null
-     */
-    private static function getEnvVariable($name, $default = null)
-    {
-        if (isset($_SERVER[$name])) {
-            return (string) $_SERVER[$name];
-        }
-
-        if (PHP_SAPI === 'cli' && ($value = getenv($name)) !== false) {
-            return (string) $value;
-        }
-
-        return $default;
+        $this->setApiVersion($apiVersion);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getVersion()
-    {
-        return $this->version;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setVersion($version)
-    {
-        $this->version = $version;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getApiKey()
+    public function getApiKey(): string
     {
         return $this->apiKey;
     }
@@ -129,7 +78,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setApiKey($apiKey)
+    public function setApiKey(string $apiKey): ConfigInterface
     {
         $this->apiKey = $apiKey;
 
@@ -139,7 +88,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getApiVersion()
+    public function getApiVersion(): string
     {
         return $this->apiVersion;
     }
@@ -147,7 +96,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setApiVersion($apiVersion)
+    public function setApiVersion(string $apiVersion): ConfigInterface
     {
         $this->apiVersion = $apiVersion;
 
@@ -157,38 +106,15 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getIdempotencyKey()
-    {
-        return $this->idempotencyKey;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setIdempotencyKey($idempotencyKey)
-    {
-        $this->idempotencyKey = $idempotencyKey;
-
-        return $this;
-    }
-
-    /**
-     * Returns the managed account id.
-     *
-     * @return string
-     */
-    public function getAccountId()
+    public function getAccountId(): ?string
     {
         return $this->accountId;
     }
 
     /**
-     * Sets the managed account id.
-     *
-     * @param  string  $accountId
-     * @return $this
+     * {@inheritdoc}
      */
-    public function setAccountId($accountId)
+    public function setAccountId(?string $accountId): ConfigInterface
     {
         $this->accountId = $accountId;
 
@@ -196,25 +122,17 @@ class Config implements ConfigInterface
     }
 
     /**
-     * Returns the application's information.
-     *
-     * @return array|null
+     * {@inheritdoc}
      */
-    public function getAppInfo()
+    public function getAppInfo(): ?array
     {
         return $this->appInfo;
     }
 
     /**
-     * Sets the application's information.
-     *
-     * @param string $appName
-     * @param string $appVersion
-     * @param string $appUrl
-     * @param string $appPartnerId
-     * @return $this
+     * {@inheritdoc}
      */
-    public function setAppInfo($appName, $appVersion = null, $appUrl = null, $appPartnerId = null)
+    public function setAppInfo(string $appName, ?string $appVersion = null, ?string $appUrl = null, ?string $appPartnerId = null): ConfigInterface
     {
         $this->appInfo = [
             'name'       => $appName,

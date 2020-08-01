@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -20,13 +22,6 @@
 
 namespace Cartalyst\Stripe\Exception;
 
-class ApiLimitExceededException extends StripeException
+class ApiLimitExceededException extends ClientErrorException
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct()
-    {
-        parent::__construct('You have reached the Stripe Api rate limit!');
-    }
 }

@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -20,8 +22,9 @@
 
 namespace Cartalyst\Stripe\Tests\Api;
 
-use Cartalyst\Stripe\Tests\FunctionalTestCase;
 use DateTime;
+use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class SubscriptionsTest extends FunctionalTestCase
 {
@@ -42,20 +45,17 @@ class SubscriptionsTest extends FunctionalTestCase
 
         $subscription = $this->createSubscription($customer['id']);
 
-        $subscription = $this->stripe->subscriptions()->find($customer['id'], $subscription['id']);
+        $subscription = $this->stripe->subscriptions()->find($subscription['id']);
 
         $this->assertSame(1, $subscription['quantity']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_subscription()
     {
-        $customer = $this->createCustomer();
+        $this->expectException(NotFoundException::class);
 
-        $this->stripe->subscriptions()->find($customer['id'], time().rand());
+        $this->stripe->subscriptions()->find('not_found');
     }
 
     /** @test */
@@ -65,9 +65,9 @@ class SubscriptionsTest extends FunctionalTestCase
 
         $subscription = $this->createSubscription($customer['id']);
 
-        $subscription = $this->stripe->subscriptions()->update(
-            $customer['id'], $subscription['id'], [ 'metadata' => [ 'description' => 'Support Subscription' ] ]
-        );
+        $subscription = $this->stripe->subscriptions()->update($subscription['id'], [
+            'metadata' => ['description' => 'Support Subscription'],
+        ]);
 
         $this->assertSame(1, $subscription['quantity']);
         $this->assertSame('Support Subscription', $subscription['metadata']['description']);
@@ -80,7 +80,7 @@ class SubscriptionsTest extends FunctionalTestCase
 
         $subscription = $this->createSubscription($customer['id']);
 
-        $subscription = $this->stripe->subscriptions()->cancel($customer['id'], $subscription['id']);
+        $subscription = $this->stripe->subscriptions()->cancel($subscription['id']);
 
         $customer = $this->stripe->customers()->find($customer['id']);
 
@@ -96,7 +96,7 @@ class SubscriptionsTest extends FunctionalTestCase
 
         $subscription = $this->createSubscription($customer['id']);
 
-        $subscription = $this->stripe->subscriptions()->cancel($customer['id'], $subscription['id'], true);
+        $subscription = $this->stripe->subscriptions()->cancelAtPeriodEnd($subscription['id']);
 
         $customer = $this->stripe->customers()->find($customer['id']);
 
@@ -113,12 +113,12 @@ class SubscriptionsTest extends FunctionalTestCase
 
         $subscription = $this->createSubscription($customer['id']);
 
-        $subscription = $this->stripe->subscriptions()->cancel($customer['id'], $subscription['id'], true);
+        $subscription = $this->stripe->subscriptions()->cancelAtPeriodEnd($subscription['id']);
 
         $this->assertNull($subscription['ended_at']);
         $this->assertTrue($subscription['cancel_at_period_end']);
 
-        $subscription = $this->stripe->subscriptions()->reactivate($customer['id'], $subscription['id']);
+        $subscription = $this->stripe->subscriptions()->reactivate($subscription['id']);
 
         $this->assertNull($subscription['ended_at']);
         $this->assertFalse($subscription['cancel_at_period_end']);
@@ -133,7 +133,7 @@ class SubscriptionsTest extends FunctionalTestCase
 
         $subscription = $this->createSubscription($customer['id']);
 
-        $subscription = $this->stripe->subscriptions()->applyDiscount($customer['id'], $subscription['id'], $coupon['id']);
+        $subscription = $this->stripe->subscriptions()->applyDiscount($subscription['id'], $coupon['id']);
 
         $this->assertSame($subscription['discount']['coupon']['id'], $coupon['id']);
     }
@@ -147,13 +147,13 @@ class SubscriptionsTest extends FunctionalTestCase
 
         $subscription = $this->createSubscription($customer['id']);
 
-        $subscription = $this->stripe->subscriptions()->applyDiscount($customer['id'], $subscription['id'], $coupon['id']);
+        $subscription = $this->stripe->subscriptions()->applyDiscount($subscription['id'], $coupon['id']);
 
         $this->assertSame($subscription['discount']['coupon']['id'], $coupon['id']);
 
-        $this->stripe->subscriptions()->deleteDiscount($customer['id'], $subscription['id']);
+        $this->stripe->subscriptions()->deleteDiscount($subscription['id']);
 
-        $subscription = $this->stripe->subscriptions()->find($customer['id'], $subscription['id']);
+        $subscription = $this->stripe->subscriptions()->find($subscription['id']);
 
         $this->assertNull($subscription['discount']);
     }
@@ -166,11 +166,14 @@ class SubscriptionsTest extends FunctionalTestCase
         $this->createSubscription($customer['id']);
         $this->createSubscription($customer['id']);
 
-        $subscriptions = $this->stripe->subscriptions()->all($customer['id'], [ 'status' => 'all' ]);
+        $subscriptions = $this->stripe->subscriptions()->all([
+            'customer' => $customer['id'],
+            'status'   => 'all',
+        ]);
 
         $this->assertNotEmpty($subscriptions['data']);
         $this->assertCount(2, $subscriptions['data']);
-        $this->assertInternalType('array', $subscriptions['data']);
+        $this->assertIsArray($subscriptions['data']);
     }
 
     /** @test */
@@ -184,8 +187,9 @@ class SubscriptionsTest extends FunctionalTestCase
         $this->createSubscription($customer1['id']);
         $this->createSubscription($customer2['id']);
 
-        $subscriptions = $this->stripe->subscriptions()->all(null, [
-            'status' => 'all', 'created' => [ 'gte' => $date->getTimestamp() ],
+        $subscriptions = $this->stripe->subscriptions()->all([
+            'status'  => 'all',
+            'created' => ['gte' => $date->getTimestamp()],
         ]);
 
         $this->assertNotEmpty($subscriptions['data']);
@@ -193,7 +197,7 @@ class SubscriptionsTest extends FunctionalTestCase
         // $this->assertSame($customer2['id'], $subscriptions['data'][0]['customer']);
         // $this->assertSame($customer1['id'], $subscriptions['data'][1]['customer']);
 
-        $this->assertInternalType('array', $subscriptions['data']);
+        $this->assertIsArray($subscriptions['data']);
     }
 
     /** @test */
@@ -206,24 +210,32 @@ class SubscriptionsTest extends FunctionalTestCase
 
         $subscription = $this->createSubscription($customer['id']);
 
-        $this->stripe->subscriptions()->cancel($customer['id'], $subscription['id']);
+        $this->stripe->subscriptions()->cancel($subscription['id']);
 
-        $subscriptions = $this->stripe->subscriptionsIterator($customer['id']);
+        $subscriptions = $this->stripe->subscriptionsIterator([
+            'customer' => $customer['id'],
+        ]);
 
         $this->assertNotEmpty($subscriptions);
         $this->assertCount(2, $subscriptions);
-        $this->assertInternalType('array', $subscriptions);
+        $this->assertIsArray($subscriptions);
 
-        $subscriptions = $this->stripe->subscriptionsIterator($customer['id'], [ 'status' => 'canceled' ]);
+        $subscriptions = $this->stripe->subscriptionsIterator([
+            'customer' => $customer['id'],
+            'status'   => 'canceled',
+        ]);
 
         $this->assertNotEmpty($subscriptions);
         $this->assertCount(1, $subscriptions);
-        $this->assertInternalType('array', $subscriptions);
+        $this->assertIsArray($subscriptions);
 
-        $subscriptions = $this->stripe->subscriptionsIterator($customer['id'], [ 'status' => 'all' ]);
+        $subscriptions = $this->stripe->subscriptionsIterator([
+            'customer' => $customer['id'],
+            'status'   => 'all',
+        ]);
 
         $this->assertNotEmpty($subscriptions);
         $this->assertCount(3, $subscriptions);
-        $this->assertInternalType('array', $subscriptions);
+        $this->assertIsArray($subscriptions);
     }
 }

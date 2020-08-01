@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class Plans extends Api
     /**
      * Creates a new plan.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('plans', $parameters);
     }
@@ -36,10 +39,11 @@ class Plans extends Api
     /**
      * Retrieves an existing plan.
      *
-     * @param  string  $planId
-     * @return array
+     * @param string $planId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($planId)
+    public function find(string $planId): ApiResponse
     {
         return $this->_get("plans/{$planId}");
     }
@@ -47,11 +51,12 @@ class Plans extends Api
     /**
      * Updates an existing plan.
      *
-     * @param  string  $planId
-     * @param  array  $parameters
-     * @return array
+     * @param string $planId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($planId, array $parameters = [])
+    public function update(string $planId, array $parameters = []): ApiResponse
     {
         return $this->_post("plans/{$planId}", $parameters);
     }
@@ -59,10 +64,11 @@ class Plans extends Api
     /**
      * Deletes an existing plan.
      *
-     * @param  string  $planId
-     * @return array
+     * @param string $planId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function delete($planId)
+    public function delete(string $planId): ApiResponse
     {
         return $this->_delete("plans/{$planId}");
     }
@@ -70,10 +76,11 @@ class Plans extends Api
     /**
      * Lists all plans.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('plans', $parameters);
     }

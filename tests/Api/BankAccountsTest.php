@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,6 +23,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class BankAccountsTest extends FunctionalTestCase
 {
@@ -60,15 +63,14 @@ class BankAccountsTest extends FunctionalTestCase
         $this->assertSame('110000000', $bankAccount['routing_number']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_card()
     {
+        $this->expectException(NotFoundException::class);
+
         $customer = $this->createCustomer();
 
-        $this->stripe->bankAccounts()->find($customer['id'], time().rand());
+        $this->stripe->bankAccounts()->find($customer['id'], 'not_found');
     }
 
     /** @test */
@@ -81,7 +83,7 @@ class BankAccountsTest extends FunctionalTestCase
         $bankAccount = $this->createBankAccountThroughToken($customerId);
 
         $bankAccount = $this->stripe->bankAccounts()->update($customerId, $bankAccount['id'], [
-            'account_holder_name' => 'John Doe'
+            'account_holder_name' => 'John Doe',
         ]);
 
         $this->assertSame('110000000', $bankAccount['routing_number']);
@@ -118,7 +120,7 @@ class BankAccountsTest extends FunctionalTestCase
         $bankAccount = $this->createBankAccountThroughToken($customerId);
 
         $bankAccount = $this->stripe->bankAccounts()->verify(
-            $customerId, $bankAccount['id'], [ 32, 45 ]
+            $customerId, $bankAccount['id'], [32, 45]
         );
 
         $this->assertSame('verified', $bankAccount['status']);
@@ -138,7 +140,7 @@ class BankAccountsTest extends FunctionalTestCase
 
         $this->assertNotEmpty($bankAccounts['data']);
         $this->assertCount(1, $bankAccounts['data']);
-        $this->assertInternalType('array', $bankAccounts['data']);
+        $this->assertIsArray($bankAccounts['data']);
     }
 
     /** @test */

@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class SetupIntents extends Api
     /**
      * Creates a new setup intent.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('setup_intents', $parameters);
     }
@@ -36,10 +39,11 @@ class SetupIntents extends Api
     /**
      * Retrieves an existing setup intent.
      *
-     * @param  string  $setupIntentId
-     * @return array
+     * @param string $setupIntentId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($setupIntentId)
+    public function find(string $setupIntentId): ApiResponse
     {
         return $this->_get("setup_intents/{$setupIntentId}");
     }
@@ -47,11 +51,12 @@ class SetupIntents extends Api
     /**
      * Updates an existing setup intents.
      *
-     * @param  string  $setupIntentId
-     * @param  array  $parameters
-     * @return array
+     * @param string $setupIntentId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($setupIntentId, array $parameters = [])
+    public function update(string $setupIntentId, array $parameters = []): ApiResponse
     {
         return $this->_post("setup_intents/{$setupIntentId}", $parameters);
     }
@@ -59,11 +64,12 @@ class SetupIntents extends Api
     /**
      * Confirm the given setup intent.
      *
-     * @param  string  $setupIntentId
-     * @param  array  $parameters
-     * @return array
+     * @param string $setupIntentId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function confirm($setupIntentId, array $parameters = [])
+    public function confirm(string $setupIntentId, array $parameters = []): ApiResponse
     {
         return $this->_post("setup_intents/{$setupIntentId}/confirm", $parameters);
     }
@@ -71,11 +77,12 @@ class SetupIntents extends Api
     /**
      * Cancels the given setup intent.
      *
-     * @param  string  $setupIntentId
-     * @param  array  $parameters
-     * @return array
+     * @param string $setupIntentId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function cancel($setupIntentId, array $parameters = [])
+    public function cancel(string $setupIntentId, array $parameters = []): ApiResponse
     {
         return $this->_post("setup_intents/{$setupIntentId}/cancel", $parameters);
     }
@@ -83,10 +90,11 @@ class SetupIntents extends Api
     /**
      * Lists all setup intents.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('setup_intents', $parameters);
     }

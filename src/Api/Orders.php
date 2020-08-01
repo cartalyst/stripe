@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class Orders extends Api
     /**
      * Creates a new order.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('orders', $parameters);
     }
@@ -36,10 +39,11 @@ class Orders extends Api
     /**
      * Retrieves an existing order.
      *
-     * @param  string  $orderId
-     * @return array
+     * @param string $orderId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($orderId)
+    public function find(string $orderId): ApiResponse
     {
         return $this->_get("orders/{$orderId}");
     }
@@ -47,11 +51,12 @@ class Orders extends Api
     /**
      * Updates an existing order.
      *
-     * @param  string  $orderId
-     * @param  array  $parameters
-     * @return array
+     * @param string $orderId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($orderId, array $parameters = [])
+    public function update(string $orderId, array $parameters = []): ApiResponse
     {
         return $this->_post("orders/{$orderId}", $parameters);
     }
@@ -59,11 +64,12 @@ class Orders extends Api
     /**
      * Pays the given order.
      *
-     * @param  string  $orderId
-     * @param  array  $parameters
-     * @return array
+     * @param string $orderId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function pay($orderId, array $parameters = [])
+    public function pay(string $orderId, array $parameters = []): ApiResponse
     {
         return $this->_post("orders/{$orderId}/pay", $parameters);
     }
@@ -71,22 +77,26 @@ class Orders extends Api
     /**
      * Returns the given order.
      *
-     * @param  string  $orderId
-     * @param  array  $items
-     * @return array
+     * @param string $orderId
+     * @param array  $items
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function returnItems($orderId, array $items = [])
+    public function returnItems(string $orderId, array $items = []): ApiResponse
     {
-        return $this->_post("orders/{$orderId}/returns", compact('items'));
+        return $this->_post("orders/{$orderId}/returns", [
+            'items' => $items,
+        ]);
     }
 
     /**
      * Returns a list of all the orders.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('orders', $parameters);
     }

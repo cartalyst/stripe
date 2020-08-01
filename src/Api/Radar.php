@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -20,16 +22,21 @@
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\Api\Radar\Reviews;
+use Cartalyst\Stripe\Api\Radar\ValueLists;
+use Cartalyst\Stripe\Api\Radar\ValueListItems;
+use Cartalyst\Stripe\Api\Radar\EarlyFraudWarning;
+
 class Radar extends Api
 {
     /**
      * Returns a radar early fraud warning api instance.
      *
-     * @return \Cartalyst\Stripe\Api\Radar\Reviews
+     * @return \Cartalyst\Stripe\Api\Radar\EarlyFraudWarning
      */
-    public function earlyFraudWarning()
+    public function earlyFraudWarning(): EarlyFraudWarning
     {
-        return new Radar\EarlyFraudWarning($this->config);
+        return new EarlyFraudWarning($this->config);
     }
 
     /**
@@ -37,9 +44,9 @@ class Radar extends Api
      *
      * @return \Cartalyst\Stripe\Api\Radar\Reviews
      */
-    public function reviews()
+    public function reviews(): Reviews
     {
-        return new Radar\Reviews($this->config);
+        return new Reviews($this->config);
     }
 
     /**
@@ -47,9 +54,9 @@ class Radar extends Api
      *
      * @return \Cartalyst\Stripe\Api\Radar\ValueLists
      */
-    public function valueLists()
+    public function valueLists(): ValueLists
     {
-        return new Radar\ValueLists($this->config);
+        return new ValueLists($this->config);
     }
 
     /**
@@ -57,8 +64,8 @@ class Radar extends Api
      *
      * @return \Cartalyst\Stripe\Api\Radar\ValueListItems
      */
-    public function valueListItems()
+    public function valueListItems(): ValueListItems
     {
-        return new Radar\ValueListItems($this->config);
+        return new ValueListItems($this->config);
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,6 +23,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class ProductsTest extends FunctionalTestCase
 {
@@ -42,13 +45,12 @@ class ProductsTest extends FunctionalTestCase
         $this->assertSame('T-shirt', $product['name']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_product()
     {
-        $this->stripe->products()->find(time().rand());
+        $this->expectException(NotFoundException::class);
+
+        $this->stripe->products()->find('not_found');
     }
 
     /** @test */
@@ -57,7 +59,7 @@ class ProductsTest extends FunctionalTestCase
         $product = $this->createProduct();
 
         $product = $this->stripe->products()->update($product['id'], [
-            'description' => 'Comfortable gray cotton t-shirt'
+            'description' => 'Comfortable gray cotton t-shirt',
         ]);
 
         $this->assertSame('T-shirt', $product['name']);
@@ -70,7 +72,7 @@ class ProductsTest extends FunctionalTestCase
         $product = $this->createProduct();
 
         $product = $this->stripe->products()->update($product['id'], [
-            'description' => 'Comfortable gray cotton t-shirt'
+            'description' => 'Comfortable gray cotton t-shirt',
         ]);
 
         $product = $this->stripe->products()->delete($product['id']);
@@ -86,7 +88,7 @@ class ProductsTest extends FunctionalTestCase
         $products = $this->stripe->products()->all();
 
         $this->assertNotEmpty($products['data']);
-        $this->assertInternalType('array', $products['data']);
+        $this->assertIsArray($products['data']);
     }
 
     /** @test */
@@ -94,7 +96,7 @@ class ProductsTest extends FunctionalTestCase
     {
         $ids = [];
 
-        for ($i=0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $ids[] = $this->createProduct()['id'];
         }
 

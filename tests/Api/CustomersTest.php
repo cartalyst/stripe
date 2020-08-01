@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -20,7 +22,9 @@
 
 namespace Cartalyst\Stripe\Tests\Api;
 
+use Cartalyst\Stripe\Api\ApiResponse;
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class CustomersTest extends FunctionalTestCase
 {
@@ -42,26 +46,36 @@ class CustomersTest extends FunctionalTestCase
         $this->assertSame('john@doe.com', $customer['email']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_customer()
     {
-        $this->stripe->customers()->find(time());
+        $this->expectException(NotFoundException::class);
+
+        $this->stripe->customers()->find('cus_not_found');
     }
 
     /** @test */
     public function it_can_update_an_existing_customer()
     {
-        $customer = $this->createCustomer();
+        $customer = $this->createCustomer([
+            'address' => [
+                'line1' => 'Line 1',
+            ],
+        ]);
 
         $customer = $this->stripe->customers()->update($customer['id'], [
-            'metadata' => [ 'name' => 'John Doe' ],
+            'metadata' => ['name' => 'John Doe'],
+            'address'  => null,
         ]);
+
+        $this->assertInstanceOf(ApiResponse::class, $customer);
+
+        $this->assertNotEmpty($customer->getHeaders());
 
         $this->assertSame('john@doe.com', $customer['email']);
         $this->assertSame('John Doe', $customer['metadata']['name']);
+
+        $this->assertNull($customer['address']);
     }
 
     /** @test */
@@ -71,20 +85,20 @@ class CustomersTest extends FunctionalTestCase
 
         $customerId = $customer['id'];
 
-        $card1 = $this->createCardThroughToken($customerId)['id'];
-        $card2 = $this->createCardThroughToken($customerId)['id'];
+        $card1 = $this->createCardThroughToken($customerId);
+        $card2 = $this->createCardThroughToken($customerId);
 
         $customer = $this->stripe->customers()->find($customerId);
 
-        $this->assertSame($card1, $customer['default_source']);
+        $this->assertSame($card1['id'], $customer['default_source']);
 
         $this->stripe->customers()->update($customerId, [
-            'default_source' => $card2,
+            'default_source' => $card2['id'],
         ]);
 
         $customer = $this->stripe->customers()->find($customerId);
 
-        $this->assertSame($card2, $customer['default_source']);
+        $this->assertSame($card2['id'], $customer['default_source']);
     }
 
     /** @test */
@@ -135,15 +149,16 @@ class CustomersTest extends FunctionalTestCase
         $customers = $this->stripe->customers()->all();
 
         $this->assertNotEmpty($customers['data']);
-        $this->assertInternalType('array', $customers['data']);
+
+        $this->assertIsArray($customers['data']);
     }
 
     /** @test */
     public function it_can_iterate_all_customers()
     {
-        $email = rand().'@'.time();
+        $email = $this->getRandomEmail();
 
-        for ($i=0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $this->createCustomer(['email' => $email]);
         }
 

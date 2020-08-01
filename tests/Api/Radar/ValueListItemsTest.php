@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,6 +23,7 @@
 namespace Cartalyst\Stripe\Tests\Api\Radar;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class ValueListItemsTest extends FunctionalTestCase
 {
@@ -36,7 +39,7 @@ class ValueListItemsTest extends FunctionalTestCase
 
         $valueListItem = $this->stripe->radar()->valueListItems()->create([
             'value_list' => $valueList['id'],
-            'value' => '1.2.3.4',
+            'value'      => '1.2.3.4',
         ]);
 
         $this->assertSame('1.2.3.4', $valueListItem['value']);
@@ -55,7 +58,7 @@ class ValueListItemsTest extends FunctionalTestCase
 
         $valueListItem = $this->stripe->radar()->valueListItems()->create([
             'value_list' => $valueList['id'],
-            'value' => '1.2.3.4',
+            'value'      => '1.2.3.4',
         ]);
 
         $valueListItem = $this->stripe->radar()->valueListItems()->find($valueListItem['id']);
@@ -64,13 +67,12 @@ class ValueListItemsTest extends FunctionalTestCase
         $this->assertSame($valueList['id'], $valueListItem['value_list']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_value_list_item()
     {
-        $this->stripe->radar()->valueListItems()->find(time().rand());
+        $this->expectException(NotFoundException::class);
+
+        $this->stripe->radar()->valueListItems()->find('not_found');
     }
 
     /** @test */
@@ -85,7 +87,7 @@ class ValueListItemsTest extends FunctionalTestCase
 
         $valueListItem = $this->stripe->radar()->valueListItems()->create([
             'value_list' => $valueList['id'],
-            'value' => '1.2.3.4',
+            'value'      => '1.2.3.4',
         ]);
 
         $valueListItem = $this->stripe->radar()->valueListItems()->delete($valueListItem['id']);
@@ -105,7 +107,7 @@ class ValueListItemsTest extends FunctionalTestCase
 
         $valueListItem = $this->stripe->radar()->valueListItems()->create([
             'value_list' => $valueList['id'],
-            'value' => '1.2.3.4',
+            'value'      => '1.2.3.4',
         ]);
 
         $valueListItems = $this->stripe->radar()->valueListItems()->all([

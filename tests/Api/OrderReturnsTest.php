@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -33,15 +35,15 @@ class OrderReturnsTest extends FunctionalTestCase
 
         $this->createCardThroughToken($customerId);
 
-        $product1 = $this->createProduct();
-        $sku1 = $this->createSku($product1['id']);
+        $product1 = $this->createProductForOrder();
+        $sku1     = $this->createProductSku($product1['id']);
 
-        $product2 = $this->createProduct();
-        $sku2 = $this->createSku($product2['id']);
+        $product2 = $this->createProductForOrder();
+        $sku2     = $this->createProductSku($product2['id']);
 
         $items = [
-            [ 'type' => 'sku', 'parent' => $sku1['id'] ],
-            [ 'type' => 'sku', 'parent' => $sku2['id'] ],
+            ['type' => 'sku', 'parent' => $sku1['id']],
+            ['type' => 'sku', 'parent' => $sku2['id']],
         ];
 
         $order = $this->createOrder($items);
@@ -49,7 +51,7 @@ class OrderReturnsTest extends FunctionalTestCase
         $orderId = $order['id'];
 
         $order = $this->stripe->orders()->pay($orderId, [
-            'customer' => $customerId
+            'customer' => $customerId,
         ]);
 
         $this->stripe->refunds()->create($order['charge']);
@@ -68,7 +70,7 @@ class OrderReturnsTest extends FunctionalTestCase
         $orderReturns = $this->stripe->orderReturns()->all();
 
         $this->assertNotEmpty($orderReturns['data']);
-        $this->assertInternalType('array', $orderReturns['data']);
+        $this->assertIsArray($orderReturns['data']);
     }
 
     /** @test */

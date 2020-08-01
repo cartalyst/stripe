@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,6 +23,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class CustomerBalanceTransactionsTest extends FunctionalTestCase
 {
@@ -30,7 +33,7 @@ class CustomerBalanceTransactionsTest extends FunctionalTestCase
         $customer = $this->createCustomer();
 
         $balanceTransaction = $this->stripe->customerBalanceTransactions()->create($customer['id'], [
-            'amount'  => '-25.50',
+            'amount'   => -2550,
             'currency' => 'USD',
         ]);
 
@@ -44,7 +47,7 @@ class CustomerBalanceTransactionsTest extends FunctionalTestCase
         $customer = $this->createCustomer();
 
         $balanceTransaction = $this->stripe->customerBalanceTransactions()->create($customer['id'], [
-            'amount'  => '-25.50',
+            'amount'   => -2550,
             'currency' => 'USD',
         ]);
 
@@ -54,15 +57,14 @@ class CustomerBalanceTransactionsTest extends FunctionalTestCase
         $this->assertSame(-2550, $balanceTransaction['amount']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_customer_balance_transaction()
     {
+        $this->expectException(NotFoundException::class);
+
         $customer = $this->createCustomer();
 
-        $this->stripe->customerBalanceTransactions()->find($customer['id'], time());
+        $this->stripe->customerBalanceTransactions()->find($customer['id'], 'not_found');
     }
 
     /** @test */
@@ -71,12 +73,12 @@ class CustomerBalanceTransactionsTest extends FunctionalTestCase
         $customer = $this->createCustomer();
 
         $balanceTransaction = $this->stripe->customerBalanceTransactions()->create($customer['id'], [
-            'amount'  => '-25.50',
+            'amount'   => -2550,
             'currency' => 'USD',
         ]);
 
         $balanceTransaction = $this->stripe->customerBalanceTransactions()->update($customer['id'], $balanceTransaction['id'], [
-            'metadata' => [ 'name' => 'John Doe' ],
+            'metadata' => ['name' => 'John Doe'],
         ]);
 
         $this->assertSame($customer['id'], $balanceTransaction['customer']);
@@ -89,7 +91,7 @@ class CustomerBalanceTransactionsTest extends FunctionalTestCase
         $customer = $this->createCustomer();
 
         $this->stripe->customerBalanceTransactions()->create($customer['id'], [
-            'amount'  => '25.50',
+            'amount'   => 2550,
             'currency' => 'USD',
         ]);
 
@@ -103,9 +105,9 @@ class CustomerBalanceTransactionsTest extends FunctionalTestCase
     {
         $customer = $this->createCustomer();
 
-        for ($i=0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $this->stripe->customerBalanceTransactions()->create($customer['id'], [
-                'amount'  => '25.50',
+                'amount'   => 2550,
                 'currency' => 'USD',
             ]);
         }

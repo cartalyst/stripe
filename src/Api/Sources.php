@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class Sources extends Api
     /**
      * Creates a new source on the given customer.
      *
-     * @param  string|array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create($parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('sources', $parameters);
     }
@@ -36,10 +39,11 @@ class Sources extends Api
     /**
      * Retrieves an existing source.
      *
-     * @param  string  $sourceId
-     * @return array
+     * @param string $sourceId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($sourceId)
+    public function find(string $sourceId): ApiResponse
     {
         return $this->_get("sources/{$sourceId}");
     }
@@ -47,11 +51,12 @@ class Sources extends Api
     /**
      * Updates an existing source.
      *
-     * @param  string  $sourceId
-     * @param  array  $parameters
-     * @return array
+     * @param string $sourceId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($sourceId, array $parameters = [])
+    public function update(string $sourceId, array $parameters = []): ApiResponse
     {
         return $this->_post("sources/{$sourceId}", $parameters);
     }
@@ -59,11 +64,12 @@ class Sources extends Api
     /**
      * Attaches the given source to the customer.
      *
-     * @param  string  $customerId
-     * @param  string  $sourceId
-     * @return array
+     * @param string $customerId
+     * @param string $sourceId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function attach($customerId, $sourceId)
+    public function attach(string $customerId, string $sourceId): ApiResponse
     {
         return $this->_post("customers/{$customerId}/sources", [
             'source' => $sourceId,
@@ -73,24 +79,13 @@ class Sources extends Api
     /**
      * Detaches the given source from the customer.
      *
-     * @param  string  $customerId
-     * @param  string  $sourceId
-     * @return array
+     * @param string $customerId
+     * @param string $sourceId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function detach($customerId, $sourceId)
+    public function detach(string $customerId, string $sourceId): ApiResponse
     {
         return $this->_delete("customers/{$customerId}/sources/{$sourceId}");
-    }
-
-    /**
-     * Lists all sources from the given customer.
-     *
-     * @param  string  $customerId
-     * @param  array  $parameters
-     * @return array
-     */
-    public function all($customerId, array $parameters = [])
-    {
-        return $this->_get("customers/{$customerId}/sources", $parameters);
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class Charges extends Api
     /**
      * Creates a new charge.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('charges', $parameters);
     }
@@ -36,10 +39,11 @@ class Charges extends Api
     /**
      * Retrieves an existing charge.
      *
-     * @param  string  $chargeId
-     * @return array
+     * @param string $chargeId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($chargeId)
+    public function find(string $chargeId): ApiResponse
     {
         return $this->_get("charges/{$chargeId}");
     }
@@ -47,11 +51,12 @@ class Charges extends Api
     /**
      * Updates an existing charge.
      *
-     * @param  string  $chargeId
-     * @param  array  $parameters
-     * @return array
+     * @param string $chargeId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($chargeId, array $parameters = [])
+    public function update(string $chargeId, array $parameters = []): ApiResponse
     {
         return $this->_post("charges/{$chargeId}", $parameters);
     }
@@ -59,14 +64,18 @@ class Charges extends Api
     /**
      * Captures an existing charge.
      *
-     * @param  string  $chargeId
-     * @param  int  $amount
-     * @param  array  $parameters
-     * @return array
+     * @param string $chargeId
+     * @param int    $amount
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function capture($chargeId, $amount = null, array $parameters = [])
+    // TODO: Either remove or add a fullCapture and partialCapture to avoid nullables in between
+    public function capture(string $chargeId, ?int $amount = null, array $parameters = []): ApiResponse
     {
-        $parameters = array_merge($parameters, array_filter(compact('amount')));
+        $parameters = array_merge($parameters, array_filter([
+            'amount' => $amount,
+        ]));
 
         return $this->_post("charges/{$chargeId}/capture", $parameters);
     }
@@ -74,10 +83,11 @@ class Charges extends Api
     /**
      * Lists all charges.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('charges', $parameters);
     }

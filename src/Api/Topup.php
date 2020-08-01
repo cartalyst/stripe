@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class Topup extends Api
     /**
      * Creates a new top-up.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('topups', $parameters);
     }
@@ -36,10 +39,11 @@ class Topup extends Api
     /**
      * Retrieves an existing top-up.
      *
-     * @param  string  $topupId
-     * @return array
+     * @param string $topupId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($topupId)
+    public function find(string $topupId): ApiResponse
     {
         return $this->_get("topups/{$topupId}");
     }
@@ -47,11 +51,12 @@ class Topup extends Api
     /**
      * Updates an existing top-up.
      *
-     * @param  string  $topupId
-     * @param  array  $parameters
-     * @return array
+     * @param string $topupId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($topupId, array $parameters = [])
+    public function update(string $topupId, array $parameters = []): ApiResponse
     {
         return $this->_post("topups/{$topupId}", $parameters);
     }
@@ -59,10 +64,11 @@ class Topup extends Api
     /**
      * Cancels an existing top-up.
      *
-     * @param  string  $topupId
-     * @return array
+     * @param string $topupId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function cancel($topupId)
+    public function cancel(string $topupId): ApiResponse
     {
         return $this->_post("topups/{$topupId}/cancel");
     }
@@ -70,10 +76,11 @@ class Topup extends Api
     /**
      * Deletes an existing top-up.
      *
-     * @param  string  $topupId
-     * @return array
+     * @param string $topupId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function delete($topupId)
+    public function delete(string $topupId): ApiResponse
     {
         return $this->_delete("topups/{$topupId}");
     }
@@ -81,10 +88,11 @@ class Topup extends Api
     /**
      * Lists all top-ups.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('topups', $parameters);
     }

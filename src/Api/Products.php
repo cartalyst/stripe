@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class Products extends Api
     /**
      * Creates a new product.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('products', $parameters);
     }
@@ -36,10 +39,11 @@ class Products extends Api
     /**
      * Retrieves an existing product.
      *
-     * @param  string  $productId
-     * @return array
+     * @param string $productId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($productId)
+    public function find(string $productId): ApiResponse
     {
         return $this->_get("products/{$productId}");
     }
@@ -47,11 +51,12 @@ class Products extends Api
     /**
      * Updates an existing product.
      *
-     * @param  string  $productId
-     * @param  array  $parameters
-     * @return array
+     * @param string $productId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($productId, array $parameters = [])
+    public function update(string $productId, array $parameters = []): ApiResponse
     {
         return $this->_post("products/{$productId}", $parameters);
     }
@@ -59,10 +64,11 @@ class Products extends Api
     /**
      * Deletes an existing product.
      *
-     * @param  string  $productId
-     * @return array
+     * @param string $productId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function delete($productId)
+    public function delete(string $productId): ApiResponse
     {
         return $this->_delete("products/{$productId}");
     }
@@ -70,10 +76,11 @@ class Products extends Api
     /**
      * Returns a list of all the products.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('products', $parameters);
     }

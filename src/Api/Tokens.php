@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class Tokens extends Api
     /**
      * Creates a new token.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters)
+    public function create(array $parameters): ApiResponse
     {
         return $this->_post('tokens', $parameters);
     }
@@ -36,10 +39,11 @@ class Tokens extends Api
     /**
      * Retrieves an existing token.
      *
-     * @param  string  $tokenId
-     * @return array
+     * @param string $tokenId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($tokenId)
+    public function find(string $tokenId): ApiResponse
     {
         return $this->_get("tokens/{$tokenId}");
     }

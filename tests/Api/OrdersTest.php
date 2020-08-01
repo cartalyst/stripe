@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,18 +23,19 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class OrdersTest extends FunctionalTestCase
 {
     /** @test */
     public function it_can_create_a_new_order()
     {
-        $product = $this->createProduct();
+        $product = $this->createProductForOrder();
 
-        $sku = $this->createSku($product['id']);
+        $sku = $this->createProductSku($product['id']);
 
         $items = [
-            [ 'type' => 'sku', 'parent' => $sku['id'] ],
+            ['type' => 'sku', 'parent' => $sku['id']],
         ];
 
         $order = $this->createOrder($items);
@@ -43,12 +46,12 @@ class OrdersTest extends FunctionalTestCase
     /** @test */
     public function it_can_find_an_order()
     {
-        $product = $this->createProduct();
+        $product = $this->createProductForOrder();
 
-        $sku = $this->createSku($product['id']);
+        $sku = $this->createProductSku($product['id']);
 
         $items = [
-            [ 'type' => 'sku', 'parent' => $sku['id'] ],
+            ['type' => 'sku', 'parent' => $sku['id']],
         ];
 
         $order = $this->createOrder($items);
@@ -58,33 +61,32 @@ class OrdersTest extends FunctionalTestCase
         $this->assertSame('created', $order['status']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_order()
     {
-        $this->stripe->orders()->find(time().rand());
+        $this->expectException(NotFoundException::class);
+
+        $this->stripe->orders()->find('not_found');
     }
 
     /** @test */
     public function it_can_update_an_order()
     {
-        $product = $this->createProduct();
+        $product = $this->createProductForOrder();
 
-        $sku = $this->createSku($product['id']);
+        $sku = $this->createProductSku($product['id']);
 
         $items = [
-            [ 'type' => 'sku', 'parent' => $sku['id'] ],
+            ['type' => 'sku', 'parent' => $sku['id']],
         ];
 
         $order = $this->createOrder($items);
 
         $order = $this->stripe->orders()->update($order['id'], [
-            'metadata' => [ 'foo' => 'Bar' ],
+            'metadata' => ['foo' => 'Bar'],
         ]);
 
-        $this->assertSame([ 'foo' => 'Bar' ], $order['metadata']);
+        $this->assertSame(['foo' => 'Bar'], $order['metadata']);
     }
 
     /** @test */
@@ -94,18 +96,18 @@ class OrdersTest extends FunctionalTestCase
 
         $this->createCardThroughToken($customer['id']);
 
-        $product = $this->createProduct();
+        $product = $this->createProductForOrder();
 
-        $sku = $this->createSku($product['id']);
+        $sku = $this->createProductSku($product['id']);
 
         $items = [
-            [ 'type'   => 'sku', 'parent' => $sku['id'] ],
+            ['type' => 'sku', 'parent' => $sku['id']],
         ];
 
         $order = $this->createOrder($items);
 
         $order = $this->stripe->orders()->pay($order['id'], [
-            'customer' => $customer['id']
+            'customer' => $customer['id'],
         ]);
 
         $this->assertSame('paid', $order['status']);
@@ -118,15 +120,15 @@ class OrdersTest extends FunctionalTestCase
 
         $this->createCardThroughToken($customer['id']);
 
-        $product1 = $this->createProduct();
-        $sku1 = $this->createSku($product1['id']);
+        $product1 = $this->createProductForOrder();
+        $sku1     = $this->createProductSku($product1['id']);
 
-        $product2 = $this->createProduct();
-        $sku2 = $this->createSku($product2['id']);
+        $product2 = $this->createProductForOrder();
+        $sku2     = $this->createProductSku($product2['id']);
 
         $items = [
-            [ 'type' => 'sku', 'parent' => $sku1['id'] ],
-            [ 'type' => 'sku', 'parent' => $sku2['id'] ],
+            ['type' => 'sku', 'parent' => $sku1['id']],
+            ['type' => 'sku', 'parent' => $sku2['id']],
         ];
 
         $order = $this->createOrder($items);
@@ -134,13 +136,13 @@ class OrdersTest extends FunctionalTestCase
         $orderId = $order['id'];
 
         $order = $this->stripe->orders()->pay($orderId, [
-            'customer' => $customer['id']
+            'customer' => $customer['id'],
         ]);
 
         $this->stripe->refunds()->create($order['charge']);
 
         $this->stripe->orders()->returnItems($orderId, [
-            [ 'type' => 'sku', 'parent' => $sku2['id'] ]
+            ['type' => 'sku', 'parent' => $sku2['id']],
         ]);
 
         $order = $this->stripe->orders()->find($orderId);
@@ -157,15 +159,15 @@ class OrdersTest extends FunctionalTestCase
 
         $this->createCardThroughToken($customer['id']);
 
-        $product1 = $this->createProduct();
-        $sku1 = $this->createSku($product1['id']);
+        $product1 = $this->createProductForOrder();
+        $sku1     = $this->createProductSku($product1['id']);
 
-        $product2 = $this->createProduct();
-        $sku2 = $this->createSku($product2['id']);
+        $product2 = $this->createProductForOrder();
+        $sku2     = $this->createProductSku($product2['id']);
 
         $items = [
-            [ 'type' => 'sku', 'parent' => $sku1['id'] ],
-            [ 'type' => 'sku', 'parent' => $sku2['id'] ],
+            ['type' => 'sku', 'parent' => $sku1['id']],
+            ['type' => 'sku', 'parent' => $sku2['id']],
         ];
 
         $order = $this->createOrder($items);
@@ -173,7 +175,7 @@ class OrdersTest extends FunctionalTestCase
         $orderId = $order['id'];
 
         $order = $this->stripe->orders()->pay($orderId, [
-            'customer' => $customer['id']
+            'customer' => $customer['id'],
         ]);
 
         $this->stripe->refunds()->create($order['charge']);
@@ -192,21 +194,21 @@ class OrdersTest extends FunctionalTestCase
         $orders = $this->stripe->orders()->all();
 
         $this->assertNotEmpty($orders['data']);
-        $this->assertInternalType('array', $orders['data']);
+        $this->assertIsArray($orders['data']);
     }
 
     /** @test */
     public function it_can_iterate_all_orders()
     {
-        $product = $this->createProduct();
+        $product = $this->createProductForOrder();
 
-        $sku = $this->createSku($product['id']);
+        $sku = $this->createProductSku($product['id']);
 
         $ids = [];
 
-        for ($i=0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $ids[] = $this->createOrder([
-                [ 'type' => 'sku', 'parent' => $sku['id'] ],
+                ['type' => 'sku', 'parent' => $sku['id']],
             ])['id'];
         }
 

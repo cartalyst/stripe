@@ -1,15 +1,29 @@
-# Change Log
+# Changelog
 
-This project follows [Semantic Versioning](CONTRIBUTING.md).
+### v3.0.0 - TBA
 
-## Proposals
+`UPDATED`
 
-We do not give estimated times for completion on `Accepted` Proposals.
+- PHP 7.2 is the minimum required PHP version
+- Added scalar types
+- All responses returns an ApiResponse object instead of the body as an array
+- Exceptions got simplified
 
-- [Accepted](https://github.com/cartalyst/stripe/labels/Accepted)
-- [Rejected](https://github.com/cartalyst/stripe/labels/Rejected)
+`FIXED`
 
----
+- Issue with `null` parameters not being properly passed to Stripe
+
+`REMOVED`
+
+- The static `make()` method from the Stripe class
+- The Currency Converter
+- The FileUploads API, use the Files API instead
+- The Utility class
+- The global Idempotency setter
+- The config values from being read using the `getenv` method
+- The package version from the Config class
+
+- The `all()` method from the Sources API
 
 ### v2.4.2 - 2020-07-26
 

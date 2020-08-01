@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -41,13 +43,13 @@ class TokensTest extends FunctionalTestCase
         $this->assertSame('4242', $token['card']['last4']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    // /**
+    //  * @test
+    //  * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
+    //  */
     // public function it_will_throw_an_exception_when_searching_for_a_non_existing_token()
     // {
-    //     $this->stripe->tokens()->find(time().rand());
+    //     $this->stripe->tokens()->find('not_found');
     // }
-    # This doesn't work as expected at the moment, since Stripe doesn't return the proper status code of 404, it returns 400! Weird!
+    // This doesn't work as expected at the moment, since Stripe doesn't return the proper status code of 404, it returns 400! Weird!
 }

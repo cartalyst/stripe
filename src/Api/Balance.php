@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,9 +27,9 @@ class Balance extends Api
     /**
      * Retrieives the current account balance.
      *
-     * @return array
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function current()
+    public function current(): ApiResponse
     {
         return $this->_get('balance');
     }
@@ -35,21 +37,23 @@ class Balance extends Api
     /**
      * Retrieves the balance transaction for the given id.
      *
-     * @param  string  $transactionId
-     * @return array
+     * @param string $transactionId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($transactionId)
+    public function find(string $transactionId): ApiResponse
     {
         return $this->_get("balance/history/{$transactionId}");
     }
 
     /**
-     * Lists all transactions
+     * Lists all transactions.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('balance/history', $parameters);
     }

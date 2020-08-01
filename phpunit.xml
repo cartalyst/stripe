@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
+         beStrictAboutTestsThatDoNotTestAnything="true"
+         beStrictAboutOutputDuringTests="true"
          bootstrap="vendor/autoload.php"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
+         failOnRisky="true"
+         failOnWarning="true"
          processIsolation="false"
+         stopOnError="false"
          stopOnFailure="false"
-         syntaxCheck="false"
+         verbose="true"
 >
     <testsuites>
-        <testsuite name="Stripe Test Suite">
+        <testsuite name="Stripe Package Test Suite">
             <directory suffix="Test.php">./tests/</directory>
         </testsuite>
     </testsuites>
@@ -21,10 +26,10 @@
         </whitelist>
     </filter>
     <logging>
-        <log type="coverage-text" target="php://stdout" showUncoveredFiles="true"/>
+        <log type="tap" target="./build/report.tap" showUncoveredFiles="true"/>
+        <log type="junit" target="./build/report.junit.xml" showUncoveredFiles="true"/>
+        <log type="coverage-html" target="./build/coverage" showUncoveredFiles="true"/>
+        <log type="coverage-text" target="./build/coverage.txt" showUncoveredFiles="true"/>
+        <log type="coverage-clover" target="./build/logs/clover.xml" showUncoveredFiles="true"/>
     </logging>
-    <php>
-        <env name="STRIPE_API_KEY" value="stripe-api-key"/>
-        <env name="STRIPE_API_VERSION" value="2017-06-05"/>
-    </php>
 </phpunit>

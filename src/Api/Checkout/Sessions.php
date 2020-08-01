@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,16 +23,18 @@
 namespace Cartalyst\Stripe\Api\Checkout;
 
 use Cartalyst\Stripe\Api\Api;
+use Cartalyst\Stripe\Api\ApiResponse;
 
 class Sessions extends Api
 {
     /**
      * Creates a new session.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('checkout/sessions', $parameters);
     }
@@ -38,10 +42,11 @@ class Sessions extends Api
     /**
      * Retrieves an existing session.
      *
-     * @param  string  $sessionId
-     * @return array
+     * @param string $sessionId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($sessionId)
+    public function find(string $sessionId): ApiResponse
     {
         return $this->_get("checkout/sessions/{$sessionId}");
     }

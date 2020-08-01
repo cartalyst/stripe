@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -30,45 +32,18 @@ class Handler
      * @var array
      */
     protected $exceptionsByErrorType = [
-
-        // Card errors are the most common type of error you should expect to handle
-        'card_error' => 'CardError',
-
-    ];
-
-    /**
-     * List of mapped exceptions and their corresponding status codes.
-     *
-     * @var array
-     */
-    protected $exceptionsByStatusCode = [
-
-        // Often missing a required parameter
-        400 => 'BadRequest',
-
-        // Invalid Stripe API key provided
-        401 => 'Unauthorized',
-
-        // Parameters were valid but request failed
-        402 => 'InvalidRequest',
-
-        // The requested item doesn't exist
-        404 => 'NotFound',
-
-        // Something went wrong on Stripe's end
-        500 => 'ServerError',
-        502 => 'ServerError',
-        503 => 'ServerError',
-        504 => 'ServerError',
-
+        'card_error'        => CardErrorException::class,
+        'idempotency_error' => IdempotencyErrorException::class,
     ];
 
     /**
      * Constructor.
      *
-     * @param  \GuzzleHttp\Exception\ClientException  $exception
-     * @return void
+     * @param \GuzzleHttp\Exception\ClientException $exception
+     *
      * @throws \Cartalyst\Stripe\Exception\StripeException
+     *
+     * @return void
      */
     public function __construct(ClientException $exception)
     {
@@ -80,56 +55,46 @@ class Handler
 
         $rawOutput = json_decode($response->getBody(true), true);
 
-        $error = isset($rawOutput['error']) ? $rawOutput['error'] : [];
+        $error = $rawOutput['error'] ?? [];
 
-        $errorCode = isset($error['code']) ? $error['code'] : null;
+        $errorType = $error['type'] ?? null;
 
-        $errorType = isset($error['type']) ? $error['type'] : null;
+        $message = $error['message'] ?? null;
 
-        $message = isset($error['message']) ? $error['message'] : null;
+        if (isset($this->exceptionsByErrorType[$errorType])) {
+            $exceptionClass = $this->exceptionsByErrorType[$errorType];
 
-        $missingParameter = isset($error['param']) ? $error['param'] : null;
-
-        $this->handleException(
-            $message, $headers, $statusCode, $errorType, $errorCode, $missingParameter, $rawOutput
-        );
-    }
-
-    /**
-     * Guesses the FQN of the exception to be thrown.
-     *
-     * @param  string  $message
-     * @param  int  $statusCode
-     * @param  string  $errorType
-     * @param  string  $errorCode
-     * @param  string  $missingParameter
-     * @return void
-     * @throws \Cartalyst\Stripe\Exception\StripeException
-     */
-    protected function handleException($message, $headers, $statusCode, $errorType, $errorCode, $missingParameter, $rawOutput)
-    {
-        if ($statusCode === 400 && $errorCode === 'rate_limit') {
-            $class = 'ApiLimitExceeded';
-        } elseif ($statusCode === 400 && $errorType === 'invalid_request_error') {
-            $class = 'MissingParameter';
-        } elseif (array_key_exists($errorType, $this->exceptionsByErrorType)) {
-            $class = $this->exceptionsByErrorType[$errorType];
-        } elseif (array_key_exists($statusCode, $this->exceptionsByStatusCode)) {
-            $class = $this->exceptionsByStatusCode[$statusCode];
-        } else {
-            $class = 'Stripe';
+            throw new $exceptionClass($message, $statusCode);
         }
 
-        $class = "\\Cartalyst\\Stripe\\Exception\\{$class}Exception";
+        if ($statusCode === 400) {
+            throw new BadRequestException($message, $statusCode, $headers);
+        }
 
-        $instance = new $class($message, $statusCode);
+        if ($statusCode === 401) {
+            throw new UnauthorizedException($message, $statusCode, $headers);
+        }
 
-        $instance->setHeaders($headers);
-        $instance->setErrorCode($errorCode);
-        $instance->setErrorType($errorType);
-        $instance->setMissingParameter($missingParameter);
-        $instance->setRawOutput($rawOutput);
+        if ($statusCode === 402) {
+            throw new InvalidRequestException($message, $statusCode, $headers);
+        }
 
-        throw $instance;
+        if ($statusCode === 404) {
+            throw new NotFoundException($message, $statusCode, $headers);
+        }
+
+        if ($statusCode === 422) {
+            throw new ValidationFailedException($message, $statusCode, $headers);
+        }
+
+        if ($statusCode === 429) {
+            throw new ApiLimitExceededException($message, $statusCode, $headers);
+        }
+
+        if ($statusCode < 500) {
+            throw new ClientErrorException($message, $statusCode, $headers);
+        }
+
+        throw new ServerErrorException($message, $statusCode, $headers);
     }
 }

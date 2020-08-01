@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,6 +23,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class PaymentIntentsTest extends FunctionalTestCase
 {
@@ -28,42 +31,41 @@ class PaymentIntentsTest extends FunctionalTestCase
     public function it_can_create_a_new_payment_intent()
     {
         $paymentIntent = $this->stripe->paymentIntents()->create([
-            'amount' => 3000,
+            'amount'   => 3000,
             'currency' => 'USD',
         ]);
 
-        $this->assertSame(300000, $paymentIntent['amount']);
-        $this->assertSame('requires_source', $paymentIntent['status']);
+        $this->assertSame(3000, $paymentIntent['amount']);
+        $this->assertSame('requires_payment_method', $paymentIntent['status']);
     }
 
     /** @test */
     public function it_can_find_an_existing_payment_intent()
     {
         $paymentIntent = $this->stripe->paymentIntents()->create([
-            'amount' => 3000,
+            'amount'   => 3000,
             'currency' => 'USD',
         ]);
 
         $paymentIntent = $this->stripe->paymentIntents()->find($paymentIntent['id']);
 
-        $this->assertSame(300000, $paymentIntent['amount']);
-        $this->assertSame('requires_source', $paymentIntent['status']);
+        $this->assertSame(3000, $paymentIntent['amount']);
+        $this->assertSame('requires_payment_method', $paymentIntent['status']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_payment_intent()
     {
-        $this->stripe->paymentIntents()->find(time().rand());
+        $this->expectException(NotFoundException::class);
+
+        $this->stripe->paymentIntents()->find('not_found');
     }
 
     /** @test */
     public function it_can_update_an_existing_payment_intent()
     {
         $paymentIntent = $this->stripe->paymentIntents()->create([
-            'amount' => 3000,
+            'amount'   => 3000,
             'currency' => 'USD',
         ]);
 
@@ -71,8 +73,8 @@ class PaymentIntentsTest extends FunctionalTestCase
             'amount' => 1500,
         ]);
 
-        $this->assertSame(150000, $paymentIntent['amount']);
-        $this->assertSame('requires_source', $paymentIntent['status']);
+        $this->assertSame(1500, $paymentIntent['amount']);
+        $this->assertSame('requires_payment_method', $paymentIntent['status']);
     }
 
     /** @test */
@@ -83,11 +85,11 @@ class PaymentIntentsTest extends FunctionalTestCase
         $card = $this->createCardThroughToken($customer['id']);
 
         $paymentIntent = $this->stripe->paymentIntents()->create([
-            'amount' => 3000,
-            'currency' => 'USD',
-            'confirm' => false,
-            'customer' => $customer['id'],
-            'source' => $card['id'],
+            'amount'         => 3000,
+            'currency'       => 'USD',
+            'confirm'        => false,
+            'customer'       => $customer['id'],
+            'source'         => $card['id'],
             'capture_method' => 'manual',
         ]);
 
@@ -104,10 +106,10 @@ class PaymentIntentsTest extends FunctionalTestCase
         $this->createCardThroughToken($customer['id']);
 
         $paymentIntent = $this->stripe->paymentIntents()->create([
-            'amount' => 3000,
-            'currency' => 'USD',
-            'confirm' => true,
-            'customer' => $customer['id'],
+            'amount'         => 3000,
+            'currency'       => 'USD',
+            'confirm'        => true,
+            'customer'       => $customer['id'],
             'capture_method' => 'manual',
         ]);
 
@@ -120,7 +122,7 @@ class PaymentIntentsTest extends FunctionalTestCase
     public function it_can_cancel_an_existing_payment_intent()
     {
         $paymentIntent = $this->stripe->paymentIntents()->create([
-            'amount' => 3000,
+            'amount'   => 3000,
             'currency' => 'USD',
         ]);
 
@@ -135,7 +137,7 @@ class PaymentIntentsTest extends FunctionalTestCase
         $timestamp = time();
 
         $this->stripe->paymentIntents()->create([
-            'amount' => 3000,
+            'amount'   => 3000,
             'currency' => 'USD',
         ]);
 
@@ -146,7 +148,7 @@ class PaymentIntentsTest extends FunctionalTestCase
         ]);
 
         $this->assertNotEmpty($paymentIntents['data']);
-        $this->assertInternalType('array', $paymentIntents['data']);
+        $this->assertIsArray($paymentIntents['data']);
     }
 
     /** @test */
@@ -154,7 +156,7 @@ class PaymentIntentsTest extends FunctionalTestCase
     {
         $timestamp = time();
 
-        for ($i=0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $this->stripe->paymentIntents()->create([
                 'amount'   => 3000,
                 'currency' => 'USD',

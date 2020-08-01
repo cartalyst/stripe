@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,26 +27,28 @@ class FileLinks extends Api
     /**
      * Creates a new file link.
      *
-     * @param  string  $fileId
-     * @param  array  $attributes
-     * @return array
+     * @param string $fileId
+     * @param array  $attributes
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create($fileId, array $attributes = [])
+    public function create(string $fileId, array $attributes = []): ApiResponse
     {
         $attributes = array_merge($attributes, [
             'file' => $fileId,
         ]);
 
-        return $this->_post("file_links", $attributes);
+        return $this->_post('file_links', $attributes);
     }
 
     /**
      * Retrieves an existing file link.
      *
-     * @param  string  $fileLinkId
-     * @return array
+     * @param string $fileLinkId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($fileLinkId)
+    public function find(string $fileLinkId): ApiResponse
     {
         return $this->_get("file_links/{$fileLinkId}");
     }
@@ -52,11 +56,12 @@ class FileLinks extends Api
     /**
      * Updates an existing file link.
      *
-     * @param  string  $fileLinkId
-     * @param  array  $parameters
-     * @return array
+     * @param string $fileLinkId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($fileLinkId, array $parameters = [])
+    public function update(string $fileLinkId, array $parameters = []): ApiResponse
     {
         return $this->_post("file_links/{$fileLinkId}", $parameters);
     }
@@ -64,10 +69,11 @@ class FileLinks extends Api
     /**
      * Lists all file links.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('file_links', $parameters);
     }

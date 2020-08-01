@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,6 +23,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class CouponsTest extends FunctionalTestCase
 {
@@ -42,13 +45,12 @@ class CouponsTest extends FunctionalTestCase
         $this->assertSame('forever', $coupon['duration']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_coupon()
     {
-        $this->stripe->coupons()->find(time().rand());
+        $this->expectException(NotFoundException::class);
+
+        $this->stripe->coupons()->find('not_found');
     }
 
     /** @test */
@@ -57,7 +59,7 @@ class CouponsTest extends FunctionalTestCase
         $coupon = $this->createCoupon();
 
         $coupon = $this->stripe->coupons()->update($coupon['id'], [
-            'metadata' => [ 'description' => '50% Discount Forever' ]
+            'metadata' => ['description' => '50% Discount Forever'],
         ]);
 
         $this->assertSame('forever', $coupon['duration']);
@@ -82,13 +84,13 @@ class CouponsTest extends FunctionalTestCase
         $coupons = $this->stripe->coupons()->all();
 
         $this->assertNotEmpty($coupons['data']);
-        $this->assertInternalType('array', $coupons['data']);
+        $this->assertIsArray($coupons['data']);
     }
 
     /** @test */
     public function it_can_iterate_all_coupons()
     {
-        for ($i=0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $this->createCoupon();
         }
 

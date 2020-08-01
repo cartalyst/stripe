@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class Transfers extends Api
     /**
      * Creates a new transfer.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('transfers', $parameters);
     }
@@ -36,10 +39,11 @@ class Transfers extends Api
     /**
      * Retrieves an existing transfer.
      *
-     * @param  string  $transferId
-     * @return array
+     * @param string $transferId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($transferId)
+    public function find(string $transferId): ApiResponse
     {
         return $this->_get("transfers/{$transferId}");
     }
@@ -47,11 +51,12 @@ class Transfers extends Api
     /**
      * Updates an existing transfer.
      *
-     * @param  string  $transferId
-     * @param  array  $parameters
-     * @return array
+     * @param string $transferId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($transferId, array $parameters = [])
+    public function update(string $transferId, array $parameters = []): ApiResponse
     {
         return $this->_post("transfers/{$transferId}", $parameters);
     }
@@ -59,10 +64,11 @@ class Transfers extends Api
     /**
      * Lists all transfers.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('transfers', $parameters);
     }

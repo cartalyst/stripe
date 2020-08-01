@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,6 +23,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class PlansTest extends FunctionalTestCase
 {
@@ -29,7 +32,7 @@ class PlansTest extends FunctionalTestCase
     {
         $plan = $this->createPlan();
 
-        $this->assertSame('Monthly (30$)', $plan['name']);
+        $this->assertSame('Monthly (30$)', $plan['nickname']);
     }
 
     /** @test */
@@ -39,16 +42,15 @@ class PlansTest extends FunctionalTestCase
 
         $plan = $this->stripe->plans()->find($plan['id']);
 
-        $this->assertSame('Monthly (30$)', $plan['name']);
+        $this->assertSame('Monthly (30$)', $plan['nickname']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_plan()
     {
-        $this->stripe->plans()->find(time().rand());
+        $this->expectException(NotFoundException::class);
+
+        $this->stripe->plans()->find('not_found');
     }
 
     /** @test */
@@ -57,10 +59,10 @@ class PlansTest extends FunctionalTestCase
         $plan = $this->createPlan();
 
         $plan = $this->stripe->plans()->update($plan['id'], [
-            'metadata' => [ 'description' => 'Monthly Subscription' ]
+            'metadata' => ['description' => 'Monthly Subscription'],
         ]);
 
-        $this->assertSame('Monthly (30$)', $plan['name']);
+        $this->assertSame('Monthly (30$)', $plan['nickname']);
         $this->assertSame('Monthly Subscription', $plan['metadata']['description']);
     }
 
@@ -88,7 +90,8 @@ class PlansTest extends FunctionalTestCase
         ]);
 
         $this->assertNotEmpty($plans['data']);
-        $this->assertInternalType('array', $plans['data']);
+
+        $this->assertIsArray($plans['data']);
     }
 
     /** @test */
@@ -96,7 +99,7 @@ class PlansTest extends FunctionalTestCase
     {
         $timestamp = time();
 
-        for ($i=0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $this->createPlan();
         }
 

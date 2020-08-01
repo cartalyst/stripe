@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class TaxRates extends Api
     /**
      * Creates a new tax rate.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('tax_rates', $parameters);
     }
@@ -36,11 +39,12 @@ class TaxRates extends Api
     /**
      * Retrieves an existing tax rate.
      *
-     * @param  string  $taxRateId
-     * @param  array  $parameters
-     * @return array
+     * @param string $taxRateId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($taxRateId)
+    public function find(string $taxRateId): ApiResponse
     {
         return $this->_get("tax_rates/{$taxRateId}");
     }
@@ -48,10 +52,11 @@ class TaxRates extends Api
     /**
      * Updates an existing tax rate.
      *
-     * @param  string  $taxRateId
-     * @return array
+     * @param string $taxRateId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($taxRateId, array $parameters = [])
+    public function update(string $taxRateId, array $parameters = []): ApiResponse
     {
         return $this->_post("tax_rates/{$taxRateId}", $parameters);
     }
@@ -59,10 +64,11 @@ class TaxRates extends Api
     /**
      * Lists all tax rates.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('tax_rates', $parameters);
     }

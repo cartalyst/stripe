@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,16 +23,18 @@
 namespace Cartalyst\Stripe\Api\Radar;
 
 use Cartalyst\Stripe\Api\Api;
+use Cartalyst\Stripe\Api\ApiResponse;
 
 class EarlyFraudWarning extends Api
 {
     /**
      * Retrieves an existing early fraud warning.
      *
-     * @param  string  $earlyFraudWarningId
-     * @return array
+     * @param string $earlyFraudWarningId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($earlyFraudWarningId)
+    public function find(string $earlyFraudWarningId): ApiResponse
     {
         return $this->_get("radar/early_fraud_warnings/{$earlyFraudWarningId}");
     }
@@ -38,10 +42,11 @@ class EarlyFraudWarning extends Api
     /**
      * Lists all early fraud warnings.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('radar/early_fraud_warnings', $parameters);
     }

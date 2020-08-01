@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,26 +13,28 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011-2019, Cartalyst LLC
+ * @copyright  (c) 2011-2020, Cartalyst LLC
  * @link       https://cartalyst.com
  */
 
 namespace Cartalyst\Stripe\Api\Account;
 
 use Cartalyst\Stripe\Api\Api;
+use Cartalyst\Stripe\Api\ApiResponse;
 
 class AccountLink extends Api
 {
     /**
      * Creates a new account link.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('account_links', $parameters);
     }

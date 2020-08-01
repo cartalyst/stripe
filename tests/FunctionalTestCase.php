@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,9 +23,9 @@
 namespace Cartalyst\Stripe\Tests;
 
 use Cartalyst\Stripe\Stripe;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class FunctionalTestCase extends PHPUnit_Framework_TestCase
+class FunctionalTestCase extends TestCase
 {
     /**
      * The Stripe API instance.
@@ -35,9 +37,11 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
-        $this->stripe = new Stripe();
+        $this->stripe = new Stripe(
+            getenv('STRIPE_API_KEY'), getenv('STRIPE_API_VERSION')
+        );
     }
 
     protected function createCoupon()
@@ -56,36 +60,56 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
         ], $parameters));
     }
 
-    protected function createPlan(array $parameters = [])
+    protected function createProductForOrder()
     {
-        return $this->stripe->plans()->create(array_merge([
-            'amount'               => 30.00,
-            'currency'             => 'USD',
-            'interval'             => 'month',
-            'name'                 => 'Monthly (30$)',
-            'statement_descriptor' => 'Monthly Subscription.',
-            'id'                   => 'monthly-'.time().rand(),
-        ], $parameters));
+        return $this->stripe->products()->create([
+            'type'        => 'good',
+            'name'        => 'T-shirt',
+            'attributes'  => ['size', 'gender'],
+            'description' => 'Comfortable gray cotton t-shirts',
+        ]);
     }
 
     protected function createProduct()
     {
         return $this->stripe->products()->create([
+            'type'        => 'good',
             'name'        => 'T-shirt',
-            'attributes'  => [ 'size', 'gender' ],
+            'attributes'  => ['size', 'gender'],
             'description' => 'Comfortable gray cotton t-shirts',
         ]);
     }
 
-    protected function createSku($productId)
+    protected function createBillableProduct(array $parameters = [])
+    {
+        return $this->stripe->products()->create([
+            'type'        => 'service',
+            'name'        => 'Professional',
+            'description' => 'Professional Plans',
+        ]);
+    }
+
+    protected function createPlan(array $parameters = [])
+    {
+        return $this->stripe->plans()->create(array_merge([
+            'product'  => $this->createBillableProduct()['id'],
+            'amount'   => 3000,
+            'currency' => 'USD',
+            'interval' => 'month',
+            'nickname' => 'Monthly (30$)',
+            'id'       => 'monthly-'.time().rand(),
+        ], $parameters));
+    }
+
+    protected function createProductSku($productId)
     {
         return $this->stripe->skus()->create([
             'product'   => $productId,
-            'price'     => 15.00,
+            'price'     => 1500,
             'currency'  => 'usd',
             'inventory' => [
                 'type'     => 'finite',
-                'quantity' => 500
+                'quantity' => 500,
             ],
             'attributes' => [
                 'size'   => 'Medium',
@@ -100,7 +124,7 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
             'card' => [
                 'exp_month' => 10,
                 'cvc'       => 314,
-                'exp_year'  => 2020,
+                'exp_year'  => 2025,
                 'number'    => '4242424242424242',
             ],
         ]);
@@ -147,11 +171,11 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
             'source' => [
                 'exp_month' => 10,
                 'cvc'       => 314,
-                'exp_year'  => 2020,
+                'exp_year'  => 2025,
                 'number'    => '4242424242424242',
                 'currency'  => 'usd',
             ],
-            'metadata' => ['foo' => 'bar']
+            'metadata' => ['foo' => 'bar'],
         ]);
     }
 
@@ -168,7 +192,7 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
 
         return $this->stripe->charges()->create(array_merge([
             'currency' => 'USD',
-            'amount'   => 50.49,
+            'amount'   => 5049,
             'customer' => $customerId,
         ], $parameters));
     }
@@ -180,9 +204,8 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
         $plan = $this->createPlan();
 
         return $this->stripe->subscriptions()->create($customerId, array_merge([
-            // 'plan' => $plan['id'],
             'items' => [
-                ['plan' => $plan['id']]
+                ['plan' => $plan['id']],
             ],
         ], $parameters));
     }
@@ -196,7 +219,7 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
     {
         return $this->stripe->orders()->create([
             'currency' => 'usd',
-            'items' => $items,
+            'items'    => $items,
             'shipping' => [
                 'name'    => 'Jenny Rosen',
                 'address' => [
@@ -206,7 +229,7 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
                     'postal_code' => '123456',
                 ],
             ],
-            'email' => 'jenny@ros.en'
+            'email' => 'jenny@ros.en',
         ]);
     }
 
@@ -226,15 +249,15 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
     protected function createInvoiceItem($customerId, array $parameters = [])
     {
         return $this->stripe->invoiceItems()->create($customerId, array_merge([
-            'amount'      => '10.00',
+            'amount'      => 1000,
             'currency'    => 'usd',
-            'description' => 'One-time setup fee.'
+            'description' => 'One-time setup fee.',
         ], $parameters));
     }
 
     protected function createAnInvoiceAndInvoiceItems($customerId, $amountOfInvoiceItems = 2)
     {
-        for ($i=0; $i < $amountOfInvoiceItems; $i++) {
+        for ($i = 0; $i < $amountOfInvoiceItems; $i++) {
             $this->createInvoiceItem($customerId);
         }
 
@@ -246,74 +269,52 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
         return rand().time().'-john@doe.com';
     }
 
-    // protected function createBankAccount()
-    // {
-    //     $accountId = $this->stripe->account()->details()['id'];
-
-    //     $bankAccountToken = $this->stripe->tokens()->create([
-    //         'bank_account' => [
-    //             'country'        => 'US',
-    //             'routing_number' => '110000000',
-    //             'account_number' => '000123456789',
-    //         ],
-    //     ]);
-
-    //     return $this->stripe->externalAccounts()->create($accountId, [
-    //         'external_account' => $bankAccountToken['id'],
-    //     ]);
-    // }
-
-    // protected function createTransfer()
-    // {
-    //     $bank = $this->createBankAccount();
-
-    //     $customer = $this->createCustomer();
-
-    //     for ($i=0; $i < 4; $i++) {
-    //         $this->createCharge($customer['id']);
-    //     }
-
-    //     return $this->stripe->transfers()->create([
-    //         'currency'    => 'USD',
-    //         'amount'      => 50.49,
-    //         'destination' => $bank['id'],
-    //     ]);
-    // }
-
     protected function createTestManagedAccount()
     {
+        // $email = $this->getRandomEmail();
+
+        // $filePath = realpath(__DIR__.'/files/logo.png');
+
+        // $icon = $this->stripe->files()->create($filePath, 'business_icon');
+        // $logo = $this->stripe->files()->create($filePath, 'business_logo');
+
         return $this->stripe->account()->create([
-            'type' => 'custom',
-            'country' => 'US',
-            'payout_schedule' => [
-                'interval' => 'manual',
+            'type'          => 'custom',
+            'business_type' => 'individual',
+            'settings'      => [
+                'payouts' => [
+                    'schedule' => [
+                        'interval' => 'manual',
+                    ],
+                ],
             ],
             'external_account' => [
-                'object' => 'bank_account',
-                'country' => 'US',
-                'currency' => 'usd',
+                'object'         => 'bank_account',
+                'country'        => 'US',
+                'currency'       => 'usd',
                 'routing_number' => '110000000',
                 'account_number' => '000123456789',
             ],
-            'legal_entity' => [
-                'type'               => 'individual',
-                'personal_id_number' => '000000000',
-                'type'               => 'individual',
-                'dob'                => [ 'year' => '1980', 'month' => '01', 'day' => '01'],
-                'first_name'         => 'John',
-                'last_name'          => 'Doe',
-                'address' => [
-                    'line1'       => '1234 Main Street',
-                    'postal_code' => '94110',
-                    'city'        => 'San Francisco',
-                ],
-                'personal_address' => [
-                    'line1'       => '1234 Main Street',
-                    'postal_code' => '94110',
-                    'city'        => 'San Francisco',
+            'individual' => [
+                'id_number'  => '000000000',
+                'dob'        => ['year' => '1980', 'month' => '01', 'day' => '01'],
+                'first_name' => 'John',
+                'last_name'  => 'Doe',
+                'email'      => $this->getRandomEmail(),
+                'phone'      => '202-555-0141',
+                'address'    => [
+                    'line1'       => '116 Plumb Branch St.',
+                    'postal_code' => '92647',
+                    'city'        => 'Huntington Beach',
+                    'state'       => 'CA',
+                    'country'     => 'US',
                 ],
             ],
-            'tos_acceptance' => [ 'date' => time(), 'ip' => '127.0.0.1'],
+            'tos_acceptance'         => ['date' => time(), 'ip' => '127.0.0.1'],
+            'requested_capabilities' => [
+                'card_payments',
+                'transfers',
+            ],
         ]);
     }
 

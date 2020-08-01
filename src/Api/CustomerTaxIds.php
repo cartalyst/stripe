@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,11 +27,12 @@ class CustomerTaxIds extends Api
     /**
      * Creates a new customer tax id.
      *
-     * @param  string  $customerId
-     * @param  array  $parameters
-     * @return array
+     * @param string $customerId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create($customerId, array $parameters = [])
+    public function create(string $customerId, array $parameters = []): ApiResponse
     {
         return $this->_post("customers/{$customerId}/tax_ids", $parameters);
     }
@@ -37,11 +40,12 @@ class CustomerTaxIds extends Api
     /**
      * Retrieves an existing customer tax id.
      *
-     * @param  string  $customerId
-     * @param  string  $taxId
-     * @return array
+     * @param string $customerId
+     * @param string $taxId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($customerId, $taxId)
+    public function find(string $customerId, $taxId): ApiResponse
     {
         return $this->_get("customers/{$customerId}/tax_ids/{$taxId}");
     }
@@ -49,11 +53,12 @@ class CustomerTaxIds extends Api
     /**
      * Deletes an existing customer tax id.
      *
-     * @param  string  $customerId
-     * @param  string  $taxId
-     * @return array
+     * @param string $customerId
+     * @param string $taxId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function delete($customerId, $taxId)
+    public function delete(string $customerId, $taxId): ApiResponse
     {
         return $this->_delete("customers/{$customerId}/tax_ids/{$taxId}");
     }
@@ -61,11 +66,12 @@ class CustomerTaxIds extends Api
     /**
      * Lists all tax ids of the given customer.
      *
-     * @param  string  $customerId
-     * @param  array  $parameters
-     * @return array
+     * @param string $customerId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all($customerId, array $parameters = [])
+    public function all(string $customerId, array $parameters = []): ApiResponse
     {
         return $this->_get("customers/{$customerId}/tax_ids", $parameters);
     }

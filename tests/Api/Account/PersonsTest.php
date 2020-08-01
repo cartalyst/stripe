@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,6 +23,7 @@
 namespace Cartalyst\Stripe\Tests\Api\Account;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class PersonsTest extends FunctionalTestCase
 {
@@ -74,12 +77,11 @@ class PersonsTest extends FunctionalTestCase
         $this->assertSame('Doe', $person['last_name']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_person()
     {
+        $this->expectException(NotFoundException::class);
+
         $email = $this->getRandomEmail();
 
         $account = $this->stripe->account()->create([
@@ -91,7 +93,7 @@ class PersonsTest extends FunctionalTestCase
             ],
         ]);
 
-        $this->stripe->account()->persons()->find($account['id'], time().rand());
+        $this->stripe->account()->persons()->find($account['id'], 'not_found');
     }
 
     /** @test */
@@ -169,6 +171,6 @@ class PersonsTest extends FunctionalTestCase
         $persons = $this->stripe->account()->persons()->all($account['id']);
 
         $this->assertNotEmpty($persons['data']);
-        $this->assertInternalType('array', $persons['data']);
+        $this->assertIsArray($persons['data']);
     }
 }

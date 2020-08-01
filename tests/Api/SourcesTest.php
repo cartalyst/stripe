@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -28,9 +30,9 @@ class SourcesTest extends FunctionalTestCase
     public function a_source_can_be_created()
     {
         $source = $this->stripe->sources()->create([
-            'type' => 'ach_credit_transfer',
+            'type'     => 'ach_credit_transfer',
             'currency' => 'usd',
-            'owner' => [
+            'owner'    => [
                 'email' => 'john@doe.com',
             ],
         ]);
@@ -45,6 +47,8 @@ class SourcesTest extends FunctionalTestCase
     /**
      * @test
      * @depends a_source_can_be_created
+     *
+     * @param mixed $sourceId
      */
     public function a_source_can_be_found($sourceId)
     {
@@ -58,6 +62,8 @@ class SourcesTest extends FunctionalTestCase
     /**
      * @test
      * @depends a_source_can_be_created
+     *
+     * @param mixed $sourceId
      */
     public function a_source_can_be_updated($sourceId)
     {
@@ -74,6 +80,8 @@ class SourcesTest extends FunctionalTestCase
     /**
      * @test
      * @depends a_source_can_be_created
+     *
+     * @param mixed $sourceId
      */
     public function a_source_can_be_attached_to_a_customer($sourceId)
     {
@@ -89,6 +97,8 @@ class SourcesTest extends FunctionalTestCase
     /**
      * @test
      * @depends a_source_can_be_attached_to_a_customer
+     *
+     * @param mixed $parameters
      */
     public function a_source_can_be_detached_from_a_customer($parameters)
     {
@@ -97,20 +107,5 @@ class SourcesTest extends FunctionalTestCase
         $source = $this->stripe->sources()->detach($customerId, $sourceId);
 
         $this->assertSame('consumed', $source['status']);
-    }
-
-    /** @test */
-    public function it_can_retrieve_all_sources()
-    {
-        $customer = $this->createCustomer();
-
-        $this->createCardThroughToken($customer['id']);
-        $this->createBankAccountThroughToken($customer['id']);
-
-        $sources = $this->stripe->sources()->all($customer['id']);
-
-        $this->assertNotEmpty($sources['data']);
-        $this->assertCount(2, $sources['data']);
-        $this->assertInternalType('array', $sources['data']);
     }
 }

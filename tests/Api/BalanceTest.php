@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -31,8 +33,9 @@ class BalanceTest extends FunctionalTestCase
 
         $this->assertSame('usd', $current['pending'][0]['currency']);
         $this->assertSame('usd', $current['available'][0]['currency']);
-        $this->assertInternalType('int', $current['pending'][0]['amount']);
-        $this->assertInternalType('int', $current['available'][0]['amount']);
+
+        $this->assertIsInt($current['pending'][0]['amount']);
+        $this->assertIsInt($current['available'][0]['amount']);
     }
 
     /** @test */
@@ -40,6 +43,6 @@ class BalanceTest extends FunctionalTestCase
     {
         $transactions = $this->stripe->balance()->all();
 
-        $this->assertInternalType('array', $transactions['data']);
+        $this->assertIsArray($transactions['data']);
     }
 }

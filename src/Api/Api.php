@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -20,11 +22,11 @@
 
 namespace Cartalyst\Stripe\Api;
 
-use RuntimeException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Middleware;
+use Cartalyst\Stripe\Stripe;
 use GuzzleHttp\HandlerStack;
-use Cartalyst\Stripe\Utility;
+use GuzzleHttp\ClientInterface;
 use Cartalyst\Stripe\ConfigInterface;
 use Psr\Http\Message\RequestInterface;
 use Cartalyst\Stripe\Exception\Handler;
@@ -45,7 +47,7 @@ abstract class Api implements ApiInterface
     /**
      * Number of items to return per page.
      *
-     * @var null|int
+     * @var int|null
      */
     protected $perPage;
 
@@ -59,7 +61,8 @@ abstract class Api implements ApiInterface
     /**
      * Constructor.
      *
-     * @param  \Cartalyst\Stripe\ConfigInterface  $client
+     * @param \Cartalyst\Stripe\ConfigInterface $config
+     *
      * @return void
      */
     public function __construct(ConfigInterface $config)
@@ -70,7 +73,7 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function baseUrl()
+    public function baseUrl(): string
     {
         return 'https://api.stripe.com';
     }
@@ -78,7 +81,7 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function getPerPage()
+    public function getPerPage(): ?int
     {
         return $this->perPage;
     }
@@ -86,9 +89,9 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function setPerPage($perPage)
+    public function setPerPage(?int $perPage): ApiInterface
     {
-        $this->perPage = (int) $perPage;
+        $this->perPage = $perPage;
 
         return $this;
     }
@@ -96,7 +99,7 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function idempotent($idempotencyKey)
+    public function idempotent(string $idempotencyKey): ApiInterface
     {
         $this->idempotencyKey = $idempotencyKey;
 
@@ -106,88 +109,73 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function _get($url = null, $parameters = [])
+    public function _get(string $url, array $parameters = []): ApiResponse
     {
         if ($perPage = $this->getPerPage()) {
             $parameters['limit'] = $perPage;
         }
 
-        return $this->execute('get', $url, $parameters);
+        return $this->sendRequest('get', $url, $parameters);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function _head($url = null, array $parameters = [])
+    public function _delete(string $url, array $parameters = []): ApiResponse
     {
-        return $this->execute('head', $url, $parameters);
+        return $this->sendRequest('delete', $url, $parameters);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function _delete($url = null, array $parameters = [])
+    public function _post(string $url, array $parameters = []): ApiResponse
     {
-        return $this->execute('delete', $url, $parameters);
+        return $this->sendRequest('post', $url, $parameters);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function _put($url = null, array $parameters = [])
-    {
-        return $this->execute('put', $url, $parameters);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function _patch($url = null, array $parameters = [])
-    {
-        return $this->execute('patch', $url, $parameters);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function _post($url = null, array $parameters = [])
-    {
-        return $this->execute('post', $url, $parameters);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function _options($url = null, array $parameters = [])
-    {
-        return $this->execute('options', $url, $parameters);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function execute($httpMethod, $url, array $parameters = [])
+    public function sendRequest(string $httpMethod, string $url, array $parameters = []): ApiResponse
     {
         try {
-            $parameters = Utility::prepareParameters($parameters);
+            $response = $this->getClient()->request($httpMethod, 'v1/'.$url, [
+                'query' => $this->buildHttpQuery($parameters),
+            ]);
 
-            $response = $this->getClient()->{$httpMethod}('v1/'.$url, [ 'query' => $parameters ]);
-
-            return json_decode((string) $response->getBody(), true);
+            return $this->buildResponse($response);
         } catch (ClientException $e) {
             new Handler($e);
         }
     }
 
     /**
+     * Builds the request response.
+     *
+     * @param \Psr\Http\Message\ResponseInterface $response
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
+     */
+    protected function buildResponse(ResponseInterface $response): ApiResponse
+    {
+        $headers = $response->getHeaders();
+
+        $body = json_decode((string) $response->getBody(), true);
+
+        return new ApiResponse($body, $headers);
+    }
+
+    /**
      * Returns an Http client instance.
      *
-     * @return \GuzzleHttp\Client
+     * @return \GuzzleHttp\ClientInterface
      */
-    protected function getClient()
+    protected function getClient(): ClientInterface
     {
         return new Client([
-            'base_uri' => $this->baseUrl(), 'handler' => $this->createHandler()
+            'base_uri' => $this->baseUrl(),
+            'handler'  => $this->createHandler(),
         ]);
     }
 
@@ -195,23 +183,16 @@ abstract class Api implements ApiInterface
      * Create the client handler.
      *
      * @return \GuzzleHttp\HandlerStack
-     * @throws \RuntimeException
      */
-    protected function createHandler()
+    protected function createHandler(): HandlerStack
     {
-        if (! $this->config->getApiKey()) {
-            throw new RuntimeException('The Stripe API key is not defined!');
-        }
-
         $stack = HandlerStack::create();
 
         $stack->push(Middleware::mapRequest(function (RequestInterface $request) {
             $config = $this->config;
 
-            $idempotencykey = $this->idempotencyKey ?: $config->getIdempotencyKey();
-
-            if ($idempotencykey) {
-                $request = $request->withHeader('Idempotency-Key', $idempotencykey);
+            if ($this->idempotencyKey) {
+                $request = $request->withHeader('Idempotency-Key', $this->idempotencyKey);
             }
 
             if ($accountId = $config->getAccountId()) {
@@ -224,9 +205,7 @@ abstract class Api implements ApiInterface
 
             $request = $request->withHeader('Authorization', 'Basic '.base64_encode($config->getApiKey()));
 
-            $request = $request->withHeader('X-Stripe-Client-User-Agent', $this->generateClientUserAgentHeader());
-
-            return $request;
+            return $request->withHeader('X-Stripe-Client-User-Agent', $this->generateClientUserAgentHeader());
         }));
 
         $stack->push(Middleware::retry(function ($retries, RequestInterface $request, ResponseInterface $response = null, TransferException $exception = null) {
@@ -243,11 +222,11 @@ abstract class Api implements ApiInterface
      *
      * @return string
      */
-    protected function generateUserAgent()
+    protected function generateUserAgent(): string
     {
         $appInfo = $this->config->getAppInfo();
 
-        $userAgent = 'Cartalyst-Stripe/'.$this->config->getVersion();
+        $userAgent = 'Cartalyst-Stripe/'.Stripe::getVersion();
 
         if ($appInfo || ! empty($appInfo)) {
             $userAgent .= ' '.$appInfo['name'];
@@ -269,12 +248,12 @@ abstract class Api implements ApiInterface
      *
      * @return string
      */
-    protected function generateClientUserAgentHeader()
+    protected function generateClientUserAgentHeader(): string
     {
         $appInfo = $this->config->getAppInfo();
 
         $userAgent = [
-            'bindings_version' => $this->config->getVersion(),
+            'bindings_version' => Stripe::getVersion(),
             'lang'             => 'php',
             'lang_version'     => phpversion(),
             'publisher'        => 'cartalyst',
@@ -286,5 +265,29 @@ abstract class Api implements ApiInterface
         }
 
         return json_encode($userAgent);
+    }
+
+    /**
+     * Builds the Http Query.
+     *
+     * @param array $parameters
+     *
+     * @return string
+     */
+    protected function buildHttpQuery(array $parameters): string
+    {
+        $parameters = array_map(function ($parameter) {
+            if (is_bool($parameter)) {
+                $parameter = $parameter ? 'true' : 'false';
+            }
+
+            if ($parameter === null) {
+                $parameter = '';
+            }
+
+            return $parameter;
+        }, $parameters);
+
+        return preg_replace('/\%5B\d+\%5D/', '%5B%5D', http_build_query($parameters));
     }
 }

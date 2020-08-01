@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class Coupons extends Api
     /**
      * Creates a new coupon.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('coupons', $parameters);
     }
@@ -36,10 +39,11 @@ class Coupons extends Api
     /**
      * Retrieves an existing coupon.
      *
-     * @param  string  $couponId
-     * @return array
+     * @param string $couponId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($couponId)
+    public function find(string $couponId): ApiResponse
     {
         return $this->_get("coupons/{$couponId}");
     }
@@ -47,11 +51,12 @@ class Coupons extends Api
     /**
      * Updates an existing coupon.
      *
-     * @param  string  $couponId
-     * @param  array  $parameters
-     * @return array
+     * @param string $couponId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($couponId, array $parameters = [])
+    public function update(string $couponId, array $parameters = []): ApiResponse
     {
         return $this->_post("coupons/{$couponId}", $parameters);
     }
@@ -59,10 +64,11 @@ class Coupons extends Api
     /**
      * Deletes an existing coupon.
      *
-     * @param  string  $couponId
-     * @return array
+     * @param string $couponId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function delete($couponId)
+    public function delete(string $couponId): ApiResponse
     {
         return $this->_delete("coupons/{$couponId}");
     }
@@ -70,10 +76,11 @@ class Coupons extends Api
     /**
      * Lists all coupons.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('coupons', $parameters);
     }

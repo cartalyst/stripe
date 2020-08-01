@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class CreditNotes extends Api
     /**
      * Creates a new credit note.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('credit_notes', $parameters);
     }
@@ -36,10 +39,11 @@ class CreditNotes extends Api
     /**
      * Retrieves an existing credit note.
      *
-     * @param  string  $creditNoteId
-     * @return array
+     * @param string $creditNoteId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($creditNoteId)
+    public function find(string $creditNoteId): ApiResponse
     {
         return $this->_get("credit_notes/{$creditNoteId}");
     }
@@ -47,11 +51,12 @@ class CreditNotes extends Api
     /**
      * Updates an existing credit notes.
      *
-     * @param  string  $creditNoteId
-     * @param  array  $parameters
-     * @return array
+     * @param string $creditNoteId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($creditNoteId, array $parameters = [])
+    public function update(string $creditNoteId, array $parameters = []): ApiResponse
     {
         return $this->_post("credit_notes/{$creditNoteId}", $parameters);
     }
@@ -59,10 +64,11 @@ class CreditNotes extends Api
     /**
      * Void the given credit note.
      *
-     * @param  string  $creditNoteId
-     * @return array
+     * @param string $creditNoteId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function void($creditNoteId)
+    public function void(string $creditNoteId): ApiResponse
     {
         return $this->_post("credit_notes/{$creditNoteId}/void");
     }
@@ -70,10 +76,11 @@ class CreditNotes extends Api
     /**
      * Lists all credit notes.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('credit_notes', $parameters);
     }

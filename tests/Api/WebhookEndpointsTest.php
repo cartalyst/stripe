@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,6 +23,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class WebhookEndpointsTest extends FunctionalTestCase
 {
@@ -29,20 +32,20 @@ class WebhookEndpointsTest extends FunctionalTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->webhookEndpoint = $this->stripe->webhookEndpoints()->create([
             'enabled_events' => ['*'],
-            'url' => 'https://example.com/my/webhook/endpoint',
+            'url'            => 'https://example.com/my/webhook/endpoint',
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->stripe->webhookEndpoints()->delete($this->webhookEndpoint['id']);
     }
@@ -59,13 +62,12 @@ class WebhookEndpointsTest extends FunctionalTestCase
         $this->assertSame('https://example.com/my/webhook/endpoint', $webhookEndpoint['url']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_webhook_endpoint()
     {
-        $this->stripe->webhookEndpoints()->find(time().rand());
+        $this->expectException(NotFoundException::class);
+
+        $this->stripe->webhookEndpoints()->find('not_found');
     }
 
     /** @test */
@@ -88,7 +90,7 @@ class WebhookEndpointsTest extends FunctionalTestCase
         $webhookEndpoints = $this->stripe->webhookEndpoints()->all();
 
         $this->assertNotEmpty($webhookEndpoints['data']);
-        $this->assertInternalType('array', $webhookEndpoints['data']);
+        $this->assertIsArray($webhookEndpoints['data']);
     }
 
     /** @test */

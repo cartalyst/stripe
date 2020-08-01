@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,16 +23,16 @@
 namespace Cartalyst\Stripe\Tests\Api\Radar;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
-class EarlyFraudWarning extends FunctionalTestCase
+class EarlyFraudWarningTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_early_fraud_warning()
     {
-        $this->stripe->radar()->earlyFraudWarning()->find(time());
+        $this->expectException(NotFoundException::class);
+
+        $this->stripe->radar()->earlyFraudWarning()->find('not_found');
     }
 
     /** @test */
@@ -39,6 +41,6 @@ class EarlyFraudWarning extends FunctionalTestCase
         $earlyFraudWarnings = $this->stripe->radar()->earlyFraudWarning()->all();
 
         $this->assertEmpty($earlyFraudWarnings['data']);
-        $this->assertInternalType('array', $earlyFraudWarnings['data']);
+        $this->assertIsArray($earlyFraudWarnings['data']);
     }
 }

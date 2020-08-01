@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class Events extends Api
     /**
      * Retrieves an existing event.
      *
-     * @param  string  $eventId
-     * @return array
+     * @param string $eventId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($eventId)
+    public function find(string $eventId): ApiResponse
     {
         return $this->_get("events/{$eventId}");
     }
@@ -36,10 +39,11 @@ class Events extends Api
     /**
      * Lists all events.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('events', $parameters);
     }

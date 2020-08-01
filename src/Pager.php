@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -27,7 +29,7 @@ class Pager
     /**
      * The Api instance.
      *
-     * @var \Cartalyst\Stripe\Api\ApiInterface  $api
+     * @var \Cartalyst\Stripe\Api\ApiInterface
      */
     protected $api;
 
@@ -41,7 +43,8 @@ class Pager
     /**
      * Constructor.
      *
-     * @param  \Cartalyst\Stripe\Api\ApiInterface  $api
+     * @param \Cartalyst\Stripe\Api\ApiInterface $api
+     *
      * @return void
      */
     public function __construct(ApiInterface $api)
@@ -52,7 +55,8 @@ class Pager
     /**
      * Fetches all the objects of the given api.
      *
-     * @param  array  $parameters
+     * @param array $parameters
+     *
      * @return array
      */
     public function fetch(array $parameters = [])
@@ -71,7 +75,8 @@ class Pager
     /**
      * Processes the api request.
      *
-     * @param  array  $parameters
+     * @param array $parameters
+     *
      * @return array
      */
     protected function processRequest(array $parameters = [])
@@ -89,12 +94,12 @@ class Pager
                 $parameters = $parameters[1];
             }
 
-            $parameters = [ $id, $parameters ];
+            $parameters = [$id, $parameters];
         } else {
-            $parameters = [ $parameters ];
+            $parameters = [$parameters];
         }
 
-        $result = call_user_func_array([ $this->api, 'all' ], $parameters);
+        $result = call_user_func_array([$this->api, 'all'], $parameters)->toArray();
 
         $this->nextToken = $result['has_more'] ? end($result['data'])['id'] : false;
 

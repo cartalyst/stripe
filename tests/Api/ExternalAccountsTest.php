@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -102,7 +104,7 @@ class ExternalAccountsTest extends FunctionalTestCase
 
         $bankAccount = $this->stripe->externalAccounts()->update($accountId, $bankAccount['id'], [
             'metadata' => [
-                'account_manager' => 'John Doe'
+                'account_manager' => 'John Doe',
             ],
         ]);
 
@@ -167,7 +169,7 @@ class ExternalAccountsTest extends FunctionalTestCase
         $externalAccounts = $this->stripe->externalAccounts()->all($accountId);
 
         $this->assertNotEmpty($externalAccounts['data']);
-        $this->assertInternalType('array', $externalAccounts['data']);
+        $this->assertIsArray($externalAccounts['data']);
     }
 
     /** @test */

@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,11 +27,12 @@ class Cards extends Api
     /**
      * Creates a new source on the given customer.
      *
-     * @param  string  $customerId
-     * @param  string|array  $parameters
-     * @return array
+     * @param string       $customerId
+     * @param array|string $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create($customerId, $parameters = [])
+    public function create(string $customerId, $parameters = []): ApiResponse
     {
         if (is_array($parameters) && isset($parameters['source'])) {
             $parameters['source']['object'] = 'card';
@@ -43,11 +46,12 @@ class Cards extends Api
     /**
      * Retrieves an existing source from the given customer.
      *
-     * @param  string  $customerId
-     * @param  string  $sourceId
-     * @return array
+     * @param string $customerId
+     * @param string $sourceId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($customerId, $sourceId)
+    public function find(string $customerId, string $sourceId): ApiResponse
     {
         return $this->_get("customers/{$customerId}/sources/{$sourceId}");
     }
@@ -55,12 +59,13 @@ class Cards extends Api
     /**
      * Updates an existing source from the given customer.
      *
-     * @param  string  $customerId
-     * @param  string  $sourceId
-     * @param  array  $parameters
-     * @return array
+     * @param string $customerId
+     * @param string $sourceId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($customerId, $sourceId, array $parameters = [])
+    public function update(string $customerId, string $sourceId, array $parameters = []): ApiResponse
     {
         return $this->_post("customers/{$customerId}/sources/{$sourceId}", $parameters);
     }
@@ -68,11 +73,12 @@ class Cards extends Api
     /**
      * Deletes an existing source from the given customer.
      *
-     * @param  string  $customerId
-     * @param  string  $sourceId
-     * @return array
+     * @param string $customerId
+     * @param string $sourceId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function delete($customerId, $sourceId)
+    public function delete(string $customerId, string $sourceId): ApiResponse
     {
         return $this->_delete("customers/{$customerId}/sources/{$sourceId}");
     }
@@ -80,11 +86,12 @@ class Cards extends Api
     /**
      * Lists all sources from the given customer.
      *
-     * @param  string  $customerId
-     * @param  array  $parameters
-     * @return array
+     * @param string $customerId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all($customerId, array $parameters = [])
+    public function all(string $customerId, array $parameters = []): ApiResponse
     {
         $parameters['object'] = 'card';
 

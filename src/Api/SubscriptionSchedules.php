@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -25,10 +27,11 @@ class SubscriptionSchedules extends Api
     /**
      * Creates a new subscription schedule.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): ApiResponse
     {
         return $this->_post('subscription_schedules', $parameters);
     }
@@ -36,10 +39,11 @@ class SubscriptionSchedules extends Api
     /**
      * Retrieves an existing subscription schedule.
      *
-     * @param  string  $itemId
-     * @return array
+     * @param string $itemId
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function find($itemId)
+    public function find(string $itemId): ApiResponse
     {
         return $this->_get("subscription_schedules/{$itemId}");
     }
@@ -47,11 +51,12 @@ class SubscriptionSchedules extends Api
     /**
      * Updates an existing subscription schedule.
      *
-     * @param  string  $itemId
-     * @param  array  $parameters
-     * @return array
+     * @param string $itemId
+     * @param array  $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function update($itemId, array $parameters = [])
+    public function update(string $itemId, array $parameters = []): ApiResponse
     {
         return $this->_post("subscription_schedules/{$itemId}", $parameters);
     }
@@ -59,11 +64,12 @@ class SubscriptionSchedules extends Api
     /**
      * Cancels an existing subscription schedule.
      *
-     * @param  string  $itemId
-     * @param  string  $parameters
-     * @return array
+     * @param string $itemId
+     * @param string $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function cancel($itemId, array $parameters = [])
+    public function cancel(string $itemId, array $parameters = []): ApiResponse
     {
         return $this->_post("subscription_schedules/{$itemId}/cancel", $parameters);
     }
@@ -71,11 +77,12 @@ class SubscriptionSchedules extends Api
     /**
      * Releases an existing subscription schedule.
      *
-     * @param  string  $itemId
-     * @param  string  $parameters
-     * @return array
+     * @param string $itemId
+     * @param string $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function release($itemId, array $parameters = [])
+    public function release(string $itemId, array $parameters = []): ApiResponse
     {
         return $this->_post("subscription_schedules/{$itemId}/release", $parameters);
     }
@@ -83,10 +90,11 @@ class SubscriptionSchedules extends Api
     /**
      * Lists all subscription schedules.
      *
-     * @param  array  $parameters
-     * @return array
+     * @param array $parameters
+     *
+     * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = []): ApiResponse
     {
         return $this->_get('subscription_schedules', $parameters);
     }

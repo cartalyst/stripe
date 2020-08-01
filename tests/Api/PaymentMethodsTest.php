@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * Part of the Stripe package.
  *
  * NOTICE OF LICENSE
@@ -11,7 +13,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2020, Cartalyst LLC
@@ -21,6 +23,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class PaymentMethodsTest extends FunctionalTestCase
 {
@@ -54,13 +57,12 @@ class PaymentMethodsTest extends FunctionalTestCase
         $this->assertSame('visa', $paymentMethod['card']['brand']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_payment_method()
     {
-        $this->stripe->paymentMethods()->find(time().rand());
+        $this->expectException(NotFoundException::class);
+
+        $this->stripe->paymentMethods()->find('not_found');
     }
 
     /** @test */
@@ -123,7 +125,7 @@ class PaymentMethodsTest extends FunctionalTestCase
 
         $paymentMethods = $this->stripe->paymentMethods()->all([
             'customer' => $customer['id'],
-            'type' => 'card',
+            'type'     => 'card',
         ]);
 
         $this->assertCount(1, $paymentMethods['data']);
@@ -134,7 +136,7 @@ class PaymentMethodsTest extends FunctionalTestCase
     {
         $customer = $this->createCustomer();
 
-        for ($i=0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $paymentMethod = $this->stripe->paymentMethods()->create([
                 'type' => 'card',
                 'card' => [
@@ -147,7 +149,7 @@ class PaymentMethodsTest extends FunctionalTestCase
 
         $paymentMethods = $this->stripe->paymentMethodsIterator([
             'customer' => $customer['id'],
-            'type' => 'card',
+            'type'     => 'card',
         ]);
 
         $this->assertCount(5, $paymentMethods);
