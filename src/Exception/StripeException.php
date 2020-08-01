@@ -22,7 +22,9 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Exception;
 
-class StripeException extends \RuntimeException
+use Http\Client\Exception;
+
+class StripeException extends \RuntimeException implements Exception
 {
     /**
      * The response headers sent by Stripe.

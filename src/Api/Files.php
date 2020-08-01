@@ -35,23 +35,15 @@ class Files extends Api
     /**
      * Creates a file upload.
      *
-     * @param string $file
+     * @param string $filePath
      * @param string $purpose
      * @param array  $headers
      *
      * @return \Cartalyst\Stripe\Api\ApiResponse
      */
-    public function create(string $file, string $purpose, array $headers = []): ApiResponse
+    public function create(string $filePath, string $purpose, array $headers = []): ApiResponse
     {
-        $response = $this->getClient()->request('POST', 'v1/files', [
-            'headers'   => $headers,
-            'multipart' => [
-                ['name' => 'purpose', 'contents' => $purpose],
-                ['name' => 'file', 'contents' => fopen($file, 'r')],
-            ],
-        ]);
-
-        return $this->buildResponse($response);
+        return $this->_postMultipart('files', ['purpose' => $purpose], ['file' => $filePath], $headers);
     }
 
     /**
