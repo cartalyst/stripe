@@ -24,6 +24,7 @@ namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
 use Cartalyst\Stripe\Exception\NotFoundException;
+use Cartalyst\Stripe\Exception\BadRequestException;
 
 class PayoutsTest extends FunctionalTestCase
 {
@@ -34,14 +35,22 @@ class PayoutsTest extends FunctionalTestCase
 
         $this->stripe->accountId($account['id']);
 
-        $token = $this->stripe->tokens()->create([
-            'card' => [
-                'exp_month' => 10,
-                'cvc'       => 314,
-                'exp_year'  => 2020,
-                'number'    => '4000000000000077',
-            ],
-        ]);
+        try {
+            $token = $this->stripe->tokens()->create([
+                'card' => [
+                    'exp_month' => 10,
+                    'cvc'       => 314,
+                    'exp_year'  => 2020,
+                    'number'    => '4000000000000077',
+                ],
+            ]);
+        } catch (BadRequestException $e) {
+            if (substr($e->getMessage(), 0, 43) === 'Your account cannot currently make charges.') {
+                $this->markTestSkipped('The test account cannot make charges.');
+            } else {
+                throw $e;
+            }
+        }
 
         $this->stripe->charges()->create([
             'currency' => 'USD',
@@ -61,7 +70,10 @@ class PayoutsTest extends FunctionalTestCase
         $this->assertSame('paid', $payout['status']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @depends it_can_create_a_new_payout
+     */
     public function it_can_find_an_existing_payout()
     {
         $account = $this->createTestManagedAccount();
@@ -98,7 +110,10 @@ class PayoutsTest extends FunctionalTestCase
         $this->stripe->payouts()->find('not_found');
     }
 
-    /** @test */
+    /**
+     * @test
+     * @depends it_can_create_a_new_payout
+     */
     public function it_can_update_an_existing_payout()
     {
         $account = $this->createTestManagedAccount();
@@ -132,7 +147,10 @@ class PayoutsTest extends FunctionalTestCase
         $this->assertSame('Awesome description', $payout['metadata']['description']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @depends it_can_create_a_new_payout
+     */
     public function it_can_retrieve_all_payouts()
     {
         $account = $this->createTestManagedAccount();
@@ -166,7 +184,10 @@ class PayoutsTest extends FunctionalTestCase
         $this->assertIsArray($payouts['data']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @depends it_can_create_a_new_payout
+     */
     public function it_can_iterate_all_payouts()
     {
         $account = $this->createTestManagedAccount();
