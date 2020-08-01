@@ -53,7 +53,7 @@ class Handler
 
         $statusCode = $response->getStatusCode();
 
-        $rawOutput = json_decode($response->getBody(true), true);
+        $rawOutput = json_decode((string) $response->getBody(), true);
 
         $error = $rawOutput['error'] ?? [];
 

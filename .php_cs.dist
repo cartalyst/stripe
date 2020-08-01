@@ -1,0 +1,16 @@
+<?php
+
+// Create a new Symfony Finder instance
+$finder = PhpCsFixer\Finder::create()
+    ->in(['src', 'tests'])
+    ->ignoreDotFiles(true)
+    ->ignoreVCS(true)
+;
+
+return Cartalyst\PhpCsFixer\Config::create()
+    ->setFinder($finder)
+    ->setUsingCache(false)
+    ->setRiskyAllowed(true)
+    ->withPHPUnitRules()
+    ->setRules(['declare_strict_types' => true])
+;

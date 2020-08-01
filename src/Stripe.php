@@ -170,9 +170,11 @@ class Stripe
      *
      * @return $this
      */
-    public function setAppInfo(string $appName, ?string $appVersion = null, ?string $appUrl = null, ?string $appPartnerId = null): ConfigInterface
+    public function setAppInfo(string $appName, ?string $appVersion = null, ?string $appUrl = null, ?string $appPartnerId = null): self
     {
-        return $this->config->setAppInfo($appName, $appVersion, $appUrl, $appPartnerId);
+        $this->config->setAppInfo($appName, $appVersion, $appUrl, $appPartnerId);
+
+        return $this;
     }
 
     /**
@@ -217,7 +219,7 @@ class Stripe
      */
     protected function getApiInstance(string $method): ApiInterface
     {
-        $class = '\\Cartalyst\\Stripe\\Api\\'.ucwords($method);
+        $class = 'Cartalyst\\Stripe\\Api\\'.ucwords($method);
 
         if (class_exists($class) && ! (new ReflectionClass($class))->isAbstract()) {
             return new $class($this->config);

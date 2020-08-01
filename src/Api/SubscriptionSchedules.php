@@ -65,7 +65,7 @@ class SubscriptionSchedules extends Api
      * Cancels an existing subscription schedule.
      *
      * @param string $itemId
-     * @param string $parameters
+     * @param array  $parameters
      *
      * @return \Cartalyst\Stripe\Api\ApiResponse
      */
@@ -78,7 +78,7 @@ class SubscriptionSchedules extends Api
      * Releases an existing subscription schedule.
      *
      * @param string $itemId
-     * @param string $parameters
+     * @param array  $parameters
      *
      * @return \Cartalyst\Stripe\Api\ApiResponse
      */
