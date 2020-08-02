@@ -44,12 +44,8 @@ class ExceptionFactory
      *
      * @return \Cartalyst\Stripe\Exception\StripeException
      */
-    public static function create(
-        int $statusCode,
-        string $message,
-        string $type = null,
-        array $headers = []
-    ): StripeException {
+    public static function create(int $statusCode, string $message, string $type = null, array $headers = []): StripeException
+    {
         if ($type !== null && isset(static::$exceptionsByErrorType[$type])) {
             $exceptionClass = static::$exceptionsByErrorType[$type];
 

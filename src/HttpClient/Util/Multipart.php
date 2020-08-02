@@ -53,7 +53,7 @@ final class Multipart
      * @param array                                    $params
      * @param array                                    $files
      *
-     * @return MultipartStreamBuilder
+     * @return \Http\Message\MultipartStream\MultipartStreamBuilder
      */
     public static function createMultipartStreamBuilder(StreamFactoryInterface $streamFactory, array $params, array $files = []): MultipartStreamBuilder
     {
@@ -87,22 +87,20 @@ final class Multipart
      *
      * @see https://github.com/guzzle/psr7/blob/1.6.1/src/functions.php#L287-L320
      */
-    private static function tryFopen(string $filename, string $mode)
+    protected static function tryFopen(string $filename, string $mode)
     {
         $ex = null;
+
         set_error_handler(function () use ($filename, $mode, &$ex) {
             $ex = new RuntimeException(sprintf(
-                'Unable to open %s using mode %s: %s',
-                $filename,
-                $mode,
-                func_get_args()[1]
+                'Unable to open %s using mode %s: %s', $filename, $mode, func_get_args()[1]
             ));
         });
 
         $handle = fopen($filename, $mode);
         restore_error_handler();
 
-        if (null !== $ex) {
+        if ($ex !== null) {
             throw $ex;
         }
 
@@ -116,14 +114,15 @@ final class Multipart
      *
      * @return string
      */
-    private static function guessFileContentType(string $file): string
+    protected static function guessFileContentType(string $file): string
     {
         if (! class_exists(finfo::class, false)) {
             return self::STREAM_CONTENT_TYPE;
         }
 
         $finfo = new finfo(FILEINFO_MIME_TYPE);
-        $type  = $finfo->file($file);
+
+        $type = $finfo->file($file);
 
         return $type !== false ? $type : self::STREAM_CONTENT_TYPE;
     }

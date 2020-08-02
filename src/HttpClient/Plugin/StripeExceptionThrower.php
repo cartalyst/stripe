@@ -35,13 +35,7 @@ use Cartalyst\Stripe\HttpClient\Message\ResponseMediator;
 final class StripeExceptionThrower implements Plugin
 {
     /**
-     * Handle the request and return the response coming from the next callable.
-     *
-     * @param RequestInterface $request
-     * @param callable         $next
-     * @param callable         $first
-     *
-     * @return Promise
+     * {@inheritdoc}
      */
     public function handleRequest(RequestInterface $request, callable $next, callable $first): Promise
     {
@@ -51,7 +45,11 @@ final class StripeExceptionThrower implements Plugin
             if ($statusCode >= 400 && $statusCode < 600) {
                 $error = ResponseMediator::getError($response);
 
-                throw ExceptionFactory::create($statusCode, $error['message'] ?? $response->getReasonPhrase(), $error['type'] ?? null, $response->getHeaders());
+                $type = $error['type'] ?? null;
+
+                $message = $error['message'] ?? $response->getReasonPhrase();
+
+                throw ExceptionFactory::create($statusCode, $message, $type, $response->getHeaders());
             }
 
             return $response;

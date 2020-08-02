@@ -37,35 +37,35 @@ final class Builder
      *
      * @var \Psr\Http\Client\ClientInterface
      */
-    private $httpClient;
+    protected $httpClient;
 
     /**
      * The HTTP request factory.
      *
      * @var \Psr\Http\Message\RequestFactoryInterface
      */
-    private $requestFactory;
+    protected $requestFactory;
 
     /**
      * The HTTP stream factory.
      *
      * @var \Psr\Http\Message\StreamFactoryInterface
      */
-    private $streamFactory;
+    protected $streamFactory;
 
     /**
      * The currently registered plugins.
      *
      * @var \Http\Client\Common\Plugin[]
      */
-    private $plugins = [];
+    protected $plugins = [];
 
     /**
      * A HTTP client with all our plugins.
      *
      * @var \Cartalyst\Stripe\HttpClient\HttpClientInterface|null
      */
-    private $pluginClient;
+    protected $pluginClient;
 
     /**
      * Create a new HTTP client builder instance.

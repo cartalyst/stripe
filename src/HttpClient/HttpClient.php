@@ -63,9 +63,11 @@ class HttpClient implements HttpClientInterface
      */
     public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, StreamFactoryInterface $streamFactory)
     {
-        $this->httpClient     = $httpClient;
+        $this->httpClient = $httpClient;
+
         $this->requestFactory = $requestFactory;
-        $this->streamFactory  = $streamFactory;
+
+        $this->streamFactory = $streamFactory;
     }
 
     /**

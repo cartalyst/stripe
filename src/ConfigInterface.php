@@ -36,7 +36,7 @@ interface ConfigInterface
      *
      * @param string $apiKey
      *
-     * @return self
+     * @return \Cartalyst\Stripe\ConfigInterface
      */
     public function setApiKey(string $apiKey): self;
 
@@ -52,7 +52,7 @@ interface ConfigInterface
      *
      * @param string $apiVersion
      *
-     * @return self
+     * @return \Cartalyst\Stripe\ConfigInterface
      */
     public function setApiVersion(string $apiVersion): self;
 
@@ -68,12 +68,12 @@ interface ConfigInterface
      *
      * @param string|null $accountId
      *
-     * @return self
+     * @return \Cartalyst\Stripe\ConfigInterface
      */
     public function setAccountId(?string $accountId): self;
 
     /**
-     * Returns the application's information.
+     * Returns the application's information, if set.
      *
      * @return array|null
      */
@@ -87,7 +87,7 @@ interface ConfigInterface
      * @param string|null $appUrl
      * @param string|null $appPartnerId
      *
-     * @return self
+     * @return \Cartalyst\Stripe\ConfigInterface
      */
     public function setAppInfo(string $appName, ?string $appVersion = null, ?string $appUrl = null, ?string $appPartnerId = null): self;
 }

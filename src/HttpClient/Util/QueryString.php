@@ -36,7 +36,7 @@ final class QueryString
      */
     public static function build(array $query): string
     {
-        if (0 === count($query)) {
+        if (count($query) === 0) {
             return '';
         }
 

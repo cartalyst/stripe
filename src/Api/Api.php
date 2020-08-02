@@ -72,26 +72,11 @@ abstract class Api implements ApiInterface
      */
     public function __construct(ConfigInterface $config)
     {
-        $this->config  = $config;
+        $this->config = $config;
+
         $this->headers = new StripeHeaders($config);
+
         $this->builder = $this->makeClientBuilder();
-    }
-
-    /**
-     * Create an HTTP client builder.
-     *
-     * @return \Cartalyst\Stripe\HttpClient\Builder
-     */
-    protected function makeClientBuilder(): Builder
-    {
-        $builder = new Builder();
-
-        $builder->addPlugin($this->headers);
-        $builder->addPlugin(new StripeExceptionThrower());
-        $builder->addPlugin(new RedirectPlugin());
-        $builder->addPlugin(new RetryPlugin(['retries' => 2]));
-
-        return $builder;
     }
 
     /**
@@ -187,6 +172,23 @@ abstract class Api implements ApiInterface
     }
 
     /**
+     * Create an HTTP client builder.
+     *
+     * @return \Cartalyst\Stripe\HttpClient\Builder
+     */
+    protected function makeClientBuilder(): Builder
+    {
+        $builder = new Builder();
+
+        $builder->addPlugin($this->headers);
+        $builder->addPlugin(new StripeExceptionThrower());
+        $builder->addPlugin(new RedirectPlugin());
+        $builder->addPlugin(new RetryPlugin(['retries' => 2]));
+
+        return $builder;
+    }
+
+    /**
      * Builds the request response.
      *
      * @param \Psr\Http\Message\ResponseInterface $response
@@ -196,8 +198,7 @@ abstract class Api implements ApiInterface
     protected function buildResponse(ResponseInterface $response): ApiResponse
     {
         return new ApiResponse(
-            ResponseMediator::getContent($response),
-            $response->getHeaders()
+            ResponseMediator::getContent($response), $response->getHeaders()
         );
     }
 

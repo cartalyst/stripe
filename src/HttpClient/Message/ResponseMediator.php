@@ -34,7 +34,7 @@ final class ResponseMediator
     /**
      * Parse and return the JSON response body as a PHP array.
      *
-     * @param ResponseInterface $response
+     * @param \Psr\Http\Message\ResponseInterface $response
      *
      * @throws \JsonException
      *
@@ -48,7 +48,7 @@ final class ResponseMediator
     /**
      * Parse and return the error data from the JSON response.
      *
-     * @param ResponseInterface $response
+     * @param \Psr\Http\Message\ResponseInterface $response
      *
      * @return array
      */

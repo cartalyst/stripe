@@ -38,14 +38,14 @@ final class StripeHeaders implements Plugin
      *
      * @var \Cartalyst\Stripe\ConfigInterface
      */
-    private $config;
+    protected $config;
 
     /**
      * The idempotency key.
      *
      * @var string|null
      */
-    private $idempotencyKey;
+    protected $idempotencyKey;
 
     /**
      * Constructor.
@@ -90,7 +90,7 @@ final class StripeHeaders implements Plugin
      *
      * @return array
      */
-    private function generateHeaders(): array
+    protected function generateHeaders(): array
     {
         $headers = [];
 
@@ -120,7 +120,7 @@ final class StripeHeaders implements Plugin
      *
      * @return string
      */
-    private function generateUserAgent(): string
+    protected function generateUserAgent(): string
     {
         $appInfo = $this->config->getAppInfo();
 
@@ -146,7 +146,7 @@ final class StripeHeaders implements Plugin
      *
      * @return string
      */
-    private function generateClientUserAgentHeader(): string
+    protected function generateClientUserAgentHeader(): string
     {
         $appInfo = $this->config->getAppInfo();
 
