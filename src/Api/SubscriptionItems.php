@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class SubscriptionItems extends Api
+class SubscriptionItems extends AbstractApi
 {
     /**
      * Creates a new item an existing subscription.

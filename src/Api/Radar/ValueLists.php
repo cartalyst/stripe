@@ -22,10 +22,10 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api\Radar;
 
-use Cartalyst\Stripe\Api\Api;
+use Cartalyst\Stripe\Api\AbstractApi;
 use Cartalyst\Stripe\Api\ApiResponse;
 
-class ValueLists extends Api
+class ValueLists extends AbstractApi
 {
     /**
      * Creates a new radar value list.

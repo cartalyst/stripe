@@ -22,10 +22,10 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api\Account;
 
-use Cartalyst\Stripe\Api\Api;
+use Cartalyst\Stripe\Api\AbstractApi;
 use Cartalyst\Stripe\Api\ApiResponse;
 
-class AccountLink extends Api
+class AccountLink extends AbstractApi
 {
     /**
      * Creates a new account link.

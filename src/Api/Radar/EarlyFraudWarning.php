@@ -22,10 +22,10 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api\Radar;
 
-use Cartalyst\Stripe\Api\Api;
+use Cartalyst\Stripe\Api\AbstractApi;
 use Cartalyst\Stripe\Api\ApiResponse;
 
-class EarlyFraudWarning extends Api
+class EarlyFraudWarning extends AbstractApi
 {
     /**
      * Retrieves an existing early fraud warning.

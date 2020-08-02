@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class Disputes extends Api
+class Disputes extends AbstractApi
 {
     /**
      * Retrieves an existing dispute.

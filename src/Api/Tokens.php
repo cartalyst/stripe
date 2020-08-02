@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class Tokens extends Api
+class Tokens extends AbstractApi
 {
     /**
      * Creates a new token.

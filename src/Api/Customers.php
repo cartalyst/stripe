@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class Customers extends Api
+class Customers extends AbstractApi
 {
     /**
      * Creates a new customer.

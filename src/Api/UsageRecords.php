@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class UsageRecords extends Api
+class UsageRecords extends AbstractApi
 {
     /**
      * Create a usage record.

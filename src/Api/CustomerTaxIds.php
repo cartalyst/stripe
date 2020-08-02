@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class CustomerTaxIds extends Api
+class CustomerTaxIds extends AbstractApi
 {
     /**
      * Creates a new customer tax id.

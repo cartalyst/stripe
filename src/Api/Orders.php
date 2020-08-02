@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class Orders extends Api
+class Orders extends AbstractApi
 {
     /**
      * Creates a new order.

@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class Files extends Api
+class Files extends AbstractApi
 {
     /**
      * {@inheritdoc}

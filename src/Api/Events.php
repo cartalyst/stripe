@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class Events extends Api
+class Events extends AbstractApi
 {
     /**
      * Retrieves an existing event.

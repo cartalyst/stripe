@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class PaymentMethods extends Api
+class PaymentMethods extends AbstractApi
 {
     /**
      * Creates a new payment method.

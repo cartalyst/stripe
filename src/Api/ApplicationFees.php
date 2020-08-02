@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class ApplicationFees extends Api
+class ApplicationFees extends AbstractApi
 {
     /**
      * Retrieves an existing application fee.

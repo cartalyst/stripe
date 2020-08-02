@@ -33,7 +33,7 @@ use Cartalyst\Stripe\HttpClient\Plugin\StripeHeaders;
 use Cartalyst\Stripe\HttpClient\Message\ResponseMediator;
 use Cartalyst\Stripe\HttpClient\Plugin\StripeExceptionThrower;
 
-abstract class Api implements ApiInterface
+abstract class AbstractApi implements ApiInterface
 {
     /**
      * The Config repository instance.

@@ -22,10 +22,10 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api\Terminal;
 
-use Cartalyst\Stripe\Api\Api;
+use Cartalyst\Stripe\Api\AbstractApi;
 use Cartalyst\Stripe\Api\ApiResponse;
 
-class Readers extends Api
+class Readers extends AbstractApi
 {
     /**
      * Creates a new terminal reader.

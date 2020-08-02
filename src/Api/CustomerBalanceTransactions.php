@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class CustomerBalanceTransactions extends Api
+class CustomerBalanceTransactions extends AbstractApi
 {
     /**
      * Creates a new customer balance transaction.

@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class Balance extends Api
+class Balance extends AbstractApi
 {
     /**
      * Retrieives the current account balance.

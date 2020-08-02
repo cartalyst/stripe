@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class Topup extends Api
+class Topup extends AbstractApi
 {
     /**
      * Creates a new top-up.
