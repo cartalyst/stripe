@@ -26,7 +26,7 @@ use Cartalyst\Stripe\Api\Account\Persons;
 use Cartalyst\Stripe\Api\Account\AccountLink;
 use Cartalyst\Stripe\Api\Account\Capabilities;
 
-class Account extends Api
+class Account extends AbstractApi
 {
     /**
      * Retrieves the details of the account, based on the

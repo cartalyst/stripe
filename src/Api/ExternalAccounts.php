@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class ExternalAccounts extends Api
+class ExternalAccounts extends AbstractApi
 {
     /**
      * Create a new bank account on a connected account.

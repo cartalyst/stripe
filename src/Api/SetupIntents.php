@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class SetupIntents extends Api
+class SetupIntents extends AbstractApi
 {
     /**
      * Creates a new setup intent.

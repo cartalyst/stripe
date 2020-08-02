@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class CreditNotes extends Api
+class CreditNotes extends AbstractApi
 {
     /**
      * Creates a new credit note.

@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class Transfers extends Api
+class Transfers extends AbstractApi
 {
     /**
      * Creates a new transfer.

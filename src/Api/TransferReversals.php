@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class TransferReversals extends Api
+class TransferReversals extends AbstractApi
 {
     /**
      * Creates a new transfer reversal.

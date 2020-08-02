@@ -27,7 +27,7 @@ use Cartalyst\Stripe\Api\Radar\ValueLists;
 use Cartalyst\Stripe\Api\Radar\ValueListItems;
 use Cartalyst\Stripe\Api\Radar\EarlyFraudWarning;
 
-class Radar extends Api
+class Radar extends AbstractApi
 {
     /**
      * Returns a radar early fraud warning api instance.

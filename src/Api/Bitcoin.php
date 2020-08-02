@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class Bitcoin extends Api
+class Bitcoin extends AbstractApi
 {
     /**
      * Creates a new bitcoin receiver.

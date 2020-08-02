@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class ApplicationFeeRefunds extends Api
+class ApplicationFeeRefunds extends AbstractApi
 {
     /**
      * Creates a new application fee refund.

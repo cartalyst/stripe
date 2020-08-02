@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class FileLinks extends Api
+class FileLinks extends AbstractApi
 {
     /**
      * Creates a new file link.

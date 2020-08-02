@@ -26,7 +26,7 @@ use Cartalyst\Stripe\Api\Terminal\Readers;
 use Cartalyst\Stripe\Api\Terminal\Locations;
 use Cartalyst\Stripe\Api\Terminal\ConnectionTokens;
 
-class Terminal extends Api
+class Terminal extends AbstractApi
 {
     /**
      * Returns a terminal connection tokens api instance.

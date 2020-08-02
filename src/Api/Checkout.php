@@ -24,7 +24,7 @@ namespace Cartalyst\Stripe\Api;
 
 use Cartalyst\Stripe\Api\Checkout\Sessions;
 
-class Checkout extends Api
+class Checkout extends AbstractApi
 {
     /**
      * Returns a checkout sessions api instance.

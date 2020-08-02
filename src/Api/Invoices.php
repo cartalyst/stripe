@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class Invoices extends Api
+class Invoices extends AbstractApi
 {
     /**
      * Creates a new invoice.

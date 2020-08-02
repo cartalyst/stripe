@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class Products extends Api
+class Products extends AbstractApi
 {
     /**
      * Creates a new product.

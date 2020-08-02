@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class Payouts extends Api
+class Payouts extends AbstractApi
 {
     /**
      * Creates a new payout.

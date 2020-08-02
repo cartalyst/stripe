@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class WebhookEndpoints extends Api
+class WebhookEndpoints extends AbstractApi
 {
     /**
      * Creates a new webhook endpoint.

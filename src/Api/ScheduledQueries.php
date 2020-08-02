@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class ScheduledQueries extends Api
+class ScheduledQueries extends AbstractApi
 {
     /**
      * Retrieves an existing scheduled query.

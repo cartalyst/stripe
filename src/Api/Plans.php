@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class Plans extends Api
+class Plans extends AbstractApi
 {
     /**
      * Creates a new plan.

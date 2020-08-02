@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class Charges extends Api
+class Charges extends AbstractApi
 {
     /**
      * Creates a new charge.

@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class BalanceTransactions extends Api
+class BalanceTransactions extends AbstractApi
 {
     /**
      * Retrieves an existing balance transaction.

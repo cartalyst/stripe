@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class EphemeralKey extends Api
+class EphemeralKey extends AbstractApi
 {
     /**
      * Creates a new Ephemeral Key.

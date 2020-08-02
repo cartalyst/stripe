@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class Sources extends Api
+class Sources extends AbstractApi
 {
     /**
      * Creates a new source on the given customer.

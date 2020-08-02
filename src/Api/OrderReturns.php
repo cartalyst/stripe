@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class OrderReturns extends Api
+class OrderReturns extends AbstractApi
 {
     /**
      * Retrieves an existing order return.

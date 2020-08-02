@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class Skus extends Api
+class Skus extends AbstractApi
 {
     /**
      * Creates a new sku.

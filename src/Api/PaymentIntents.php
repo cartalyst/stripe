@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
-class PaymentIntents extends Api
+class PaymentIntents extends AbstractApi
 {
     /**
      * Creates a new payment intent.
