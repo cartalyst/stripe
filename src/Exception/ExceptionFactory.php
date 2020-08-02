@@ -35,6 +35,20 @@ class ExceptionFactory
     ];
 
     /**
+     * List of mapped exceptions and their corresponding HTTP Statuses.
+     *
+     * @var array
+     */
+    protected static $exceptionsByStatusCode = [
+        400 => BadRequestException::class,
+        401 => UnauthorizedException::class,
+        402 => InvalidRequestException::class,
+        404 => NotFoundException::class,
+        422 => ValidationFailedException::class,
+        429 => ApiLimitExceededException::class,
+    ];
+
+    /**
      * Handle a failed HTTP response.
      *
      * @param int         $statusCode
@@ -49,31 +63,13 @@ class ExceptionFactory
         if ($type !== null && isset(static::$exceptionsByErrorType[$type])) {
             $exceptionClass = static::$exceptionsByErrorType[$type];
 
-            return new $exceptionClass($message, $statusCode);
+            return new $exceptionClass($message, $statusCode, $headers);
         }
 
-        if ($statusCode === 400) {
-            return new BadRequestException($message, $statusCode, $headers);
-        }
+        if (isset(static::$exceptionsByStatusCode[$statusCode])) {
+            $exceptionClass = static::$exceptionsByStatusCode[$statusCode];
 
-        if ($statusCode === 401) {
-            return new UnauthorizedException($message, $statusCode, $headers);
-        }
-
-        if ($statusCode === 402) {
-            return new InvalidRequestException($message, $statusCode, $headers);
-        }
-
-        if ($statusCode === 404) {
-            return new NotFoundException($message, $statusCode, $headers);
-        }
-
-        if ($statusCode === 422) {
-            return new ValidationFailedException($message, $statusCode, $headers);
-        }
-
-        if ($statusCode === 429) {
-            return new ApiLimitExceededException($message, $statusCode, $headers);
+            return new $exceptionClass($message, $statusCode, $headers);
         }
 
         if ($statusCode < 500) {
