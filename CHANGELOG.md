@@ -2,6 +2,10 @@
 
 ### v3.0.0 - TBA
 
+`ADDED`
+
+- Autocomplete support
+
 `UPDATED`
 
 - PHP 7.2 is the minimum required PHP version
