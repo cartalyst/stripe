@@ -70,14 +70,14 @@ interface ConfigInterface
     /**
      * Returns the idempotency key.
      *
-     * @return string
+     * @return string|null
      */
     public function getIdempotencyKey();
 
     /**
      * Sets the idempotency key.
      *
-     * @param  string  $idempotencyKey
+     * @param  string|null  $idempotencyKey
      * @return $this
      */
     public function setIdempotencyKey($idempotencyKey);
