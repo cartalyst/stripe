@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class SubscriptionSchedules extends AbstractApi
 {
     /**
@@ -29,7 +31,7 @@ class SubscriptionSchedules extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(array $parameters = []): ApiResponse
     {
@@ -41,7 +43,7 @@ class SubscriptionSchedules extends AbstractApi
      *
      * @param string $itemId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $itemId): ApiResponse
     {
@@ -54,7 +56,7 @@ class SubscriptionSchedules extends AbstractApi
      * @param string $itemId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $itemId, array $parameters = []): ApiResponse
     {
@@ -67,7 +69,7 @@ class SubscriptionSchedules extends AbstractApi
      * @param string $itemId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function cancel(string $itemId, array $parameters = []): ApiResponse
     {
@@ -80,7 +82,7 @@ class SubscriptionSchedules extends AbstractApi
      * @param string $itemId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function release(string $itemId, array $parameters = []): ApiResponse
     {
@@ -92,7 +94,7 @@ class SubscriptionSchedules extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {

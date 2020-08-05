@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class Subscriptions extends AbstractApi
 {
     /**
@@ -30,7 +32,7 @@ class Subscriptions extends AbstractApi
      * @param string $customerId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(string $customerId, array $parameters = []): ApiResponse
     {
@@ -44,7 +46,7 @@ class Subscriptions extends AbstractApi
      *
      * @param string $subscriptionId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $subscriptionId): ApiResponse
     {
@@ -57,7 +59,7 @@ class Subscriptions extends AbstractApi
      * @param string $subscriptionId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $subscriptionId, array $parameters = []): ApiResponse
     {
@@ -70,7 +72,7 @@ class Subscriptions extends AbstractApi
      * @param string $subscriptionId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function cancel(string $subscriptionId, $parameters = []): ApiResponse
     {
@@ -88,7 +90,7 @@ class Subscriptions extends AbstractApi
      * @param string $subscriptionId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function reactivate(string $subscriptionId, array $parameters = []): ApiResponse
     {
@@ -109,7 +111,7 @@ class Subscriptions extends AbstractApi
      * @param string $subscriptionId
      * @param string $couponId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function applyDiscount(string $subscriptionId, string $couponId): ApiResponse
     {
@@ -123,7 +125,7 @@ class Subscriptions extends AbstractApi
      *
      * @param string $subscriptionId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function deleteDiscount(string $subscriptionId): ApiResponse
     {
@@ -135,7 +137,7 @@ class Subscriptions extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {

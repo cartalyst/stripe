@@ -23,7 +23,7 @@ declare(strict_types=1);
 namespace Cartalyst\Stripe\Api\Radar;
 
 use Cartalyst\Stripe\Api\AbstractApi;
-use Cartalyst\Stripe\Api\ApiResponse;
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
 
 class EarlyFraudWarning extends AbstractApi
 {
@@ -32,7 +32,7 @@ class EarlyFraudWarning extends AbstractApi
      *
      * @param string $earlyFraudWarningId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $earlyFraudWarningId): ApiResponse
     {
@@ -44,7 +44,7 @@ class EarlyFraudWarning extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {

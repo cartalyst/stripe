@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class Products extends AbstractApi
 {
     /**
@@ -29,7 +31,7 @@ class Products extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(array $parameters = []): ApiResponse
     {
@@ -41,7 +43,7 @@ class Products extends AbstractApi
      *
      * @param string $productId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $productId): ApiResponse
     {
@@ -54,7 +56,7 @@ class Products extends AbstractApi
      * @param string $productId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $productId, array $parameters = []): ApiResponse
     {
@@ -66,7 +68,7 @@ class Products extends AbstractApi
      *
      * @param string $productId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function delete(string $productId): ApiResponse
     {
@@ -78,7 +80,7 @@ class Products extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {

@@ -29,6 +29,7 @@ use Cartalyst\Stripe\HttpClient\Builder;
 use Http\Client\Common\Plugin\RetryPlugin;
 use Http\Client\Common\Plugin\RedirectPlugin;
 use Cartalyst\Stripe\HttpClient\HttpClientInterface;
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
 use Cartalyst\Stripe\HttpClient\Plugin\StripeHeaders;
 use Cartalyst\Stripe\HttpClient\Message\ResponseMediator;
 use Cartalyst\Stripe\HttpClient\Plugin\StripeExceptionThrower;
@@ -193,13 +194,11 @@ abstract class AbstractApi implements ApiInterface
      *
      * @param \Psr\Http\Message\ResponseInterface $response
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     protected function buildResponse(ResponseInterface $response): ApiResponse
     {
-        return new ApiResponse(
-            ResponseMediator::getContent($response), $response->getHeaders()
-        );
+        return ResponseMediator::getContent($response);
     }
 
     /**

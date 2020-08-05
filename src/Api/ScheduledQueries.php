@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class ScheduledQueries extends AbstractApi
 {
     /**
@@ -29,7 +31,7 @@ class ScheduledQueries extends AbstractApi
      *
      * @param string $scheduleQueryRun
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find($scheduleQueryRun): ApiResponse
     {
@@ -41,7 +43,7 @@ class ScheduledQueries extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {

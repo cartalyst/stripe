@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class Orders extends AbstractApi
 {
     /**
@@ -29,7 +31,7 @@ class Orders extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(array $parameters = []): ApiResponse
     {
@@ -41,7 +43,7 @@ class Orders extends AbstractApi
      *
      * @param string $orderId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $orderId): ApiResponse
     {
@@ -54,7 +56,7 @@ class Orders extends AbstractApi
      * @param string $orderId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $orderId, array $parameters = []): ApiResponse
     {
@@ -67,7 +69,7 @@ class Orders extends AbstractApi
      * @param string $orderId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function pay(string $orderId, array $parameters = []): ApiResponse
     {
@@ -80,7 +82,7 @@ class Orders extends AbstractApi
      * @param string $orderId
      * @param array  $items
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function returnItems(string $orderId, array $items = []): ApiResponse
     {
@@ -94,7 +96,7 @@ class Orders extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {

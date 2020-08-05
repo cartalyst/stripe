@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class CustomerTaxIds extends AbstractApi
 {
     /**
@@ -30,7 +32,7 @@ class CustomerTaxIds extends AbstractApi
      * @param string $customerId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(string $customerId, array $parameters = []): ApiResponse
     {
@@ -43,7 +45,7 @@ class CustomerTaxIds extends AbstractApi
      * @param string $customerId
      * @param string $taxId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $customerId, $taxId): ApiResponse
     {
@@ -56,7 +58,7 @@ class CustomerTaxIds extends AbstractApi
      * @param string $customerId
      * @param string $taxId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function delete(string $customerId, $taxId): ApiResponse
     {
@@ -69,7 +71,7 @@ class CustomerTaxIds extends AbstractApi
      * @param string $customerId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(string $customerId, array $parameters = []): ApiResponse
     {

@@ -23,7 +23,7 @@ declare(strict_types=1);
 namespace Cartalyst\Stripe\Api\Radar;
 
 use Cartalyst\Stripe\Api\AbstractApi;
-use Cartalyst\Stripe\Api\ApiResponse;
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
 
 class Reviews extends AbstractApi
 {
@@ -32,7 +32,7 @@ class Reviews extends AbstractApi
      *
      * @param string $reviewId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function approve(string $reviewId): ApiResponse
     {
@@ -44,7 +44,7 @@ class Reviews extends AbstractApi
      *
      * @param string $reviewId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $reviewId): ApiResponse
     {
@@ -56,7 +56,7 @@ class Reviews extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {

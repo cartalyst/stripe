@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class Coupons extends AbstractApi
 {
     /**
@@ -29,7 +31,7 @@ class Coupons extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(array $parameters = []): ApiResponse
     {
@@ -41,7 +43,7 @@ class Coupons extends AbstractApi
      *
      * @param string $couponId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $couponId): ApiResponse
     {
@@ -54,7 +56,7 @@ class Coupons extends AbstractApi
      * @param string $couponId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $couponId, array $parameters = []): ApiResponse
     {
@@ -66,7 +68,7 @@ class Coupons extends AbstractApi
      *
      * @param string $couponId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function delete(string $couponId): ApiResponse
     {
@@ -78,7 +80,7 @@ class Coupons extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {

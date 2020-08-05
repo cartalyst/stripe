@@ -25,6 +25,7 @@ namespace Cartalyst\Stripe\Api;
 use Cartalyst\Stripe\Api\Account\Persons;
 use Cartalyst\Stripe\Api\Account\AccountLink;
 use Cartalyst\Stripe\Api\Account\Capabilities;
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
 
 class Account extends AbstractApi
 {
@@ -32,7 +33,7 @@ class Account extends AbstractApi
      * Retrieves the details of the account, based on the
      * API key that was used to make the request.
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function details(): ApiResponse
     {
@@ -44,7 +45,7 @@ class Account extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(array $parameters = []): ApiResponse
     {
@@ -56,7 +57,7 @@ class Account extends AbstractApi
      *
      * @param string $accountId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $accountId): ApiResponse
     {
@@ -69,7 +70,7 @@ class Account extends AbstractApi
      * @param string $accountId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $accountId, array $parameters = []): ApiResponse
     {
@@ -81,7 +82,7 @@ class Account extends AbstractApi
      *
      * @param string $accountId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function delete(string $accountId): ApiResponse
     {
@@ -94,7 +95,7 @@ class Account extends AbstractApi
      * @param string $accountId
      * @param string $reason
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function reject(string $accountId, string $reason): ApiResponse
     {
@@ -108,7 +109,7 @@ class Account extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {
@@ -121,7 +122,7 @@ class Account extends AbstractApi
      * @param string      $accountId
      * @param string|null $redirectUrl
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function createLoginLink(string $accountId, ?string $redirectUrl = null): ApiResponse
     {

@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class Invoices extends AbstractApi
 {
     /**
@@ -30,7 +32,7 @@ class Invoices extends AbstractApi
      * @param string $customerId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(string $customerId, array $parameters = []): ApiResponse
     {
@@ -46,7 +48,7 @@ class Invoices extends AbstractApi
      *
      * @param string $invoiceId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $invoiceId): ApiResponse
     {
@@ -59,7 +61,7 @@ class Invoices extends AbstractApi
      * @param string $invoiceId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function lineItems(string $invoiceId, array $parameters = []): ApiResponse
     {
@@ -72,7 +74,7 @@ class Invoices extends AbstractApi
      * @param string $customerId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function upcomingInvoice(string $customerId, array $parameters = []): ApiResponse
     {
@@ -89,7 +91,7 @@ class Invoices extends AbstractApi
      * @param string $invoiceId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $invoiceId, array $parameters = []): ApiResponse
     {
@@ -101,7 +103,7 @@ class Invoices extends AbstractApi
      *
      * @param string $invoiceId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function delete(string $invoiceId): ApiResponse
     {
@@ -114,7 +116,7 @@ class Invoices extends AbstractApi
      * @param string $invoiceId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function finalize(string $invoiceId, array $parameters = []): ApiResponse
     {
@@ -127,7 +129,7 @@ class Invoices extends AbstractApi
      * @param string $invoiceId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function pay(string $invoiceId, array $parameters = []): ApiResponse
     {
@@ -139,7 +141,7 @@ class Invoices extends AbstractApi
      *
      * @param string $invoiceId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function send(string $invoiceId): ApiResponse
     {
@@ -151,7 +153,7 @@ class Invoices extends AbstractApi
      *
      * @param string $invoiceId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function void(string $invoiceId): ApiResponse
     {
@@ -163,7 +165,7 @@ class Invoices extends AbstractApi
      *
      * @param string $invoiceId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function markUncollectible(string $invoiceId): ApiResponse
     {
@@ -175,7 +177,7 @@ class Invoices extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {

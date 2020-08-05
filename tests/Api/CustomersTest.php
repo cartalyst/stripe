@@ -22,9 +22,9 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Tests\Api;
 
-use Cartalyst\Stripe\Api\ApiResponse;
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
 use Cartalyst\Stripe\Exception\NotFoundException;
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
 
 class CustomersTest extends FunctionalTestCase
 {

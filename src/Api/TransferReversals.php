@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class TransferReversals extends AbstractApi
 {
     /**
@@ -30,7 +32,7 @@ class TransferReversals extends AbstractApi
      * @param string $transferId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(string $transferId, array $parameters = []): ApiResponse
     {
@@ -43,7 +45,7 @@ class TransferReversals extends AbstractApi
      * @param string $transferId
      * @param string $transferReversalId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $transferId, $transferReversalId): ApiResponse
     {
@@ -57,7 +59,7 @@ class TransferReversals extends AbstractApi
      * @param string $transferReversalId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $transferId, string $transferReversalId, array $parameters = []): ApiResponse
     {
@@ -70,7 +72,7 @@ class TransferReversals extends AbstractApi
      * @param string $transferId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(string $transferId, array $parameters = []): ApiResponse
     {

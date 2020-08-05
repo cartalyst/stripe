@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class Files extends AbstractApi
 {
     /**
@@ -39,7 +41,7 @@ class Files extends AbstractApi
      * @param string $purpose
      * @param array  $headers
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(string $filePath, string $purpose, array $headers = []): ApiResponse
     {
@@ -51,7 +53,7 @@ class Files extends AbstractApi
      *
      * @param string $fileId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $fileId): ApiResponse
     {
@@ -63,7 +65,7 @@ class Files extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {

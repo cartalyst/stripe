@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class EphemeralKey extends AbstractApi
 {
     /**
@@ -29,7 +31,7 @@ class EphemeralKey extends AbstractApi
      *
      * @param string $customerId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(string $customerId): ApiResponse
     {
@@ -43,7 +45,7 @@ class EphemeralKey extends AbstractApi
      *
      * @param string $ephemeralKey
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function delete(string $ephemeralKey): ApiResponse
     {

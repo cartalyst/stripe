@@ -38,11 +38,13 @@ final class ResponseMediator
      *
      * @throws \JsonException
      *
-     * @return array
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
-    public static function getContent(ResponseInterface $response): array
+    public static function getContent(ResponseInterface $response): ApiResponse
     {
-        return Json::decode((string) $response->getBody());
+        return new ApiResponse(
+            Json::decode((string) $response->getBody()), $response->getHeaders()
+        );
     }
 
     /**
@@ -55,7 +57,7 @@ final class ResponseMediator
     public static function getError(ResponseInterface $response): array
     {
         try {
-            return self::getContent($response)['error'] ?? [];
+            return self::getContent($response)->error ?? [];
         } catch (JsonException $e) {
             return [];
         }

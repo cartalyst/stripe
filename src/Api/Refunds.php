@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class Refunds extends AbstractApi
 {
     /**
@@ -31,7 +33,7 @@ class Refunds extends AbstractApi
      * @param int    $amount
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create($chargeId, $amount = null, array $parameters = []): ApiResponse
     {
@@ -48,7 +50,7 @@ class Refunds extends AbstractApi
      *
      * @param string $refundId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $refundId): ApiResponse
     {
@@ -61,7 +63,7 @@ class Refunds extends AbstractApi
      * @param string $refundId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $refundId, array $parameters = []): ApiResponse
     {
@@ -74,7 +76,7 @@ class Refunds extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {

@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class SubscriptionItems extends AbstractApi
 {
     /**
@@ -31,7 +33,7 @@ class SubscriptionItems extends AbstractApi
      * @param string $planId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(string $subscriptionId, string $planId, array $parameters = []): ApiResponse
     {
@@ -48,7 +50,7 @@ class SubscriptionItems extends AbstractApi
      *
      * @param string $itemId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $itemId): ApiResponse
     {
@@ -61,7 +63,7 @@ class SubscriptionItems extends AbstractApi
      * @param string $itemId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $itemId, array $parameters = []): ApiResponse
     {
@@ -74,7 +76,7 @@ class SubscriptionItems extends AbstractApi
      * @param string $itemId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function delete(string $itemId, array $parameters = []): ApiResponse
     {
@@ -87,7 +89,7 @@ class SubscriptionItems extends AbstractApi
      * @param string $subscriptionId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(string $subscriptionId, array $parameters = []): ApiResponse
     {

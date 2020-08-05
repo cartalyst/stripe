@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class Disputes extends AbstractApi
 {
     /**
@@ -29,7 +31,7 @@ class Disputes extends AbstractApi
      *
      * @param string $disputeId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $disputeId): ApiResponse
     {
@@ -42,7 +44,7 @@ class Disputes extends AbstractApi
      * @param string $disputeId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $disputeId, array $parameters = []): ApiResponse
     {
@@ -54,7 +56,7 @@ class Disputes extends AbstractApi
      *
      * @param string $disputeId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function close(string $disputeId): ApiResponse
     {
@@ -66,7 +68,7 @@ class Disputes extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {

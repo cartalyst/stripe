@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 interface ApiInterface
 {
     /**
@@ -62,7 +64,7 @@ interface ApiInterface
      * @param string $uri
      * @param array  $query
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function _get(string $uri, array $query = []): ApiResponse;
 
@@ -72,7 +74,7 @@ interface ApiInterface
      * @param string $uri
      * @param array  $query
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function _delete(string $uri, array $query = []): ApiResponse;
 
@@ -82,7 +84,7 @@ interface ApiInterface
      * @param string $uri
      * @param array  $query
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function _post(string $uri, array $query = []): ApiResponse;
 
@@ -94,7 +96,7 @@ interface ApiInterface
      * @param array  $files
      * @param array  $headers
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function _postMultipart(string $uri, array $params, array $files, array $headers = []): ApiResponse;
 
@@ -105,7 +107,7 @@ interface ApiInterface
      * @param string $uri
      * @param array  $query
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function sendRequest(string $method, string $uri, array $query = []): ApiResponse;
 
@@ -118,7 +120,7 @@ interface ApiInterface
      * @param array  $files
      * @param array  $headers
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function sendMultipartRequest(string $method, string $uri, array $params, array $files, array $headers = []): ApiResponse;
 }

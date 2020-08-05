@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class InvoiceItems extends AbstractApi
 {
     /**
@@ -30,7 +32,7 @@ class InvoiceItems extends AbstractApi
      * @param string $customerId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(string $customerId, array $parameters = []): ApiResponse
     {
@@ -46,7 +48,7 @@ class InvoiceItems extends AbstractApi
      *
      * @param string $invoiceItemId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $invoiceItemId): ApiResponse
     {
@@ -59,7 +61,7 @@ class InvoiceItems extends AbstractApi
      * @param string $invoiceItemId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $invoiceItemId, array $parameters = []): ApiResponse
     {
@@ -71,7 +73,7 @@ class InvoiceItems extends AbstractApi
      *
      * @param string $invoiceItemId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function delete(string $invoiceItemId): ApiResponse
     {
@@ -83,7 +85,7 @@ class InvoiceItems extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {

@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class BankAccounts extends AbstractApi
 {
     /**
@@ -30,7 +32,7 @@ class BankAccounts extends AbstractApi
      * @param string       $customerId
      * @param array|string $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(string $customerId, $parameters = []): ApiResponse
     {
@@ -49,7 +51,7 @@ class BankAccounts extends AbstractApi
      * @param string $customerId
      * @param string $sourceId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $customerId, $sourceId): ApiResponse
     {
@@ -63,7 +65,7 @@ class BankAccounts extends AbstractApi
      * @param string $sourceId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $customerId, string $sourceId, array $parameters = []): ApiResponse
     {
@@ -76,7 +78,7 @@ class BankAccounts extends AbstractApi
      * @param string $customerId
      * @param string $sourceId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function delete(string $customerId, string $sourceId): ApiResponse
     {
@@ -89,7 +91,7 @@ class BankAccounts extends AbstractApi
      * @param string $customerId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(string $customerId, array $parameters = []): ApiResponse
     {
@@ -106,7 +108,7 @@ class BankAccounts extends AbstractApi
      * @param array  $amounts
      * @param string $verificationMethod
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function verify(string $customerId, string $bankAccountId, array $amounts, ?string $verificationMethod = null): ApiResponse
     {

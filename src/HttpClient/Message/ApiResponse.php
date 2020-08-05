@@ -20,7 +20,7 @@ declare(strict_types=1);
  * @link       https://cartalyst.com
  */
 
-namespace Cartalyst\Stripe\Api;
+namespace Cartalyst\Stripe\HttpClient\Message;
 
 use ArrayAccess;
 use JsonSerializable;

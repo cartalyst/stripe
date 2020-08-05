@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class Sources extends AbstractApi
 {
     /**
@@ -29,7 +31,7 @@ class Sources extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(array $parameters = []): ApiResponse
     {
@@ -41,7 +43,7 @@ class Sources extends AbstractApi
      *
      * @param string $sourceId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $sourceId): ApiResponse
     {
@@ -54,7 +56,7 @@ class Sources extends AbstractApi
      * @param string $sourceId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $sourceId, array $parameters = []): ApiResponse
     {
@@ -67,7 +69,7 @@ class Sources extends AbstractApi
      * @param string $customerId
      * @param string $sourceId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function attach(string $customerId, string $sourceId): ApiResponse
     {
@@ -82,7 +84,7 @@ class Sources extends AbstractApi
      * @param string $customerId
      * @param string $sourceId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function detach(string $customerId, string $sourceId): ApiResponse
     {

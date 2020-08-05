@@ -23,7 +23,7 @@ declare(strict_types=1);
 namespace Cartalyst\Stripe\Api\Radar;
 
 use Cartalyst\Stripe\Api\AbstractApi;
-use Cartalyst\Stripe\Api\ApiResponse;
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
 
 class ValueLists extends AbstractApi
 {
@@ -32,7 +32,7 @@ class ValueLists extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(array $parameters = []): ApiResponse
     {
@@ -44,7 +44,7 @@ class ValueLists extends AbstractApi
      *
      * @param string $valueListId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $valueListId): ApiResponse
     {
@@ -57,7 +57,7 @@ class ValueLists extends AbstractApi
      * @param string $valueListId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $valueListId, array $parameters = []): ApiResponse
     {
@@ -69,7 +69,7 @@ class ValueLists extends AbstractApi
      *
      * @param string $valueListId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function delete(string $valueListId): ApiResponse
     {
@@ -81,7 +81,7 @@ class ValueLists extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {

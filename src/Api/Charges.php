@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class Charges extends AbstractApi
 {
     /**
@@ -29,7 +31,7 @@ class Charges extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(array $parameters = []): ApiResponse
     {
@@ -41,7 +43,7 @@ class Charges extends AbstractApi
      *
      * @param string $chargeId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $chargeId): ApiResponse
     {
@@ -54,7 +56,7 @@ class Charges extends AbstractApi
      * @param string $chargeId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $chargeId, array $parameters = []): ApiResponse
     {
@@ -68,7 +70,7 @@ class Charges extends AbstractApi
      * @param int    $amount
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     // TODO: Either remove or add a fullCapture and partialCapture to avoid nullables in between
     public function capture(string $chargeId, ?int $amount = null, array $parameters = []): ApiResponse
@@ -85,7 +87,7 @@ class Charges extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {

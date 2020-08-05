@@ -23,7 +23,7 @@ declare(strict_types=1);
 namespace Cartalyst\Stripe\Api\Account;
 
 use Cartalyst\Stripe\Api\AbstractApi;
-use Cartalyst\Stripe\Api\ApiResponse;
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
 
 class AccountLink extends AbstractApi
 {
@@ -32,7 +32,7 @@ class AccountLink extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(array $parameters = []): ApiResponse
     {

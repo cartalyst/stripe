@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class PaymentMethods extends AbstractApi
 {
     /**
@@ -29,7 +31,7 @@ class PaymentMethods extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(array $parameters = []): ApiResponse
     {
@@ -41,7 +43,7 @@ class PaymentMethods extends AbstractApi
      *
      * @param string $paymentMethodId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $paymentMethodId): ApiResponse
     {
@@ -54,7 +56,7 @@ class PaymentMethods extends AbstractApi
      * @param string $paymentMethodId
      * @param string $customerId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function attach(string $paymentMethodId, $customerId): ApiResponse
     {
@@ -68,7 +70,7 @@ class PaymentMethods extends AbstractApi
      *
      * @param string $paymentMethodId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function detach(string $paymentMethodId): ApiResponse
     {
@@ -81,7 +83,7 @@ class PaymentMethods extends AbstractApi
      * @param string $paymentMethodId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $paymentMethodId, array $parameters = []): ApiResponse
     {
@@ -93,7 +95,7 @@ class PaymentMethods extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {

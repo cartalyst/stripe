@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class UsageRecords extends AbstractApi
 {
     /**
@@ -30,7 +32,7 @@ class UsageRecords extends AbstractApi
      * @param string $itemId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(string $itemId, array $parameters): ApiResponse
     {
@@ -43,7 +45,7 @@ class UsageRecords extends AbstractApi
      * @param string $itemId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(string $itemId, array $parameters = []): ApiResponse
     {

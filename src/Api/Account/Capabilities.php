@@ -23,7 +23,7 @@ declare(strict_types=1);
 namespace Cartalyst\Stripe\Api\Account;
 
 use Cartalyst\Stripe\Api\AbstractApi;
-use Cartalyst\Stripe\Api\ApiResponse;
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
 
 class Capabilities extends AbstractApi
 {
@@ -33,7 +33,7 @@ class Capabilities extends AbstractApi
      * @param string $accountId
      * @param string $capabilityId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $accountId, string $capabilityId): ApiResponse
     {
@@ -47,7 +47,7 @@ class Capabilities extends AbstractApi
      * @param string $capabilityId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $accountId, string $capabilityId, array $parameters = []): ApiResponse
     {
@@ -60,7 +60,7 @@ class Capabilities extends AbstractApi
      * @param string $accountId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(string $accountId, array $parameters = []): ApiResponse
     {

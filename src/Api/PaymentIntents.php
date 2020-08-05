@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Cartalyst\Stripe\Api;
 
+use Cartalyst\Stripe\HttpClient\Message\ApiResponse;
+
 class PaymentIntents extends AbstractApi
 {
     /**
@@ -29,7 +31,7 @@ class PaymentIntents extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function create(array $parameters = []): ApiResponse
     {
@@ -41,7 +43,7 @@ class PaymentIntents extends AbstractApi
      *
      * @param string $paymentIntentId
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function find(string $paymentIntentId): ApiResponse
     {
@@ -54,7 +56,7 @@ class PaymentIntents extends AbstractApi
      * @param string $paymentIntentId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function update(string $paymentIntentId, array $parameters = []): ApiResponse
     {
@@ -67,7 +69,7 @@ class PaymentIntents extends AbstractApi
      * @param string $paymentIntentId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function confirm(string $paymentIntentId, array $parameters = []): ApiResponse
     {
@@ -80,7 +82,7 @@ class PaymentIntents extends AbstractApi
      * @param string $paymentIntentId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function capture(string $paymentIntentId, array $parameters = []): ApiResponse
     {
@@ -93,7 +95,7 @@ class PaymentIntents extends AbstractApi
      * @param string $paymentIntentId
      * @param array  $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function cancel(string $paymentIntentId, array $parameters = []): ApiResponse
     {
@@ -105,7 +107,7 @@ class PaymentIntents extends AbstractApi
      *
      * @param array $parameters
      *
-     * @return \Cartalyst\Stripe\Api\ApiResponse
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
      */
     public function all(array $parameters = []): ApiResponse
     {

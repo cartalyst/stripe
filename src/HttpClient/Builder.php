@@ -68,7 +68,7 @@ final class Builder
     protected $pluginClient;
 
     /**
-     * Create a new HTTP client builder instance.
+     * Constructor.
      *
      * @param \Psr\Http\Client\ClientInterface|null          $httpClient
      * @param \Psr\Http\Message\RequestFactoryInterface|null $requestFactory
@@ -76,14 +76,13 @@ final class Builder
      *
      * @return void
      */
-    public function __construct(
-        ClientInterface $httpClient = null,
-        RequestFactoryInterface $requestFactory = null,
-        StreamFactoryInterface $streamFactory = null
-    ) {
-        $this->httpClient     = $httpClient     ?? Psr18ClientDiscovery::find();
+    public function __construct(ClientInterface $httpClient = null, RequestFactoryInterface $requestFactory = null, StreamFactoryInterface $streamFactory = null)
+    {
+        $this->httpClient = $httpClient ?? Psr18ClientDiscovery::find();
+
         $this->requestFactory = $requestFactory ?? Psr17FactoryDiscovery::findRequestFactory();
-        $this->streamFactory  = $streamFactory  ?? Psr17FactoryDiscovery::findStreamFactory();
+
+        $this->streamFactory = $streamFactory ?? Psr17FactoryDiscovery::findStreamFactory();
     }
 
     /**
@@ -96,8 +95,7 @@ final class Builder
         if ($this->pluginClient === null) {
             $this->pluginClient = new HttpClient(
                 (new PluginClientFactory())->createClient($this->httpClient, $this->plugins),
-                $this->requestFactory,
-                $this->streamFactory
+                $this->requestFactory, $this->streamFactory
             );
         }
 
@@ -113,7 +111,8 @@ final class Builder
      */
     public function addPlugin(Plugin $plugin): void
     {
-        $this->plugins[]    = $plugin;
+        $this->plugins[] = $plugin;
+
         $this->pluginClient = null;
     }
 
@@ -129,6 +128,7 @@ final class Builder
         foreach ($this->plugins as $idx => $plugin) {
             if ($plugin instanceof $fqcn) {
                 unset($this->plugins[$idx]);
+
                 $this->pluginClient = null;
             }
         }

@@ -53,7 +53,7 @@ class HttpClient implements HttpClientInterface
     protected $streamFactory;
 
     /**
-     * Create a new HTTP client instance.
+     * Constructor.
      *
      * @param \Psr\Http\Client\ClientInterface          $httpClient
      * @param \Psr\Http\Message\RequestFactoryInterface $requestFactory
