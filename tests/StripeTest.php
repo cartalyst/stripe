@@ -73,6 +73,19 @@ class StripeTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_and_set_the_app_info()
+    {
+        $this->stripe->setAppInfo('My Application Name', 'v1.0.1', 'https://my-aplication-url.com');
+
+        $this->assertSame([
+            'name'       => 'My Application Name',
+            'version'    => 'v1.0.1',
+            'url'        => 'https://my-aplication-url.com',
+            'partner_id' => null,
+        ], $this->stripe->getAppInfo());
+    }
+
+    /** @test */
     public function it_can_create_requests()
     {
         $class = $this->stripe->customers();
