@@ -151,7 +151,7 @@ class Stripe
     /**
      * Sets the idempotency key.
      *
-     * @param  string  $idempotencyKey
+     * @param  string|null  $idempotencyKey
      * @return $this
      */
     public function idempotent($idempotencyKey)
@@ -164,7 +164,7 @@ class Stripe
     /**
      * Sets the account id.
      *
-     * @param  string  $accountId
+     * @param  string|null  $accountId
      * @return $this
      */
     public function accountId($accountId)

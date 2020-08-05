@@ -47,7 +47,7 @@ interface ApiInterface
     /**
      * Sets the idempotency key.
      *
-     * @param  string  $idempotencyKey
+     * @param  string|null  $idempotencyKey
      * @return $this
      */
     public function idempotent($idempotencyKey);

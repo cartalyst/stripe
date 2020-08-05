@@ -46,14 +46,14 @@ class Config implements ConfigInterface
     /**
      * The idempotency key.
      *
-     * @var string
+     * @var string|null
      */
     protected $idempotencyKey;
 
     /**
      * The managed account id.
      *
-     * @var string
+     * @var string|null
      */
     protected $accountId;
 
@@ -175,7 +175,7 @@ class Config implements ConfigInterface
     /**
      * Returns the managed account id.
      *
-     * @return string
+     * @return string|null
      */
     public function getAccountId()
     {
@@ -185,7 +185,7 @@ class Config implements ConfigInterface
     /**
      * Sets the managed account id.
      *
-     * @param  string  $accountId
+     * @param  string|null  $accountId
      * @return $this
      */
     public function setAccountId($accountId)
