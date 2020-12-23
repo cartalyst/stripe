@@ -6,6 +6,8 @@ matrix:
       php: 7.3
     - dist: bionic
       php: 7.4
+    - dist: bionic
+      php: 8.0
 
 cache:
   directories:
