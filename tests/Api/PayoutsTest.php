@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class PayoutsTest extends FunctionalTestCase
 {
@@ -35,7 +36,7 @@ class PayoutsTest extends FunctionalTestCase
             'card' => [
                 'exp_month' => 10,
                 'cvc'       => 314,
-                'exp_year'  => 2020,
+                'exp_year'  => 2021,
                 'number'    => '4000000000000077',
             ],
         ])['id'];
@@ -87,12 +88,11 @@ class PayoutsTest extends FunctionalTestCase
         $this->assertSame('paid', $payout['status']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_payout()
     {
+        $this->expectException(NotFoundException::class);
+
         $this->stripe->payouts()->find(time().rand());
     }
 
@@ -107,7 +107,7 @@ class PayoutsTest extends FunctionalTestCase
             'card' => [
                 'exp_month' => 10,
                 'cvc'       => 314,
-                'exp_year'  => 2020,
+                'exp_year'  => 2021,
                 'number'    => '4000000000000077',
             ],
         ])['id'];
@@ -141,7 +141,7 @@ class PayoutsTest extends FunctionalTestCase
             'card' => [
                 'exp_month' => 10,
                 'cvc'       => 314,
-                'exp_year'  => 2020,
+                'exp_year'  => 2021,
                 'number'    => '4000000000000077',
             ],
         ])['id'];
@@ -161,7 +161,7 @@ class PayoutsTest extends FunctionalTestCase
 
         $this->assertCount(1, $payouts['data']);
         $this->assertNotEmpty($payouts['data']);
-        $this->assertInternalType('array', $payouts['data']);
+        $this->assertIsArray($payouts['data']);
     }
 
     /** @test */
@@ -175,7 +175,7 @@ class PayoutsTest extends FunctionalTestCase
             'card' => [
                 'exp_month' => 10,
                 'cvc'       => 314,
-                'exp_year'  => 2020,
+                'exp_year'  => 2021,
                 'number'    => '4000000000000077',
             ],
         ])['id'];

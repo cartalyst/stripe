@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api\Radar;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class ValueListItemsTest extends FunctionalTestCase
 {
@@ -64,12 +65,11 @@ class ValueListItemsTest extends FunctionalTestCase
         $this->assertSame($valueList['id'], $valueListItem['value_list']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_value_list_item()
     {
+        $this->expectException(NotFoundException::class);
+
         $this->stripe->radar()->valueListItems()->find(time().rand());
     }
 

@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api\Account;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class PersonsTest extends FunctionalTestCase
 {
@@ -74,12 +75,11 @@ class PersonsTest extends FunctionalTestCase
         $this->assertSame('Doe', $person['last_name']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_person()
     {
+        $this->expectException(NotFoundException::class);
+
         $email = $this->getRandomEmail();
 
         $account = $this->stripe->account()->create([
@@ -169,6 +169,6 @@ class PersonsTest extends FunctionalTestCase
         $persons = $this->stripe->account()->persons()->all($account['id']);
 
         $this->assertNotEmpty($persons['data']);
-        $this->assertInternalType('array', $persons['data']);
+        $this->assertIsArray($persons['data']);
     }
 }

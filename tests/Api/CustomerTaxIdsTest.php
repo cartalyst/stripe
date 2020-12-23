@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class CustomerTaxIds extends FunctionalTestCase
 {
@@ -58,12 +59,11 @@ class CustomerTaxIds extends FunctionalTestCase
         $this->assertSame($customer['id'], $taxId['customer']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_customer_tax()
     {
+        $this->expectException(NotFoundException::class);
+
         $customer = $this->createCustomer();
 
         $this->stripe->customerTaxIds()->find($customer['id'], time());
@@ -97,7 +97,7 @@ class CustomerTaxIds extends FunctionalTestCase
         $taxIds = $this->stripe->customerTaxIds()->all($customer['id']);
 
         $this->assertCount(1, $taxIds['data']);
-        $this->assertInternalType('array', $taxIds['data']);
+        $this->assertIsArray($taxIds['data']);
     }
 
     /** @test */

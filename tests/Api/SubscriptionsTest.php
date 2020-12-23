@@ -20,8 +20,9 @@
 
 namespace Cartalyst\Stripe\Tests\Api;
 
-use Cartalyst\Stripe\Tests\FunctionalTestCase;
 use DateTime;
+use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class SubscriptionsTest extends FunctionalTestCase
 {
@@ -47,12 +48,11 @@ class SubscriptionsTest extends FunctionalTestCase
         $this->assertSame(1, $subscription['quantity']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_subscription()
     {
+        $this->expectException(NotFoundException::class);
+
         $customer = $this->createCustomer();
 
         $this->stripe->subscriptions()->find($customer['id'], time().rand());
@@ -170,7 +170,7 @@ class SubscriptionsTest extends FunctionalTestCase
 
         $this->assertNotEmpty($subscriptions['data']);
         $this->assertCount(2, $subscriptions['data']);
-        $this->assertInternalType('array', $subscriptions['data']);
+        $this->assertIsArray($subscriptions['data']);
     }
 
     /** @test */
@@ -193,7 +193,7 @@ class SubscriptionsTest extends FunctionalTestCase
         // $this->assertSame($customer2['id'], $subscriptions['data'][0]['customer']);
         // $this->assertSame($customer1['id'], $subscriptions['data'][1]['customer']);
 
-        $this->assertInternalType('array', $subscriptions['data']);
+        $this->assertIsArray($subscriptions['data']);
     }
 
     /** @test */
@@ -212,18 +212,18 @@ class SubscriptionsTest extends FunctionalTestCase
 
         $this->assertNotEmpty($subscriptions);
         $this->assertCount(2, $subscriptions);
-        $this->assertInternalType('array', $subscriptions);
+        $this->assertIsArray($subscriptions);
 
         $subscriptions = $this->stripe->subscriptionsIterator($customer['id'], [ 'status' => 'canceled' ]);
 
         $this->assertNotEmpty($subscriptions);
         $this->assertCount(1, $subscriptions);
-        $this->assertInternalType('array', $subscriptions);
+        $this->assertIsArray($subscriptions);
 
         $subscriptions = $this->stripe->subscriptionsIterator($customer['id'], [ 'status' => 'all' ]);
 
         $this->assertNotEmpty($subscriptions);
         $this->assertCount(3, $subscriptions);
-        $this->assertInternalType('array', $subscriptions);
+        $this->assertIsArray($subscriptions);
     }
 }

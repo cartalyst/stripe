@@ -167,7 +167,7 @@ class ExternalAccountsTest extends FunctionalTestCase
         $externalAccounts = $this->stripe->externalAccounts()->all($accountId);
 
         $this->assertNotEmpty($externalAccounts['data']);
-        $this->assertInternalType('array', $externalAccounts['data']);
+        $this->assertIsArray($externalAccounts['data']);
     }
 
     /** @test */

@@ -32,7 +32,7 @@ class EventsTest extends FunctionalTestCase
         $events = $this->stripe->events()->all();
 
         $this->assertNotEmpty($events['data']);
-        $this->assertInternalType('array', $events['data']);
+        $this->assertIsArray($events['data']);
 
         $event = $this->stripe->events()->find($events['data'][0]['id']);
     }

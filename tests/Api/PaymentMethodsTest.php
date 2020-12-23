@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class PaymentMethodsTest extends FunctionalTestCase
 {
@@ -54,12 +55,11 @@ class PaymentMethodsTest extends FunctionalTestCase
         $this->assertSame('visa', $paymentMethod['card']['brand']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_payment_method()
     {
+        $this->expectException(NotFoundException::class);
+
         $this->stripe->paymentMethods()->find(time().rand());
     }
 

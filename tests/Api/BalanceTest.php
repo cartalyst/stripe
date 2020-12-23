@@ -31,8 +31,8 @@ class BalanceTest extends FunctionalTestCase
 
         $this->assertSame('usd', $current['pending'][0]['currency']);
         $this->assertSame('usd', $current['available'][0]['currency']);
-        $this->assertInternalType('int', $current['pending'][0]['amount']);
-        $this->assertInternalType('int', $current['available'][0]['amount']);
+        $this->assertIsInt($current['pending'][0]['amount']);
+        $this->assertIsInt($current['available'][0]['amount']);
     }
 
     /** @test */
@@ -40,6 +40,6 @@ class BalanceTest extends FunctionalTestCase
     {
         $transactions = $this->stripe->balance()->all();
 
-        $this->assertInternalType('array', $transactions['data']);
+        $this->assertIsArray($transactions['data']);
     }
 }

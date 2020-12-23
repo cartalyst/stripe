@@ -21,9 +21,9 @@
 namespace Cartalyst\Stripe\Tests;
 
 use Cartalyst\Stripe\Stripe;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class FunctionalTestCase extends PHPUnit_Framework_TestCase
+class FunctionalTestCase extends TestCase
 {
     /**
      * The Stripe API instance.
@@ -35,7 +35,7 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->stripe = new Stripe();
     }
@@ -98,9 +98,9 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
     {
         return $this->stripe->tokens()->create([
             'card' => [
-                'exp_month' => 10,
+                'exp_month' => date('m'),
                 'cvc'       => 314,
-                'exp_year'  => 2020,
+                'exp_year'  => date('Y', strtotime('+1 year')),
                 'number'    => '4242424242424242',
             ],
         ]);
@@ -145,9 +145,9 @@ class FunctionalTestCase extends PHPUnit_Framework_TestCase
     {
         return $this->stripe->cards()->create($customerId, [
             'source' => [
-                'exp_month' => 10,
+                'exp_month' => date('m'),
                 'cvc'       => 314,
-                'exp_year'  => 2020,
+                'exp_year'  => date('Y', strtotime('+1 year')),
                 'number'    => '4242424242424242',
                 'currency'  => 'usd',
             ],

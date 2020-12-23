@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class SetupIntentsTest extends FunctionalTestCase
 {
@@ -72,12 +73,11 @@ class SetupIntentsTest extends FunctionalTestCase
         $this->assertSame(['card'], $setupIntent['payment_method_types']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_setup_intent()
     {
+        $this->expectException(NotFoundException::class);
+
         $this->stripe->setupIntents()->find(time().rand());
     }
 

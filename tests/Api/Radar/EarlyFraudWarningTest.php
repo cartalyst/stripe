@@ -21,15 +21,15 @@
 namespace Cartalyst\Stripe\Tests\Api\Radar;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class EarlyFraudWarning extends FunctionalTestCase
 {
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_early_fraud_warning()
     {
+        $this->expectException(NotFoundException::class);
+
         $this->stripe->radar()->earlyFraudWarning()->find(time());
     }
 
@@ -39,6 +39,6 @@ class EarlyFraudWarning extends FunctionalTestCase
         $earlyFraudWarnings = $this->stripe->radar()->earlyFraudWarning()->all();
 
         $this->assertEmpty($earlyFraudWarnings['data']);
-        $this->assertInternalType('array', $earlyFraudWarnings['data']);
+        $this->assertIsArray($earlyFraudWarnings['data']);
     }
 }

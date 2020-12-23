@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api\Terminal;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class LocationsTest extends FunctionalTestCase
 {
@@ -58,12 +59,11 @@ class LocationsTest extends FunctionalTestCase
         $this->assertSame('My First Store', $location['display_name']);
     }
 
-    // /**
-    //  * @test
-    //  * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-    //  */
+    // /** @test */
     // public function it_will_throw_an_exception_when_searching_for_a_non_existing_location()
     // {
+    //     $this->expectException(NotFoundException::class);
+
     //     $this->stripe->terminal()->locations()->find(time().rand());
     // }
 
@@ -129,6 +129,6 @@ class LocationsTest extends FunctionalTestCase
         $locations = $this->stripe->terminal()->locations()->all();
 
         $this->assertNotEmpty($locations['data']);
-        $this->assertInternalType('array', $locations['data']);
+        $this->assertIsArray($locations['data']);
     }
 }

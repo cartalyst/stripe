@@ -111,6 +111,6 @@ class SourcesTest extends FunctionalTestCase
 
         $this->assertNotEmpty($sources['data']);
         $this->assertCount(2, $sources['data']);
-        $this->assertInternalType('array', $sources['data']);
+        $this->assertIsArray($sources['data']);
     }
 }

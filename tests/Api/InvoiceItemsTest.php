@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class InvoiceItemsTest extends FunctionalTestCase
 {
@@ -60,12 +61,11 @@ class InvoiceItemsTest extends FunctionalTestCase
         $this->assertSame(3000, $invoiceItem['amount']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_can_delete_an_existing_invoice_item()
     {
+        $this->expectException(NotFoundException::class);
+
         $customer = $this->createCustomer();
 
         $invoiceItem = $this->createInvoiceItem($customer['id']);
@@ -89,7 +89,7 @@ class InvoiceItemsTest extends FunctionalTestCase
         $invoiceItems = $this->stripe->invoiceItems()->all();
 
         $this->assertNotEmpty($invoiceItems['data']);
-        $this->assertInternalType('array', $invoiceItems['data']);
+        $this->assertIsArray($invoiceItems['data']);
     }
 
     /** @test */

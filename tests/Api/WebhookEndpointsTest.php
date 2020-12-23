@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class WebhookEndpointsTest extends FunctionalTestCase
 {
@@ -29,7 +30,7 @@ class WebhookEndpointsTest extends FunctionalTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -42,7 +43,7 @@ class WebhookEndpointsTest extends FunctionalTestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->stripe->webhookEndpoints()->delete($this->webhookEndpoint['id']);
     }
@@ -59,12 +60,11 @@ class WebhookEndpointsTest extends FunctionalTestCase
         $this->assertSame('https://example.com/my/webhook/endpoint', $webhookEndpoint['url']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_webhook_endpoint()
     {
+        $this->expectException(NotFoundException::class);
+
         $this->stripe->webhookEndpoints()->find(time().rand());
     }
 
@@ -88,7 +88,7 @@ class WebhookEndpointsTest extends FunctionalTestCase
         $webhookEndpoints = $this->stripe->webhookEndpoints()->all();
 
         $this->assertNotEmpty($webhookEndpoints['data']);
-        $this->assertInternalType('array', $webhookEndpoints['data']);
+        $this->assertIsArray($webhookEndpoints['data']);
     }
 
     /** @test */

@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class SubscriptionSchedulesTest extends FunctionalTestCase
 {
@@ -76,12 +77,11 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
         $this->assertSame('active', $subscriptionSchedule['status']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_subscription_schedule()
     {
+        $this->expectException(NotFoundException::class);
+
         $this->stripe->subscriptionSchedules()->find(time().rand());
     }
 
@@ -197,7 +197,7 @@ class SubscriptionSchedulesTest extends FunctionalTestCase
         ]);
 
         $this->assertNotEmpty($subscriptionSchedules['data']);
-        $this->assertInternalType('array', $subscriptionSchedules['data']);
+        $this->assertIsArray($subscriptionSchedules['data']);
     }
 
     /** @test */

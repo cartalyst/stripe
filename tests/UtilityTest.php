@@ -22,9 +22,9 @@ namespace Cartalyst\Stripe\Tests;
 
 use Cartalyst\Stripe\Stripe;
 use Cartalyst\Stripe\Utility;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class UtilityTest extends PHPUnit_Framework_TestCase
+class UtilityTest extends TestCase
 {
     /** @test */
     public function it_can_prepare_the_parameters_for_the_request()

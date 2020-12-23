@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class SkusTest extends FunctionalTestCase
 {
@@ -46,12 +47,11 @@ class SkusTest extends FunctionalTestCase
         $this->assertSame(1500, $sku['price']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_sku()
     {
+        $this->expectException(NotFoundException::class);
+
         $this->stripe->skus()->find(time());
     }
 
@@ -92,6 +92,6 @@ class SkusTest extends FunctionalTestCase
         $skus = $this->stripe->skus()->all();
 
         $this->assertNotEmpty($skus['data']);
-        $this->assertInternalType('array', $skus['data']);
+        $this->assertIsArray($skus['data']);
     }
 }

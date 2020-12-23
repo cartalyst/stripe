@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class PlansTest extends FunctionalTestCase
 {
@@ -42,12 +43,11 @@ class PlansTest extends FunctionalTestCase
         $this->assertSame('Monthly (30$)', $plan['name']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_plan()
     {
+        $this->expectException(NotFoundException::class);
+
         $this->stripe->plans()->find(time().rand());
     }
 
@@ -88,7 +88,7 @@ class PlansTest extends FunctionalTestCase
         ]);
 
         $this->assertNotEmpty($plans['data']);
-        $this->assertInternalType('array', $plans['data']);
+        $this->assertIsArray($plans['data']);
     }
 
     /** @test */

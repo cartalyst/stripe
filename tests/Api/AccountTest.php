@@ -143,7 +143,7 @@ class AccountTest extends FunctionalTestCase
         $accounts = $this->stripe->account()->all();
 
         $this->assertNotEmpty($accounts['data']);
-        $this->assertInternalType('array', $accounts['data']);
+        $this->assertIsArray($accounts['data']);
     }
 
     /** @test */

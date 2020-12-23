@@ -58,7 +58,7 @@ class FilesTest extends FunctionalTestCase
         $uploadedFiles = $this->stripe->files()->all();
 
         $this->assertNotEmpty($uploadedFiles['data']);
-        $this->assertInternalType('array', $uploadedFiles['data']);
+        $this->assertIsArray($uploadedFiles['data']);
     }
 
     /** @test */

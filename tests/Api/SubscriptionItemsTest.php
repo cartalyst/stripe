@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class SubscriptionItemsTest extends FunctionalTestCase
 {
@@ -76,12 +77,11 @@ class SubscriptionItemsTest extends FunctionalTestCase
         $this->assertSame($plan['id'], $subscriptionItem['plan']['id']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_can_delete_an_existing_subscription_item()
     {
+        $this->expectException(NotFoundException::class);
+
         $plan = $this->createPlan();
 
         $customer = $this->createCustomer();
@@ -115,7 +115,7 @@ class SubscriptionItemsTest extends FunctionalTestCase
         $subscriptionItems = $this->stripe->subscriptionItems()->all($subscription['id']);
 
         $this->assertNotEmpty($subscriptionItems['data']);
-        $this->assertInternalType('array', $subscriptionItems['data']);
+        $this->assertIsArray($subscriptionItems['data']);
     }
 
     /** @test */

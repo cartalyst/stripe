@@ -21,6 +21,8 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
+use Cartalyst\Stripe\Exception\CardErrorException;
 
 class ChargesTest extends FunctionalTestCase
 {
@@ -54,13 +56,12 @@ class ChargesTest extends FunctionalTestCase
         $this->assertSame($charge1['id'], $charge2['id']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\CardErrorException
-     */
+    /** @test */
     public function a_charge_can_be_declined()
     {
-        $charge = $this->stripe->charges()->create([
+        $this->expectException(CardErrorException::class);
+
+        $this->stripe->charges()->create([
             'currency' => 'USD',
             'amount'   => 50.49,
             'card'     => 'tok_chargeDeclined',
@@ -105,12 +106,11 @@ class ChargesTest extends FunctionalTestCase
         $this->assertSame(5049, $charge['amount']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_charge()
     {
+        $this->expectException(NotFoundException::class);
+
         $this->stripe->charges()->find(time().rand());
     }
 
@@ -154,7 +154,7 @@ class ChargesTest extends FunctionalTestCase
         $charges = $this->stripe->charges()->all();
 
         $this->assertNotEmpty($charges['data']);
-        $this->assertInternalType('array', $charges['data']);
+        $this->assertIsArray($charges['data']);
     }
 
     /** @test */

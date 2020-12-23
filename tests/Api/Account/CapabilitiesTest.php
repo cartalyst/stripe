@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api\Account;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class CapabilitiesTest extends FunctionalTestCase
 {
@@ -45,12 +46,11 @@ class CapabilitiesTest extends FunctionalTestCase
         $this->assertSame('inactive', $capability['status']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_capability()
     {
+        $this->expectException(NotFoundException::class);
+
         $email = $this->getRandomEmail();
 
         $account = $this->stripe->account()->create([
@@ -105,6 +105,6 @@ class CapabilitiesTest extends FunctionalTestCase
         $capabilities = $this->stripe->account()->capabilities()->all($account['id']);
 
         $this->assertNotEmpty($capabilities['data']);
-        $this->assertInternalType('array', $capabilities['data']);
+        $this->assertIsArray($capabilities['data']);
     }
 }

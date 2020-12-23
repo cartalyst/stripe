@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class CustomerBalanceTransactionsTest extends FunctionalTestCase
 {
@@ -54,12 +55,11 @@ class CustomerBalanceTransactionsTest extends FunctionalTestCase
         $this->assertSame(-2550, $balanceTransaction['amount']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_customer_balance_transaction()
     {
+        $this->expectException(NotFoundException::class);
+
         $customer = $this->createCustomer();
 
         $this->stripe->customerBalanceTransactions()->find($customer['id'], time());

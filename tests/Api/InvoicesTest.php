@@ -297,7 +297,7 @@ class InvoicesTest extends FunctionalTestCase
         $invoices = $this->stripe->invoices()->all();
 
         $this->assertNotEmpty($invoices['data']);
-        $this->assertInternalType('array', $invoices['data']);
+        $this->assertIsArray($invoices['data']);
         $this->assertSame(6000, ($invoice1['total'] + $invoice2['total']));
         $this->assertSame(
             6, ($invoice1['lines']['total_count'] + $invoice2['lines']['total_count'])

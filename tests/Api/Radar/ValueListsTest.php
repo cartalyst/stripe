@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api\Radar;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class ValueListsTest extends FunctionalTestCase
 {
@@ -54,12 +55,11 @@ class ValueListsTest extends FunctionalTestCase
         $this->assertSame('Custom IP Blocklist', $valueList['name']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_value_list()
     {
+        $this->expectException(NotFoundException::class);
+
         $this->stripe->radar()->valueLists()->find(time().rand());
     }
 
@@ -112,6 +112,6 @@ class ValueListsTest extends FunctionalTestCase
         $valueLists = $this->stripe->radar()->valueLists()->all();
 
         $this->assertNotEmpty($valueLists['data']);
-        $this->assertInternalType('array', $valueLists['data']);
+        $this->assertIsArray($valueLists['data']);
     }
 }

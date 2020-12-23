@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api\Checkout;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class SessionsTest extends FunctionalTestCase
 {
@@ -108,12 +109,11 @@ class SessionsTest extends FunctionalTestCase
         $this->assertSame('http://example.com/success', $session['success_url']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_session()
     {
+        $this->expectException(NotFoundException::class);
+
         $this->stripe->checkout()->sessions()->find(time().rand());
     }
 }

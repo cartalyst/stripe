@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class OrdersTest extends FunctionalTestCase
 {
@@ -58,12 +59,11 @@ class OrdersTest extends FunctionalTestCase
         $this->assertSame('created', $order['status']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_order()
     {
+        $this->expectException(NotFoundException::class);
+
         $this->stripe->orders()->find(time().rand());
     }
 
@@ -192,7 +192,7 @@ class OrdersTest extends FunctionalTestCase
         $orders = $this->stripe->orders()->all();
 
         $this->assertNotEmpty($orders['data']);
-        $this->assertInternalType('array', $orders['data']);
+        $this->assertIsArray($orders['data']);
     }
 
     /** @test */

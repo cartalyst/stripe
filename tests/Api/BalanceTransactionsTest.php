@@ -47,6 +47,6 @@ class BalanceTransactionsTest extends FunctionalTestCase
     {
         $transactions = $this->stripe->balanceTransactions()->all();
 
-        $this->assertInternalType('array', $transactions['data']);
+        $this->assertIsArray($transactions['data']);
     }
 }

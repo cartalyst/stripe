@@ -68,7 +68,7 @@ class OrderReturnsTest extends FunctionalTestCase
         $orderReturns = $this->stripe->orderReturns()->all();
 
         $this->assertNotEmpty($orderReturns['data']);
-        $this->assertInternalType('array', $orderReturns['data']);
+        $this->assertIsArray($orderReturns['data']);
     }
 
     /** @test */

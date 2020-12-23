@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class RefundsTest extends FunctionalTestCase
 {
@@ -88,12 +89,11 @@ class RefundsTest extends FunctionalTestCase
         $this->assertSame(5049, $refund['amount']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_refund()
     {
+        $this->expectException(NotFoundException::class);
+
         $customer = $this->createCustomer();
 
         $charge = $this->createCharge($customer['id']);
@@ -133,7 +133,7 @@ class RefundsTest extends FunctionalTestCase
 
         $this->assertNotEmpty($refunds['data']);
         $this->assertCount(1, $refunds['data']);
-        $this->assertInternalType('array', $refunds['data']);
+        $this->assertIsArray($refunds['data']);
     }
 
     /** @test */
@@ -150,6 +150,6 @@ class RefundsTest extends FunctionalTestCase
         $refunds = $this->stripe->refunds()->all();
 
         $this->assertNotEmpty($refunds['data']);
-        $this->assertInternalType('array', $refunds['data']);
+        $this->assertIsArray($refunds['data']);
     }
 }

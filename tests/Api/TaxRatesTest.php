@@ -21,6 +21,7 @@
 namespace Cartalyst\Stripe\Tests\Api;
 
 use Cartalyst\Stripe\Tests\FunctionalTestCase;
+use Cartalyst\Stripe\Exception\NotFoundException;
 
 class TaxRatesTest extends FunctionalTestCase
 {
@@ -62,12 +63,11 @@ class TaxRatesTest extends FunctionalTestCase
         $this->assertSame('VAT Germany', $taxRate['description']);
     }
 
-    /**
-     * @test
-     * @expectedException \Cartalyst\Stripe\Exception\NotFoundException
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_searching_for_a_non_existing_tax_rate()
     {
+        $this->expectException(NotFoundException::class);
+
         $this->stripe->taxRates()->find(time());
     }
 
@@ -111,7 +111,7 @@ class TaxRatesTest extends FunctionalTestCase
         $taxRates = $this->stripe->taxRates()->all();
 
         $this->assertNotEmpty($taxRates['data']);
-        $this->assertInternalType('array', $taxRates['data']);
+        $this->assertIsArray($taxRates['data']);
     }
 
     /** @test */
