@@ -1,6 +1,6 @@
 # PHP library for Stripe, by Cartalyst
 
-[![Build Status](https://travis-ci.org/cartalyst/stripe.svg?branch=2.4)](https://travis-ci.org/cartalyst/stripe)
+[![Build Status](https://travis-ci.com/cartalyst/stripe.svg?branch=2.4)](https://travis-ci.com/cartalyst/stripe)
 
 A comprehensive PHP Library for [Stripe](https://stripe.com/).
 
