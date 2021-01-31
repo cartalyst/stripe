@@ -79,18 +79,18 @@ class FunctionalTestCase extends TestCase
 
     protected function createPrice($productId, $recurring = true)
     {
-    	  $parameters = [
-			      'product'     => $productId,
-			      'unit_amount' => 1500,
-			      'currency'    => 'USD',
-	      ];
+        $parameters = [
+            'product'     => $productId,
+            'unit_amount' => 1500,
+            'currency'    => 'USD',
+        ];
 
-    	  if($recurring) {
-		    	  $parameters['recurring'] = [
-					      'interval'       => 'week',
-					      'interval_count' => '2',
-	          ];
-	      }
+        if($recurring) {
+            $parameters['recurring'] = [
+                'interval'       => 'week',
+                'interval_count' => '2',
+            ];
+        }
 
         return $this->stripe->prices()->create($parameters);
     }

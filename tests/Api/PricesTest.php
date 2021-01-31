@@ -28,7 +28,7 @@ class PricesTest extends FunctionalTestCase
     /** @test */
     public function it_can_create_a_new_recurring_price()
     {
-    	  $product = $this->createProduct();
+        $product = $this->createProduct();
 
         $price = $this->createPrice($product['id']);
 
@@ -39,7 +39,7 @@ class PricesTest extends FunctionalTestCase
     /** @test */
     public function it_can_create_a_new_one_time_price()
     {
-    	  $product = $this->createProduct();
+        $product = $this->createProduct();
 
         $price = $this->createPrice($product['id'], false);
 
@@ -50,9 +50,10 @@ class PricesTest extends FunctionalTestCase
     /** @test */
     public function it_can_find_an_existing_price()
     {
-		    $product = $this->createProduct();
+        $product = $this->createProduct();
 
-		    $createdPrice = $this->createPrice($product['id']);
+        $createdPrice = $this->createPrice($product['id']);
+
         $queriedPrice = $this->stripe->prices()->find($createdPrice['id']);
 
         $this->assertSame($queriedPrice['id'], $createdPrice['id']);
@@ -71,12 +72,13 @@ class PricesTest extends FunctionalTestCase
     {
         $product = $this->createProduct();
 
-	      $price = $this->createPrice($product['id']);
-	      $price = $this->stripe->prices()->update($price['id'], [
-			      'metadata' => [ 'description' => 'Bi-monthly Subscription' ]
-	      ]);
+        $price = $this->createPrice($product['id']);
 
-	    $this->assertSame('Bi-monthly Subscription', $price['metadata']['description']);
+        $price = $this->stripe->prices()->update($price['id'], [
+            'metadata' => [ 'description' => 'Bi-monthly Subscription' ]
+        ]);
+
+        $this->assertSame('Bi-monthly Subscription', $price['metadata']['description']);
     }
 
     /** @test */
@@ -84,7 +86,7 @@ class PricesTest extends FunctionalTestCase
     {
         $timestamp = time();
 
-	      $product = $this->createProduct();
+        $product = $this->createProduct();
 
         $this->createPrice($product['id']);
 
@@ -103,9 +105,9 @@ class PricesTest extends FunctionalTestCase
     {
         $timestamp = time();
 
-		    $product = $this->createProduct();
+        $product = $this->createProduct();
 
-		    for ($i=0; $i < 5; $i++) {
+        for ($i=0; $i < 5; $i++) {
             $this->createPrice($product['id']);
         }
 
