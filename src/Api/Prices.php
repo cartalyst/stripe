@@ -57,17 +57,6 @@ class Prices extends Api
     }
 
     /**
-     * Deletes an existing price.
-     *
-     * @param  string  $priceId
-     * @return array
-     */
-    public function delete($priceId)
-    {
-        return $this->_delete("prices/{$priceId}");
-    }
-
-    /**
      * Returns a list of all the prices.
      *
      * @param  array  $parameters
