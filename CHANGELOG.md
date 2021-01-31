@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.4.3 - 2021-01-31
+
+`ADDED`
+
+- Prices API
+
 ### v2.4.2 - 2020-07-26
 
 `ADDED`

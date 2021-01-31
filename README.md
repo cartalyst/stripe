@@ -47,4 +47,4 @@ Bug reports, feature requests, and pull requests can be submitted by following o
 
 This software is released under the [BSD 3-Clause](LICENSE) License.
 
-© 2011-2020 Cartalyst LLC, All rights reserved.
+© 2011-2021 Cartalyst LLC, All rights reserved.
