@@ -37,7 +37,7 @@ Creates a Payment Intent object.
         <tr>
             <td>amount</td>
             <td>required</td>
-            <td>boolean</td>
+            <td>integer</td>
             <td>required</td>
             <td>A positive integer representing how much to charge in the smallest currency unit (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency).</td>
         </tr>
