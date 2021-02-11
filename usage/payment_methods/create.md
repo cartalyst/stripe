@@ -43,7 +43,7 @@ Creates a Payment Method object. Read the [Stripe.js reference](https://stripe.c
         </tr>
         <tr>
             <td>billing_details</td>
-            <td>true</td>
+            <td>false</td>
             <td>array</td>
             <td>null</td>
             <td>Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.</td>
