@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Stripe
- * @version    2.4.4
+ * @version    2.4.5
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2021, Cartalyst LLC
@@ -94,7 +94,7 @@ class StripeTest extends TestCase
     {
         $version = $this->stripe->getVersion();
 
-        $this->assertSame('2.4.4', $version);
+        $this->assertSame('2.4.5', $version);
     }
 
     /** @test */
