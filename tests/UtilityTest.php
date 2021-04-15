@@ -49,6 +49,7 @@ class UtilityTest extends TestCase
         $this->assertSame('amount=50000&currency=SEK', Utility::prepareParameters([ 'amount' => 500, 'currency' => 'SEK' ]));
 
         $this->assertSame('price=12&currency=JPY', Utility::prepareParameters([ 'price' => 12, 'currency' => 'JPY' ]));
+        $this->assertSame('price=12&currency=jpy', Utility::prepareParameters([ 'price' => 12, 'currency' => 'jpy' ]));
         $this->assertSame('price=1200&currency=USD', Utility::prepareParameters([ 'price' => 12, 'currency' => 'USD' ]));
         $this->assertSame('price=500&currency=CLP', Utility::prepareParameters([ 'price' => 500, 'currency' => 'CLP' ]));
         $this->assertSame('price=50000&currency=SEK', Utility::prepareParameters([ 'price' => 500, 'currency' => 'SEK' ]));
