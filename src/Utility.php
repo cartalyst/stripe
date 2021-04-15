@@ -61,6 +61,6 @@ class Utility
             'KMF', 'MGA', 'RWF', 'VUV', 'XOF',
         ];
 
-        return ! $hasCurrency || ($hasCurrency && ! in_array($parameters['currency'], $currencies));
+        return ! $hasCurrency || ($hasCurrency && ! in_array(strtoupper($parameters['currency']), $currencies));
     }
 }
