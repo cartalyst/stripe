@@ -1,4 +1,4 @@
-#### Cancel a payment intent
+#### Capture a payment intent
 
 Capture the funds of an existing uncaptured Payment Intent when its status is `requires_capture`.
 
