@@ -26,13 +26,13 @@ use Cartalyst\Stripe\Exception\NotFoundException;
 class RefundsTest extends FunctionalTestCase
 {
     /** @test */
-    public function it_can_create_a_refund_from_charge()
+    public function it_can_create_a_refund()
     {
         $customer = $this->createCustomer();
 
         $charge = $this->createCharge($customer['id']);
 
-        $refund = $this->stripe->refunds()->create(['charge' => $charge['id']]);
+        $refund = $this->stripe->refunds()->create($charge['id']);
 
         $charge = $this->stripe->charges()->find($charge['id']);
 
@@ -47,7 +47,7 @@ class RefundsTest extends FunctionalTestCase
 
         $charge = $this->createCharge($customer['id']);
 
-        $refund = $this->stripe->refunds()->create(['charge' => $charge['id'], 'amount' => 20.00]);
+        $refund = $this->stripe->refunds()->create($charge['id'], 20.00);
 
         $charge = $this->stripe->charges()->find($charge['id']);
 
@@ -62,7 +62,24 @@ class RefundsTest extends FunctionalTestCase
 
         $charge = $this->createCharge($customer['id']);
 
-        $refund = $this->stripe->refunds()->create(['charge' => $charge['id']]);
+        $refund = $this->stripe->refunds()->create($charge['id']);
+
+        $refund = $this->stripe->refunds()->find($charge['id'], $refund['id']);
+
+        $charge = $this->stripe->charges()->find($charge['id']);
+
+        $this->assertTrue($charge['refunded']);
+        $this->assertSame(5049, $refund['amount']);
+    }
+
+    /** @test */
+    public function it_can_find_a_refund_without_passing_the_charge_id()
+    {
+        $customer = $this->createCustomer();
+
+        $charge = $this->createCharge($customer['id']);
+
+        $refund = $this->stripe->refunds()->create($charge['id']);
 
         $refund = $this->stripe->refunds()->find($refund['id']);
 
@@ -79,7 +96,9 @@ class RefundsTest extends FunctionalTestCase
 
         $customer = $this->createCustomer();
 
-        $this->stripe->refunds()->find(time().rand());
+        $charge = $this->createCharge($customer['id']);
+
+        $this->stripe->refunds()->find($charge['id'], time().rand());
     }
 
     /** @test */
@@ -89,32 +108,14 @@ class RefundsTest extends FunctionalTestCase
 
         $charge = $this->createCharge($customer['id']);
 
-        $refund = $this->stripe->refunds()->create(['charge' => $charge['id']]);
+        $refund = $this->stripe->refunds()->create($charge['id']);
 
-        $refund = $this->stripe->refunds()->update($refund['id'], [
+        $refund = $this->stripe->refunds()->update($charge['id'], $refund['id'], [
             'metadata' => [ 'reason' => 'Refunded the payment.' ]
         ]);
 
         $this->assertSame(5049, $refund['amount']);
         $this->assertSame('Refunded the payment.', $refund['metadata']['reason']);
-    }
-
-    /** @test */
-    public function it_can_retrieve_all_refunds_for_a_charge()
-    {
-        $customer = $this->createCustomer();
-
-        $charge1 = $this->createCharge($customer['id']);
-        $charge2 = $this->createCharge($customer['id']);
-
-        $this->stripe->refunds()->create(['charge' => $charge1['id']]);
-        $this->stripe->refunds()->create(['charge' => $charge2['id']]);
-
-        $refunds = $this->stripe->refunds()->all(['charge' => $charge1['id']]);
-
-        $this->assertNotEmpty($refunds['data']);
-        $this->assertCount(1, $refunds['data']);
-        $this->assertIsArray($refunds['data']);
     }
 
     /** @test */
@@ -125,8 +126,26 @@ class RefundsTest extends FunctionalTestCase
         $charge1 = $this->createCharge($customer['id']);
         $charge2 = $this->createCharge($customer['id']);
 
-        $this->stripe->refunds()->create(['charge' => $charge1['id']]);
-        $this->stripe->refunds()->create(['charge' => $charge2['id']]);
+        $this->stripe->refunds()->create($charge1['id']);
+        $this->stripe->refunds()->create($charge2['id']);
+
+        $refunds = $this->stripe->refunds()->all($charge1['id']);
+
+        $this->assertNotEmpty($refunds['data']);
+        $this->assertCount(1, $refunds['data']);
+        $this->assertIsArray($refunds['data']);
+    }
+
+    /** @test */
+    public function it_can_retrieve_all_refunds_without_passing_the_charge_id()
+    {
+        $customer = $this->createCustomer();
+
+        $charge1 = $this->createCharge($customer['id']);
+        $charge2 = $this->createCharge($customer['id']);
+
+        $this->stripe->refunds()->create($charge1['id']);
+        $this->stripe->refunds()->create($charge2['id']);
 
         $refunds = $this->stripe->refunds()->all();
 
