@@ -23,63 +23,48 @@ namespace Cartalyst\Stripe\Api;
 class Refunds extends Api
 {
     /**
-     * Creates a new refund for the given charge.
+     * Creates a new refund.
      *
-     * @param  string  $chargeId
-     * @param  int  $amount
      * @param  array  $parameters
      * @return array
      */
-    public function create($chargeId, $amount = null, array $parameters = [])
+    public function create(array $parameters = [])
     {
-        $parameters = array_merge($parameters, array_filter(compact('amount')));
-
-        return $this->_post("charges/{$chargeId}/refunds", $parameters);
+        return $this->_post("refunds", $parameters);
     }
 
     /**
-     * Retrieves an existing refund from the given charge.
+     * Retrieves an existing refund.
      *
-     * @param  string  $chargeId
      * @param  string|null  $refundId
      * @return array
      */
-    public function find($chargeId, $refundId = null)
+    public function find($refundId)
     {
-        if (! $refundId) {
-            return $this->_get("refunds/{$chargeId}");
-        }
-
-        return $this->_get("charges/{$chargeId}/refunds/{$refundId}");
+        return $this->_get("refunds/{$refundId}");
     }
 
     /**
-     * Updates an existing refund on the given charge.
+     * Updates an existing refund.
      *
-     * @param  string  $chargeId
      * @param  string  $refundId
      * @param  array  $parameters
      * @return array
      */
-    public function update($chargeId, $refundId, array $parameters = [])
+    public function update($refundId, array $parameters = [])
     {
-        return $this->_post("charges/{$chargeId}/refunds/{$refundId}", $parameters);
+        return $this->_post("refunds/{$refundId}", $parameters);
     }
 
     /**
      * Lists all the refunds of the current Stripe account
-     * or lists all the refunds for the given charge.
+     * or list all refunds for a given charge / payment intent.
      *
-     * @param  string|null  $chargeId
      * @param  array  $parameters
      * @return array
      */
-    public function all($chargeId = null, array $parameters = [])
+    public function all(array $parameters = [])
     {
-        if (! $chargeId) {
-            return $this->_get('refunds', $parameters);
-        }
-
-        return $this->_get("charges/{$chargeId}/refunds", $parameters);
+        return $this->_get('refunds', $parameters);
     }
 }
