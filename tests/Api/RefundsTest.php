@@ -26,7 +26,7 @@ use Cartalyst\Stripe\Exception\NotFoundException;
 class RefundsTest extends FunctionalTestCase
 {
     /** @test */
-    public function it_can_create_a_refund()
+    public function it_can_create_a_refund_from_a_charge()
     {
         $customer = $this->createCustomer();
 
@@ -37,7 +37,30 @@ class RefundsTest extends FunctionalTestCase
         $charge = $this->stripe->charges()->find($charge['id']);
 
         $this->assertTrue($charge['refunded']);
+        $this->assertSame($charge['id'], $refund['charge']);
+        $this->assertSame('succeeded', $refund['status']);
         $this->assertSame(5049, $refund['amount']);
+    }
+
+    /** @test */
+    public function it_can_create_a_refund_from_a_payment_intent()
+    {
+        $customer = $this->createCustomer();
+
+        $this->createCardThroughToken($customer['id']);
+
+        $paymentIntent = $this->stripe->paymentIntents()->create([
+            'amount' => 3000,
+            'currency' => 'USD',
+            'confirm' => true,
+            'customer' => $customer['id'],
+        ]);
+
+        $refund = $this->stripe->refunds()->create($paymentIntent['id']);
+
+        $this->assertSame($paymentIntent['id'], $refund['payment_intent']);
+        $this->assertSame('succeeded', $refund['status']);
+        $this->assertSame(300000, $refund['amount']);
     }
 
     /** @test */
@@ -119,7 +142,7 @@ class RefundsTest extends FunctionalTestCase
     }
 
     /** @test */
-    public function it_can_retrieve_all_refunds()
+    public function it_can_retrieve_all_refunds_of_a_charge()
     {
         $customer = $this->createCustomer();
 
@@ -134,6 +157,37 @@ class RefundsTest extends FunctionalTestCase
         $this->assertNotEmpty($refunds['data']);
         $this->assertCount(1, $refunds['data']);
         $this->assertIsArray($refunds['data']);
+    }
+
+    /** @test */
+    public function it_can_retrieve_all_refunds_of_a_payment_intent()
+    {
+        $customer = $this->createCustomer();
+
+        $this->createCardThroughToken($customer['id']);
+
+        $payload = [
+            'amount' => 3000,
+            'currency' => 'USD',
+            'confirm' => true,
+            'customer' => $customer['id'],
+        ];
+
+        $paymentIntent1 = $this->stripe->paymentIntents()->create($payload);
+        $paymentIntent2 = $this->stripe->paymentIntents()->create($payload);
+
+        $this->stripe->refunds()->create($paymentIntent1['id']);
+
+        $refunds1 = $this->stripe->refunds()->all($paymentIntent1['id']);
+        $refunds2 = $this->stripe->refunds()->all($paymentIntent2['id']);
+
+        $this->assertNotEmpty($refunds1['data']);
+        $this->assertCount(1, $refunds1['data']);
+        $this->assertIsArray($refunds1['data']);
+
+        $this->assertEmpty($refunds2['data']);
+        $this->assertCount(0, $refunds2['data']);
+        $this->assertIsArray($refunds2['data']);
     }
 
     /** @test */
