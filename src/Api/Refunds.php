@@ -32,10 +32,14 @@ class Refunds extends Api
      */
     public function create($paymentId, $amount = null, array $parameters = [])
     {
-        $paymentType = substr($paymentId, 0, 2) == 'ch' ? 'charge' : 'payment_intent';
-        $parameters = array_merge($parameters, [$paymentType => $paymentId, 'amount' => $amount]);
+        $paymentType = $this->getPaymentType($paymentId);
 
-        return $this->_post("refunds", $parameters);
+        $parameters = array_merge($parameters, [
+            'amount'     => $amount,
+            $paymentType => $paymentId,
+        ]);
+
+        return $this->_post('refunds', $parameters);
     }
 
     /**
@@ -51,7 +55,7 @@ class Refunds extends Api
             return $this->_get("refunds/{$chargeId}");
         }
 
-        return $this->_get("charges/{$chargeId}/refunds/{$refundId}");
+        return $this->_get("refunds/{$refundId}");
     }
 
     /**
@@ -77,13 +81,25 @@ class Refunds extends Api
      */
     public function all($paymentId = null, array $parameters = [])
     {
-        if($paymentId)
-        {
-            $paymentType = substr($paymentId, 0, 2) == 'ch' ? 'charge' : 'payment_intent';
+        if ($paymentId) {
+            $paymentType = $this->getPaymentType($paymentId);
 
-            $parameters = array_merge($parameters, [$paymentType => $paymentId]);
+            $parameters = array_merge($parameters, [
+                $paymentType => $paymentId,
+            ]);
         }
 
         return $this->_get('refunds', $parameters);
+    }
+
+    /**
+     * Returns the payment type for the provided payment id.
+     *
+     * @param  string  $paymentId
+     * @return void
+     */
+    private function getPaymentType(string $paymentId)
+    {
+        return substr($paymentId, 0, 2) === 'ch' ? 'charge' : 'payment_intent';
     }
 }
