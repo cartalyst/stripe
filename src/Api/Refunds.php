@@ -23,18 +23,23 @@ namespace Cartalyst\Stripe\Api;
 class Refunds extends Api
 {
     /**
-     * Creates a new refund for the given charge.
+     * Creates a new refund for the given charge or payment intent.
      *
-     * @param  string  $chargeId
+     * @param  string  $paymentId
      * @param  int  $amount
      * @param  array  $parameters
      * @return array
      */
-    public function create($chargeId, $amount = null, array $parameters = [])
+    public function create($paymentId, $amount = null, array $parameters = [])
     {
-        $parameters = array_merge($parameters, array_filter(compact('amount')));
+        $paymentType = $this->getPaymentType($paymentId);
 
-        return $this->_post("charges/{$chargeId}/refunds", $parameters);
+        $parameters = array_merge($parameters, [
+            'amount'     => $amount,
+            $paymentType => $paymentId,
+        ]);
+
+        return $this->_post('refunds', $parameters);
     }
 
     /**
@@ -50,11 +55,11 @@ class Refunds extends Api
             return $this->_get("refunds/{$chargeId}");
         }
 
-        return $this->_get("charges/{$chargeId}/refunds/{$refundId}");
+        return $this->_get("refunds/{$refundId}");
     }
 
     /**
-     * Updates an existing refund on the given charge.
+     * Updates an existing refund.
      *
      * @param  string  $chargeId
      * @param  string  $refundId
@@ -63,23 +68,38 @@ class Refunds extends Api
      */
     public function update($chargeId, $refundId, array $parameters = [])
     {
-        return $this->_post("charges/{$chargeId}/refunds/{$refundId}", $parameters);
+        return $this->_post("refunds/{$refundId}", $parameters);
     }
 
     /**
      * Lists all the refunds of the current Stripe account
-     * or lists all the refunds for the given charge.
+     * or lists all the refunds for the given charge or payment intent.
      *
-     * @param  string|null  $chargeId
+     * @param  string|null  $paymentId
      * @param  array  $parameters
      * @return array
      */
-    public function all($chargeId = null, array $parameters = [])
+    public function all($paymentId = null, array $parameters = [])
     {
-        if (! $chargeId) {
-            return $this->_get('refunds', $parameters);
+        if ($paymentId) {
+            $paymentType = $this->getPaymentType($paymentId);
+
+            $parameters = array_merge($parameters, [
+                $paymentType => $paymentId,
+            ]);
         }
 
-        return $this->_get("charges/{$chargeId}/refunds", $parameters);
+        return $this->_get('refunds', $parameters);
+    }
+
+    /**
+     * Returns the payment type for the provided payment id.
+     *
+     * @param  string  $paymentId
+     * @return void
+     */
+    private function getPaymentType(string $paymentId)
+    {
+        return substr($paymentId, 0, 2) === 'ch' ? 'charge' : 'payment_intent';
     }
 }
