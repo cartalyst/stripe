@@ -18,6 +18,9 @@
     <testsuites>
         <testsuite name="Stripe Package Test Suite">
             <directory suffix="Test.php">./tests/</directory>
+
+            <exclude>./tests/Api/PayoutsTest.php</exclude>
+            <exclude>./tests/Api/Terminal/LocationsTest.php</exclude>
         </testsuite>
     </testsuites>
     <filter>
