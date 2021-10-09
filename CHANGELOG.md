@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.4.6 - TBA
+
+`UPDATED`
+
+- Refunds API was updated to work with Payment Intents.
+
 ### v2.4.5 - 2021-04-15
 
 `FIXED`
