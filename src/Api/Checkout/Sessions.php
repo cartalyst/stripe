@@ -50,4 +50,16 @@ class Sessions extends AbstractApi
     {
         return $this->_get("checkout/sessions/{$sessionId}");
     }
+
+    /**
+     * Retrieves line items for an existing session.
+     *
+     * @param string $sessionId
+     *
+     * @return \Cartalyst\Stripe\HttpClient\Message\ApiResponse
+     */
+    public function lineItems(string $sessionId): ApiResponse
+    {
+        return $this->_get("checkout/sessions/{$sessionId}/line_items");
+    }
 }
