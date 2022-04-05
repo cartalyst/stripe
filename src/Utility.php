@@ -31,6 +31,12 @@ class Utility
     public static function prepareParameters(array $parameters)
     {
         $toConvert = [ 'amount', 'price' ];
+        
+        $bypassConversion = false;
+        if (isset($parameters['conversion']) && !$parameters['conversion']) {
+            $bypassConversion = true;
+            unset($parameters['conversion']);
+        }
 
         if (self::needsAmountConversion($parameters)) {
             if ($converter = Stripe::getAmountConverter()) {
