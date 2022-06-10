@@ -118,14 +118,6 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function _head($url = null, array $parameters = [])
-    {
-        return $this->execute('head', $url, $parameters);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function _delete($url = null, array $parameters = [])
     {
         return $this->execute('delete', $url, $parameters);
@@ -134,33 +126,9 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function _put($url = null, array $parameters = [])
-    {
-        return $this->execute('put', $url, $parameters);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function _patch($url = null, array $parameters = [])
-    {
-        return $this->execute('patch', $url, $parameters);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function _post($url = null, array $parameters = [])
     {
         return $this->execute('post', $url, $parameters);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function _options($url = null, array $parameters = [])
-    {
-        return $this->execute('options', $url, $parameters);
     }
 
     /**
