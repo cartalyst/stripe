@@ -100,6 +100,6 @@ class Refunds extends Api
      */
     private function getPaymentType(string $paymentId)
     {
-        return substr($paymentId, 0, 2) === 'ch' ? 'charge' : 'payment_intent';
+        return substr($paymentId, 0, 2) === 'pi' ? 'payment_intent' : 'charge';
     }
 }
