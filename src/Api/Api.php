@@ -139,7 +139,15 @@ abstract class Api implements ApiInterface
         try {
             $parameters = Utility::prepareParameters($parameters);
 
-            $response = $this->getClient()->{$httpMethod}('v1/'.$url, [ 'query' => $parameters ]);
+            if ($httpMethod === 'post') {
+                $response = $this->getClient()->post('v1/'.$url, [
+                    'body' => $parameters,
+                ]);
+            } else {
+                $response = $this->getClient()->{$httpMethod}('v1/'.$url, [
+                    'query' => $parameters,
+                ]);
+            }
 
             return json_decode((string) $response->getBody(), true);
         } catch (ClientException $e) {
